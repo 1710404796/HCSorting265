@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Models.CZPallet;
+using LinxUniverse.PLC;
 using LinxUniverse.Utils;
 using System;
 using System.Collections.Generic;
@@ -35,5 +36,7 @@ namespace HBYWCZP2024.Models
 
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
         public bool TestMode { get; set; }
+
+        public List<PLCSetting> PLCPSetting { get; set; } = [];
     }
 }
