@@ -32,5 +32,7 @@ namespace HBYWCZP2024.Data
 
         public DbSet<WarningLog> WarningLogs { get; set; }
 
+        public DbSet<WcsLog> WcsLogs { get; set; }
+
     }
 }

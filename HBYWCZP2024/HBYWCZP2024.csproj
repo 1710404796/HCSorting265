@@ -45,7 +45,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Apis\" />
-	  <Folder Include="ViewModel\CZPallet\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Auth\LinxUniverse.Auth.csproj" />
