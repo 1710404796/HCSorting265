@@ -1,0 +1,61 @@
+﻿<Window x:Class="HBYWCZP2024.View.CZPallet.CreatePalletRule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HBYWCZP2024.View.CZPallet"
+        mc:Ignorable="d"
+                 xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+ 
+        Title="CreatePalletRule" Height="300" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock
+            FontSize="20"
+            >
+            创建新规则
+        </TextBlock>
+        <StackPanel Grid.Row="1">
+            <StackPanel 
+                Margin="0,10,0,0"
+                Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Width="100">规则名称： </TextBlock>
+                <TextBox Width="150" x:Name="RuleName"></TextBox>     
+                
+                
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,10,0,0"
+                Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Width="100">正则表达式：</TextBlock>
+                <TextBox Width="150" x:Name="RegexString"></TextBox>
+
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,10,0,0"
+                Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Width="100">托盘通道数：</TextBlock>
+                <TextBox Width="150" x:Name="Channels"></TextBox>
+
+            </StackPanel>
+            <Button
+                Width="100"
+                Click="Button_Click" 
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center"
+                >保存</Button>
+        </StackPanel>
+    </Grid>
+</Window>

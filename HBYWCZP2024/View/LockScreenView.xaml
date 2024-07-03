@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="HBYWCZP2024.View.LockScreenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HBYWCZP2024.View"
+             mc:Ignorable="d" 
+              Loaded="UserControl_Loaded"
+             KeyDown="UserControl_KeyDown"
+                MouseDown="UserControl_MouseDown" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid 
+        
+Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
+           
+           >
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock FontSize="20"
+                       x:Name="aa"
+                       HorizontalAlignment="Center"
+                       KeyDown="aa_KeyDown"
+                       >
+                程序已锁定... 请点击屏幕后登录或刷卡解锁
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>
