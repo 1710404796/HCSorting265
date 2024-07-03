@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HBYWCZP2024.Data;
+using HBYWCZP2024.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 
 
-namespace HBYWCZP2024.ViewModel.CZPallet;
+namespace HBYWCZP2024.ViewModel.CZPallet
 
 {
     public partial class WCSLogViewModel(LinxContext context): ObservableRecipient

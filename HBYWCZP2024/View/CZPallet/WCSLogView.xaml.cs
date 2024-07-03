@@ -1,8 +1,8 @@
 using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.ViewModel.CZPallet;
 using System.Windows;
 using System.Windows.Controls;
 
-using XYLCZP2024.ViewModel;
 
 namespace HBYWCZP2024.View.CZPallet;
 [PowerView(PowerEnum.WCS交互日志)]

@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Data;
+using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
 using HBYWCZP2024.View;
 using HBYWCZP2024.ViewModel;
@@ -72,11 +73,11 @@ namespace HBYWCZP2024
 
                          services.AddQuartz(config =>
                          {
-                             //JobKey jobKey = JobKey.Create(nameof(ClearCacheJob));
-                             //config.AddJob<ClearCacheJob>(jobKey).AddTrigger(trigger =>
-                             //{
-                             //    trigger.ForJob(jobKey).WithCronSchedule("10 0 0 * * ?");
-                             //});
+                             JobKey jobKey = JobKey.Create(nameof(DailyJobs));
+                             config.AddJob<DailyJobs>(jobKey).AddTrigger(trigger =>
+                             {
+                                 trigger.ForJob(jobKey).WithCronSchedule("10 0 0 * * ?");
+                             });
                          });
                          services.AddQuartzHostedService(config =>
                          {
