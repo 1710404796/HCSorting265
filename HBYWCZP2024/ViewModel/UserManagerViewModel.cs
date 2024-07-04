@@ -22,7 +22,7 @@ namespace HBYWCZP2024.ViewModel
     {
         public LinxUser LinxUser { get; set; }
         public string Role { get; set; }
-        public string PassStar => LinxUser.Password.Truncate(5, "****");
+        public string PassStar => LinxUser.Password.Truncate(5, "****",Truncator.FixedLength);
 
     }
     //public 

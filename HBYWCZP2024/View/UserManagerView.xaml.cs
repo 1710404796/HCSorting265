@@ -65,7 +65,14 @@ namespace HBYWCZP2024.View
 
         private async void DelUser_Click(object sender, RoutedEventArgs e)
         {
-            //await _userManager.DeleteAsync(user);
+            var advuser = ddShow.SelectedItem as AdvUser;
+            if (advuser != null )
+            {
+
+            await _userManager.DeleteAsync(advuser.LinxUser);
+                ViewModel.Users.Remove(advuser);
+            }
+
 
         }
 
@@ -77,10 +84,37 @@ namespace HBYWCZP2024.View
         private async void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
 
-            ViewModel.Users = new( (await _userManager.GetAllUserAsync()).Select(s => new AdvUser
-            {
-                LinxUser = s, Role = _userManager.get
-            }));
+            IEnumerable<LinxUser> enumerable = (await _userManager.GetAllUserAsync());
+            List<AdvUser> advUsers = [];
+            foreach (LinxUser user in enumerable) {
+                advUsers.Add(new AdvUser
+                {
+                    LinxUser = user,
+                    Role = (await _userManager.GetUserRolesAsync(user)).FirstOrDefault() ?? string.Empty
+                });
+            };
+
+            ViewModel.Users = new(advUsers);
+        }
+
+        private async void EditUser_Click(object sender, RoutedEventArgs e)
+        {
+            //var advuser = ddShow.SelectedItem as AdvUser;
+            //if (advuser != null)
+            //{
+
+            //    var newUser = new AddUser() { RFID = advuser.LinxUser.Password, RoleEnum }
+
+            //if (newUser.ShowDialog() ?? false)
+            //    {
+            //        LinxUser user = new LinxUser
+            //        {
+            //            Password = newUser.RFID,
+            //            UserName = newUser.UserName,
+            //        };
+                   
+            //    } 
+            //}
         }
     }
 }

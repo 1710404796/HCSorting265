@@ -18,6 +18,7 @@
         <StackPanel Orientation="Horizontal">
             <Button Name="AddUser" Click="AddUser_Click" Margin="10">添加用户</Button>
             <Button Name="DelUser" Click="DelUser_Click" Margin="10">删除用户</Button>
+            <!--<Button Name="EditUser" Click="EditUser_Click" Margin="10">删除用户</Button>-->
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Width="120" VerticalAlignment="Center" Margin="205,10,5,10" Foreground="Black">用户名：</TextBlock>
@@ -39,9 +40,9 @@
                HeadersVisibility ="Column">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="用户名" Width="150"  Binding="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                    <!--<DataGridTextColumn Header="权限" Width="150"  Binding="{Binding PowerType, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>-->
-                    <DataGridTextColumn Header="RFID" IsReadOnly="True" Width="150"  Binding="{Binding Password}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="用户名" Width="150"  Binding="{Binding LinxUser.UserName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="身份" Width="150"  Binding="{Binding Role, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="RFID" IsReadOnly="True" Width="150"  Binding="{Binding PassStar}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>

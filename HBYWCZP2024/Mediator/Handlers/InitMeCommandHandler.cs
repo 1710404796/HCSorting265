@@ -1,17 +1,24 @@
 
+using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Commands;
+using LinxUniverse.Auth;
 using LinxUniverse.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace HBYWCZP2024.Mediator.Handlers
 {
-    public class InitMeCommandHandler(IMediator mediator, ILogger<InitMeCommandHandler> logger)
+    public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger)
         : IRequestHandler<InitMeCommand>
     {
         public async Task Handle(InitMeCommand request, CancellationToken cancellationToken)
         {
             FilenameHelper.CreateDir("Data2D");
+            foreach (var item in Enum.GetNames<RoleEnum>())
+            {
+
+                await role.CreateAsync(new LinxRole { RoleName = item });
+            }
             //messageboxmanager
             //MainStorage.Cst[0] =
             //    await mediator.Send(new CreateCSTLightCommand(Com: SerialPortType.COM1));

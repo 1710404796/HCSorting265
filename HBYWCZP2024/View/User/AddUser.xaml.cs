@@ -11,11 +11,11 @@ namespace HBYWCZP2024.View.User
     /// </summary>
     public partial class AddUser : Window
     {
-        public string[] RoleList { get; set; }
+        public IEnumerable<string> RoleList { get; set; }
         public AddUser()
         {
             DataContext = this;
-            RoleList = Enum.GetNames<RoleEnum>();
+            RoleList = Enum.GetNames<RoleEnum>().SkipLast(1);
             InitializeComponent();
         }
 
