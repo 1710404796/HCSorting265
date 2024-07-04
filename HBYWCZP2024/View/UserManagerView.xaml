@@ -5,6 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HBYWCZP2024.View"
       mc:Ignorable="d" 
+      
+      d:DataContext="{d:DesignInstance Type=local:UserManagerView}"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UserManagerView">
 
@@ -28,6 +30,7 @@
                Name="ddShow"
                AutoGenerateColumns="False" 
                CanUserAddRows="False" 
+                IsReadOnly="True"
                RowHeaderWidth="0"
                ColumnWidth="*" 
              ItemsSource="{Binding ViewModel.Users}"
@@ -37,8 +40,8 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="用户名" Width="150"  Binding="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="权限" Width="150"  Binding="{Binding PowerType, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="RFID" IsReadOnly="True" Width="150"  Binding="{Binding RFStar}"></DataGridTextColumn>
+                    <!--<DataGridTextColumn Header="权限" Width="150"  Binding="{Binding PowerType, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>-->
+                    <DataGridTextColumn Header="RFID" IsReadOnly="True" Width="150"  Binding="{Binding Password}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>

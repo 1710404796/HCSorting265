@@ -19,9 +19,15 @@ namespace HBYWCZP2024.Data
 
         }
 
+        public LinxContext()
+        {
+                
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectString);
+            //optionsBuilder.UseSqlServer(connectString);
+            base.OnConfiguring(optionsBuilder);
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

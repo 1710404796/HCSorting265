@@ -1,4 +1,8 @@
-﻿using System;
+﻿using HBYWCZP2024.Data.Models;
+using HBYWCZP2024.View.User;
+using HBYWCZP2024.ViewModel;
+using LinxUniverse.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +24,15 @@ namespace HBYWCZP2024.View
     /// </summary>
     public partial class UserManagerView : Page
     {
-        public UserManagerView()
+        private readonly UserManager<LinxUser> _userManager;
+        public UserManagerViewModel ViewModel { get; }
+
+        public UserManagerView(UserManager<LinxUser> userManager, UserManagerViewModel userManagerViewModel)
         {
+            DataContext = this;
+            _userManager = userManager;
+            ViewModel = userManagerViewModel;
+
             InitializeComponent();
         }
 
@@ -35,13 +46,26 @@ namespace HBYWCZP2024.View
 
         }
 
-        private void AddUser_Click(object sender, RoutedEventArgs e)
+        private async void AddUser_Click(object sender, RoutedEventArgs e)
         {
+            var newUser = new AddUser();
 
+            if ( newUser.ShowDialog() ?? false)
+            {
+                LinxUser user = new LinxUser
+                {
+                    Password = newUser.RFID,
+                    UserName = newUser.UserName,
+                };
+                await _userManager.CreateAsync(user);
+                await _userManager.AddToRoleAsync(user, newUser.RoleEnum.ToString());
+                ViewModel.Users.Add(new AdvUser { LinxUser = user, Role = newUser.RoleEnum.ToString() });
+            }
         }
 
-        private void DelUser_Click(object sender, RoutedEventArgs e)
+        private async void DelUser_Click(object sender, RoutedEventArgs e)
         {
+            //await _userManager.DeleteAsync(user);
 
         }
 
@@ -50,9 +74,13 @@ namespace HBYWCZP2024.View
 
         }
 
-        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        private async void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
 
+            ViewModel.Users = new( (await _userManager.GetAllUserAsync()).Select(s => new AdvUser
+            {
+                LinxUser = s, Role = _userManager.get
+            }));
         }
     }
 }
