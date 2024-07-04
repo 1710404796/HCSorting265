@@ -45,5 +45,10 @@ namespace HBYWCZP2024.View
 
             SaveButton.IsEnabled = true;
         }
+
+        private void SetPlc_Click(object sender, RoutedEventArgs e)
+        {
+            new PLCListWindow().ShowDialog();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinxUniverse.PLC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,73 @@ namespace HBYWCZP2024.View
     /// </summary>
     public partial class PLCListWindow : Window
     {
+        List<PLCSetting> settingList = MainStorage.Saves.PLCPSetting.ToList();
+
+        List<TextBox[]> _textBoxes = new List<TextBox[]>();
         public PLCListWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            foreach (var item in settingList)
+            {
+                AddPlc(item);
+            }
+
+        }
+
+        void AddPlc(PLCSetting pLCSetting)
+        {
+            StackPanel stackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+
+            TextBox[] textBoxes = [new(), new()];
+
+            textBoxes[0].Width = 150;
+            textBoxes[0].Text = pLCSetting.Name;
+            textBoxes[1].Width = 150;
+            textBoxes[1].Text = pLCSetting.IP;
+
+            _textBoxes.Add(textBoxes);
+
+            stackPanel.Children.Add(textBoxes[0]);
+            stackPanel.Children.Add(textBoxes[1]);
+
+            Button delete = new Button { Content = "X" };
+
+            stackPanel.Children.Add(delete);
+
+            plcsettingPanel.Children.Add(stackPanel);
+
+            delete.Click += (s, e) => {
+                _textBoxes.Remove(textBoxes);
+                plcsettingPanel.Children.Remove(stackPanel);
+            };
+
+
+        }
+
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainStorage.Saves.PLCPSetting = settingList;
+            MainStorage.SaveManager.Save();
+            Close();
+            MessageBox.Show("新增plc或修改ip后, 请重启软件", "重启提示" );
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            PLCSetting pLCSetting = new PLCSetting { Name =  "New PLC" };
+            settingList.Add(pLCSetting);
+            AddPlc(pLCSetting);
         }
     }
 }

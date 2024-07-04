@@ -7,10 +7,37 @@
         mc:Ignorable="d"
                   xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="PLCListWindow" Height="450" Width="800">
-    <Grid>
-        <StackPanel>
-            
-        </StackPanel>    
+        Loaded="Window_Loaded"
+        Title="PLCListWindow" Height="450" Width="400">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    Margin="10">
+            <StackPanel Orientation="Vertical"
+                    x:Name="plcsettingPanel"
+                        
+                        >
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="20" Width="150">
+        名称:
+                    </TextBlock>
+                    <TextBlock FontSize="20" Width="150">
+                        IP:
+                    </TextBlock>
+                    <TextBlock FontSize="20" Width="50">
+     删除
+                    </TextBlock>
+                </StackPanel>
+
+            </StackPanel>
+                <Button Margin="0,10,0,0" Click="Button_Click_1" >添加一个plc</Button>
+        </StackPanel>
+
+        <Button Grid.Row="1" Width="100" HorizontalAlignment="Center" Click="Button_Click">保存</Button>
     </Grid>
 </Window>
