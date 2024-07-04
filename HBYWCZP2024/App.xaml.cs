@@ -2,7 +2,9 @@
 using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
 using HBYWCZP2024.View;
+using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.ViewModel;
+using HBYWCZP2024.ViewModel.CZPallet;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
 using MediatR;
@@ -98,6 +100,17 @@ namespace HBYWCZP2024
                          services.AddSingleton<UserManagerViewModel>();
                          services.AddTransient<UserManagerView>();
 
+                         services.AddSingleton<WCSLogViewModel>();
+                         services.AddTransient<WCSLogView>();
+
+                         services.AddTransient<YWStageView>();
+
+
+                         services.AddTransient<WarningLogView>();
+                         services.AddSingleton<WarningLogViewModel>();
+
+                         services.AddSingleton<UserManagerViewModel>();
+                         services.AddTransient<UserManagerView>();
 
                          services.AddTransient<LogDashBoardView>();
 

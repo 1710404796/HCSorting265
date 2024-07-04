@@ -1,6 +1,7 @@
 ﻿using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View;
+using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.ViewModel;
 using MediatR;
 using System.Reflection;
@@ -100,7 +101,26 @@ namespace HBYWCZP2024
         }
         private void Window_Closed(object sender, EventArgs e)
         {
+            ViewModel.CacheService.Cancel();
             MainStorage.SaveManager.Save();
+        }
+
+        private void GongWeiBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<YWStageView>();
+
+        }
+
+        private void WCSLog_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<WCSLogView>();
+
+        }
+
+        private void WarningLog_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<WarningLogView>();
+
         }
     }
 }

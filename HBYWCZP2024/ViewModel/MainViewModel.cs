@@ -107,11 +107,11 @@ namespace HBYWCZP2024.ViewModel
             Mediator = mediator;
             AuthenticationStateProvider = authenticationStateProvider;
             Logger = logger;
-            _cacheService = cacheService;
+            CacheService = cacheService;
         }
 
         public CancellationTokenSource Maints = new CancellationTokenSource();
-        private readonly CacheService _cacheService;
+        public readonly CacheService CacheService;
 
         private async void SomeLoop(object? obj)
         {
@@ -120,7 +120,7 @@ namespace HBYWCZP2024.ViewModel
                 await Task.Delay(1000);
 
             }
-            while (_cacheService.Token.IsCancellationRequested)
+            while (CacheService.Token.IsCancellationRequested)
             {
 
                 //PlcIsRunning = XcplcService.IsPlcRunning;

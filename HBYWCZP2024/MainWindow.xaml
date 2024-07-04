@@ -98,17 +98,30 @@
             <RadioButton 
         Style="{StaticResource MenuRadioButtonStyle}" 
         Cursor="Hand"
+                x:Name="GongWeiBtn"
+                Click="GongWeiBtn_Click"
         IsChecked="True"
         >
-                页面1
+                工位状态
             </RadioButton>
 
             <RadioButton 
 Style="{StaticResource MenuRadioButtonStyle}" 
 Cursor="Hand"
+                x:Name="WCSLog"
+                Click="WCSLog_Click"
 >
-                页面2
+                WCS交互日志
             </RadioButton>
+            <RadioButton 
+Style="{StaticResource MenuRadioButtonStyle}" 
+Cursor="Hand"
+                x:Name="WarningLog"
+                Click="WarningLog_Click"
+>
+                报警日志
+            </RadioButton>
+
 
             <RadioButton 
         Style="{StaticResource MenuRadioButtonStyle}" 
