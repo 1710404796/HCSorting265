@@ -67,6 +67,8 @@ namespace HBYWCZP2024.View
             delete.Click += (s, e) => {
                 _textBoxes.Remove(textBoxes);
                 plcsettingPanel.Children.Remove(stackPanel);
+                settingList.Remove(pLCSetting);
+
             };
 
 
@@ -76,10 +78,19 @@ namespace HBYWCZP2024.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
+            for (int i = 0; i < _textBoxes.Count; i++)
+            {
+                settingList[i].Name = _textBoxes[i][0].Text;
+                settingList[i].IP = _textBoxes[i][1].Text;
+            }
+
             MainStorage.Saves.PLCPSetting = settingList;
+
+
             MainStorage.SaveManager.Save();
             Close();
-            MessageBox.Show("新增plc或修改ip后, 请重启软件", "重启提示" );
+            MessageBox.Show("新增/删除plc或修改ip后, 请重启软件", "重启提示" );
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

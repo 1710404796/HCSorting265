@@ -42,7 +42,7 @@
         <TextBlock VerticalAlignment="Center"
            FontSize="20"
            HorizontalAlignment="Center"
-           >HBYWCZP2024</TextBlock>
+           >电芯拆组盘工具</TextBlock>
         <!--<TextBlock Grid.Column="1"
            VerticalAlignment="Center"
            HorizontalAlignment="Center"
