@@ -118,6 +118,11 @@ namespace HBYWCZP2024
                          services.AddSingleton<RichTextBox>();
                          services.AddSingleton<CacheService>();
 
+
+
+                         services.AddTransient<StationSettingView>();
+                         services.AddTransient<PalletRuleEditView>();
+
                          //services.AddDbContext< LinxUserDBContext, LinxContext >(option =>
                          //{
                          //    option.UseSqlServer(context.Configuration.GetConnectionString("LinxContextConnection"));

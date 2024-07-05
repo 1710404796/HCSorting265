@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models.CZPallet;
+﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Models.CZPallet;
 using LinxUniverse.PLC;
 using LinxUniverse.Utils;
 using System;
@@ -27,7 +28,7 @@ namespace HBYWCZP2024.Models
             set;
         }
 
-        public XYLStage Stage { get; set; }
+        public XYLStage Stage { get; set; } = new();
         public bool TwoOk { get; set; } = false;
         //public PLCCpuType PLCCpuType { get; set; } = PLCCpuType.小端;
 
@@ -38,5 +39,6 @@ namespace HBYWCZP2024.Models
         public bool TestMode { get; set; }
 
         public List<PLCSetting> PLCPSetting { get; set; } = [];
+        public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
     }
 }

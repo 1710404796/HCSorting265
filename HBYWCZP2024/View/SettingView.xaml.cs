@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HBYWCZP2024.View.CZPallet;
+using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -49,6 +51,23 @@ namespace HBYWCZP2024.View
         private void SetPlc_Click(object sender, RoutedEventArgs e)
         {
             new PLCListWindow().ShowDialog();
+        }
+
+        private void SetPower_Click(object sender, RoutedEventArgs e)
+        {
+            new PowerSettingWindows().ShowDialog(); 
+        }
+
+        private void StationSetting_Click(object sender, RoutedEventArgs e)
+        {
+            App.GetService<StationSettingView>().ShowDialog();
+
+        }
+
+        private void RuleSetting_Click(object sender, RoutedEventArgs e)
+        {
+            App.GetService<PalletRuleEditView>().ShowDialog();
+
         }
     }
 }

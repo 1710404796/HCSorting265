@@ -14,6 +14,25 @@ namespace HBYWCZP2024.Mediator.Handlers
         public async Task Handle(InitMeCommand request, CancellationToken cancellationToken)
         {
             FilenameHelper.CreateDir("Data2D");
+
+
+
+            foreach (var item in Enum.GetValues<PowerEnum>())
+            {
+                if (!MainStorage.Saves.PowerTable.ContainsKey(item))
+                {
+                    MainStorage.Saves.PowerTable[item] = [];
+                }
+
+                foreach (var item1 in Enum.GetValues<RoleEnum>() )
+                {
+                    if (!MainStorage.Saves.PowerTable[item].ContainsKey(item1))
+                    {
+                        MainStorage.Saves.PowerTable[item][item1] = false;
+                    }
+
+                }
+            }
             foreach (var item in Enum.GetNames<RoleEnum>())
             {
 

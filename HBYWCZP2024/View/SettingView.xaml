@@ -43,7 +43,31 @@
             </StackPanel>
 
             <StackPanel Grid.Column="3">
+                <TextBlock FontSize="15"
+       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+       >
+调度号工位号表
+                </TextBlock>
+                <Button Margin="0,10,0,0" x:Name="StationSetting" 
+        Click="StationSetting_Click">配置</Button>
+
+                <TextBlock Margin="0,10,0,0" FontSize="15"
+       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+       >
+条码规则表
+                </TextBlock>
+                <Button Margin="0,10,0,0" x:Name="RuleSetting" 
+        Click="RuleSetting_Click">配置</Button>
+                <TextBlock
+Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+Margin="0,10,0,0" FontSize="15" 
+>日志清理时间(天)</TextBlock>
+                <TextBox  Margin="0,10,0,0" 
+Width="200"
+HorizontalAlignment="Left"
+        Text="{Binding ViewModel.Saves.LogDeleteDay}"></TextBox>
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPlc_Click">配置PLC</Button>
+                <Button Width="100" Margin="0,10,0,0"  Click="SetPower_Click">权限配置</Button>
                 
                 <CheckBox Margin="0,10,0,0" 
           IsChecked="{Binding ViewModel.IsBackGround}">
