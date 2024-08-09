@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Attritubes;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
 using LinxUniverse.PLC;
 using LinxUniverse.Utils;
@@ -12,14 +13,20 @@ using System.Windows;
 
 namespace HBYWCZP2024.Models
 {
-    public class WcsSaves() : SaveBase("HBYWCZP2024")
+    [ObservableObject]
+    public partial class WcsSaves() : SaveBase("HBYWCZP2024")
     {
         public string IP
         {
             get; set;
         } = "127.0.0.1";
 
-        public string SelectStageName { get; set; } = string.Empty;
+        //public string SelectStageName { get; set; } = string.Empty;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Stage))]
+        [NotifyPropertyChangedFor(nameof(PLCPSetting))]
+        [NotifyPropertyChangedFor(nameof(PalletTypeRules))]
+        string _selectStageName = string.Empty;
 
         public string Port
         {
@@ -47,7 +54,9 @@ namespace HBYWCZP2024.Models
         public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
         public string ECSIP { get; set; } = "127.0.0.1";
         public ushort ECSPort { get; set; } = 50005;
-        public string DeviceCode { get; set; }
+        [JsonIgnore]
+
+        public string DeviceCode { get => KeysSave[SelectStageName].DeviceCode; set => KeysSave[SelectStageName].DeviceCode = value; }
 
 
         public Dictionary<string, StageMono> KeysSave { get; set; } = [];
@@ -55,10 +64,13 @@ namespace HBYWCZP2024.Models
 
     public class StageMono
     {
+        public string Name { get; set; } = "Default";
         public XYLStage Stage { get; set; } = new();
         public PLCSetting PLCPSetting { get; set; } = new();
 
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
+
+        public string DeviceCode { get; set; } = string.Empty;
 
     }
 }

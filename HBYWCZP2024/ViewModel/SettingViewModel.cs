@@ -11,6 +11,8 @@ namespace HBYWCZP2024.ViewModel
     public partial class SettingViewModel(MainViewModel mainViewModel) : ObservableRecipient
     {
         public WcsSaves Saves => MainStorage.Saves;
+
+        public List<string> Stations => MainStorage.Saves.KeysSave.Values.Select(s => s.Name).ToList();
         [ObservableProperty]
         bool _canEditing = true;
         public bool IsBackGround

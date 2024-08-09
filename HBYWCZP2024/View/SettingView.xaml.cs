@@ -34,7 +34,11 @@ namespace HBYWCZP2024.View
         {
             DataContext = this;
             ViewModel = App.GetService<SettingViewModel>();
+
+
             InitializeComponent();
+            //StationNameBox.Text = MainStorage.Saves.SelectStageName;
+            SelectBox.SelectedValue = MainStorage.Saves.SelectStageName;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -46,6 +50,7 @@ namespace HBYWCZP2024.View
             SaveButton.Content = "保存设定";
 
             SaveButton.IsEnabled = true;
+
         }
 
         private void SetPlc_Click(object sender, RoutedEventArgs e)
@@ -68,6 +73,33 @@ namespace HBYWCZP2024.View
         {
             App.GetService<PalletRuleEditView>().ShowDialog();
 
+        }
+
+        private void StationNameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var text = (sender as TextBox).Text;
+            if (text == MainStorage.Saves.SelectStageName) return;
+            if (string.IsNullOrWhiteSpace(text)) return;
+            if (MainStorage.Saves.KeysSave.ContainsKey(text))
+            {
+                MessageBox.Show("已经有相同名称的工位，不可修改");
+                (sender as TextBox).Text = MainStorage.Saves.SelectStageName;
+                return;
+            }
+            MainStorage.Saves.KeysSave[text] = MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName];
+            MainStorage.Saves.KeysSave.Remove(MainStorage.Saves.SelectStageName);
+
+
+            MainStorage.Saves.SelectStageName = text;
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((string)SelectBox.SelectedValue == MainStorage.Saves.SelectStageName) return;
+            MainStorage.Saves.SelectStageName = (string)SelectBox.SelectedValue;
+            MainStorage.SaveManager.Save();
+            MainWindow.NageTo<SettingView>();
         }
     }
 }

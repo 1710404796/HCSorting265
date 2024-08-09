@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace HBYWCZP2024.Mediator.Handlers
 {
-    public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger, HBECSService hBECSService)
+    public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger
+        //, HBECSService hBECSService
+        )
         : IRequestHandler<InitMeCommand>
     {
         public async Task Handle(InitMeCommand request, CancellationToken cancellationToken)
@@ -40,10 +42,27 @@ namespace HBYWCZP2024.Mediator.Handlers
                 await role.CreateAsync(new LinxRole { RoleName = item });
             }
 
-            hBECSService.On("E110", data =>
+            if (MainStorage.Saves.KeysSave.Count == 0)
             {
+                MainStorage.Saves.KeysSave.Add("Default", new());
 
-            });
+            }
+            var ss = MainStorage.Saves.KeysSave.Values.ToList();
+            MainStorage.Saves.KeysSave.Clear();
+            foreach (var item in ss)
+            {
+                MainStorage.Saves.KeysSave[item.Name] = item;
+            }
+
+            if (!MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
+            {
+                MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
+            }
+
+            //hBECSService.On("E110", data =>
+            //{
+
+            //});
 
         }
     }

@@ -8,7 +8,7 @@
                   xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         Loaded="Window_Loaded"
-        Title="PLCListWindow" Height="450" Width="400">
+        Title="PLCListWindow" Height="450" Width="300">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -26,16 +26,16 @@
                     <TextBlock FontSize="20" Width="150">
         名称:
                     </TextBlock>
-                    <TextBlock FontSize="20" Width="150">
-                        IP:
-                    </TextBlock>
+
                     <TextBlock FontSize="20" Width="50">
      删除
                     </TextBlock>
                 </StackPanel>
 
             </StackPanel>
-                <Button Margin="0,10,0,0" Click="Button_Click_1" >添加一个plc</Button>
+                <Button Margin="0,10,0,0" 
+                        Click="Button_Click_1" >
+                    添加一个工位</Button>
         </StackPanel>
 
         <Button Grid.Row="1" Width="100" HorizontalAlignment="Center" Click="Button_Click">保存</Button>

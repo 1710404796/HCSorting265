@@ -1,4 +1,5 @@
-﻿using LinxUniverse.PLC;
+﻿using HBYWCZP2024.Models;
+using LinxUniverse.PLC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,18 +28,18 @@ namespace HBYWCZP2024.View
         {
             InitializeComponent();
         }
-
+        List<StageMono> StationNames = [];
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            //foreach (var item in settingList)
-            //{
-            //    AddPlc(item);
-            //}
-
+            StationNames = MainStorage.Saves.KeysSave.Values.ToList();
+            foreach (var item in StationNames)
+            {
+                AddPlc(item);
+            }
         }
 
-        void AddPlc(PLCSetting pLCSetting)
+        void AddPlc(StageMono stage)
         {
             StackPanel stackPanel = new StackPanel
             {
@@ -49,14 +50,14 @@ namespace HBYWCZP2024.View
             TextBox[] textBoxes = [new(), new()];
 
             textBoxes[0].Width = 150;
-            textBoxes[0].Text = pLCSetting.Name;
-            textBoxes[1].Width = 150;
-            textBoxes[1].Text = pLCSetting.IP;
+            textBoxes[0].Text = stage.Name;
+            //textBoxes[1].Width = 150;
+            //textBoxes[1].Text = pLCSetting.IP;
 
             _textBoxes.Add(textBoxes);
 
             stackPanel.Children.Add(textBoxes[0]);
-            stackPanel.Children.Add(textBoxes[1]);
+            //stackPanel.Children.Add(textBoxes[1]);
 
             Button delete = new Button { Content = "X" };
 
@@ -79,25 +80,30 @@ namespace HBYWCZP2024.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            //for (int i = 0; i < _textBoxes.Count; i++)
-            //{
-            //    settingList[i].Name = _textBoxes[i][0].Text;
-            //    settingList[i].IP = _textBoxes[i][1].Text;
-            //}
+            
+            MainStorage.Saves.KeysSave.Clear();
 
-            //MainStorage.Saves.PLCPSetting = settingList;
+            for (int i = 0; i < _textBoxes.Count; i++)
+            {
+                StationNames[i].Name = _textBoxes[i][0].Text;
+                MainStorage.Saves.KeysSave[StationNames[i].Name] = StationNames[i];
+                //settingList[i].IP = _textBoxes[i][1].Text;
+            }
+            if (!MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
+            {
+                MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
+            }
 
-
-            //MainStorage.SaveManager.Save();
-            //Close();
-            //MessageBox.Show("新增/删除plc或修改ip后, 请重启软件", "重启提示" );
+            MainStorage.SaveManager.Save();
+            Close();
+            MessageBox.Show("新增/删除工位后, 请重启软件", "重启提示");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //PLCSetting pLCSetting = new PLCSetting { Name =  "New PLC" };
-            //settingList.Add(pLCSetting);
-            //AddPlc(pLCSetting);
+            StageMono pLCSetting = new() { Name = "NewStage" + StationNames.Count };
+            StationNames.Add(pLCSetting);
+            AddPlc(pLCSetting);
         }
     }
 }

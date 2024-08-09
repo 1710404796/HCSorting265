@@ -56,6 +56,11 @@
     VerticalAlignment="Center"
     Margin="0,5,100,5"
     Source="Images/linx.png" HorizontalAlignment="Center"></Image>
+        <TextBlock 
+Grid.Column="1"
+VerticalAlignment="Center"
+
+ HorizontalAlignment="Left" FontSize="20" Text="{Binding ViewModel.Saves.SelectStageName}"></TextBlock>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <!-- <StackPanel></StackPanel> -->
