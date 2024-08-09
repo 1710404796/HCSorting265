@@ -9,6 +9,10 @@ namespace HBYWCZP2024.Utils
     public record HWSocketMessage(string Command, string DeviceCode, string Time, string Content);
     public static class MessageHelper
     {
+
+        //public static readonly HWSocketMessage 
+
+
         public static string GetSocketMessage(string command, string deviceCode, string content)
         {
             if (command.Length != 4) 
@@ -31,7 +35,7 @@ namespace HBYWCZP2024.Utils
 
         public static HWSocketMessage Parse(string message)
         {
-            return new HWSocketMessage(message[..4], message[4..12], message[12..26], message[27..^1]);
+            return new HWSocketMessage(message[..4], message[4..12], message[12..26], message[27..]);
 
             //try
             //{

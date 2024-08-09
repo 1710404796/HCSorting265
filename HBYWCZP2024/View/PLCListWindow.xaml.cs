@@ -20,7 +20,7 @@ namespace HBYWCZP2024.View
     /// </summary>
     public partial class PLCListWindow : Window
     {
-        List<PLCSetting> settingList = MainStorage.Saves.PLCPSetting.ToList();
+        //List<PLCSetting> settingList = MainStorage.Saves.PLCPSetting.ToList();
 
         List<TextBox[]> _textBoxes = new List<TextBox[]>();
         public PLCListWindow()
@@ -31,10 +31,10 @@ namespace HBYWCZP2024.View
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            foreach (var item in settingList)
-            {
-                AddPlc(item);
-            }
+            //foreach (var item in settingList)
+            //{
+            //    AddPlc(item);
+            //}
 
         }
 
@@ -67,7 +67,7 @@ namespace HBYWCZP2024.View
             delete.Click += (s, e) => {
                 _textBoxes.Remove(textBoxes);
                 plcsettingPanel.Children.Remove(stackPanel);
-                settingList.Remove(pLCSetting);
+                //settingList.Remove(pLCSetting);
 
             };
 
@@ -79,25 +79,25 @@ namespace HBYWCZP2024.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            for (int i = 0; i < _textBoxes.Count; i++)
-            {
-                settingList[i].Name = _textBoxes[i][0].Text;
-                settingList[i].IP = _textBoxes[i][1].Text;
-            }
+            //for (int i = 0; i < _textBoxes.Count; i++)
+            //{
+            //    settingList[i].Name = _textBoxes[i][0].Text;
+            //    settingList[i].IP = _textBoxes[i][1].Text;
+            //}
 
-            MainStorage.Saves.PLCPSetting = settingList;
+            //MainStorage.Saves.PLCPSetting = settingList;
 
 
-            MainStorage.SaveManager.Save();
-            Close();
-            MessageBox.Show("新增/删除plc或修改ip后, 请重启软件", "重启提示" );
+            //MainStorage.SaveManager.Save();
+            //Close();
+            //MessageBox.Show("新增/删除plc或修改ip后, 请重启软件", "重启提示" );
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            PLCSetting pLCSetting = new PLCSetting { Name =  "New PLC" };
-            settingList.Add(pLCSetting);
-            AddPlc(pLCSetting);
+            //PLCSetting pLCSetting = new PLCSetting { Name =  "New PLC" };
+            //settingList.Add(pLCSetting);
+            //AddPlc(pLCSetting);
         }
     }
 }

@@ -1,0 +1,24 @@
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HBYWCZP2024.Service
+{
+    public class HBECSServiceFactory(ILogger<HBECSService> logger) : IHBECSServiceFactory
+    {
+        private readonly Dictionary<string, HBECSService> _serviceCache = [];
+        public HBECSService Create(string name)
+        {
+            if (!_serviceCache.ContainsKey(name))
+            {
+                var service = new HBECSService(name, logger);
+                _serviceCache[name] = service;
+            }
+
+            return _serviceCache[name];
+        }
+    }
+}

@@ -7,6 +7,7 @@ using HBYWCZP2024.ViewModel;
 using HBYWCZP2024.ViewModel.CZPallet;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
+using LinxUniverse.PLC.Extenisons;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -143,6 +144,7 @@ namespace HBYWCZP2024
                          services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                          //services.AddSwaggerGen(
                          //);
+                         services.AddPLCTaskFactory();
 
                      }).ConfigureLogging(logging =>
                      {
