@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
-    public class E105 : E102;
-    public class E106 : E102;
-    public class E107 : E102;
+    public class E105 : E102 {
+        public new string Type => "E105";
+    }
+    public class E106 : E102 {
+
+
+        public new string Type => "E106";
+    }
+    public class E107 : E102 {
+        public new string Type => "E107";
+    }
         
         
     //    : IECSContent

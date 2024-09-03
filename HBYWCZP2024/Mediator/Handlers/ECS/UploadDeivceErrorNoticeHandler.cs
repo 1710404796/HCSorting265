@@ -14,7 +14,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public Task Handle(UploadDeivceErrorNotice notification, CancellationToken cancellationToken)
         {
             // 占位
-            hBECSService.Send("S110", "12345678");
+            //hBECSService.Send("S110", "12345678");
 
             return Task.CompletedTask;
         }

@@ -8,6 +8,7 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class E204 : IECSContent
     {
+        public new string Type => "E204";
         public WorkStatus WorkStatus { get; set; }
 
         public string GetContent()

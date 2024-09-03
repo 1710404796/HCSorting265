@@ -8,6 +8,7 @@ namespace HBYWCZP2024.Models.ECS;
 
 public class S105 : IECSContent
 {
+        public new string Type => "S105";
     public int BatteryCount { get; set; }
     public List<string> BatteryBarcodes { get; set; }
     public string TrayNumber { get; set; }

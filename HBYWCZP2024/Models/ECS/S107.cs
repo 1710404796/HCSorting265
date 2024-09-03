@@ -8,6 +8,7 @@ namespace HBYWCZP2024.Models.ECS;
 
 public class S107 : IECSContent
 {
+        public new string Type => "S107";
     public int TrayPosition { get; set; }
     public TrayType TrayType { get; set; }
     public string TrayNumber { get; set; }

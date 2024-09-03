@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Utils;
 using LinxUniverse.SciSocket;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace HBYWCZP2024.Service
     public class HBECSService
     {
         Dictionary<string, Action<string>> HandlerDict = [];
-
+        Queue<HWSocketMessage> Messages = new Queue<HWSocketMessage>();
         public void On(string command, Action<string> action)
         {
             if (HandlerDict.ContainsKey(command))
@@ -22,6 +23,7 @@ namespace HBYWCZP2024.Service
             HandlerDict[command] = action;
 
         }
+
 
         private LinxClientSocket _clientSocket;
         private readonly ILogger<HBECSService> logger;
@@ -71,12 +73,40 @@ namespace HBYWCZP2024.Service
             throw new NotImplementedException();
         }
 
-
-        public void Send(string command, string content)
+        object _lockobj = new object();
+        public void Send(string command, string content, Action after)
         {
-            var packMessage = MessageHelper.GetSocketMessage(command, MainStorage.Saves.DeviceCode, content);
+            lock (_lockobj)
+            {
+                var packMessage = MessageHelper.GetSocketMessage(command, MainStorage.Saves.KeysSave[Name].DeviceCode, content);
 
-            _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+                _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+
+                after.Invoke();
+            }
+           
+        }
+
+        public async Task<T> WaitFor<T> ( CancellationToken? token) where T : IECSContent, new()
+        {
+            T res = new T();
+            token ??= CancellationToken.None;
+            while (!token.Value.IsCancellationRequested)
+            {
+                while (Messages.Count != 0)
+                {
+                    var peek = Messages.Dequeue();
+
+                    if (peek.Command == res.Type)
+                    {
+                        res.Parse(peek.Content);
+                        return res;
+                    }
+
+                }
+                await Task.Delay(200);
+            }
+            return default;
         }
 
 

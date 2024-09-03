@@ -1,6 +1,8 @@
 ﻿using HBYWCZP2024.Data;
 using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
+using HBYWCZP2024.PLC;
+using HBYWCZP2024.Service;
 using HBYWCZP2024.View;
 using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.ViewModel;
@@ -123,6 +125,10 @@ namespace HBYWCZP2024
 
                          services.AddTransient<StationSettingView>();
                          services.AddTransient<PalletRuleEditView>();
+
+
+                         services.AddSingleton<IHBECSServiceFactory, HBECSServiceFactory>();
+                         services.AddPLCContext<HBYWPLCContext>();
 
                          //services.AddDbContext< LinxUserDBContext, LinxContext >(option =>
                          //{

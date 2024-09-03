@@ -8,6 +8,8 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class S100 : IECSContent
     {
+        public new string Type => "S100";
+
         public ErrorStatus DeviceStatus { get; set; }
 
         public string GetContent()

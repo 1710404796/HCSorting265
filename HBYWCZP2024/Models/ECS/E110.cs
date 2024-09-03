@@ -8,6 +8,7 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class E110 : IECSContent
     {
+        public new string Type => "E110";
         public string ErrorCode { get; set; }
 
         public string GetContent()

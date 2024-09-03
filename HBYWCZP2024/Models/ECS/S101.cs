@@ -15,6 +15,7 @@ namespace HBYWCZP2024.Models.ECS;
 //       电芯）"
 public class S101 : IECSContent
 {
+    public new string Type => "S101";
 
     public DeviceStatus DeviceStatus { get; set; }
     public DeviceMode DeviceMode { get; set; }

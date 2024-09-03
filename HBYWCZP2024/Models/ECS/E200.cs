@@ -8,6 +8,7 @@ namespace HBYWCZP2024.Models.ECS;
 
 public class E200 : IECSContent
 {
+    public new string Type => "E200";
     public OperationOption OperationOption { get; set; }
 
     public string GetContent()

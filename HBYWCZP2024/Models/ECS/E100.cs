@@ -10,6 +10,8 @@ public class E100 : IECSContent
 {
     public ResetOption ResetOption { get; set; }
 
+    public string Type => "E100";
+
     public string GetContent()
     {
         return $"{(int)ResetOption}";

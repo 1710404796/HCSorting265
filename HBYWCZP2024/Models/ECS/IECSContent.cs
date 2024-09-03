@@ -2,6 +2,7 @@
 {
     public interface IECSContent
     {
+        string Type { get; }
         void Parse(string content);
         string GetContent();
     }

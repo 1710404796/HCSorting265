@@ -1,8 +1,11 @@
 
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.PLC;
 using HBYWCZP2024.Service;
 using LinxUniverse.Auth;
+using LinxUniverse.DI;
+using LinxUniverse.PLCProtos;
 using LinxUniverse.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -10,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace HBYWCZP2024.Mediator.Handlers
 {
     public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger
-        //, HBECSService hBECSService
+        , IHBECSServiceFactory hBECSService, PLCTaskServiceFactory pLCTaskServiceFactory, CacheService cacheService
         )
         : IRequestHandler<InitMeCommand>
     {
@@ -58,6 +61,19 @@ namespace HBYWCZP2024.Mediator.Handlers
             {
                 MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
             }
+
+            foreach (var stage in MainStorage.Saves.KeysSave)
+            {
+                var ecs = hBECSService.Create(stage.Key);
+                var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext());
+
+                await se.Init(new LinxUniverse.PLC.Meditor.Commands.S7CreatePlcCommand(S7.Net.CpuType.S71200, stage.Value.PLCPSetting.IP, 0, 1), cacheService.Token);
+
+                // 注册任务
+                //se.re
+            }
+
+
 
             //hBECSService.On("E110", data =>
             //{

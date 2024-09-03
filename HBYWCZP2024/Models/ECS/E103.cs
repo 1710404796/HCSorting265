@@ -8,6 +8,8 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class E103 : IECSContent
     {
+        public string Type => "E103";
+
         public int BatteryCount { get; set; }
         public string BatteryStatuses { get; set; }
         public int TrayPosition { get; set; }

@@ -47,7 +47,6 @@
 	<ItemGroup>
 	  <Folder Include="Apis\" />
 	  <Folder Include="PLC\Models\" />
-	  <Folder Include="PLC\Tasks\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Auth\LinxUniverse.Auth.csproj" />
