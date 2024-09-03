@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Utils;
 using LinxUniverse.SciSocket;
 using Microsoft.Extensions.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace HBYWCZP2024.Service
 {
     public class HBECSService
@@ -56,7 +58,7 @@ namespace HBYWCZP2024.Service
         {
             var message = MessageHelper.Parse(obj);
 
-            Handler(message);   
+            Handler(message);
         }
 
         private void Handler(HWSocketMessage message)
@@ -84,29 +86,60 @@ namespace HBYWCZP2024.Service
 
                 after.Invoke();
             }
-           
+
         }
 
-        public async Task<T> WaitFor<T> ( CancellationToken? token) where T : IECSContent, new()
+        public void Send<T1>(T1 req) where T1 : IECSContent
+        {
+
+            var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
+
+            _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+        }
+        public async Task<T2> SendAsync<T1, T2>(T1 req) where T1 : IECSContent where T2 : IECSContent, new()
+        {
+            await Task.Yield();
+            lock (_lockobj)
+            {
+                var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
+
+                _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+                CancellationTokenSource cts = new CancellationTokenSource();
+                cts.CancelAfter(60000);
+
+                var res = WaitFor<T2>(cts.Token);
+                return res;
+
+            }
+
+        }
+
+        public T WaitFor<T>(CancellationToken? token) where T : IECSContent, new()
         {
             T res = new T();
             token ??= CancellationToken.None;
-            while (!token.Value.IsCancellationRequested)
+            lock (_lockobj)
             {
-                while (Messages.Count != 0)
+
+
+                while (!token.Value.IsCancellationRequested)
                 {
-                    var peek = Messages.Dequeue();
-
-                    if (peek.Command == res.Type)
+                    while (Messages.Count != 0)
                     {
-                        res.Parse(peek.Content);
-                        return res;
-                    }
+                        var peek = Messages.Dequeue();
 
+                        if (peek.Command == res.Type)
+                        {
+                            res.Parse(peek.Content);
+                            return res;
+                        }
+
+                    }
+                    Thread.Sleep(200);
                 }
-                await Task.Delay(200);
             }
-            return default;
+
+            throw new TimeoutException("等待超时");
         }
 
 

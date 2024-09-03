@@ -23,8 +23,8 @@ namespace HBYWCZP2024.Utils
             if (deviceCode.Length != 8)
             {
                 throw new ArgumentException($"deviceCode length must equal with 8: {deviceCode}");
-
             }
+
             if (content == null)
             {
                 throw new ArgumentException("content cannot be null");

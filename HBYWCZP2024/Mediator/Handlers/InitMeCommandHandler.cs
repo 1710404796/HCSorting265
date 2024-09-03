@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace HBYWCZP2024.Mediator.Handlers
 {
     public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger
-        , IHBECSServiceFactory hBECSService, PLCTaskServiceFactory pLCTaskServiceFactory, CacheService cacheService
+        , IHBECSServiceFactory hBECSService, IPLCTaskServiceFactory pLCTaskServiceFactory, CacheService cacheService
         )
         : IRequestHandler<InitMeCommand>
     {
