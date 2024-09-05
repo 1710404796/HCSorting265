@@ -135,7 +135,8 @@ namespace HBYWCZP2024.Service
                         }
 
                     }
-                    Thread.Sleep(200);
+                    Thread.Sleep(100);
+     
                 }
             }
 

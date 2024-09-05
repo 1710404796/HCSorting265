@@ -32,6 +32,11 @@ namespace HBYWCZP2024.PLC
             throw new NotImplementedException();
         }
 
+        public Task Loop()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> UpdateData()
         {
             throw new NotImplementedException();
