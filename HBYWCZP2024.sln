@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinxUniverse.PLC.Common", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinxUniverse.SciSocket", "lxuv\LinxUniverse.SciSocket\LinxUniverse.SciSocket.csproj", "{88D92180-F822-4E75-B28F-750CC19B1711}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinxUniverse.OPCUA", "lxuv\LinxUniverse.OPCUA\LinxUniverse.OPCUA.csproj", "{79E6962D-5451-4A83-AEC3-B6E7F9F8EBCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{88D92180-F822-4E75-B28F-750CC19B1711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88D92180-F822-4E75-B28F-750CC19B1711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88D92180-F822-4E75-B28F-750CC19B1711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E6962D-5451-4A83-AEC3-B6E7F9F8EBCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E6962D-5451-4A83-AEC3-B6E7F9F8EBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E6962D-5451-4A83-AEC3-B6E7F9F8EBCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E6962D-5451-4A83-AEC3-B6E7F9F8EBCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
