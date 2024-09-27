@@ -5,7 +5,7 @@ using HBYWCZP2024.PLC;
 using HBYWCZP2024.Service;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
-using LinxUniverse.PLCProtos;
+using LinxUniverse.OPCUA;
 using LinxUniverse.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -66,11 +66,8 @@ namespace HBYWCZP2024.Mediator.Handlers
             {
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext());
+                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.OpcIP), cancellationToken);
 
-                await se.Init(new LinxUniverse.PLC.Meditor.Commands.S7CreatePlcCommand(S7.Net.CpuType.S71200, stage.Value.PLCPSetting.IP, 0, 1), cacheService.Token);
-
-                // 注册任务
-                //se.re
             }
 
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
+    /// <summary>
+    /// 向ECS上报设备异常
+    /// </summary>
     public class S110 : IECSContent
     {
         public new string Type => "S110";

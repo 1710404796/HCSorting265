@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS;
-
+/// <summary>
+/// 托盘离开
+/// 当托盘离开前进行上报
+/// </summary>
 public class S107 : IECSContent
 {
-        public new string Type => "S107";
+    public new string Type => "S107";
     public int TrayPosition { get; set; }
     public TrayType TrayType { get; set; }
     public string TrayNumber { get; set; }

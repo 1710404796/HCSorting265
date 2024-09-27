@@ -46,12 +46,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Apis\" />
-	  <Folder Include="PLC\Models\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Auth\LinxUniverse.Auth.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Mediator\LinxUniverse.Mediator.csproj" />
-	  <ProjectReference Include="..\lxuv\LinxUniverse.PLCProtos\LinxUniverse.PLCProtos.csproj" />
+	  <ProjectReference Include="..\lxuv\LinxUniverse.OPCUA\LinxUniverse.OPCUA.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.SciSocket\LinxUniverse.SciSocket.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Utils\LinxUniverse.Utils.csproj" />
 	</ItemGroup>

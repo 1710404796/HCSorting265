@@ -72,7 +72,7 @@ namespace HBYWCZP2024.Service
 
         private void ClientSocket_OnComplete()
         {
-            throw new NotImplementedException();
+            _clientSocket.Connect();
         }
 
         object _lockobj = new object();

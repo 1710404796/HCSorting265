@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS;
 
+/// <summary>
+/// 向设备请求异常复位
+/// </summary>
 public class E100 : IECSContent
 {
     public ResetOption ResetOption { get; set; }

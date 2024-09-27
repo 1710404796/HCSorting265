@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS;
-
+/// <summary>
+/// 抓取电池结果上报
+/// 机械手每抓一次电池都要进行上报
+/// </summary>
 public class S105 : IECSContent
 {
         public new string Type => "S105";

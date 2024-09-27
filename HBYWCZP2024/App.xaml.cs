@@ -9,7 +9,7 @@ using HBYWCZP2024.ViewModel;
 using HBYWCZP2024.ViewModel.CZPallet;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
-using LinxUniverse.PLC.Extenisons;
+using LinxUniverse.OPCUA.Extenisons;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -128,7 +128,7 @@ namespace HBYWCZP2024
 
 
                          services.AddSingleton<IHBECSServiceFactory, HBECSServiceFactory>();
-                         services.AddPLCContextDB<HBYWPLCContext>();
+                         services.AddOPCPLCContext<HBYWPLCContext>();
                          //services.AddPLCTaskFactory();
 
                          //services.AddDbContext< LinxUserDBContext, LinxContext >(option =>
@@ -151,7 +151,7 @@ namespace HBYWCZP2024
                          services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                          //services.AddSwaggerGen(
                          //);
-                         services.AddPLCTaskFactory();
+                         //services.AddPLCTaskFactory();
 
                      }).ConfigureLogging(logging =>
                      {

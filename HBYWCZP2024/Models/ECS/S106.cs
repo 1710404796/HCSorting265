@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
+    /// <summary>
+    /// 设备作业结束(组盘)
+    /// 当整托盘作业结束时上报
+    /// </summary>
     public class S106 : IECSContent
     {
         public new string Type => "S106";

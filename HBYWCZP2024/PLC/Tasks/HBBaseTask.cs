@@ -1,5 +1,5 @@
 ﻿using HBYWCZP2024.Service;
-using LinxUniverse.PLCProtos;
+using LinxUniverse.OPCUA;
 using System;
 using System.Collections.Generic;
 using System.Linq;

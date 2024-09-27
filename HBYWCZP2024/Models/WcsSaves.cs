@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
-using LinxUniverse.PLC;
 using LinxUniverse.Utils;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace HBYWCZP2024.Models
     [ObservableObject]
     public partial class WcsSaves() : SaveBase("HBYWCZP2024")
     {
-        public string IP
+        public string OpcIP
         {
             get; set;
         } = "127.0.0.1";
@@ -50,7 +49,7 @@ namespace HBYWCZP2024.Models
         public bool TestMode { get; set; }
         [JsonIgnore]
 
-        public PLCSetting PLCPSetting => KeysSave[SelectStageName].PLCPSetting;
+        public OpcPLCSetting PLCPSetting => KeysSave[SelectStageName].PLCPSetting;
         public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
         public string ECSIP { get; set; } = "127.0.0.1";
         public ushort ECSPort { get; set; } = 50005;
@@ -60,13 +59,14 @@ namespace HBYWCZP2024.Models
 
 
         public Dictionary<string, StageMono> KeysSave { get; set; } = [];
+        public Dictionary<string, string> OpcTable { get; set; } = [];
     }
 
     public class StageMono
     {
         public string Name { get; set; } = "Default";
         public XYLStage Stage { get; set; } = new();
-        public PLCSetting PLCPSetting { get; set; } = new();
+        public OpcPLCSetting PLCPSetting { get; set; } = new();
 
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
+    /// <summary>
+    /// 作业停止或暂停
+    /// </summary>
     public class E204 : IECSContent
     {
         public new string Type => "E204";

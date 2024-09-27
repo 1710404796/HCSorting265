@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using MediatR;
 using System;
@@ -15,7 +16,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             // 占位
             //hBECSService.Send("S110", "12345678");
-
+            hBECSService.Send(new S110() { ErrorCode = "1234" });
             return Task.CompletedTask;
         }
     }

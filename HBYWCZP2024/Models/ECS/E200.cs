@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS;
-
+/// <summary>
+/// 作业再开始
+/// </summary>
 public class E200 : IECSContent
 {
     public new string Type => "E200";

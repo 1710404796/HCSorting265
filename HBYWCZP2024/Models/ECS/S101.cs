@@ -13,6 +13,10 @@ namespace HBYWCZP2024.Models.ECS;
 //1     0:手动模式    1:自动模式（设备模式）
 //1     0:无作业对象 1:有作业对象（有无托盘或  
 //       电芯）"
+
+/// <summary>
+/// 向ECS上报设备状态
+/// </summary>
 public class S101 : IECSContent
 {
     public new string Type => "S101";

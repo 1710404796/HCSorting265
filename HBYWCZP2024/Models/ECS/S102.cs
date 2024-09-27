@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
+    /// <summary>
+    /// 托盘到达
+    /// 当托盘到达设备后上报
+    /// </summary>
     public class S102 : IECSContent
     {
         public new string Type => "S102";
