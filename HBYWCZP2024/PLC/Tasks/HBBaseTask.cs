@@ -10,7 +10,8 @@ namespace HBYWCZP2024.PLC.Tasks
 {
     public class HBBaseTask : CoreTask<HBYWPLCContext>
     {
-        public required HBECSService HBECSService { get; init; }
+        //public required HBECSService HBECSService { get; init; }
+        public required string Key { get; init; }
         public HBBaseTask(byte taskCode) : base(taskCode)
         {
         }

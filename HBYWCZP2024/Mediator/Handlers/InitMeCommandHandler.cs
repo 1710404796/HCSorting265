@@ -2,6 +2,7 @@
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.PLC;
+using HBYWCZP2024.PLC.Tasks;
 using HBYWCZP2024.Service;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
@@ -13,7 +14,8 @@ using Microsoft.Extensions.Logging;
 namespace HBYWCZP2024.Mediator.Handlers
 {
     public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger
-        , IHBECSServiceFactory hBECSService, IPLCTaskServiceFactory pLCTaskServiceFactory, CacheService cacheService
+        , IHBECSServiceFactory hBECSService, IPLCTaskServiceFactory<HBYWPLCContext> pLCTaskServiceFactory, CacheService cacheService
+        //,PLCTaskService<HBYWPLCContext> pLCTaskService
         )
         : IRequestHandler<InitMeCommand>
     {
@@ -67,7 +69,10 @@ namespace HBYWCZP2024.Mediator.Handlers
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext());
                 await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.OpcIP), cancellationToken);
-
+                // todo: 注册所有任务
+                //pLCTaskService.RegisterTask<ApplyBatteryInfoTask>();
+                //se.RegisterTask(new ApplyBatteryInfoTask() { HBECSServiceKey = stage.Key });
+                //se.RegisterTask<ApplyBatteryInfoTask>();
             }
 
 

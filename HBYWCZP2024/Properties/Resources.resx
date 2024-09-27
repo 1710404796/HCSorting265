@@ -1,0 +1,574 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SoftwareTitle" xml:space="preserve">
+    <value>机械手上位机</value>
+  </data>
+  <data name="PLCStatus" xml:space="preserve">
+    <value>PLC运行状态</value>
+    <comment>PLC运行状态描述</comment>
+  </data>
+  <data name="CurrentOperator" xml:space="preserve">
+    <value>当前操作用户</value>
+    <comment>当前操作用户</comment>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>登出</value>
+    <comment>登出</comment>
+  </data>
+  <data name="WorkstationStatus" xml:space="preserve">
+    <value>工位状态</value>
+    <comment>工位状态</comment>
+  </data>
+  <data name="InteractionLog" xml:space="preserve">
+    <value>交互日志</value>
+  </data>
+  <data name="CellCount" xml:space="preserve">
+    <value>电芯计数</value>
+  </data>
+  <data name="AssemblyLog" xml:space="preserve">
+    <value>组盘日志</value>
+  </data>
+  <data name="AlarmLog" xml:space="preserve">
+    <value>报警日志</value>
+  </data>
+  <data name="LogWindow" xml:space="preserve">
+    <value>日志窗口</value>
+  </data>
+  <data name="ParameterSettings" xml:space="preserve">
+    <value>程序参数设定</value>
+  </data>
+  <data name="AccessControl" xml:space="preserve">
+    <value>权限管理</value>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>保存设定</value>
+  </data>
+  <data name="CellRuleName" xml:space="preserve">
+    <value>电芯规则名</value>
+  </data>
+  <data name="CellRegex" xml:space="preserve">
+    <value>电芯正则</value>
+  </data>
+  <data name="CreateNewCellBarcodeRule" xml:space="preserve">
+    <value>新建电芯条码规则</value>
+  </data>
+  <data name="AreYouSureYouWantToDeleteThisRecord" xml:space="preserve">
+    <value>确认要删除此记录?</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>删除确认</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>条码</value>
+  </data>
+  <data name="CreateNewRule" xml:space="preserve">
+    <value>创建新规则</value>
+  </data>
+  <data name="RuleName" xml:space="preserve">
+    <value>规则名称</value>
+  </data>
+  <data name="RegularExpression" xml:space="preserve">
+    <value>正则表达式</value>
+  </data>
+  <data name="ModifyChannelInformation" xml:space="preserve">
+    <value>修改通道信息</value>
+  </data>
+  <data name="DispatchNumber" xml:space="preserve">
+    <value>调度号</value>
+  </data>
+  <data name="Channel" xml:space="preserve">
+    <value>通道</value>
+  </data>
+  <data name="ModificationSuccessful" xml:space="preserve">
+    <value>修改成功</value>
+  </data>
+  <data name="ModificationFailed" xml:space="preserve">
+    <value>修改失败</value>
+  </data>
+  <data name="TrayChannelCount" xml:space="preserve">
+    <value>托盘通道数</value>
+  </data>
+  <data name="RecordTime" xml:space="preserve">
+    <value>记录时间</value>
+  </data>
+  <data name="ScanNG" xml:space="preserve">
+    <value>扫码NG</value>
+  </data>
+  <data name="VerificationNG" xml:space="preserve">
+    <value>校验NG</value>
+  </data>
+  <data name="DoYouWantToSaveThisDataAndReset" xml:space="preserve">
+    <value>是否要记录本次数据并重置</value>
+  </data>
+  <data name="DataRecordConfirmation" xml:space="preserve">
+    <value>数据记录确认</value>
+  </data>
+  <data name="WorkstationNumber" xml:space="preserve">
+    <value>工位号</value>
+  </data>
+  <data name="ProgramIsLocked" xml:space="preserve">
+    <value>程序已锁定... 请点击屏幕后登录或刷卡解锁</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>至</value>
+  </data>
+  <data name="TrayBarcode" xml:space="preserve">
+    <value>托盘条码</value>
+  </data>
+  <data name="AssemblyTime" xml:space="preserve">
+    <value>组盘时间</value>
+  </data>
+  <data name="TrayInformation" xml:space="preserve">
+    <value>托盘信息</value>
+  </data>
+  <data name="TrayContents" xml:space="preserve">
+    <value>托盘内容</value>
+  </data>
+  <data name="TrayRuleName" xml:space="preserve">
+    <value>托盘规则名</value>
+  </data>
+  <data name="TrayRegex" xml:space="preserve">
+    <value>托盘正则</value>
+  </data>
+  <data name="ConfigureCellRules" xml:space="preserve">
+    <value>配置电芯规则</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="AttemptingToDisplayNullTray" xml:space="preserve">
+    <value>试图显示null托盘</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>放弃</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="ForceWriteBarcode" xml:space="preserve">
+    <value>强制写入条码</value>
+  </data>
+  <data name="DisableBarcodeScanner" xml:space="preserve">
+    <value>屏蔽扫码器</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="InternalNumber" xml:space="preserve">
+    <value>内部编号</value>
+  </data>
+  <data name="BarcodeScannerIP" xml:space="preserve">
+    <value>扫码枪IP</value>
+  </data>
+  <data name="TrayType" xml:space="preserve">
+    <value>托盘类型</value>
+  </data>
+  <data name="ChannelCount" xml:space="preserve">
+    <value>通道数</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>是否启用</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>权限</value>
+  </data>
+  <data name="AlarmType" xml:space="preserve">
+    <value>警报类型</value>
+  </data>
+  <data name="AlarmTime" xml:space="preserve">
+    <value>警报时间</value>
+  </data>
+  <data name="AlarmInformation" xml:space="preserve">
+    <value>警报信息</value>
+  </data>
+  <data name="DoYouWantToStartTheManualBindingProcess" xml:space="preserve">
+    <value>是否要开始人工绑定盘流程？</value>
+  </data>
+  <data name="AssemblyConfirmation" xml:space="preserve">
+    <value>组盘确认</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="ModifyChannelData" xml:space="preserve">
+    <value>修改通道数据</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CreateNewTrayBarcodeRule" xml:space="preserve">
+    <value>新建托盘条码规则</value>
+  </data>
+  <data name="Rescan" xml:space="preserve">
+    <value>重新扫码</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="TrayNumber" xml:space="preserve">
+    <value>托盘号</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="OverallWorkstationStatus" xml:space="preserve">
+    <value>工位整体状态</value>
+  </data>
+  <data name="SystemNumber" xml:space="preserve">
+    <value>系统编号</value>
+  </data>
+  <data name="WarehouseNumber" xml:space="preserve">
+    <value>仓库编号</value>
+  </data>
+  <data name="DeviceNumber" xml:space="preserve">
+    <value>设备编号</value>
+  </data>
+  <data name="ProcessNumber" xml:space="preserve">
+    <value>工序号</value>
+  </data>
+  <data name="DispatchNumberAndWorkstationNumberTable" xml:space="preserve">
+    <value>调度号工位号表</value>
+  </data>
+  <data name="BarcodeRulesTable" xml:space="preserve">
+    <value>条码规则表</value>
+  </data>
+  <data name="LogCleanupTimeDays" xml:space="preserve">
+    <value>日志清理时间(天)</value>
+  </data>
+  <data name="RematchPLCNodes" xml:space="preserve">
+    <value>重新匹配PLC节点</value>
+  </data>
+  <data name="StandaloneMode" xml:space="preserve">
+    <value>单机模式</value>
+  </data>
+  <data name="IsThereABackground" xml:space="preserve">
+    <value>是否有背景</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="PleaseRestartTheSoftwareForTheChangesToTakeEffect" xml:space="preserve">
+    <value>请重启软件以生效</value>
+  </data>
+  <data name="Prompt" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>登陆</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="Executing" xml:space="preserve">
+    <value>正在执行</value>
+  </data>
+  <data name="RequestData" xml:space="preserve">
+    <value>请求数据</value>
+  </data>
+  <data name="ResponseData" xml:space="preserve">
+    <value>回复数据</value>
+  </data>
+  <data name="FailedToWriteAlarmLog" xml:space="preserve">
+    <value>写入报警日志失败</value>
+  </data>
+  <data name="ErrorOccurredWhileWritingAlarm" xml:space="preserve">
+    <value>写入报警发生错误</value>
+  </data>
+  <data name="ErrorAccessingInterfaceResultIsNull" xml:space="preserve">
+    <value>访问接口出错, 结果为null</value>
+  </data>
+  <data name="CompareCellBarcodeWithLocalData" xml:space="preserve">
+    <value>电芯条码与本地对比</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="Incoming" xml:space="preserve">
+    <value>传入</value>
+  </data>
+  <data name="ClearAllWorkstations" xml:space="preserve">
+    <value>清空所有工位</value>
+  </data>
+  <data name="RequestInterface" xml:space="preserve">
+    <value>请求接口</value>
+  </data>
+  <data name="RequestTime" xml:space="preserve">
+    <value>请求时间</value>
+  </data>
+  <data name="ResponseTime" xml:space="preserve">
+    <value>响应时间</value>
+  </data>
+  <data name="TrayColumnCount" xml:space="preserve">
+    <value>托盘列数</value>
+  </data>
+  <data name="WorkstationNotFound" xml:space="preserve">
+    <value>未找到工位</value>
+  </data>
+  <data name="ExceptionEjection" xml:space="preserve">
+    <value>异常排出</value>
+  </data>
+  <data name="RequestAssemblyInformation" xml:space="preserve">
+    <value>申请组盘信息</value>
+  </data>
+  <data name="DisassemblyCompleted" xml:space="preserve">
+    <value>拆盘完成</value>
+  </data>
+  <data name="AssemblyCompleted" xml:space="preserve">
+    <value>组盘完成</value>
+  </data>
+  <data name="TrayPositioningTask" xml:space="preserve">
+    <value>托盘到位任务</value>
+  </data>
+  <data name="Tray" xml:space="preserve">
+    <value>托盘</value>
+  </data>
+  <data name="DoesNotExist" xml:space="preserve">
+    <value>不存在</value>
+  </data>
+  <data name="TrayBarcodeNotScanned" xml:space="preserve">
+    <value>未扫到托盘条码</value>
+  </data>
+  <data name="RescanOrManualEntry" xml:space="preserve">
+    <value>请尝试重扫或手动输入托盘条码后点击确认继续，或点击取消终止任务。</value>
+  </data>
+  <data name="UpperMachineErrorOrInvalidTrayType" xml:space="preserve">
+    <value>上位机可能扫码有错或为其它类型托盘不允许通过。</value>
+  </data>
+  <data name="CaptureWorkstation" xml:space="preserve">
+    <value>抓取工位</value>
+  </data>
+  <data name="PlaceWorkstation" xml:space="preserve">
+    <value>放置工位</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>未找到</value>
+  </data>
+  <data name="BarcodeIsEmpty" xml:space="preserve">
+    <value>条码为空</value>
+  </data>
+  <data name="OutOfRange" xml:space="preserve">
+    <value>超出范围</value>
+  </data>
+  <data name="GripperStatusIsEmpty" xml:space="preserve">
+    <value>夹爪状态为空，未给出夹爪状态</value>
+  </data>
+  <data name="AllGrabbingPositionDataIsEmpty" xml:space="preserve">
+    <value>所有抓取位置数据均为空</value>
+  </data>
+  <data name="PullBeltInLineVerification" xml:space="preserve">
+    <value>拉带入线校验</value>
+  </data>
+  <data name="TrayDepartureTask" xml:space="preserve">
+    <value>托盘离去任务</value>
+  </data>
+  <data name="Workstation" xml:space="preserve">
+    <value>工位</value>
+  </data>
+  <data name="TrayDisassemblyTaskStarted" xml:space="preserve">
+    <value>托盘拆组盘开始任务</value>
+  </data>
+  <data name="DisassemblyStarted" xml:space="preserve">
+    <value>拆盘开始</value>
+  </data>
+  <data name="Assembly" xml:space="preserve">
+    <value>组盘</value>
+  </data>
+  <data name="Disassembly" xml:space="preserve">
+    <value>拆盘</value>
+  </data>
+  <data name="ExceptionPort" xml:space="preserve">
+    <value>异常口</value>
+  </data>
+  <data name="FakeCell" xml:space="preserve">
+    <value>假电芯</value>
+  </data>
+  <data name="SinglePlacementCompleted" xml:space="preserve">
+    <value>单次放置完成</value>
+  </data>
+  <data name="NoPermission" xml:space="preserve">
+    <value>当前没有权限访问此页面</value>
+  </data>
+  <data name="SingleInstance" xml:space="preserve">
+    <value>本程序一次只能运行一个实例</value>
+  </data>
+  <data name="RestartTheSoftwareForTheLanguage" xml:space="preserve">
+    <value>请重启软件使语言设置生效</value>
+  </data>
+  <data name="StorageLocationNumber" xml:space="preserve">
+    <value>库位号</value>
+  </data>
+  <data name="PermissionsTableConfiguration" xml:space="preserve">
+    <value>权限表配置</value>
+  </data>
+  <data name="RequestFakeCell" xml:space="preserve">
+    <value>申请假电芯</value>
+  </data>
+  <data name="ReturnFakeCell" xml:space="preserve">
+    <value>退盘假电芯</value>
+  </data>
+  <data name="Identity" xml:space="preserve">
+    <value>身份</value>
+  </data>
+  <data name="OPNOperator" xml:space="preserve">
+    <value>OPN 操作员</value>
+  </data>
+  <data name="OPNTechnician" xml:space="preserve">
+    <value>OPN 技师</value>
+  </data>
+  <data name="PEEngineer" xml:space="preserve">
+    <value>PE 工程师</value>
+  </data>
+  <data name="MEEngineer" xml:space="preserve">
+    <value>ME 工程师</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>管理员</value>
+  </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>添加用户</value>
+  </data>
+  <data name="DeleteUser" xml:space="preserve">
+    <value>删除用户</value>
+  </data>
+  <data name="WaitingTimeFake" xml:space="preserve">
+    <value>等待假电芯盘时间（s）</value>
+  </data>
+  <data name="I currently do not have this permission" xml:space="preserve">
+    <value>当前没有此权限</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="test1" xml:space="preserve">
+    <value>test</value>
+  </data>
+</root>

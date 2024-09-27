@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.PLC
 {
-    public class HBYWPLCContext(IMediator mediator, ILogger<HBYWPLCContext> logger, HBECSService hBECSService) : IPLCContext
+    public class HBYWPLCContext(IMediator mediator, ILogger<HBYWPLCContext> logger) : IPLCContext
     {
-        public HBYWPLCContext():this(App.GetService<IMediator>(), App.GetService<ILogger<HBYWPLCContext>>(), App.GetService<HBECSService>())
+        public HBYWPLCContext():this(App.GetService<IMediator>(), App.GetService<ILogger<HBYWPLCContext>>())
         {
         }
         public string PlcGuid { get; set; }

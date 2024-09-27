@@ -14,9 +14,25 @@ namespace HBYWCZP2024.Models.ECS
         public string BatteryStatuses { get; set; }
         public int TrayPosition { get; set; }
 
+        public BatteryLevel[] GetBatteryLevels()
+        {
+            var levels = new BatteryLevel[BatteryCount];
+            for (int i = 0; i < BatteryCount; i++)
+            {
+                levels[i] = BatteryStatuses[i] switch
+                {
+                    '0' => BatteryLevel.EMPTY,
+                    '1' => BatteryLevel.OK,
+                    '2' => BatteryLevel.NG,
+                    _ => BatteryLevel.Unknown
+                };
+            }
+            return levels;
+        }
+
         public string GetContent()
         {
-            return $"{BatteryCount.ToString().PadRight(3)}{BatteryStatuses}{TrayPosition}";
+            return $"{BatteryCount,-3}{BatteryStatuses}{TrayPosition}";
         }
 
         public void Parse(string content)

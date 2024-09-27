@@ -129,6 +129,7 @@ namespace HBYWCZP2024
 
                          services.AddSingleton<IHBECSServiceFactory, HBECSServiceFactory>();
                          services.AddOPCPLCContext<HBYWPLCContext>();
+                         services.AddOPCPLCTaskFactory<HBYWPLCContext>();
                          //services.AddPLCTaskFactory();
 
                          //services.AddDbContext< LinxUserDBContext, LinxContext >(option =>

@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SoftwareTitle" xml:space="preserve">
+    <value>Robotkar Felső Számítógép</value>
+  </data>
+  <data name="PLCStatus" xml:space="preserve">
+    <value>PLC Működési Állapot:</value>
+  </data>
+  <data name="CurrentOperator" xml:space="preserve">
+    <value>Jelenlegi Felhasználó:</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Kijelentkezés</value>
+  </data>
+  <data name="WorkstationStatus" xml:space="preserve">
+    <value>Munkahelyi Állapot</value>
+  </data>
+  <data name="InteractionLog" xml:space="preserve">
+    <value>Interakciós Napló</value>
+  </data>
+  <data name="CellCount" xml:space="preserve">
+    <value>Cellaszám</value>
+  </data>
+  <data name="AssemblyLog" xml:space="preserve">
+    <value>Összeszerelési Napló</value>
+  </data>
+  <data name="AlarmLog" xml:space="preserve">
+    <value>Riasztási Napló</value>
+  </data>
+  <data name="LogWindow" xml:space="preserve">
+    <value>Napló Ablak</value>
+  </data>
+  <data name="ParameterSettings" xml:space="preserve">
+    <value>Paraméter Beállítások</value>
+  </data>
+  <data name="AccessControl" xml:space="preserve">
+    <value>Hozzáférés-vezérlés</value>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>Beállítások Mentése</value>
+  </data>
+  <data name="CellRuleName" xml:space="preserve">
+    <value>Cellaszabály Neve</value>
+  </data>
+  <data name="CellRegex" xml:space="preserve">
+    <value>Cellaszabály</value>
+  </data>
+  <data name="CreateNewCellBarcodeRule" xml:space="preserve">
+    <value>Új Cellaszabály Létrehozása</value>
+  </data>
+  <data name="AreYouSureYouWantToDeleteThisRecord" xml:space="preserve">
+    <value>Biztosan törölni szeretné ezt a rekordot?</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Törlés Megerősítése</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>Vonalkód</value>
+  </data>
+  <data name="CreateNewRule" xml:space="preserve">
+    <value>Új Szabály Létrehozása</value>
+  </data>
+  <data name="RuleName" xml:space="preserve">
+    <value>Szabály Neve</value>
+  </data>
+  <data name="RegularExpression" xml:space="preserve">
+    <value>Reguláris Kifejezés</value>
+  </data>
+  <data name="ModifyChannelInformation" xml:space="preserve">
+    <value>Csatorna Információk Módosítása</value>
+  </data>
+  <data name="DispatchNumber" xml:space="preserve">
+    <value>Diszpécser Szám</value>
+  </data>
+  <data name="Channel" xml:space="preserve">
+    <value>Csatorna</value>
+  </data>
+  <data name="ModificationSuccessful" xml:space="preserve">
+    <value>Módosítás Sikeres</value>
+  </data>
+  <data name="ModificationFailed" xml:space="preserve">
+    <value>Módosítás Sikertelen</value>
+  </data>
+  <data name="TrayChannelCount" xml:space="preserve">
+    <value>Tálca Csatornaszám</value>
+  </data>
+  <data name="RecordTime" xml:space="preserve">
+    <value>Feljegyzés Ideje</value>
+  </data>
+  <data name="ScanNG" xml:space="preserve">
+    <value>Szkennelés Nem Megfelelő</value>
+  </data>
+  <data name="VerificationNG" xml:space="preserve">
+    <value>Ellenőrzés Nem Megfelelő</value>
+  </data>
+  <data name="DoYouWantToSaveThisDataAndReset" xml:space="preserve">
+    <value>Szeretné menteni az adatokat és visszaállítani?</value>
+  </data>
+  <data name="DataRecordConfirmation" xml:space="preserve">
+    <value>Adatfelvételi Megerősítés</value>
+  </data>
+  <data name="WorkstationNumber" xml:space="preserve">
+    <value>Munkahelyi Szám</value>
+  </data>
+  <data name="ProgramIsLocked" xml:space="preserve">
+    <value>A program le van zárva... Kérjük, érintse meg a képernyőt a bejelentkezéshez vagy húzza át a kártyáját a feloldáshoz.</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>Lekérdezés</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>-ig</value>
+  </data>
+  <data name="TrayBarcode" xml:space="preserve">
+    <value>Tálca Vonalkód</value>
+  </data>
+  <data name="AssemblyTime" xml:space="preserve">
+    <value>Összeszerelési Idő</value>
+  </data>
+  <data name="TrayInformation" xml:space="preserve">
+    <value>Tálca Információk</value>
+  </data>
+  <data name="TrayContents" xml:space="preserve">
+    <value>Tálca Tartalom</value>
+  </data>
+  <data name="TrayRuleName" xml:space="preserve">
+    <value>Tálca Szabály Neve</value>
+  </data>
+  <data name="TrayRegex" xml:space="preserve">
+    <value>Tálca Reguláris Kifejezés</value>
+  </data>
+  <data name="ConfigureCellRules" xml:space="preserve">
+    <value>Cellaszabályok Konfigurálása</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Konfigurálás</value>
+  </data>
+  <data name="AttemptingToDisplayNullTray" xml:space="preserve">
+    <value>Null Tálca Megjelenítési Kísérlet</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>Lemondás</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>Vissza</value>
+  </data>
+  <data name="ForceWriteBarcode" xml:space="preserve">
+    <value>Kényszerített Vonalkód Írás</value>
+  </data>
+  <data name="DisableBarcodeScanner" xml:space="preserve">
+    <value>Vonalkód Olvasó Kikapcsolása</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="InternalNumber" xml:space="preserve">
+    <value>Belső Szám</value>
+  </data>
+  <data name="BarcodeScannerIP" xml:space="preserve">
+    <value>Vonalkód Olvasó IP Cím</value>
+  </data>
+  <data name="TrayType" xml:space="preserve">
+    <value>Tálca Típus</value>
+  </data>
+  <data name="ChannelCount" xml:space="preserve">
+    <value>Csatornaszám</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Engedélyezés?</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Felhasználónév</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Jogosultságok</value>
+  </data>
+  <data name="AlarmType" xml:space="preserve">
+    <value>Riasztási Típus</value>
+  </data>
+  <data name="AlarmTime" xml:space="preserve">
+    <value>Riasztás Időpontja</value>
+  </data>
+  <data name="AlarmInformation" xml:space="preserve">
+    <value>Riasztási Információ</value>
+  </data>
+  <data name="DoYouWantToStartTheManualBindingProcess" xml:space="preserve">
+    <value>Szeretné elindítani a manuális kötési folyamatot?</value>
+  </data>
+  <data name="AssemblyConfirmation" xml:space="preserve">
+    <value>Összeszerelési Megerősítés</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="ModifyChannelData" xml:space="preserve">
+    <value>Csatorna Adatok Módosítása</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Mégse</value>
+  </data>
+  <data name="CreateNewTrayBarcodeRule" xml:space="preserve">
+    <value>Új Tálca Vonalkód Szabály Létrehozása</value>
+  </data>
+  <data name="Rescan" xml:space="preserve">
+    <value>Újraolvasás</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="TrayNumber" xml:space="preserve">
+    <value>Tálca Szám</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Megállítás</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Futtatás</value>
+  </data>
+  <data name="OverallWorkstationStatus" xml:space="preserve">
+    <value>Munkahelyi Általános Állapot</value>
+  </data>
+  <data name="SystemNumber" xml:space="preserve">
+    <value>Rendszám</value>
+  </data>
+  <data name="WarehouseNumber" xml:space="preserve">
+    <value>Raktárszám</value>
+  </data>
+  <data name="DeviceNumber" xml:space="preserve">
+    <value>Eszközszám</value>
+  </data>
+  <data name="ProcessNumber" xml:space="preserve">
+    <value>Folyamat Szám</value>
+  </data>
+  <data name="DispatchNumberAndWorkstationNumberTable" xml:space="preserve">
+    <value>Diszpécser Szám és Munkahelyi Szám Táblázat</value>
+  </data>
+  <data name="BarcodeRulesTable" xml:space="preserve">
+    <value>Vonalkód Szabályok Táblázat</value>
+  </data>
+  <data name="LogCleanupTimeDays" xml:space="preserve">
+    <value>Napló Tisztítási Idő (Napok)</value>
+  </data>
+  <data name="RematchPLCNodes" xml:space="preserve">
+    <value>PLC Csomópontok Újrapárosítása</value>
+  </data>
+  <data name="StandaloneMode" xml:space="preserve">
+    <value>Önálló Mód</value>
+  </data>
+  <data name="IsThereABackground" xml:space="preserve">
+    <value>Van háttér?</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Mentés Sikeres</value>
+  </data>
+  <data name="PleaseRestartTheSoftwareForTheChangesToTakeEffect" xml:space="preserve">
+    <value>Kérjük, indítsa újra a szoftvert a változások érvénybe lépéséhez.</value>
+  </data>
+  <data name="Prompt" xml:space="preserve">
+    <value>Figyelmeztetés</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Bejelentkezés</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Összes</value>
+  </data>
+  <data name="Executing" xml:space="preserve">
+    <value>Folyamatban</value>
+  </data>
+  <data name="RequestData" xml:space="preserve">
+    <value>Adat Kérés</value>
+  </data>
+  <data name="ResponseData" xml:space="preserve">
+    <value>Válasz Adatok</value>
+  </data>
+  <data name="FailedToWriteAlarmLog" xml:space="preserve">
+    <value>Sikertelen Riasztási Napló Írás</value>
+  </data>
+  <data name="ErrorOccurredWhileWritingAlarm" xml:space="preserve">
+    <value>Hiba Történt a Riasztás Írása Közben</value>
+  </data>
+  <data name="ErrorAccessingInterfaceResultIsNull" xml:space="preserve">
+    <value>Hiba Az Interface Elérésében; Eredmény Null</value>
+  </data>
+  <data name="CompareCellBarcodeWithLocalData" xml:space="preserve">
+    <value>Cellaszám Összehasonlítása Helyi Adatokkal</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Helyi</value>
+  </data>
+  <data name="Incoming" xml:space="preserve">
+    <value>Bejövő</value>
+  </data>
+  <data name="ClearAllWorkstations" xml:space="preserve">
+    <value>Minden Munkahely Törlése</value>
+  </data>
+  <data name="RequestInterface" xml:space="preserve">
+    <value>Interface Kérés</value>
+  </data>
+  <data name="RequestTime" xml:space="preserve">
+    <value>Kérés Időpontja</value>
+  </data>
+  <data name="ResponseTime" xml:space="preserve">
+    <value>Válasz Időpontja</value>
+  </data>
+  <data name="TrayColumnCount" xml:space="preserve">
+    <value>Tálca Oszlopszám</value>
+  </data>
+  <data name="WorkstationNotFound" xml:space="preserve">
+    <value>Munkahely Nem Található</value>
+  </data>
+  <data name="ExceptionEjection" xml:space="preserve">
+    <value>Kivételes Kizárás</value>
+  </data>
+  <data name="RequestAssemblyInformation" xml:space="preserve">
+    <value>Összeszerelési Információk Kérése</value>
+  </data>
+  <data name="DisassemblyCompleted" xml:space="preserve">
+    <value>Szétszerelés Befejezve</value>
+  </data>
+  <data name="AssemblyCompleted" xml:space="preserve">
+    <value>Összeszerelés Befejezve</value>
+  </data>
+  <data name="TrayPositioningTask" xml:space="preserve">
+    <value>Tálca Elhelyezési Feladat</value>
+  </data>
+  <data name="Tray" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="DoesNotExist" xml:space="preserve">
+    <value>Nem Létezik</value>
+  </data>
+  <data name="TrayBarcodeNotScanned" xml:space="preserve">
+    <value>Nem Szkennelték a Tálca Vonalkódját</value>
+  </data>
+  <data name="RescanOrManualEntry" xml:space="preserve">
+    <value>Kérjük, próbálja meg újraolvasni vagy manuálisan beírni a tálca vonalkódját, majd kattintson a Megerősítés gombra a folytatáshoz, vagy kattintson a Mégse gombra a feladat megszakításához.</value>
+  </data>
+  <data name="UpperMachineErrorOrInvalidTrayType" xml:space="preserve">
+    <value>Lehet, hogy a felső szintű gép hibásan olvasta be a kódot, vagy a tálca típusa nem engedélyezett.</value>
+  </data>
+  <data name="CaptureWorkstation" xml:space="preserve">
+    <value>Munkahely Rögzítése</value>
+  </data>
+  <data name="PlaceWorkstation" xml:space="preserve">
+    <value>Munkahely Elhelyezése</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Nem Található</value>
+  </data>
+  <data name="BarcodeIsEmpty" xml:space="preserve">
+    <value>Vonalkód Üres</value>
+  </data>
+  <data name="OutOfRange" xml:space="preserve">
+    <value>Túl Távon</value>
+  </data>
+  <data name="GripperStatusIsEmpty" xml:space="preserve">
+    <value>A Fogó Állapota Üres; Nincs Megadva Fogó Állapot</value>
+  </data>
+  <data name="AllGrabbingPositionDataIsEmpty" xml:space="preserve">
+    <value>Minden Grabáló Pozíció Adat Üres</value>
+  </data>
+  <data name="PullBeltInLineVerification" xml:space="preserve">
+    <value>Szalag Igazítás Ellenőrzése</value>
+  </data>
+  <data name="TrayDepartureTask" xml:space="preserve">
+    <value>Tálca Elhagyási Feladat</value>
+  </data>
+  <data name="Workstation" xml:space="preserve">
+    <value>Munkahely</value>
+  </data>
+  <data name="TrayDisassemblyTaskStarted" xml:space="preserve">
+    <value>Tálca Szétszerelési Feladat Indult</value>
+  </data>
+  <data name="DisassemblyStarted" xml:space="preserve">
+    <value>Szétszerelés Elindult</value>
+  </data>
+  <data name="Assembly" xml:space="preserve">
+    <value>Összeszerelés</value>
+  </data>
+  <data name="Disassembly" xml:space="preserve">
+    <value>Szétszerelés</value>
+  </data>
+  <data name="ExceptionPort" xml:space="preserve">
+    <value>Kivételi Port</value>
+  </data>
+  <data name="FakeCell" xml:space="preserve">
+    <value>Hamis Cellaszám</value>
+  </data>
+  <data name="SinglePlacementCompleted" xml:space="preserve">
+    <value>Egyszeri Elhelyezés Befejezve</value>
+  </data>
+  <data name="NoPermission" xml:space="preserve">
+    <value>Nincs jogosultsága a lap eléréséhez</value>
+  </data>
+  <data name="SingleInstance" xml:space="preserve">
+    <value>Ebből a programból egyszerre csak egy példány futhat</value>
+  </data>
+  <data name="RestartTheSoftwareForTheLanguage" xml:space="preserve">
+    <value>Kérjük, indítsa újra a szoftvert a nyelvi beállítások érvénybe lépéséhez.</value>
+  </data>
+  <data name="StorageLocationNumber" xml:space="preserve">
+    <value>Raktári Hely Szám</value>
+  </data>
+  <data name="PermissionsTableConfiguration" xml:space="preserve">
+    <value>Jogosultsági Táblázat Konfigurációja</value>
+  </data>
+  <data name="RequestFakeCell" xml:space="preserve">
+    <value>Hamis Cellaszám Kérése</value>
+  </data>
+  <data name="ReturnFakeCell" xml:space="preserve">
+    <value>Hamis Cellaszám Visszaadása</value>
+  </data>
+  <data name="Identity" xml:space="preserve">
+    <value>Személyazonosság</value>
+  </data>
+  <data name="OPNOperator" xml:space="preserve">
+    <value>OPN Kezelő</value>
+  </data>
+  <data name="OPNTechnician" xml:space="preserve">
+    <value>OPN Technikus</value>
+  </data>
+  <data name="PEEngineer" xml:space="preserve">
+    <value>PE Mérnök</value>
+  </data>
+  <data name="MEEngineer" xml:space="preserve">
+    <value>ME Mérnök</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Adminisztrátor</value>
+  </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Felhasználó Hozzáadása</value>
+  </data>
+  <data name="DeleteUser" xml:space="preserve">
+    <value>Felhasználó Törlése</value>
+  </data>
+  <data name="WaitingTimeFake" xml:space="preserve">
+    <value>Hamis Cellaszám Tálca Várakozási Idő (s)</value>
+  </data>
+  <data name="I currently do not have this permission" xml:space="preserve">
+    <value>Jelenleg nincs ilyen engedélyem</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+</root>
