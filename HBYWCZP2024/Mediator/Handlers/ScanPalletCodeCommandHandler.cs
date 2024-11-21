@@ -16,13 +16,13 @@ namespace HBYWCZP2024.Mediator.Handlers
         {
             // Todo: 实现读取指定托盘码
 
-            if (MainStorage.Saves.TestMode)
+            if (MainStorage.Saves.KeysSave[request.name].TestMode)
             {
                 return $"{request.PalletIdx} TestCode";
             }
             else
             {
-                var pallet = CZPUtils.GetPalletByIndex(request.PalletIdx);
+                var pallet = CZPUtils.GetPalletByIndex(request.name, request.PalletIdx);
 
                 if (pallet == null)
                 {

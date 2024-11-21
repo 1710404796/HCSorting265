@@ -87,7 +87,7 @@ namespace HBYWCZP2024.PLC.Tasks
         protected override async Task WriteDataToPlc()
         {
 
-            Utils.Utils.WriteTagNode(Context.Plc, "WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus", batteryStatus);
+            Utils.Utils.WriteTagNode(Context.Plc, "WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus", batteryStatus, Context.Name);
 
             await base.WriteDataToPlc();
         }
@@ -98,7 +98,7 @@ namespace HBYWCZP2024.PLC.Tasks
             batteryCode = [];
             batteryStatus = [];
 
-            Utils.Utils.WriteTagNode(Context.Plc, "WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus", new byte[16]);
+            Utils.Utils.WriteTagNode(Context.Plc, "WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus", new byte[16], Context.Name);
 
             return base.CleanData();
         }

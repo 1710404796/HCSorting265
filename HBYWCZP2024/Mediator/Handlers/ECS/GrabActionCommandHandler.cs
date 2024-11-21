@@ -16,7 +16,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
-            var pallet = CZPUtils.GetPalletByOutsideNum(request.StationNum);
+            var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
 
             if (pallet == null)
             {

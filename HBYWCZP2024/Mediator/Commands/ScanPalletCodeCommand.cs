@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Commands
 {
-    public record ScanPalletCodeCommand(int PalletIdx) : IRequest<string>;
+    public record ScanPalletCodeCommand(string name, int PalletIdx) : IRequest<string>;
 }

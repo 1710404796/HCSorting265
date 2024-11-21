@@ -82,6 +82,23 @@
                     Margin="0,20,0,0"
                     Click="SaveButton_Click">保存设定</Button>
             </StackPanel>
+            <StackPanel Grid.Column="2">
+                <CheckBox 
+                    IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
+                    >入料校验接口使能</CheckBox>
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionInsertEnable}"
+>组盘开始接口使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionRemoveEnable}"
+>组盘结束接口使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ApplyMaterialEnable}"
+>申请物料接口使能</CheckBox>
+            </StackPanel>
+
 
             <StackPanel Grid.Column="3">
                 <TextBlock FontSize="15"

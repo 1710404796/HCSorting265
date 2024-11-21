@@ -32,7 +32,7 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var pallet = CZPUtils.GetPalletByInsideNum(grabStation);
+            var pallet = CZPUtils.GetPalletByInsideNum(Context.Name, grabStation);
             if (pallet == null)
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"未找到工位: {grabStation}", SaveLog: false));
@@ -49,7 +49,7 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             //Context.Plc.Write("DB501.DBW4", grabStation);
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_grabStation".GetOPCAddress(), grabStation);
-            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.to_grabStation", grabStation);
+            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.to_grabStation", grabStation, Context.Name);
 
             return base.WriteDataToPlc();
         }
@@ -58,7 +58,7 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             //Context.Plc.Write("DB501.DBW4", 0);
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_grabStation".GetOPCAddress(), 0);
-            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.to_grabStation", (ushort)0);
+            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.to_grabStation", (ushort)0, Context.Name);
 
             grabStation = 0;
             return base.CleanData();

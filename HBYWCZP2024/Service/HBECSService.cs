@@ -39,8 +39,8 @@ namespace HBYWCZP2024.Service
             _clientSocket = new LinxClientSocket(new LinxClientSocketOption
             {
                 Logger = logger,
-                Address = MainStorage.Saves.ECSIP,
-                Port = MainStorage.Saves.ECSPort,
+                Address = MainStorage.Saves.KeysSave[name].ECSIP,
+                Port = MainStorage.Saves.KeysSave[name].ECSPort,
                 SplitChar = '#',
             });
             Init();

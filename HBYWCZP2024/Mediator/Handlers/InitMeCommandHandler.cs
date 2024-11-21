@@ -67,8 +67,8 @@ namespace HBYWCZP2024.Mediator.Handlers
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
                 var ecs = hBECSService.Create(stage.Key);
-                var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext());
-                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.OpcIP), cancellationToken);
+                var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
+                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.KeysSave[stage.Key].OpcIP), cancellationToken);
                 // todo: 注册所有任务
                 //pLCTaskService.RegisterTask<ApplyBatteryInfoTask>();
                 //se.RegisterTask(new ApplyBatteryInfoTask() { HBECSServiceKey = stage.Key });

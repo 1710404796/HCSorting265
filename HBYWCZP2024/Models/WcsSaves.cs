@@ -15,10 +15,7 @@ namespace HBYWCZP2024.Models
     [ObservableObject]
     public partial class WcsSaves() : SaveBase("HBYWCZP2024")
     {
-        public string OpcIP
-        {
-            get; set;
-        } = "127.0.0.1";
+        public string OpcIP => KeysSave[SelectStageName].OpcIP;
 
         //public string SelectStageName { get; set; } = string.Empty;
         [ObservableProperty]
@@ -43,28 +40,131 @@ namespace HBYWCZP2024.Models
 
 
         public int LogDeleteDay { get; set; } = 30;
-        [JsonIgnore]
+        public bool TestMode => KeysSave[SelectStageName].TestMode;
 
+
+        [JsonIgnore]
         public List<PalletTypeRule> PalletTypeRules => KeysSave[SelectStageName].PalletTypeRules;
-        public bool TestMode { get; set; }
-        [JsonIgnore]
 
+
+        [JsonIgnore]
+        public string ECSIP
+        {
+            get => KeysSave[SelectStageName].ECSIP;
+            set => KeysSave[SelectStageName].ECSIP = value;
+        }
+
+        [JsonIgnore]
+        public ushort ECSPort
+        {
+            get => KeysSave[SelectStageName].ECSPort;
+            set => KeysSave[SelectStageName].ECSPort = value;
+        }
+
+        [JsonIgnore]
+        public string DeviceCode
+        {
+            get => KeysSave[SelectStageName].DeviceCode;
+            set => KeysSave[SelectStageName].DeviceCode = value;
+        }
+
+
+        [JsonIgnore]
         public OpcPLCSetting PLCPSetting => KeysSave[SelectStageName].PLCPSetting;
         public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
-        public string ECSIP { get; set; } = "127.0.0.1";
-        public ushort ECSPort { get; set; } = 50005;
-        [JsonIgnore]
 
-        public string DeviceCode { get => KeysSave[SelectStageName].DeviceCode; set => KeysSave[SelectStageName].DeviceCode = value; }
-
+        public Dictionary<string, string> OpcTable => KeysSave[SelectStageName].OpcTable;
 
         public Dictionary<string, StageMono> KeysSave { get; set; } = [];
-        public Dictionary<string, string> OpcTable { get; set; } = [];
-        public OKNGCnt OKNGCnt { get; internal set; }
+        [JsonIgnore]
+        public OKNGCnt OKNGCnt
+        {
+            get => KeysSave[SelectStageName].OKNGCnt;
+            set => KeysSave[SelectStageName].OKNGCnt = value;
+        }
+
+        [JsonIgnore]
+        public string MESIP
+        {
+            get => KeysSave[SelectStageName].MESIP;
+            set => KeysSave[SelectStageName].MESIP = value;
+        }
+
+        [JsonIgnore]
+        public string SiteCode
+        {
+            get => KeysSave[SelectStageName].SiteCode;
+            set => KeysSave[SelectStageName].SiteCode = value;
+        }
+
+        [JsonIgnore]
+        public string LineCode
+        {
+            get => KeysSave[SelectStageName].LineCode;
+            set => KeysSave[SelectStageName].LineCode = value;
+        }
+
+        [JsonIgnore]
+        public string EquipNum
+        {
+            get => KeysSave[SelectStageName].EquipNum;
+            set => KeysSave[SelectStageName].EquipNum = value;
+        }
+
+        [JsonIgnore]
+        public string MaterialCode
+        {
+            get => KeysSave[SelectStageName].MaterialCode;
+            set => KeysSave[SelectStageName].MaterialCode = value;
+        }
+
+        [JsonIgnore]
+        public string ProductType
+        {
+            get => KeysSave[SelectStageName].ProductType;
+            set => KeysSave[SelectStageName].ProductType = value;
+        }
+
+        [JsonIgnore]
+        public ApiEnable ApiEnableTable
+        {
+            get => KeysSave[SelectStageName].ApiEnableTable;
+            set => KeysSave[SelectStageName].ApiEnableTable = value;
+        }
+    }
+
+    public class ApiEnable
+    {
+        public bool CheckMaterialEnable
+        {
+            get; set;
+        } = true;
+        public bool GrabActionInsertEnable
+        {
+            get; set;
+        } = true;
+
+        public bool GrabActionRemoveEnable
+        {
+            get; set;
+        } = true;
+
+        public bool ApplyMaterialEnable
+        {
+            get; set;
+        } = true;
+
+
     }
 
     public class StageMono
     {
+        public OKNGCnt OKNGCnt { get; set; } = new();
+        public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
+        public Dictionary<string, string> OpcTable { get; set; } = [];
+
+        public string ECSIP { get; set; } = "127.0.0.1";
+        public ushort ECSPort { get; set; } = 50005;
         public string Name { get; set; } = "Default";
         public XYLStage Stage { get; set; } = new();
         public OpcPLCSetting PLCPSetting { get; set; } = new();
@@ -72,6 +172,48 @@ namespace HBYWCZP2024.Models
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
 
         public string DeviceCode { get; set; } = string.Empty;
+        public ApiEnable ApiEnableTable { get; set; } = new();
+        public bool TestMode
+        {
+            get; set;
+        }
+
+        public string OpcIP
+        {
+            get; set;
+        } = "127.0.0.1";
+
+        public string MESIP
+        {
+            get;
+            set;
+        } = "127.0.0.1";
+
+        public string SiteCode
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string LineCode
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string EquipNum
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string MaterialCode
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string ProductType
+        {
+            get;
+            set;
+        } = string.Empty;
 
     }
 

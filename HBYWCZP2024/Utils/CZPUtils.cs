@@ -16,37 +16,37 @@ namespace HBYWCZP2024.Utils
 {
     public static class CZPUtils
     {
-        public static Pallet? GetPalletByIndex(int idx)
+        public static Pallet? GetPalletByIndex(string name, int idx)
         {
             if (idx < 0) return null;
-            return MainStorage.Saves.Stage.Pallets.FirstOrDefault(p => p.PalletId == idx && p.IsEnable);
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.PalletId == idx && p.IsEnable);
         }
 
-        public static Pallet? GetPalletByInsideNum(int insideNum)
+        public static Pallet? GetPalletByInsideNum(string name, int insideNum)
         {
             if (insideNum <= 0) return null;
-            return MainStorage.Saves.Stage.Pallets.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
         }
 
-        public static Pallet? GetPalletByOutsideNum(int outsideNum)
+        public static Pallet? GetPalletByOutsideNum(string name, int outsideNum)
         {
             if (outsideNum <= 0) return null;
 
-            return MainStorage.Saves.Stage.Pallets.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
         }
 
 
-        public static XYLStation? GetXYLStationByInsideNum(int insideNum)
+        public static XYLStation? GetXYLStationByInsideNum(string name, int insideNum)
         {
 
             if (insideNum <= 0) return null;
-            return MainStorage.Saves.Stage.Stations.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+            return MainStorage.Saves.KeysSave[name].Stage.Stations.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
         }
 
-        public static XYLStation? GetXYLStationByOutsideNum(int outsideNum)
+        public static XYLStation? GetXYLStationByOutsideNum(string name, int outsideNum)
         {
             if (outsideNum <= 0) return null;
-            return MainStorage.Saves.Stage.Stations.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
+            return MainStorage.Saves.KeysSave[name].Stage.Stations.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
         }
 
         [JsonIgnore]

@@ -19,6 +19,7 @@ namespace HBYWCZP2024.PLC
         public HBYWPLCContext():this(App.GetService<IMediator>(), App.GetService<ILogger<HBYWPLCContext>>())
         {
         }
+        public string Name;
         public string PlcGuid { get; set; }
         public SciOpcUaClient Plc { get; set; }
 
@@ -66,7 +67,7 @@ namespace HBYWCZP2024.PLC
             await CheckError(DB500.ErrorCode);
             if (heartTag % 5 == 0)
             {
-                Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0);
+                Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0, Name);
 
 
                 heartFlag = !heartFlag;
@@ -113,12 +114,13 @@ namespace HBYWCZP2024.PLC
             // return true;
             if (!Plc.Connected) return false;
             var flag = true;
-            Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress());
-            Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress());
-            Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress());
-            Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress());
-            Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress());
-            Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress());
+            // Todo: 要加名字参数
+            Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name));
+            Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name));
+            Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name));
+            Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name));
+            Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name));
+            Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name));
             return flag;
         }
     }

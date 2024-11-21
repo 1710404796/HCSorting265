@@ -51,8 +51,8 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var grab = CZPUtils.GetXYLStationByInsideNum(grabStation);
-            var put = CZPUtils.GetXYLStationByInsideNum(putStaion);
+            var grab = CZPUtils.GetXYLStationByInsideNum(Key, grabStation);
+            var put = CZPUtils.GetXYLStationByInsideNum(Key, putStaion);
              
             if (grab == null)
             {
@@ -188,8 +188,8 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             //Context.Plc.Write("DB501.DBW4", grabStation);
             //Context.Plc.Write("DB501.DBW6", putStaion);
-            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_grabStation", grabStation);
-            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", putStaion);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_grabStation", grabStation, Context.Name);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", putStaion, Context.Name);
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_grabStation".GetOPCAddress(), grabStation);
 
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_putStation".GetOPCAddress(), putStaion);
@@ -202,8 +202,8 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             //Context.Plc.Write("DB501.DBW4", 0);
             //Context.Plc.Write("DB501.DBW6", 0);
-            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_grabStation", (ushort)0);
-            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", (ushort)0);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_grabStation", (ushort)0, Context.Name);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", (ushort)0, Context.Name);
 
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_grabStation".GetOPCAddress(), (ushort)0);
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_putStation".GetOPCAddress(), (ushort)0);

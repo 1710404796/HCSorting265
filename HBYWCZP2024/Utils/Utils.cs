@@ -12,19 +12,19 @@ namespace HBYWCZP2024.Utils
 {
     public static class Utils
     {
-        public static string GetOPCAddress(this string address)
+        public static string GetOPCAddress(this string address, string name)
         {
             if (MainStorage.Saves.OpcTable == null) return default;
-            var res = MainStorage.Saves.OpcTable.TryGetValue(address, out var opcAddress);
+            var res = MainStorage.Saves.KeysSave[name].OpcTable.TryGetValue(address, out var opcAddress);
             return opcAddress;
         }
         [JsonIgnore]
         static Lazy<ILogger> _lazyLogger = new Lazy<ILogger>(App.GetService<ILogger<MainViewModel>>);
         [JsonIgnore]
         static ILogger _logger => _lazyLogger.Value;
-        public static bool WriteTagNode<T>(this OpcUaClient client, string address, T data)
+        public static bool WriteTagNode<T>(this OpcUaClient client, string address, T data, string name)
         {
-            var add = address.GetOPCAddress();
+            var add = address.GetOPCAddress(name);
             if (add == default)
             {
                 _logger.LogWarning("没有此地址, {add}", address);

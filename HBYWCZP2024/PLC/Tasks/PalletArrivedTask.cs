@@ -27,7 +27,7 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var pallet = CZPUtils.GetPalletByIndex(SubIdx);
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
             if (pallet == null || !pallet.IsEnable)
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayPositioningTask}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.DoesNotExist}"));
@@ -36,7 +36,7 @@ namespace HBYWCZP2024.PLC.Tasks
             }
             Context.Logger.LogInformation("准备获取托盘{idx}条码", SubIdx);
             pallet.PalletCode = string.Empty;
-            pallet.PalletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(SubIdx))).Trim();
+            pallet.PalletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(Context.Name, SubIdx))).Trim();
             // 条码校验
             while (true)
             {
@@ -74,14 +74,14 @@ namespace HBYWCZP2024.PLC.Tasks
 
         protected override Task WriteDataToPlc()
         {
-            var pallet = CZPUtils.GetPalletByIndex(SubIdx);
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
 
             byte[] data = new byte[32];
             // 可能要把条码写回去
             //LinxUniverse.PLC.Common.Utils.SetStringCharArray(data, 0, pallet.PalletCode);
             //Encoding.UTF8.GetBytes(pallet.PalletCode).CopyTo(data, 0);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 11, 16 + 34 * SubIdx, data);
-            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", pallet!.PalletCode);
+            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", pallet!.PalletCode, Context.Name);
 
             //Context.Plc.WriteNode()
             return base.WriteDataToPlc();
@@ -91,7 +91,7 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             byte[] data = new byte[34];
 
-            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", string.Empty);
+            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", string.Empty, Context.Name);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 11, 16 + 34 * SubIdx, data);
             return Task.FromResult(true);
 
@@ -113,7 +113,7 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var pallet = CZPUtils.GetPalletByIndex(SubIdx);
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
             if (pallet == null || !pallet.IsEnable)
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDisassemblyTaskStarted}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
@@ -150,7 +150,7 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var pallet = CZPUtils.GetPalletByIndex(SubIdx);
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
             if (pallet == null || !pallet.IsEnable)
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
