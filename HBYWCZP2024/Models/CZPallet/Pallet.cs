@@ -26,6 +26,7 @@ namespace HBYWCZP2024.Models.CZPallet
     {
         拆盘,
         组盘,
+        筛选,
         异常口,
         假电芯盘,
     }

@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
-    public class E103 : IECSContent
+
+    public class E103B : IECSContent
     {
         public string Type => "E103";
-
+        public string BatteryStatus
+        {
+            get; set;
+        } = string.Empty;
         public int BatteryCount { get; set; }
-        public string BatteryStatus { get; set; }
-        public int TrayPosition { get; set; }
 
         public BatteryLevel[] GetBatteryLevels()
         {
@@ -32,12 +34,34 @@ namespace HBYWCZP2024.Models.ECS
 
         public string GetContent()
         {
-            return $"{BatteryCount,-3}{BatteryStatus}{TrayPosition}";
+            return $"{BatteryCount,-3}{BatteryStatus}";
         }
 
         public void Parse(string content)
         {
-            int n = int.Parse(content.Substring(0, 3).Trim());
+            BatteryCount = int.Parse(content[..3].Trim());
+            BatteryStatus = content[3..];
+        }
+    }
+    // 筛选所用协议类
+    public class E103 : IECSContent
+    {
+        public string Type => "E103";
+
+        public int BatteryCount { get; set; }
+        public string[] BatteryCodes { get; set; } = [];
+        public string TrayNumber { get; set; } = string.Empty;
+
+       
+
+        public string GetContent()
+        {
+            return $"{TrayNumber}{BatteryCount,-3}{string.Concat(BatteryCodes.Select(s => s.PadRight(24)))}";
+        }
+
+        public void Parse(string content)
+        {
+            int n = int.Parse(content.Substring(20, 3).Trim());
 
             if (content.Length != n + 4)
             {
@@ -45,8 +69,12 @@ namespace HBYWCZP2024.Models.ECS
             }
 
             BatteryCount = n;
-            BatteryStatus = content.Substring(3, n);
-            TrayPosition = int.Parse(content.Substring(3 + n, 1));
+            TrayNumber = content[..20].Trim();
+            BatteryCodes = new string[n];
+            for (int i = 0; i < n; i++)
+            {
+                BatteryCodes[i] = content.Substring(23 + i * 24, 24).Trim();
+            }
         }
     }
 

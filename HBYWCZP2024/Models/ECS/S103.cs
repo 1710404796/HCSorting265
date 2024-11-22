@@ -10,10 +10,14 @@ namespace HBYWCZP2024.Models.ECS
     /// <summary>
     /// 请求NG位置信息 请求电池位置信息
     /// 作业开始前获取电芯位置
-    /// </summary>
+    /// </summary>'
+    public class S103B : S103
+    {
+    
+    }
     public class S103 : IECSContent
     {
-        public new string Type => "S103";
+        public string Type => "S103";
         public string TrayNumber { get; set; }
 
         public string GetContent()
