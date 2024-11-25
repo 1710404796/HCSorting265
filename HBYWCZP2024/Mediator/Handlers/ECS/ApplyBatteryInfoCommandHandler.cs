@@ -29,17 +29,37 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception("托盘不存在");
             }
-
-            var data = await hBECSService.SendAsync<S103, E103>(new S103() {  TrayNumber = pallet.PalletCode });
-
-            if (data == null)
+            if (pallet.Type == Models.CZPallet.PalletType.拆盘)
             {
-                await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                return null;
+                var data = await hBECSService.SendAsync<S103B, E103B>(new S103B() { TrayNumber = pallet.PalletCode });
+                if (data == null)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                    return null;
+                }
+
+
+                return data.GetBatteryLevels();
             }
+            else
+            {
+                var data = await hBECSService.SendAsync<S103, E103>(new S103B() { TrayNumber = pallet.PalletCode });
+                if (data == null)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                    return null;
+                }
+                // 这里有条码 // bind一下去
+                foreach (var item in data.BatteryCodes)
+                {
+                    
+                }
 
-            return data.GetBatteryLevels();
+                // 请求mes去
+                //return data.GetBatteryLevels();
 
+
+            }
         }
     }
 }
