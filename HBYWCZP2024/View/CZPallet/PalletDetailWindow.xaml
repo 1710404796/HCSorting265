@@ -1,0 +1,17 @@
+﻿<Window x:Class="HBYWCZP2024.View.PalletDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HBYWCZP2024.View"
+        mc:Ignorable="d"
+          xmlns:ui="http://schemas.modernwpf.com/2019"
+ui:WindowHelper.UseModernWindowStyle="True"
+        Title="PalletDetailWindow" Height="850" Width="800">
+    <Grid>
+        <ScrollViewer>
+            <local:PalletView x:Name="palletv"></local:PalletView>
+
+        </ScrollViewer>
+    </Grid>
+</Window>

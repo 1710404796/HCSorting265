@@ -7,7 +7,9 @@
     {
         报警日志,
         WCS交互日志,
-        工位状态
+        工位状态,
+        拆盘日志,
+        组盘日志
     }
 
     public enum RoleEnum

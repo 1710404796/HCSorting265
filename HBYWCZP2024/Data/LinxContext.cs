@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HBYWCZP2024.Data.Models;
 
 namespace HBYWCZP2024.Data
 {
@@ -39,6 +40,7 @@ namespace HBYWCZP2024.Data
         public DbSet<WarningLog> WarningLogs { get; set; }
 
         public DbSet<WcsLog> WcsLogs { get; set; }
-
+        public DbSet<OKNGCnt> OKNGCnts { get; set; }
+        public DbSet<PalletLog> PalletLogs { get; set; }
     }
 }
