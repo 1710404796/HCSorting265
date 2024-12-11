@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Queries
 {
-    public record BattleLevelQuery(string Key, Pallet Pallet) : IRequest<IEnumerable<BattleWithLevel>>;
+    public record BattleLevelQuery(string Key, Pallet Pallet) : IRequest<Pallet>;
     // 直接返回level吧
 
     public record Pallet(string PalletCode, ImmutableArray<Channel> Channels);
 
-    public record Channel (int ChannelId, Option<BattleWithLevel> BattleWithLevel);
+    public record Channel (int ChannelId, Option<BatteryWithLevel> BattleWithLevel);
 
-    public record BattleWithLevel(string Code, Option<BatteryLevel> Level);
+    public record BatteryWithLevel(string Code, Option<BatteryLevel> Level);
 }

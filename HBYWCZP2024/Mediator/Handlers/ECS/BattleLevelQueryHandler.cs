@@ -1,17 +1,19 @@
 ﻿using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Service;
+using HBYWCZP2024.Utils;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class BattleLevelQueryHandler(HBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<BattleLevelQuery, IEnumerable<BattleWithLevel>>
+    internal class BattleLevelQueryHandler(HBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<BattleLevelQuery, Pallet>
     {
-        public Task<IEnumerable<BattleWithLevel>> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
+        public async Task<Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
 
@@ -20,15 +22,31 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 ContainerCode = request.Pallet.PalletCode,
                 ContainerCellInfos = request.Pallet.Channels.Select(x => new ContainerCellInfo()
                 {
-                    Identification = x.ChannelId.ToString(),
-                    Location = x.BattleWithLevel.Match(
+                    Location = x.ChannelId.ToString(),
+                    Identification = x.BattleWithLevel.Match(
                         Some: battleWithLevel => battleWithLevel.Code,
                         None: string.Empty
-                    )
+                    ),
+                    
                 }).ToArray()
             };
 
-            throw new NotImplementedException();
+            var checkMaterialResponse = await hBECSService.MesService.CheckMaterialLevel(checkMaterialRequest);
+
+            if (checkMaterialResponse == null)
+            {
+                throw new Exception("MES通讯异常");
+            }
+            var channels = checkMaterialResponse.Rows.Select(x => 
+            new Channel(int.Parse(x.Location), 
+                Some(
+                    new BatteryWithLevel
+                    (x.Identification, Some(CZPUtils.GetLevelFromMes(x.Grade)))
+                )
+                ));
+
+
+            return request.Pallet with { Channels = channels.ToImmutableArray() };
         }
     }
 }

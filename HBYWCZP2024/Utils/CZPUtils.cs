@@ -16,6 +16,38 @@ namespace HBYWCZP2024.Utils
 {
     public static class CZPUtils
     {
+        public static BatteryLevel GetLevelFromMes(string level) => level switch
+        {
+            "OK" => BatteryLevel.OK,
+            "NG" => BatteryLevel.NG,
+            "A" => BatteryLevel.A,
+            "B" => BatteryLevel.B,
+            "C" => BatteryLevel.C,
+            "D" => BatteryLevel.D,
+            "E" => BatteryLevel.E,
+            "F" => BatteryLevel.F,
+            "FC" => BatteryLevel.REWORK,
+            "Fake" => BatteryLevel.Fake,
+            _ => BatteryLevel.EMPTY,
+        };
+
+        public static int GetPlcBatteryLevelCode(BatteryLevel level) => level switch
+        {
+            BatteryLevel.OK => 1,
+            BatteryLevel.NG => 2,
+            BatteryLevel.Fake => 3,
+            BatteryLevel.REWORK => 4,
+            BatteryLevel.EMPTY => 5,
+            BatteryLevel.A => 7,
+            BatteryLevel.B => 8,
+            BatteryLevel.C => 9,
+            BatteryLevel.D => 10,
+            BatteryLevel.E => 11,
+            BatteryLevel.F => 12,
+            _ => 0,
+        };
+
+
         public static Pallet? GetPalletByIndex(string name, int idx)
         {
             if (idx < 0) return null;
