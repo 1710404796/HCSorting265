@@ -125,6 +125,13 @@ namespace HBYWCZP2024
                          services.AddSingleton<RichTextBox>();
                          services.AddSingleton<CacheService>();
 
+                         services.AddTransient<PalletChaiLogView>();
+                         services.AddSingleton<PalletChaiLogViewModel>();
+
+                         services.AddTransient<PalletLogView>();
+                         services.AddSingleton<PalletLogViewModel>();
+                         services.AddSingleton<CacheService>();
+
 
 
                          services.AddTransient<StationSettingView>();

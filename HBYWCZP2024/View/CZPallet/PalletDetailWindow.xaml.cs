@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HBYWCZP2024.Data.Models;
 
-namespace HBYWCZP2024.View
+namespace HBYWCZP2024.View.CZPallet
 {
     /// <summary>
     /// PalletDetailWindow.xaml 的交互逻辑

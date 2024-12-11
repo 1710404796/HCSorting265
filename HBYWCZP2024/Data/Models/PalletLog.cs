@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models.CZPallet;
+﻿using HBYWCZP2024.Models;
+using HBYWCZP2024.Models.CZPallet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -120,6 +120,9 @@
   <data name="SoftwareTitle" xml:space="preserve">
     <value>Robot Arm HMI</value>
   </data>
+  <data name="SoftwareTitle1" xml:space="preserve">
+    <value>Robot Arm HMI</value>
+  </data>
   <data name="PLCStatus" xml:space="preserve">
     <value>PLC Operating Status:</value>
   </data>
@@ -411,8 +414,8 @@
   <data name="Incoming" xml:space="preserve">
     <value>Incoming</value>
   </data>
-  <data name="ClearAllWorkstations" xml:space="preserve">
-    <value>Clear All Workstations</value>
+  <data name="ClearAllWorkstationsdata" xml:space="preserve">
+    <value>Clear All Workstations data</value>
   </data>
   <data name="RequestInterface" xml:space="preserve">
     <value>Request Interface</value>
@@ -563,5 +566,20 @@
   </data>
   <data name="Add" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="ApplyForFakeBatteries" xml:space="preserve">
+    <value>Apply for fake batteries</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="DisassemblyLog" xml:space="preserve">
+    <value>DisassemblyLog</value>
+  </data>
+  <data name="DeriveCVS" xml:space="preserve">
+    <value>DeriveCVS</value>
+  </data>
+  <data name="SaveAndReset" xml:space="preserve">
+    <value>Save and Reset</value>
   </data>
 </root>

@@ -22,7 +22,7 @@ namespace HBYWCZP2024.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace HBYWCZP2024.Properties {
         ///   返回此类使用的缓存的 ResourceManager 实例。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HBYWCZP2024.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace HBYWCZP2024.Properties {
         ///   使用此强类型资源类的所有资源查找执行重写。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 放弃 的本地化字符串。
         /// </summary>
-        internal static string Abandon {
+        public static string Abandon {
             get {
                 return ResourceManager.GetString("Abandon", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 权限管理 的本地化字符串。
         /// </summary>
-        internal static string AccessControl {
+        public static string AccessControl {
             get {
                 return ResourceManager.GetString("AccessControl", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 添加 的本地化字符串。
         /// </summary>
-        internal static string Add {
+        public static string Add {
             get {
                 return ResourceManager.GetString("Add", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 添加用户 的本地化字符串。
         /// </summary>
-        internal static string AddUser {
+        public static string AddUser {
             get {
                 return ResourceManager.GetString("AddUser", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 管理员 的本地化字符串。
         /// </summary>
-        internal static string Administrator {
+        public static string Administrator {
             get {
                 return ResourceManager.GetString("Administrator", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 警报信息 的本地化字符串。
         /// </summary>
-        internal static string AlarmInformation {
+        public static string AlarmInformation {
             get {
                 return ResourceManager.GetString("AlarmInformation", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 报警日志 的本地化字符串。
         /// </summary>
-        internal static string AlarmLog {
+        public static string AlarmLog {
             get {
                 return ResourceManager.GetString("AlarmLog", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 警报时间 的本地化字符串。
         /// </summary>
-        internal static string AlarmTime {
+        public static string AlarmTime {
             get {
                 return ResourceManager.GetString("AlarmTime", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 警报类型 的本地化字符串。
         /// </summary>
-        internal static string AlarmType {
+        public static string AlarmType {
             get {
                 return ResourceManager.GetString("AlarmType", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 全部 的本地化字符串。
         /// </summary>
-        internal static string All {
+        public static string All {
             get {
                 return ResourceManager.GetString("All", resourceCulture);
             }
@@ -153,16 +153,25 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 所有抓取位置数据均为空 的本地化字符串。
         /// </summary>
-        internal static string AllGrabbingPositionDataIsEmpty {
+        public static string AllGrabbingPositionDataIsEmpty {
             get {
                 return ResourceManager.GetString("AllGrabbingPositionDataIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 申请假点芯 的本地化字符串。
+        /// </summary>
+        public static string ApplyForFakeBatteries {
+            get {
+                return ResourceManager.GetString("ApplyForFakeBatteries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 确认要删除此记录? 的本地化字符串。
         /// </summary>
-        internal static string AreYouSureYouWantToDeleteThisRecord {
+        public static string AreYouSureYouWantToDeleteThisRecord {
             get {
                 return ResourceManager.GetString("AreYouSureYouWantToDeleteThisRecord", resourceCulture);
             }
@@ -171,7 +180,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 组盘 的本地化字符串。
         /// </summary>
-        internal static string Assembly {
+        public static string Assembly {
             get {
                 return ResourceManager.GetString("Assembly", resourceCulture);
             }
@@ -180,7 +189,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 组盘完成 的本地化字符串。
         /// </summary>
-        internal static string AssemblyCompleted {
+        public static string AssemblyCompleted {
             get {
                 return ResourceManager.GetString("AssemblyCompleted", resourceCulture);
             }
@@ -189,7 +198,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 组盘确认 的本地化字符串。
         /// </summary>
-        internal static string AssemblyConfirmation {
+        public static string AssemblyConfirmation {
             get {
                 return ResourceManager.GetString("AssemblyConfirmation", resourceCulture);
             }
@@ -198,7 +207,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 组盘日志 的本地化字符串。
         /// </summary>
-        internal static string AssemblyLog {
+        public static string AssemblyLog {
             get {
                 return ResourceManager.GetString("AssemblyLog", resourceCulture);
             }
@@ -207,7 +216,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 组盘时间 的本地化字符串。
         /// </summary>
-        internal static string AssemblyTime {
+        public static string AssemblyTime {
             get {
                 return ResourceManager.GetString("AssemblyTime", resourceCulture);
             }
@@ -216,7 +225,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 试图显示null托盘 的本地化字符串。
         /// </summary>
-        internal static string AttemptingToDisplayNullTray {
+        public static string AttemptingToDisplayNullTray {
             get {
                 return ResourceManager.GetString("AttemptingToDisplayNullTray", resourceCulture);
             }
@@ -225,7 +234,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 条码 的本地化字符串。
         /// </summary>
-        internal static string Barcode {
+        public static string Barcode {
             get {
                 return ResourceManager.GetString("Barcode", resourceCulture);
             }
@@ -234,7 +243,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 条码为空 的本地化字符串。
         /// </summary>
-        internal static string BarcodeIsEmpty {
+        public static string BarcodeIsEmpty {
             get {
                 return ResourceManager.GetString("BarcodeIsEmpty", resourceCulture);
             }
@@ -243,7 +252,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 条码规则表 的本地化字符串。
         /// </summary>
-        internal static string BarcodeRulesTable {
+        public static string BarcodeRulesTable {
             get {
                 return ResourceManager.GetString("BarcodeRulesTable", resourceCulture);
             }
@@ -252,7 +261,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 扫码枪IP 的本地化字符串。
         /// </summary>
-        internal static string BarcodeScannerIP {
+        public static string BarcodeScannerIP {
             get {
                 return ResourceManager.GetString("BarcodeScannerIP", resourceCulture);
             }
@@ -261,7 +270,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 取消 的本地化字符串。
         /// </summary>
-        internal static string Cancel {
+        public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
@@ -270,7 +279,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 抓取工位 的本地化字符串。
         /// </summary>
-        internal static string CaptureWorkstation {
+        public static string CaptureWorkstation {
             get {
                 return ResourceManager.GetString("CaptureWorkstation", resourceCulture);
             }
@@ -279,7 +288,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 电芯计数 的本地化字符串。
         /// </summary>
-        internal static string CellCount {
+        public static string CellCount {
             get {
                 return ResourceManager.GetString("CellCount", resourceCulture);
             }
@@ -288,7 +297,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 电芯正则 的本地化字符串。
         /// </summary>
-        internal static string CellRegex {
+        public static string CellRegex {
             get {
                 return ResourceManager.GetString("CellRegex", resourceCulture);
             }
@@ -297,7 +306,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 电芯规则名 的本地化字符串。
         /// </summary>
-        internal static string CellRuleName {
+        public static string CellRuleName {
             get {
                 return ResourceManager.GetString("CellRuleName", resourceCulture);
             }
@@ -306,7 +315,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 通道 的本地化字符串。
         /// </summary>
-        internal static string Channel {
+        public static string Channel {
             get {
                 return ResourceManager.GetString("Channel", resourceCulture);
             }
@@ -315,34 +324,43 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 通道数 的本地化字符串。
         /// </summary>
-        internal static string ChannelCount {
+        public static string ChannelCount {
             get {
                 return ResourceManager.GetString("ChannelCount", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 勾选 的本地化字符串。
+        /// </summary>
+        public static string Check {
+            get {
+                return ResourceManager.GetString("Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 清空 的本地化字符串。
         /// </summary>
-        internal static string Clear {
+        public static string Clear {
             get {
                 return ResourceManager.GetString("Clear", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 清空所有工位 的本地化字符串。
+        ///   查找类似 清空所有工位数据 的本地化字符串。
         /// </summary>
-        internal static string ClearAllWorkstations {
+        public static string ClearAllWorkstationsdata {
             get {
-                return ResourceManager.GetString("ClearAllWorkstations", resourceCulture);
+                return ResourceManager.GetString("ClearAllWorkstationsdata", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 电芯条码与本地对比 的本地化字符串。
         /// </summary>
-        internal static string CompareCellBarcodeWithLocalData {
+        public static string CompareCellBarcodeWithLocalData {
             get {
                 return ResourceManager.GetString("CompareCellBarcodeWithLocalData", resourceCulture);
             }
@@ -351,7 +369,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 配置 的本地化字符串。
         /// </summary>
-        internal static string Configure {
+        public static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
             }
@@ -360,7 +378,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 配置电芯规则 的本地化字符串。
         /// </summary>
-        internal static string ConfigureCellRules {
+        public static string ConfigureCellRules {
             get {
                 return ResourceManager.GetString("ConfigureCellRules", resourceCulture);
             }
@@ -369,7 +387,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 新建电芯条码规则 的本地化字符串。
         /// </summary>
-        internal static string CreateNewCellBarcodeRule {
+        public static string CreateNewCellBarcodeRule {
             get {
                 return ResourceManager.GetString("CreateNewCellBarcodeRule", resourceCulture);
             }
@@ -378,7 +396,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 创建新规则 的本地化字符串。
         /// </summary>
-        internal static string CreateNewRule {
+        public static string CreateNewRule {
             get {
                 return ResourceManager.GetString("CreateNewRule", resourceCulture);
             }
@@ -387,7 +405,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 新建托盘条码规则 的本地化字符串。
         /// </summary>
-        internal static string CreateNewTrayBarcodeRule {
+        public static string CreateNewTrayBarcodeRule {
             get {
                 return ResourceManager.GetString("CreateNewTrayBarcodeRule", resourceCulture);
             }
@@ -396,7 +414,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 当前操作用户 的本地化字符串。
         /// </summary>
-        internal static string CurrentOperator {
+        public static string CurrentOperator {
             get {
                 return ResourceManager.GetString("CurrentOperator", resourceCulture);
             }
@@ -405,7 +423,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 数据记录确认 的本地化字符串。
         /// </summary>
-        internal static string DataRecordConfirmation {
+        public static string DataRecordConfirmation {
             get {
                 return ResourceManager.GetString("DataRecordConfirmation", resourceCulture);
             }
@@ -414,7 +432,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 删除 的本地化字符串。
         /// </summary>
-        internal static string Delete {
+        public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
@@ -423,7 +441,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 删除确认 的本地化字符串。
         /// </summary>
-        internal static string DeleteConfirmation {
+        public static string DeleteConfirmation {
             get {
                 return ResourceManager.GetString("DeleteConfirmation", resourceCulture);
             }
@@ -432,16 +450,25 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 删除用户 的本地化字符串。
         /// </summary>
-        internal static string DeleteUser {
+        public static string DeleteUser {
             get {
                 return ResourceManager.GetString("DeleteUser", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 导出为CVS 的本地化字符串。
+        /// </summary>
+        public static string DeriveCVS {
+            get {
+                return ResourceManager.GetString("DeriveCVS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 设备编号 的本地化字符串。
         /// </summary>
-        internal static string DeviceNumber {
+        public static string DeviceNumber {
             get {
                 return ResourceManager.GetString("DeviceNumber", resourceCulture);
             }
@@ -450,7 +477,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 屏蔽扫码器 的本地化字符串。
         /// </summary>
-        internal static string DisableBarcodeScanner {
+        public static string DisableBarcodeScanner {
             get {
                 return ResourceManager.GetString("DisableBarcodeScanner", resourceCulture);
             }
@@ -459,7 +486,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 拆盘 的本地化字符串。
         /// </summary>
-        internal static string Disassembly {
+        public static string Disassembly {
             get {
                 return ResourceManager.GetString("Disassembly", resourceCulture);
             }
@@ -468,16 +495,25 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 拆盘完成 的本地化字符串。
         /// </summary>
-        internal static string DisassemblyCompleted {
+        public static string DisassemblyCompleted {
             get {
                 return ResourceManager.GetString("DisassemblyCompleted", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 拆盘日志 的本地化字符串。
+        /// </summary>
+        public static string DisassemblyLog {
+            get {
+                return ResourceManager.GetString("DisassemblyLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 拆盘开始 的本地化字符串。
         /// </summary>
-        internal static string DisassemblyStarted {
+        public static string DisassemblyStarted {
             get {
                 return ResourceManager.GetString("DisassemblyStarted", resourceCulture);
             }
@@ -486,7 +522,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 调度号 的本地化字符串。
         /// </summary>
-        internal static string DispatchNumber {
+        public static string DispatchNumber {
             get {
                 return ResourceManager.GetString("DispatchNumber", resourceCulture);
             }
@@ -495,7 +531,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 调度号工位号表 的本地化字符串。
         /// </summary>
-        internal static string DispatchNumberAndWorkstationNumberTable {
+        public static string DispatchNumberAndWorkstationNumberTable {
             get {
                 return ResourceManager.GetString("DispatchNumberAndWorkstationNumberTable", resourceCulture);
             }
@@ -504,7 +540,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 不存在 的本地化字符串。
         /// </summary>
-        internal static string DoesNotExist {
+        public static string DoesNotExist {
             get {
                 return ResourceManager.GetString("DoesNotExist", resourceCulture);
             }
@@ -513,7 +549,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 是否要记录本次数据并重置 的本地化字符串。
         /// </summary>
-        internal static string DoYouWantToSaveThisDataAndReset {
+        public static string DoYouWantToSaveThisDataAndReset {
             get {
                 return ResourceManager.GetString("DoYouWantToSaveThisDataAndReset", resourceCulture);
             }
@@ -522,7 +558,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 是否要开始人工绑定盘流程？ 的本地化字符串。
         /// </summary>
-        internal static string DoYouWantToStartTheManualBindingProcess {
+        public static string DoYouWantToStartTheManualBindingProcess {
             get {
                 return ResourceManager.GetString("DoYouWantToStartTheManualBindingProcess", resourceCulture);
             }
@@ -531,7 +567,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 是否启用 的本地化字符串。
         /// </summary>
-        internal static string Enable {
+        public static string Enable {
             get {
                 return ResourceManager.GetString("Enable", resourceCulture);
             }
@@ -540,7 +576,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 访问接口出错, 结果为null 的本地化字符串。
         /// </summary>
-        internal static string ErrorAccessingInterfaceResultIsNull {
+        public static string ErrorAccessingInterfaceResultIsNull {
             get {
                 return ResourceManager.GetString("ErrorAccessingInterfaceResultIsNull", resourceCulture);
             }
@@ -549,7 +585,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 写入报警发生错误 的本地化字符串。
         /// </summary>
-        internal static string ErrorOccurredWhileWritingAlarm {
+        public static string ErrorOccurredWhileWritingAlarm {
             get {
                 return ResourceManager.GetString("ErrorOccurredWhileWritingAlarm", resourceCulture);
             }
@@ -558,7 +594,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 异常排出 的本地化字符串。
         /// </summary>
-        internal static string ExceptionEjection {
+        public static string ExceptionEjection {
             get {
                 return ResourceManager.GetString("ExceptionEjection", resourceCulture);
             }
@@ -567,7 +603,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 异常口 的本地化字符串。
         /// </summary>
-        internal static string ExceptionPort {
+        public static string ExceptionPort {
             get {
                 return ResourceManager.GetString("ExceptionPort", resourceCulture);
             }
@@ -576,7 +612,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 正在执行 的本地化字符串。
         /// </summary>
-        internal static string Executing {
+        public static string Executing {
             get {
                 return ResourceManager.GetString("Executing", resourceCulture);
             }
@@ -585,7 +621,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 写入报警日志失败 的本地化字符串。
         /// </summary>
-        internal static string FailedToWriteAlarmLog {
+        public static string FailedToWriteAlarmLog {
             get {
                 return ResourceManager.GetString("FailedToWriteAlarmLog", resourceCulture);
             }
@@ -594,7 +630,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 假电芯 的本地化字符串。
         /// </summary>
-        internal static string FakeCell {
+        public static string FakeCell {
             get {
                 return ResourceManager.GetString("FakeCell", resourceCulture);
             }
@@ -603,7 +639,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 强制写入条码 的本地化字符串。
         /// </summary>
-        internal static string ForceWriteBarcode {
+        public static string ForceWriteBarcode {
             get {
                 return ResourceManager.GetString("ForceWriteBarcode", resourceCulture);
             }
@@ -612,7 +648,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 夹爪状态为空，未给出夹爪状态 的本地化字符串。
         /// </summary>
-        internal static string GripperStatusIsEmpty {
+        public static string GripperStatusIsEmpty {
             get {
                 return ResourceManager.GetString("GripperStatusIsEmpty", resourceCulture);
             }
@@ -621,7 +657,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 当前没有此权限 的本地化字符串。
         /// </summary>
-        internal static string I_currently_do_not_have_this_permission {
+        public static string I_currently_do_not_have_this_permission {
             get {
                 return ResourceManager.GetString("I currently do not have this permission", resourceCulture);
             }
@@ -630,7 +666,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 身份 的本地化字符串。
         /// </summary>
-        internal static string Identity {
+        public static string Identity {
             get {
                 return ResourceManager.GetString("Identity", resourceCulture);
             }
@@ -639,7 +675,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 传入 的本地化字符串。
         /// </summary>
-        internal static string Incoming {
+        public static string Incoming {
             get {
                 return ResourceManager.GetString("Incoming", resourceCulture);
             }
@@ -648,7 +684,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 交互日志 的本地化字符串。
         /// </summary>
-        internal static string InteractionLog {
+        public static string InteractionLog {
             get {
                 return ResourceManager.GetString("InteractionLog", resourceCulture);
             }
@@ -657,7 +693,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 内部编号 的本地化字符串。
         /// </summary>
-        internal static string InternalNumber {
+        public static string InternalNumber {
             get {
                 return ResourceManager.GetString("InternalNumber", resourceCulture);
             }
@@ -666,7 +702,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 是否有背景 的本地化字符串。
         /// </summary>
-        internal static string IsThereABackground {
+        public static string IsThereABackground {
             get {
                 return ResourceManager.GetString("IsThereABackground", resourceCulture);
             }
@@ -675,7 +711,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 本地 的本地化字符串。
         /// </summary>
-        internal static string Local {
+        public static string Local {
             get {
                 return ResourceManager.GetString("Local", resourceCulture);
             }
@@ -684,7 +720,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 日志清理时间(天) 的本地化字符串。
         /// </summary>
-        internal static string LogCleanupTimeDays {
+        public static string LogCleanupTimeDays {
             get {
                 return ResourceManager.GetString("LogCleanupTimeDays", resourceCulture);
             }
@@ -693,7 +729,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 登陆 的本地化字符串。
         /// </summary>
-        internal static string Login {
+        public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
@@ -702,7 +738,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 登出 的本地化字符串。
         /// </summary>
-        internal static string Logout {
+        public static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
             }
@@ -711,7 +747,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 日志窗口 的本地化字符串。
         /// </summary>
-        internal static string LogWindow {
+        public static string LogWindow {
             get {
                 return ResourceManager.GetString("LogWindow", resourceCulture);
             }
@@ -720,7 +756,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 ME 工程师 的本地化字符串。
         /// </summary>
-        internal static string MEEngineer {
+        public static string MEEngineer {
             get {
                 return ResourceManager.GetString("MEEngineer", resourceCulture);
             }
@@ -729,7 +765,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 修改失败 的本地化字符串。
         /// </summary>
-        internal static string ModificationFailed {
+        public static string ModificationFailed {
             get {
                 return ResourceManager.GetString("ModificationFailed", resourceCulture);
             }
@@ -738,7 +774,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 修改成功 的本地化字符串。
         /// </summary>
-        internal static string ModificationSuccessful {
+        public static string ModificationSuccessful {
             get {
                 return ResourceManager.GetString("ModificationSuccessful", resourceCulture);
             }
@@ -747,7 +783,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 修改通道数据 的本地化字符串。
         /// </summary>
-        internal static string ModifyChannelData {
+        public static string ModifyChannelData {
             get {
                 return ResourceManager.GetString("ModifyChannelData", resourceCulture);
             }
@@ -756,7 +792,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 修改通道信息 的本地化字符串。
         /// </summary>
-        internal static string ModifyChannelInformation {
+        public static string ModifyChannelInformation {
             get {
                 return ResourceManager.GetString("ModifyChannelInformation", resourceCulture);
             }
@@ -765,7 +801,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 名称 的本地化字符串。
         /// </summary>
-        internal static string Name {
+        public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
@@ -774,7 +810,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 当前没有权限访问此页面 的本地化字符串。
         /// </summary>
-        internal static string NoPermission {
+        public static string NoPermission {
             get {
                 return ResourceManager.GetString("NoPermission", resourceCulture);
             }
@@ -783,7 +819,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 未找到 的本地化字符串。
         /// </summary>
-        internal static string NotFound {
+        public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
@@ -792,7 +828,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 OPN 操作员 的本地化字符串。
         /// </summary>
-        internal static string OPNOperator {
+        public static string OPNOperator {
             get {
                 return ResourceManager.GetString("OPNOperator", resourceCulture);
             }
@@ -801,7 +837,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 OPN 技师 的本地化字符串。
         /// </summary>
-        internal static string OPNTechnician {
+        public static string OPNTechnician {
             get {
                 return ResourceManager.GetString("OPNTechnician", resourceCulture);
             }
@@ -810,7 +846,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 超出范围 的本地化字符串。
         /// </summary>
-        internal static string OutOfRange {
+        public static string OutOfRange {
             get {
                 return ResourceManager.GetString("OutOfRange", resourceCulture);
             }
@@ -819,7 +855,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 工位整体状态 的本地化字符串。
         /// </summary>
-        internal static string OverallWorkstationStatus {
+        public static string OverallWorkstationStatus {
             get {
                 return ResourceManager.GetString("OverallWorkstationStatus", resourceCulture);
             }
@@ -828,7 +864,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 程序参数设定 的本地化字符串。
         /// </summary>
-        internal static string ParameterSettings {
+        public static string ParameterSettings {
             get {
                 return ResourceManager.GetString("ParameterSettings", resourceCulture);
             }
@@ -837,7 +873,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 PE 工程师 的本地化字符串。
         /// </summary>
-        internal static string PEEngineer {
+        public static string PEEngineer {
             get {
                 return ResourceManager.GetString("PEEngineer", resourceCulture);
             }
@@ -846,7 +882,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 权限 的本地化字符串。
         /// </summary>
-        internal static string Permissions {
+        public static string Permissions {
             get {
                 return ResourceManager.GetString("Permissions", resourceCulture);
             }
@@ -855,7 +891,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 权限表配置 的本地化字符串。
         /// </summary>
-        internal static string PermissionsTableConfiguration {
+        public static string PermissionsTableConfiguration {
             get {
                 return ResourceManager.GetString("PermissionsTableConfiguration", resourceCulture);
             }
@@ -864,7 +900,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 放置工位 的本地化字符串。
         /// </summary>
-        internal static string PlaceWorkstation {
+        public static string PlaceWorkstation {
             get {
                 return ResourceManager.GetString("PlaceWorkstation", resourceCulture);
             }
@@ -873,7 +909,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 PLC运行状态 的本地化字符串。
         /// </summary>
-        internal static string PLCStatus {
+        public static string PLCStatus {
             get {
                 return ResourceManager.GetString("PLCStatus", resourceCulture);
             }
@@ -882,7 +918,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请重启软件以生效 的本地化字符串。
         /// </summary>
-        internal static string PleaseRestartTheSoftwareForTheChangesToTakeEffect {
+        public static string PleaseRestartTheSoftwareForTheChangesToTakeEffect {
             get {
                 return ResourceManager.GetString("PleaseRestartTheSoftwareForTheChangesToTakeEffect", resourceCulture);
             }
@@ -891,7 +927,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 工序号 的本地化字符串。
         /// </summary>
-        internal static string ProcessNumber {
+        public static string ProcessNumber {
             get {
                 return ResourceManager.GetString("ProcessNumber", resourceCulture);
             }
@@ -900,7 +936,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 程序已锁定... 请点击屏幕后登录或刷卡解锁 的本地化字符串。
         /// </summary>
-        internal static string ProgramIsLocked {
+        public static string ProgramIsLocked {
             get {
                 return ResourceManager.GetString("ProgramIsLocked", resourceCulture);
             }
@@ -909,7 +945,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 提示 的本地化字符串。
         /// </summary>
-        internal static string Prompt {
+        public static string Prompt {
             get {
                 return ResourceManager.GetString("Prompt", resourceCulture);
             }
@@ -918,7 +954,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 拉带入线校验 的本地化字符串。
         /// </summary>
-        internal static string PullBeltInLineVerification {
+        public static string PullBeltInLineVerification {
             get {
                 return ResourceManager.GetString("PullBeltInLineVerification", resourceCulture);
             }
@@ -927,7 +963,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 查询 的本地化字符串。
         /// </summary>
-        internal static string Query {
+        public static string Query {
             get {
                 return ResourceManager.GetString("Query", resourceCulture);
             }
@@ -936,7 +972,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 记录时间 的本地化字符串。
         /// </summary>
-        internal static string RecordTime {
+        public static string RecordTime {
             get {
                 return ResourceManager.GetString("RecordTime", resourceCulture);
             }
@@ -945,7 +981,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 正则表达式 的本地化字符串。
         /// </summary>
-        internal static string RegularExpression {
+        public static string RegularExpression {
             get {
                 return ResourceManager.GetString("RegularExpression", resourceCulture);
             }
@@ -954,7 +990,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 重新匹配PLC节点 的本地化字符串。
         /// </summary>
-        internal static string RematchPLCNodes {
+        public static string RematchPLCNodes {
             get {
                 return ResourceManager.GetString("RematchPLCNodes", resourceCulture);
             }
@@ -963,7 +999,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 申请组盘信息 的本地化字符串。
         /// </summary>
-        internal static string RequestAssemblyInformation {
+        public static string RequestAssemblyInformation {
             get {
                 return ResourceManager.GetString("RequestAssemblyInformation", resourceCulture);
             }
@@ -972,7 +1008,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请求数据 的本地化字符串。
         /// </summary>
-        internal static string RequestData {
+        public static string RequestData {
             get {
                 return ResourceManager.GetString("RequestData", resourceCulture);
             }
@@ -981,7 +1017,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 申请假电芯 的本地化字符串。
         /// </summary>
-        internal static string RequestFakeCell {
+        public static string RequestFakeCell {
             get {
                 return ResourceManager.GetString("RequestFakeCell", resourceCulture);
             }
@@ -990,7 +1026,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请求接口 的本地化字符串。
         /// </summary>
-        internal static string RequestInterface {
+        public static string RequestInterface {
             get {
                 return ResourceManager.GetString("RequestInterface", resourceCulture);
             }
@@ -999,7 +1035,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请求时间 的本地化字符串。
         /// </summary>
-        internal static string RequestTime {
+        public static string RequestTime {
             get {
                 return ResourceManager.GetString("RequestTime", resourceCulture);
             }
@@ -1008,7 +1044,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 重新扫码 的本地化字符串。
         /// </summary>
-        internal static string Rescan {
+        public static string Rescan {
             get {
                 return ResourceManager.GetString("Rescan", resourceCulture);
             }
@@ -1017,7 +1053,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请尝试重扫或手动输入托盘条码后点击确认继续，或点击取消终止任务。 的本地化字符串。
         /// </summary>
-        internal static string RescanOrManualEntry {
+        public static string RescanOrManualEntry {
             get {
                 return ResourceManager.GetString("RescanOrManualEntry", resourceCulture);
             }
@@ -1026,7 +1062,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 回复数据 的本地化字符串。
         /// </summary>
-        internal static string ResponseData {
+        public static string ResponseData {
             get {
                 return ResourceManager.GetString("ResponseData", resourceCulture);
             }
@@ -1035,7 +1071,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 响应时间 的本地化字符串。
         /// </summary>
-        internal static string ResponseTime {
+        public static string ResponseTime {
             get {
                 return ResourceManager.GetString("ResponseTime", resourceCulture);
             }
@@ -1044,7 +1080,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 请重启软件使语言设置生效 的本地化字符串。
         /// </summary>
-        internal static string RestartTheSoftwareForTheLanguage {
+        public static string RestartTheSoftwareForTheLanguage {
             get {
                 return ResourceManager.GetString("RestartTheSoftwareForTheLanguage", resourceCulture);
             }
@@ -1053,7 +1089,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 返回 的本地化字符串。
         /// </summary>
-        internal static string Return {
+        public static string Return {
             get {
                 return ResourceManager.GetString("Return", resourceCulture);
             }
@@ -1062,7 +1098,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 退盘假电芯 的本地化字符串。
         /// </summary>
-        internal static string ReturnFakeCell {
+        public static string ReturnFakeCell {
             get {
                 return ResourceManager.GetString("ReturnFakeCell", resourceCulture);
             }
@@ -1071,7 +1107,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 规则名称 的本地化字符串。
         /// </summary>
-        internal static string RuleName {
+        public static string RuleName {
             get {
                 return ResourceManager.GetString("RuleName", resourceCulture);
             }
@@ -1080,7 +1116,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 运行 的本地化字符串。
         /// </summary>
-        internal static string Run {
+        public static string Run {
             get {
                 return ResourceManager.GetString("Run", resourceCulture);
             }
@@ -1089,16 +1125,25 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 保存 的本地化字符串。
         /// </summary>
-        internal static string Save {
+        public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 保存并重置 的本地化字符串。
+        /// </summary>
+        public static string SaveAndReset {
+            get {
+                return ResourceManager.GetString("SaveAndReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 保存设定 的本地化字符串。
         /// </summary>
-        internal static string SaveSettings {
+        public static string SaveSettings {
             get {
                 return ResourceManager.GetString("SaveSettings", resourceCulture);
             }
@@ -1107,7 +1152,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 保存成功 的本地化字符串。
         /// </summary>
-        internal static string SaveSuccessful {
+        public static string SaveSuccessful {
             get {
                 return ResourceManager.GetString("SaveSuccessful", resourceCulture);
             }
@@ -1116,7 +1161,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 扫码NG 的本地化字符串。
         /// </summary>
-        internal static string ScanNG {
+        public static string ScanNG {
             get {
                 return ResourceManager.GetString("ScanNG", resourceCulture);
             }
@@ -1125,7 +1170,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 本程序一次只能运行一个实例 的本地化字符串。
         /// </summary>
-        internal static string SingleInstance {
+        public static string SingleInstance {
             get {
                 return ResourceManager.GetString("SingleInstance", resourceCulture);
             }
@@ -1134,7 +1179,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 单次放置完成 的本地化字符串。
         /// </summary>
-        internal static string SinglePlacementCompleted {
+        public static string SinglePlacementCompleted {
             get {
                 return ResourceManager.GetString("SinglePlacementCompleted", resourceCulture);
             }
@@ -1143,16 +1188,25 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 机械手上位机 的本地化字符串。
         /// </summary>
-        internal static string SoftwareTitle {
+        public static string SoftwareTitle {
             get {
                 return ResourceManager.GetString("SoftwareTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 机械手上位机 的本地化字符串。
+        /// </summary>
+        public static string SoftwareTitle1 {
+            get {
+                return ResourceManager.GetString("SoftwareTitle1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 单机模式 的本地化字符串。
         /// </summary>
-        internal static string StandaloneMode {
+        public static string StandaloneMode {
             get {
                 return ResourceManager.GetString("StandaloneMode", resourceCulture);
             }
@@ -1161,7 +1215,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 停止 的本地化字符串。
         /// </summary>
-        internal static string Stop {
+        public static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
             }
@@ -1170,7 +1224,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 库位号 的本地化字符串。
         /// </summary>
-        internal static string StorageLocationNumber {
+        public static string StorageLocationNumber {
             get {
                 return ResourceManager.GetString("StorageLocationNumber", resourceCulture);
             }
@@ -1179,25 +1233,16 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 系统编号 的本地化字符串。
         /// </summary>
-        internal static string SystemNumber {
+        public static string SystemNumber {
             get {
                 return ResourceManager.GetString("SystemNumber", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 test 的本地化字符串。
-        /// </summary>
-        internal static string test1 {
-            get {
-                return ResourceManager.GetString("test1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 至 的本地化字符串。
         /// </summary>
-        internal static string To {
+        public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
             }
@@ -1206,7 +1251,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘 的本地化字符串。
         /// </summary>
-        internal static string Tray {
+        public static string Tray {
             get {
                 return ResourceManager.GetString("Tray", resourceCulture);
             }
@@ -1215,7 +1260,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘条码 的本地化字符串。
         /// </summary>
-        internal static string TrayBarcode {
+        public static string TrayBarcode {
             get {
                 return ResourceManager.GetString("TrayBarcode", resourceCulture);
             }
@@ -1224,7 +1269,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 未扫到托盘条码 的本地化字符串。
         /// </summary>
-        internal static string TrayBarcodeNotScanned {
+        public static string TrayBarcodeNotScanned {
             get {
                 return ResourceManager.GetString("TrayBarcodeNotScanned", resourceCulture);
             }
@@ -1233,7 +1278,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘通道数 的本地化字符串。
         /// </summary>
-        internal static string TrayChannelCount {
+        public static string TrayChannelCount {
             get {
                 return ResourceManager.GetString("TrayChannelCount", resourceCulture);
             }
@@ -1242,7 +1287,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘列数 的本地化字符串。
         /// </summary>
-        internal static string TrayColumnCount {
+        public static string TrayColumnCount {
             get {
                 return ResourceManager.GetString("TrayColumnCount", resourceCulture);
             }
@@ -1251,7 +1296,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘内容 的本地化字符串。
         /// </summary>
-        internal static string TrayContents {
+        public static string TrayContents {
             get {
                 return ResourceManager.GetString("TrayContents", resourceCulture);
             }
@@ -1260,7 +1305,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘离去任务 的本地化字符串。
         /// </summary>
-        internal static string TrayDepartureTask {
+        public static string TrayDepartureTask {
             get {
                 return ResourceManager.GetString("TrayDepartureTask", resourceCulture);
             }
@@ -1269,7 +1314,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘拆组盘开始任务 的本地化字符串。
         /// </summary>
-        internal static string TrayDisassemblyTaskStarted {
+        public static string TrayDisassemblyTaskStarted {
             get {
                 return ResourceManager.GetString("TrayDisassemblyTaskStarted", resourceCulture);
             }
@@ -1278,7 +1323,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘信息 的本地化字符串。
         /// </summary>
-        internal static string TrayInformation {
+        public static string TrayInformation {
             get {
                 return ResourceManager.GetString("TrayInformation", resourceCulture);
             }
@@ -1287,7 +1332,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘号 的本地化字符串。
         /// </summary>
-        internal static string TrayNumber {
+        public static string TrayNumber {
             get {
                 return ResourceManager.GetString("TrayNumber", resourceCulture);
             }
@@ -1296,7 +1341,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘到位任务 的本地化字符串。
         /// </summary>
-        internal static string TrayPositioningTask {
+        public static string TrayPositioningTask {
             get {
                 return ResourceManager.GetString("TrayPositioningTask", resourceCulture);
             }
@@ -1305,7 +1350,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘正则 的本地化字符串。
         /// </summary>
-        internal static string TrayRegex {
+        public static string TrayRegex {
             get {
                 return ResourceManager.GetString("TrayRegex", resourceCulture);
             }
@@ -1314,7 +1359,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘规则名 的本地化字符串。
         /// </summary>
-        internal static string TrayRuleName {
+        public static string TrayRuleName {
             get {
                 return ResourceManager.GetString("TrayRuleName", resourceCulture);
             }
@@ -1323,7 +1368,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 托盘类型 的本地化字符串。
         /// </summary>
-        internal static string TrayType {
+        public static string TrayType {
             get {
                 return ResourceManager.GetString("TrayType", resourceCulture);
             }
@@ -1332,7 +1377,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 上位机可能扫码有错或为其它类型托盘不允许通过。 的本地化字符串。
         /// </summary>
-        internal static string UpperMachineErrorOrInvalidTrayType {
+        public static string UpperMachineErrorOrInvalidTrayType {
             get {
                 return ResourceManager.GetString("UpperMachineErrorOrInvalidTrayType", resourceCulture);
             }
@@ -1341,7 +1386,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 用户名 的本地化字符串。
         /// </summary>
-        internal static string Username {
+        public static string Username {
             get {
                 return ResourceManager.GetString("Username", resourceCulture);
             }
@@ -1350,7 +1395,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 校验NG 的本地化字符串。
         /// </summary>
-        internal static string VerificationNG {
+        public static string VerificationNG {
             get {
                 return ResourceManager.GetString("VerificationNG", resourceCulture);
             }
@@ -1359,7 +1404,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 等待假电芯盘时间（s） 的本地化字符串。
         /// </summary>
-        internal static string WaitingTimeFake {
+        public static string WaitingTimeFake {
             get {
                 return ResourceManager.GetString("WaitingTimeFake", resourceCulture);
             }
@@ -1368,7 +1413,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 仓库编号 的本地化字符串。
         /// </summary>
-        internal static string WarehouseNumber {
+        public static string WarehouseNumber {
             get {
                 return ResourceManager.GetString("WarehouseNumber", resourceCulture);
             }
@@ -1377,7 +1422,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 工位 的本地化字符串。
         /// </summary>
-        internal static string Workstation {
+        public static string Workstation {
             get {
                 return ResourceManager.GetString("Workstation", resourceCulture);
             }
@@ -1386,7 +1431,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 未找到工位 的本地化字符串。
         /// </summary>
-        internal static string WorkstationNotFound {
+        public static string WorkstationNotFound {
             get {
                 return ResourceManager.GetString("WorkstationNotFound", resourceCulture);
             }
@@ -1395,7 +1440,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 工位号 的本地化字符串。
         /// </summary>
-        internal static string WorkstationNumber {
+        public static string WorkstationNumber {
             get {
                 return ResourceManager.GetString("WorkstationNumber", resourceCulture);
             }
@@ -1404,7 +1449,7 @@ namespace HBYWCZP2024.Properties {
         /// <summary>
         ///   查找类似 工位状态 的本地化字符串。
         /// </summary>
-        internal static string WorkstationStatus {
+        public static string WorkstationStatus {
             get {
                 return ResourceManager.GetString("WorkstationStatus", resourceCulture);
             }

@@ -33,8 +33,14 @@ namespace HBYWCZP2024.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<PalletLog>().OwnsMany(
+               poke => poke.BatteryInfo,
+               onNav =>
+               {
+                   onNav.ToJson();
 
+               });
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<WarningLog> WarningLogs { get; set; }

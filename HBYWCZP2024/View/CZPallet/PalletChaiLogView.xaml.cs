@@ -16,7 +16,7 @@ using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.ViewModel;
 
-namespace HBYWCZP2024.View;
+namespace HBYWCZP2024.View.CZPallet;
 /// <summary>
 /// PalletChaiLogView.xaml 的交互逻辑
 /// </summary>

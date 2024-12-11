@@ -26,22 +26,22 @@ namespace HBYWCZP2024.Data.Models
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; }
 
-        public void AddOk(int value)
-        {
-            OKCnt += value;
-            App.GetService<DataDisplayViewModel>().Update();
-        }
+        //public void AddOk(int value)
+        //{
+        //    OKCnt += value;
+        //    App.GetService<DataDisplayViewModel>().Update();
+        //}
 
-        public void AddNG1(int value)
-        {
-            NG1Cnt += value;
-            App.GetService<DataDisplayViewModel>().Update();
-        }
+        //public void AddNG1(int value)
+        //{
+        //    NG1Cnt += value;
+        //    App.GetService<DataDisplayViewModel>().Update();
+        //}
 
-        public void AddNG2(int value)
-        {
-            NG2Cnt += value;
-            App.GetService<DataDisplayViewModel>().Update();
-        }
+        //public void AddNG2(int value)
+        //{
+        //    NG2Cnt += value;
+        //    App.GetService<DataDisplayViewModel>().Update();
+        //}
     }
 }

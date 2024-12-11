@@ -122,5 +122,17 @@ namespace HBYWCZP2024
             NageTo<WarningLogView>();
 
         }
+
+        private void CPLog_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<PalletChaiLogView>();
+
+        }
+
+        private void ZPLog_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<PalletLogView>();
+
+        }
     }
 }

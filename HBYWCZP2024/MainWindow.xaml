@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HBYWCZP2024"
         mc:Ignorable="d"
+      xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
       
        Closed="Window_Closed" 
         d:DataContext="{d:DesignInstance Type=local:MainWindow}"
@@ -127,7 +128,24 @@ Cursor="Hand"
                 报警日志
             </RadioButton>
 
-
+            <RadioButton 
+Style="{StaticResource MenuRadioButtonStyle}" 
+Cursor="Hand"
+                x:Name="ZPLog"
+                Click="ZPLog_Click"
+                Content="{x:Static lang:Resources.AssemblyLog}"
+                
+>
+            </RadioButton>
+            <RadioButton 
+Style="{StaticResource MenuRadioButtonStyle}" 
+Cursor="Hand"
+                x:Name="CPLog"
+                Click="CPLog_Click"
+                Content="{x:Static lang:Resources.DisassemblyLog}"
+                
+>
+            </RadioButton>
             <RadioButton 
         Style="{StaticResource MenuRadioButtonStyle}" 
         Cursor="Hand"
