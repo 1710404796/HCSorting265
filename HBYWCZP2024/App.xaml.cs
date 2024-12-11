@@ -1,4 +1,7 @@
-﻿using HBYWCZP2024.Data;
+﻿global using LanguageExt;
+global using static LanguageExt.Prelude;
+
+using HBYWCZP2024.Data;
 using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
 using HBYWCZP2024.PLC;
@@ -25,6 +28,7 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+
 
 namespace HBYWCZP2024
 {

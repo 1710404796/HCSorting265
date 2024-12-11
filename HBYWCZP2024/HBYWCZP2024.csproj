@@ -53,6 +53,7 @@
 	  <ProjectReference Include="..\lxuv\LinxUniverse.OPCUA\LinxUniverse.OPCUA.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.SciSocket\LinxUniverse.SciSocket.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Utils\LinxUniverse.Utils.csproj" />
+	  <ProjectReference Include="..\lxuv\LinxUniverser.FP\LinxUniverser.FP.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
