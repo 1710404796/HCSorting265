@@ -17,8 +17,12 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock 
-                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" 
-                           Text="{Binding Title}"></TextBlock>
+    TextWrapping="Wrap"
+    FontSize="30"
+    x:Name="GongweiTitle"
+    HorizontalAlignment="Center"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" 
+           Text="{Binding Title}"></TextBlock>
                 <Viewbox Grid.Row="1" >
                     <local:PalletView x:Name="Pallet1" IsEnabled="False">
 

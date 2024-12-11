@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models;
+﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows;
@@ -19,6 +20,8 @@ namespace HBYWCZP2024.View.CZPallet
         private Border[] _borders;
         private readonly ILogger<PalletView> _logger;
 
+        public bool ClickAvaliable { get; set; } = true;
+
 
         public XYLStation Station { get; set; }
 
@@ -32,16 +35,16 @@ namespace HBYWCZP2024.View.CZPallet
         }
 
 
-        public Border GetBatteryBorder(int id)
+        public Border GetBatteryBorder(int id, int col)
         {
             // id需不需要处理一下
             Border res = new Border
             {
-                Margin = new Thickness(10),
-                Width = 220,
-                Height = 30,
-                BorderThickness = new Thickness(2),
-                CornerRadius = new CornerRadius(5),
+                Margin = col >= 0 ? new Thickness(35, 2, 2, 2) : new Thickness(2),
+                Width = 400,
+                Height = 60,
+                BorderThickness = new Thickness(2.5),
+                CornerRadius = new CornerRadius(2),
             };
             res.SetBinding(Border.BorderBrushProperty, new Binding($"Channels[{id}].BorderBrush")
             {
@@ -51,15 +54,23 @@ namespace HBYWCZP2024.View.CZPallet
             Grid grid = new();
 
             res.Child = grid;
-            TextBlock textBlock1 = new() { Text = (id + 1).ToString() };
+            TextBlock textBlock1 = new()
+            {
+                Text = (id + 1).ToString(),
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(-30, 0, 0, 0),
+
+                FontSize = 18
+            };
             textBlock1.SetResourceReference(TextBlock.ForegroundProperty, "SystemControlPageTextBaseHighBrush");
 
 
             TextBlock textBlock2 = new()
             {
-                Margin = new Thickness(10, 0, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
-                FontWeight = FontWeights.Bold,
+                FontWeight = FontWeights.Black,
+                FontSize = 24,
                 TextAlignment = TextAlignment.Center
             };
             //ViewModel.Pallet.BindBattery(2, "sadasadasdasdasddasdassd");
@@ -73,8 +84,8 @@ namespace HBYWCZP2024.View.CZPallet
             });
 
             // 还需要有点击修改事件
-
-            res.MouseDown += (sender, e) => Res_MouseDown(sender, e, id);
+            if (ClickAvaliable)
+                res.MouseDown += (sender, e) => Res_MouseDown(sender, e, id);
 
             grid.Children.Add(textBlock1);
             grid.Children.Add(textBlock2);
@@ -104,6 +115,7 @@ namespace HBYWCZP2024.View.CZPallet
 
         private void InitBorder()
         {
+            if (Station.Column == 0) return;
             if (Station != null)
             {
                 _borders = new Border[Station.ChannelNum];
@@ -117,92 +129,18 @@ namespace HBYWCZP2024.View.CZPallet
                     for (int j = 0; j < Station.ChannelNum / Station.Column; j++)
                     {
 
-
-
-
                         int border1Id = i * Station.ChannelNum / Station.Column + j;
 
-                        _borders[border1Id] = GetBatteryBorder(border1Id);
+                        _borders[border1Id] = GetBatteryBorder(border1Id, i);
 
                         stackPanel.Children.Add(_borders[border1Id]);
                     }
 
                 }
-                PalletBorder.Height = _borders.Length * 50 / Station.Column + 40;
-                PalletBorder.Width = Station.Column * 210 + 140;
-
-                //if (Station.ChannelNum < 10)
-                //{
-                //    for (int i = 0; i < Station.ChannelNum; i++)
-                //    {
-                //        StackPanel stackPanel = new();
-                //        stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-                //        stackPanel.Orientation = Orientation.Horizontal;
-
-                //        PalletStack.Children.Add(stackPanel);
+                PalletBorder.Height = _borders.Length * 64 / Station.Column + 40;
+                PalletBorder.Width = Station.Column * 430 + 60;
 
 
-                //        int border1Id = i;
-
-                //        _borders[border1Id] = GetBatteryBorder(border1Id);
-
-                //        stackPanel.Children.Add(_borders[border1Id]);
-                //    }
-
-                //    PalletBorder.Height = _borders.Length * 50 + 40;
-                //    PalletBorder.Width = 1 * 200 + 140;
-                //}
-                //else
-                //{
-
-
-                //    for (int i = 0; i < Station.ChannelNum / 2; i++)
-                //    {
-                //        StackPanel stackPanel = new();
-                //        stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-                //        stackPanel.Orientation = Orientation.Horizontal;
-
-                //        PalletStack.Children.Add(stackPanel);
-
-
-                //        int border1Id = i;
-                //        int border2Id = border1Id + Station.ChannelNum / 2;
-
-
-                //        _borders[border1Id] = GetBatteryBorder(border1Id);
-                //        _borders[border2Id] = GetBatteryBorder(border2Id);
-
-                //        //_borders[border1Id] = new();
-                //        //_borders[border2Id] = new();
-                //        //_borders[border2Id].Margin = _borders[border1Id].Margin = new Thickness(10);
-                //        //_borders[border2Id].Width = _borders[border1Id].Width = 100;
-                //        //_borders[border2Id].Height = _borders[border1Id].Height = 30;
-                //        //_borders[border2Id].BorderThickness = _borders[border1Id].BorderThickness = new Thickness(2);
-                //        //_borders[border2Id].CornerRadius = _borders[border1Id].CornerRadius = new CornerRadius(5);
-                //        //_borders[border2Id].BorderBrush = _borders[border1Id].BorderBrush = Brushes.Green;
-
-
-
-
-                //        // 设置文本 文本记得加上实际代码 如果有的话
-                //        //TextBlock textBlock= new() { Text = border1Id.ToString() };
-                //        //TextBlock textBlock1= new() { Text = border2Id.ToString() };
-
-                //        //textBlock.SetResourceReference(TextBlock.ForegroundProperty, "SystemControlPageTextBaseHighBrush");
-                //        //textBlock1.SetResourceReference(TextBlock.ForegroundProperty, "SystemControlPageTextBaseHighBrush");
-
-                //        //_borders[border1Id].Child= textBlock;
-                //        //_borders[border2Id].Child= textBlock1;
-
-
-
-
-                //        stackPanel.Children.Add(_borders[border1Id]);
-                //        stackPanel.Children.Add(_borders[border2Id]);
-                //    }
-                //    PalletBorder.Height = _borders.Length * 25 + 40;
-                //    PalletBorder.Width = 2 * 200 + 140;
-                //}
 
 
 

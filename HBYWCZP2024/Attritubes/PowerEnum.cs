@@ -6,7 +6,8 @@
     public enum PowerEnum
     {
         报警日志,
-        WCS交互日志
+        WCS交互日志,
+        工位状态
     }
 
     public enum RoleEnum
