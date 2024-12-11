@@ -1,12 +1,15 @@
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Utils;
+using LanguageExt;
 using Microsoft.IdentityModel.Logging;
 using XCZZJC2024.Utils;
 
 namespace HBYWCZP2024.View.User;
 
+[PowerView(PowerEnum.权限配置表)]
 public partial class PowerSettingWindows : Window
 {
     public PowerSettingWindows()
@@ -14,11 +17,14 @@ public partial class PowerSettingWindows : Window
         InitializeComponent();
     }
 
+
+
     private Dictionary<PowerEnum, List<CheckBox>> _checkBoxesMap = [];
     private void PowerSettingWindows_OnLoaded(object sender, RoutedEventArgs e)
     {
         foreach (var pow in MainStorage.Saves.PowerTable)
         {
+            if (typeof(PowerEnum).GetMember(pow.Key.ToString())[0].GetCustomAttribute<NotShowAttribute>() != null) continue;
             _checkBoxesMap[pow.Key] = [];
             StackPanel st = new StackPanel()
             {
@@ -27,8 +33,9 @@ public partial class PowerSettingWindows : Window
             };
             TextBlock powerText = new()
             {
-                Text = pow.Key.ToString(),
-                FontSize = 16
+                Text = Utils.Utils.GetPowerName(pow.Key), // pow.Key.ToString(),
+                FontSize = 24,
+                Margin = new Thickness(0, 10, 0, 0)
             };
             StackPanel st1 = new StackPanel()
             {
@@ -41,7 +48,7 @@ public partial class PowerSettingWindows : Window
                 CheckBox checkBox = new CheckBox()
                 {
                     IsChecked = pow.Value[item],
-                    Content = item.ToString()
+                    Content = Utils.Utils.GetRoleName(item)
                 };
                 _checkBoxesMap[pow.Key].Add(checkBox);
                 st1.Children.Add(checkBox);
@@ -57,7 +64,7 @@ public partial class PowerSettingWindows : Window
             //    _checkBoxesMap[pow.Key].Add(checkBox);
             //    st1.Children.Add(checkBox);
             //}
-            
+
             st.Children.Add(powerText);
             st.Children.Add(st1);
             PowerPanel.Children.Add(st);
@@ -66,7 +73,7 @@ public partial class PowerSettingWindows : Window
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        // ��ͨ��
+        // 鏅�氬寲
         var aa = Enum.GetValues<RoleEnum>().SkipLast(1).ToList();
         foreach (var keyValuePair in _checkBoxesMap)
         {
@@ -74,7 +81,7 @@ public partial class PowerSettingWindows : Window
 
             for (var i = 0; i < keyValuePair.Value.Count; i++)
             {
-                MainStorage.Saves.PowerTable[keyValuePair.Key][aa[i]] = keyValuePair.Value[i].IsChecked?? false;
+                MainStorage.Saves.PowerTable[keyValuePair.Key][aa[i]] = keyValuePair.Value[i].IsChecked ?? false;
             }
         }
         Close();
