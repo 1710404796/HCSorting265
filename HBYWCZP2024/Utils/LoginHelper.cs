@@ -10,7 +10,7 @@ namespace HBYWCZP2024.Utils
         static string[] powerType = ["操作员", "技师", "me技术员", "ME工程师", "系统管理员", "admin"];
         public static int GetPowerId(string id)
         {
-            return Array.IndexOf(powerType, id) + 1;
+            return System.Array.IndexOf(powerType, id) + 1;
         }
         public static string GetPowerName(int id)
         {

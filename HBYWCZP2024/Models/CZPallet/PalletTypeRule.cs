@@ -13,7 +13,7 @@ namespace HBYWCZP2024.Models.CZPallet
     public partial class PalletTypeRule : ObservableObject
     {
         public string PalletRule { get; set; }
-        public HashSet<BatteryTypeRule> Rules { get; set; } = new();// 好像是前13位
+        public System.Collections.Generic.HashSet<BatteryTypeRule> Rules { get; set; } = new();// 好像是前13位
         /// <summary>
         /// 规则名字
         /// </summary>

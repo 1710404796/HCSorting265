@@ -22,7 +22,7 @@ namespace HBYWCZP2024.View.CZPallet
     {
 
         //public PalletRuleEditViewModel ViewModel { get; }
-        public HashSet<PalletRuleControl> PalletRuleControls { get; set; } = new();
+        public System.Collections.Generic.HashSet<PalletRuleControl> PalletRuleControls { get; set; } = new();
         public PalletRuleEditView()
         {
             InitializeComponent();

@@ -20,7 +20,7 @@ namespace HBYWCZP2024.View.CZPallet
     /// </summary>
     public partial class BatteryRuleEdit : Window
     {
-        private HashSet<BatteryRuleControl> BatteryRuleControls = new();
+        private System.Collections.Generic.HashSet<BatteryRuleControl> BatteryRuleControls = new();
 
         //public BatteryRuleEditViewModel ViewModel { get; set; }
         public BatteryRuleEdit(PalletTypeRule palletTypeRule)
