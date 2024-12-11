@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json.Serialization;
+using System.Windows;
 using System.Windows.Media;
 
 namespace HBYWCZP2024.Models
@@ -76,32 +77,30 @@ namespace HBYWCZP2024.Models
         /// <returns></returns>
         public Brush GetBrush()
         {
+            Brush colorDefault = (Brush)Application.Current.Resources["SystemControlPageTextBaseHighBrush"];
             if (Code == DefaultCode)
             {
-                return Brushes.Red;
+                return colorDefault;
             }
             switch (BatteryLevel)
             {
                 case BatteryLevel.None:
                     break;
                 case BatteryLevel.OK:
-                    return Brushes.Green;
+                    return Brushes.LightGreen;
                 case BatteryLevel.NG:
-                    return Brushes.Yellow;
+                    return Brushes.Red;
                 case BatteryLevel.Fake:
                     return Brushes.Purple;
                 case BatteryLevel.REWORK:
                     return Brushes.Blue;
                 case BatteryLevel.EMPTY:
-                    return Brushes.Red;
-                case BatteryLevel.B:
-                    return Brushes.Pink;
-                case BatteryLevel.A:
-                    return Brushes.LightGreen;
+                    return colorDefault;
+
                 default:
                     break;
             }
-            return Brushes.Red;
+            return colorDefault;
         }
         public void Reset()
         {
