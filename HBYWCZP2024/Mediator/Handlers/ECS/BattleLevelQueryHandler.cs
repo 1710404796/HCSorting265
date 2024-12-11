@@ -1,6 +1,7 @@
 ﻿using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
+using LanguageExt.UnitsOfMeasure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class BattleLevelQueryHandler(HBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<BattleLevelQuery, Pallet>
+    internal class BattleLevelQueryHandler(HBECSServiceFactory hBECSServiceFactory) : IRequestHandler<BattleLevelQuery, Pallet>
     {
         public async Task<Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {
@@ -33,17 +34,22 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             var checkMaterialResponse = await hBECSService.MesService.CheckMaterialLevel(checkMaterialRequest);
 
-            if (checkMaterialResponse == null)
-            {
-                throw new Exception("MES通讯异常");
-            }
-            var channels = checkMaterialResponse.Rows.Select(x => 
-            new Channel(int.Parse(x.Location), 
-                Some(
-                    new BatteryWithLevel
-                    (x.Identification, Some(CZPUtils.GetLevelFromMes(x.Grade)))
-                )
-                ));
+            var channels = checkMaterialResponse.Match(
+                Right: r => {
+                    var channels = r.Rows.Select(x =>
+                    new Channel(int.Parse(x.Location),
+                        Some(
+                            new BatteryWithLevel
+                            (x.Identification, Some(CZPUtils.GetLevelFromMes(x.Grade)))
+                        )
+                        ));
+                    return channels;
+                },
+                Left: x => throw new Exception(x)
+
+
+                );
+            
 
 
             return request.Pallet with { Channels = channels.ToImmutableArray() };

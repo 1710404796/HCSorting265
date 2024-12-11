@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using LanguageExt.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,27 +15,42 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 {
     public HttpClient HttpClient { get; } = httpClient;
     public string Name { get; } = name;
-    public async Task<CheckMaterialResponse?> CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
+    public async Task<Either<string, CheckMaterialResponse>> CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
     {
         string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/pre/sorting/query";
         logger.LogInformation("请求MES地址: {url}", _url);
         string data = JsonSerializer.Serialize(checkMaterialRequest);
         logger.LogInformation("请求MES数据: {data}", data);
-        var res = await httpClient.PostAsJsonAsync(_url, checkMaterialRequest);
-        if (res.IsSuccessStatusCode)
+        try
         {
-            logger.LogInformation("请求MES成功");
-            var resdata = await res.Content.ReadAsStringAsync();
+            var res = await httpClient.PostAsJsonAsync(_url, checkMaterialRequest);
 
-            logger.LogInformation("MES返回数据: {resdata}", resdata);
-            var response = JsonSerializer.Deserialize<CheckMaterialResponse>(resdata);
+            if (res.IsSuccessStatusCode)
+            {
+                logger.LogInformation("请求MES成功");
+                var resdata = await res.Content.ReadAsStringAsync();
 
-            return response;
+                logger.LogInformation("MES返回数据: {resdata}", resdata);
+                var response = JsonSerializer.Deserialize<CheckMaterialResponse>(resdata);
+                if (response != null)
+                {
+                    return Right(response);
+                }
+                else
+                {
+                    return Left("json为空");
+                }
+            }
+            else
+            {
+                return Left($"请求MES失败, {res.StatusCode}");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return null;
+            return Left($"请求MES异常, {ex.Message}");
         }
+       
 
         // 实现接口
 
