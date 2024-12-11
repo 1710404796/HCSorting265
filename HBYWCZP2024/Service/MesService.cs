@@ -7,11 +7,16 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Service;
-public class MesService(HttpClient httpClient)
+public class MesService(HttpClient httpClient, string name)
 {
-    public void CheckMaterialOnline(string name)
+    public HttpClient HttpClient { get; } = httpClient;
+    public string Name { get; } = name;
+    public void CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
     {
-        string _url = $"http://{MainStorage.Saves.KeysSave[name].MESIP}/core/api/public/pre/sorting/query";
+        string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/pre/sorting/query";
+        
+
+        // 实现接口
 
     }
 

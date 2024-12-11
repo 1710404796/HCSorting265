@@ -75,7 +75,7 @@ namespace HBYWCZP2024
                          //services.AddSingleton<ServoManagerViewModel>();
                          //services.AddTransient<ServoManagerView>();
 
-
+                         services.AddHttpClient();
                          services.AddQuartz(config =>
                          {
                              JobKey jobKey = JobKey.Create(nameof(DailyJobs));

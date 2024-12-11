@@ -56,7 +56,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
                 // 请求mes去
-                //return data.GetBatteryLevels();
+                return data.GetBatteryLevels();
 
 
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HBYWCZP2024.Models.ECS;
@@ -31,6 +32,7 @@ namespace HBYWCZP2024.Service
         private readonly ILogger<HBECSService> logger;
 
         public string Name { get; }
+        public MesService MesService { get; }
 
         public HBECSService(string name, ILogger<HBECSService> logger)
         {
@@ -43,6 +45,8 @@ namespace HBYWCZP2024.Service
                 Port = MainStorage.Saves.KeysSave[name].ECSPort,
                 SplitChar = '#',
             });
+            IHttpClientFactory httpClientFactory = App.GetService<IHttpClientFactory>();
+            MesService = new MesService(httpClientFactory.CreateClient(name), name);
             Init();
         }
 
