@@ -46,7 +46,8 @@ namespace HBYWCZP2024.Service
                 SplitChar = '#',
             });
             IHttpClientFactory httpClientFactory = App.GetService<IHttpClientFactory>();
-            MesService = new MesService(httpClientFactory.CreateClient(name), name);
+            var httplogger = App.GetService<ILogger<MesService>>();
+            MesService = new MesService(httpClientFactory.CreateClient(name), name, httplogger);
             Init();
         }
 

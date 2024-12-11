@@ -1,20 +1,40 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Service;
-public class MesService(HttpClient httpClient, string name)
+public class MesService(HttpClient httpClient, string name, ILogger<MesService> logger)
 {
     public HttpClient HttpClient { get; } = httpClient;
     public string Name { get; } = name;
-    public void CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
+    public async Task<CheckMaterialResponse?> CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
     {
         string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/pre/sorting/query";
-        
+        logger.LogInformation("请求MES地址: {url}", _url);
+        string data = JsonSerializer.Serialize(checkMaterialRequest);
+        logger.LogInformation("请求MES数据: {data}", data);
+        var res = await httpClient.PostAsJsonAsync(_url, checkMaterialRequest);
+        if (res.IsSuccessStatusCode)
+        {
+            logger.LogInformation("请求MES成功");
+            var resdata = await res.Content.ReadAsStringAsync();
+
+            logger.LogInformation("MES返回数据: {resdata}", resdata);
+            var response = JsonSerializer.Deserialize<CheckMaterialResponse>(resdata);
+
+            return response;
+        }
+        else
+        {
+            return null;
+        }
 
         // 实现接口
 

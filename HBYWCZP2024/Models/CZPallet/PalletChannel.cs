@@ -15,8 +15,12 @@ namespace HBYWCZP2024.Models
         Fake = 3,
         REWORK = 4,
         EMPTY = 5,
-        OK2 = 7,
-        REWORK2 = 8,
+        A = 7,
+        B = 8,
+        C = 9,
+        D = 10,
+        E = 11,
+        F = 12,
         Unknown = 999,
     }
     public partial class StationChannel : ObservableObject
@@ -90,9 +94,9 @@ namespace HBYWCZP2024.Models
                     return Brushes.Blue;
                 case BatteryLevel.EMPTY:
                     return Brushes.Red;
-                case BatteryLevel.REWORK2:
+                case BatteryLevel.B:
                     return Brushes.Pink;
-                case BatteryLevel.OK2:
+                case BatteryLevel.A:
                     return Brushes.LightGreen;
                 default:
                     break;
