@@ -22,6 +22,60 @@ namespace HBYWCZP2024.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HBYWCZP2024.Data.Models.OKNGCnt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NG1Cnt")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NG2Cnt")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OKCnt")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OKNGCnts");
+                });
+
+            modelBuilder.Entity("HBYWCZP2024.Data.Models.PalletLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Column")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PalletCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("PalletType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ZuPanTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PalletLogs");
+                });
+
             modelBuilder.Entity("HBYWCZP2024.Data.Models.WarningLog", b =>
                 {
                     b.Property<int>("Id")
@@ -122,6 +176,37 @@ namespace HBYWCZP2024.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("LinxUserRoles");
+                });
+
+            modelBuilder.Entity("HBYWCZP2024.Data.Models.PalletLog", b =>
+                {
+                    b.OwnsMany("HBYWCZP2024.Data.Models.BatteryInfo", "BatteryInfo", b1 =>
+                        {
+                            b1.Property<int>("PalletLogId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            b1.Property<string>("BatteryCode")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("BatteryLevel")
+                                .HasColumnType("int");
+
+                            b1.HasKey("PalletLogId", "Id");
+
+                            b1.ToTable("PalletLogs");
+
+                            b1.ToJson("BatteryInfo");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PalletLogId");
+                        });
+
+                    b.Navigation("BatteryInfo");
                 });
 #pragma warning restore 612, 618
         }
