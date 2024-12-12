@@ -151,7 +151,7 @@ namespace HBYWCZP2024.View.CZPallet
             {
                 var station = MainStorage.Saves.Stage.Stations[i];
                 station.Name = stationName[i].Text;
-                //station.SaoMaIP = textBoxes1[i].Text;
+                station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.OutsideStationNum = int.Parse(StationNum[i].Text);
                 station.ChannelNum = int.Parse(channelNum[i].Text);
                 station.Column = int.Parse(columnNum[i].Text);

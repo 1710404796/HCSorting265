@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Mediator.Commands;
+﻿using Cognex.NET;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Utils;
 using MediatR;
 using System;
@@ -28,6 +29,17 @@ namespace HBYWCZP2024.Mediator.Handlers
                 {
                     throw new Exception($"托盘{request.PalletIdx}");
                 }
+
+                var code = pallet.Reader.Match(
+                    Some: reader => fs(CognexBCR.getResultsAndClearCacheRepeat(TimeSpan.FromSeconds(3), 5, reader)),
+                    None: () => Left("未找到扫码器")
+                    );
+                
+                var data = code.Match(
+                    Right: c => c,
+                    Left: e => throw new Exception(e)
+                    );
+                return data.First().Code;
 
                 // todo: 待测试实现
 

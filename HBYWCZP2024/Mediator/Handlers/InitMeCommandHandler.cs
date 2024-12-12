@@ -1,15 +1,20 @@
 
+using BCR.Common.Fs;
+using Cognex.NET;
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.PLC;
 using HBYWCZP2024.PLC.Tasks;
 using HBYWCZP2024.Service;
+using LanguageExt;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
 using LinxUniverse.OPCUA;
 using LinxUniverse.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
+
+
 
 namespace HBYWCZP2024.Mediator.Handlers
 {
@@ -63,12 +68,28 @@ namespace HBYWCZP2024.Mediator.Handlers
             {
                 MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
             }
-
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
                 await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.KeysSave[stage.Key].OpcIP), cancellationToken);
+
+                foreach (var pallet in stage.Value.Stage.Pallets)
+                {
+                    if (pallet.IsEnable)
+                    {
+                        pallet.Reader = fs ( CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                            Right: reader => Some (reader),
+                            Left:  s =>
+                            {
+                                mediator.Send(new WarningBoxCommand(s));
+                                return None;
+                            }
+                        );
+                    }
+
+                }
+
                 // todo: 注册所有任务
                 //pLCTaskService.RegisterTask<ApplyBatteryInfoTask>();
                 //se.RegisterTask(new ApplyBatteryInfoTask() { HBECSServiceKey = stage.Key });

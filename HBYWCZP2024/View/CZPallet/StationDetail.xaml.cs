@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models;
+﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -89,7 +90,7 @@ namespace HBYWCZP2024.View.CZPallet
                 // Todo: 提取方法
                 ScanAgain.IsEnabled = false;
                 // Todo： 思考
-                //aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(aa.PalletId));
+                aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId));
                 ScanAgain.IsEnabled = true;
 
                 //aa.Palletcode = await YWUtils.GetPalletCode(aa.PalletId);

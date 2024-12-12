@@ -1,5 +1,6 @@
 ﻿global using LanguageExt;
 global using static LanguageExt.Prelude;
+global using static LanguageExt.FSharp;
 
 using HBYWCZP2024.Data;
 using HBYWCZP2024.Jobs;

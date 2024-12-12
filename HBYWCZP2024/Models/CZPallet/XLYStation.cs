@@ -16,6 +16,7 @@ namespace HBYWCZP2024.Models
     /// </summary>
     public partial class XYLStation : ObservableObject
     {
+        public string ReaderIpAddr { get; set; } = string.Empty;
         public XYLStation(int insideNum, string name)
         {
             //_mediator = App.GetService<IMediator>();

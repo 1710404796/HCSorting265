@@ -21,6 +21,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Humanizer.Core.zh-CN" Version="2.14.1" />
+		<PackageReference Include="LanguageExt.FSharp" Version="4.4.9" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -48,6 +49,7 @@
 	  <Folder Include="Apis\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\lxuv\Cognex.NET\Cognex.NET.fsproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Auth\LinxUniverse.Auth.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Mediator\LinxUniverse.Mediator.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.OPCUA\LinxUniverse.OPCUA.csproj" />

@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinxUniverse.OPCUA", "lxuv\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinxUniverser.FP", "lxuv\LinxUniverser.FP\LinxUniverser.FP.csproj", "{A9F7CE13-8127-E8BC-654E-CF7957875612}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Cognex.NET", "lxuv\Cognex.NET\Cognex.NET.fsproj", "{A6D92AB5-94F3-7245-D461-5C3F66FAD85B}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BCR.Common.Fs", "lxuv\BCR.Common.Fs\BCR.Common.Fs.fsproj", "{C8BD8C32-7A99-6920-F3D3-CD293ED3ECD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{A9F7CE13-8127-E8BC-654E-CF7957875612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9F7CE13-8127-E8BC-654E-CF7957875612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9F7CE13-8127-E8BC-654E-CF7957875612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D92AB5-94F3-7245-D461-5C3F66FAD85B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D92AB5-94F3-7245-D461-5C3F66FAD85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D92AB5-94F3-7245-D461-5C3F66FAD85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D92AB5-94F3-7245-D461-5C3F66FAD85B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8BD8C32-7A99-6920-F3D3-CD293ED3ECD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8BD8C32-7A99-6920-F3D3-CD293ED3ECD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8BD8C32-7A99-6920-F3D3-CD293ED3ECD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8BD8C32-7A99-6920-F3D3-CD293ED3ECD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

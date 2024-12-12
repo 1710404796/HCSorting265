@@ -40,11 +40,12 @@ namespace HBYWCZP2024.Service
             this.logger = logger;
             _clientSocket = new LinxClientSocket(new LinxClientSocketOption
             {
-                Logger = logger,
                 Address = MainStorage.Saves.KeysSave[name].ECSIP,
                 Port = MainStorage.Saves.KeysSave[name].ECSPort,
                 SplitChar = '#',
             });
+            _clientSocket.Logger = logger;
+
             IHttpClientFactory httpClientFactory = App.GetService<IHttpClientFactory>();
             var httplogger = App.GetService<ILogger<MesService>>();
             MesService = new MesService(httpClientFactory.CreateClient(name), name, httplogger);
