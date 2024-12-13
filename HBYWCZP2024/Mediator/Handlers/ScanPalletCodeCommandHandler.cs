@@ -29,12 +29,15 @@ namespace HBYWCZP2024.Mediator.Handlers
                 {
                     throw new Exception($"托盘{request.PalletIdx}");
                 }
-
-                var code = pallet.Reader.Match(
-                    Some: reader => fs(CognexBCR.getResultsAndClearCacheRepeat(TimeSpan.FromSeconds(3), 5, reader)),
-                    None: () => Left("未找到扫码器")
+                var f = async (CognexBCR.Reader reader) =>
+                {
+                    var ff = await CognexBCR.asTask(CognexBCR.getOneResultAndClearCacheRepeatAsync(TimeSpan.FromSeconds(3), 5, reader));
+                    var cc = fs(ff);
+                    return cc;
+                };
+                var code = await pallet.Reader.ToEither("未找到扫码器").BindAsync(  f
                     );
-                
+
                 var data = code.Match(
                     Right: c => c,
                     Left: e => throw new Exception(e)
