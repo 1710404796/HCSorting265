@@ -85,10 +85,24 @@ namespace HBYWCZP2024.View.CZPallet
 
         private async void ScanAgain_Click(object sender, RoutedEventArgs e)
         {
+            await Task.Yield();
+            Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
             if (Station is Pallet aa)
             {
                 // Todo: 提取方法
                 ScanAgain.IsEnabled = false;
+
+                //_ = meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId)).ContinueWith(async t =>
+                //{
+                //    var code = await t;
+                //    Dispatcher.Invoke(() =>
+                //    {
+                //        aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId));
+                //ScanAgain.IsEnabled = true;
+                //    });
+                //});
+
+
                 // Todo： 思考
                 aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId));
                 ScanAgain.IsEnabled = true;
