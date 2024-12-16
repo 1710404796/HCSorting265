@@ -17,7 +17,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
-
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
+            {
+                return request.Pallet with { 
+                    Channels = request.Pallet.Channels
+                    .Select(x => 
+                        x with { 
+                            BattleWithLevel = x.BattleWithLevel
+                            .Map(s => new BatteryWithLevel(s.Code, Some(Models.BatteryLevel.OK))) 
+                    }).ToImmutableArray() };
+            }
             CheckMaterialRequest checkMaterialRequest = new CheckMaterialRequest(request.Key)
             {
                 ContainerCode = request.Pallet.PalletCode,

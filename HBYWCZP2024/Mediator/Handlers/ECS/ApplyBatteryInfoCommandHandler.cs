@@ -22,7 +22,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
+            {
 
+            }
 
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
 

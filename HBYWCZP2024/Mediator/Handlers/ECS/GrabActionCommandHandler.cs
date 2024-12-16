@@ -17,13 +17,29 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
-
+           
             if (pallet == null)
             {
                 throw new Exception("托盘不存在");
 
             }
 
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable)
+            {
+                if (pallet.Type == Models.CZPallet.PalletType.组盘)
+                {
+                    return true;
+                }
+
+            }
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
+            {
+                if (pallet.Type == Models.CZPallet.PalletType.拆盘 || pallet.Type == Models.CZPallet.PalletType.筛选)
+                {
+                    return true;
+                }
+
+            }
             var data = await hBECSService.SendAsync<S104, E104>(new S104() {  TrayNumber =  pallet.PalletCode, TrayPosition= pallet.PalletId + 1 });
 
             if (data == null)
