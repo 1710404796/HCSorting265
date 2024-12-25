@@ -15,6 +15,7 @@ namespace HBYWCZP2024.View.CZPallet
         private const int lent = 14;
 
         TextBox[] stationName;// = new TextBox[lent];
+        TextBox[] stationInName;// = new TextBox[lent];
         TextBox[] rfidReaderIP;// = new TextBox[lent];
         TextBox[] StationNum;// = new TextBox[lent];
         TextBox[] channelNum;// = new TextBox[lent];
@@ -22,8 +23,17 @@ namespace HBYWCZP2024.View.CZPallet
         ComboBox[] comboBoxes;// = new ComboBox[lent];
         CheckBox[] isStationEnable;// = new ComboBox[lent];
 
-        public List<PalletType> RobotTypes { get; } = new() { PalletType.组盘, PalletType.拆盘, PalletType.异常口, PalletType.假电芯盘 };
+        //public List<PalletType> PalletTypes { get; }
 
+        //    = new() { PalletType.组盘, PalletType.拆盘, //PalletType.异常口, PalletType.假电芯盘
+        //    };
+        public List<PalletType> PalletTypes { get; } = new() { PalletType.组盘, PalletType.拆盘, PalletType.异常口, PalletType.假电芯盘 };
+
+        public List<string> PalletTypesStr { get; }
+
+            = new() { Properties.Resources.Assembly, Properties.Resources.Disassembly, //PalletType.异常口, PalletType.假电芯盘
+}
+            ;
 
         public StationSettingView()
         {
@@ -35,6 +45,7 @@ namespace HBYWCZP2024.View.CZPallet
         public void Init()
         {
             var stations = MainStorage.Saves.Stage.Stations;
+            stationInName = new TextBox[stations.Length];
             stationName = new TextBox[stations.Length];
             rfidReaderIP = new TextBox[stations.Length];
             StationNum = new TextBox[stations.Length];
@@ -46,6 +57,12 @@ namespace HBYWCZP2024.View.CZPallet
             int idx = 0;
             foreach (var station in stations)
             {
+                stationInName[idx] = new()
+                {
+                    Width = 100,
+                    Text = station.InsideNum.ToString(),
+
+                };
                 stationName[idx] = new()
                 {
                     Width = 150,
@@ -53,11 +70,10 @@ namespace HBYWCZP2024.View.CZPallet
                     IsReadOnly = station is not Pallet
                 };
 
-
                 rfidReaderIP[idx] = new()
                 {
                     Width = 150,
-                    //Text = station.SaoMaIP,
+                    Text = station.ReaderIpAddr,
                     IsEnabled = station is Pallet,
                 };
 
@@ -85,13 +101,13 @@ namespace HBYWCZP2024.View.CZPallet
                 comboBoxes[idx] = new()
                 {
                     Width = 150,
-                    ItemsSource = RobotTypes,
+                    ItemsSource = PalletTypesStr,
 
                     IsEnabled = station is Pallet,
                 };
                 if (station is Pallet a)
                 {
-                    comboBoxes[idx].SelectedItem = a.Type;
+                    comboBoxes[idx].SelectedIndex = PalletTypes.IndexOf(a.Type);
                 }
 
                 isStationEnable[idx] = new()
@@ -118,16 +134,23 @@ namespace HBYWCZP2024.View.CZPallet
                     VerticalAlignment = VerticalAlignment.Center,
                     Margin = new(5)
                 };
-                stackPanel.Children.Add(new TextBlock
-                {
-                    //Text = ((i + 1) * 100).ToString(),
-                    Text = stations[i].OutsideStationNum.ToString(),
-                    Width = 50,
-                    VerticalAlignment = VerticalAlignment.Center
-                });
+                //stackPanel.Children.Add(new TextBlock
+                //{
+                //    //Text = ((i + 1) * 100).ToString(),
+                //    Text = stations[i].InsideNum.ToString(),
+                //    Width = 50,
+                //    VerticalAlignment = VerticalAlignment.Center
+                //});
 
+                //stackPanel.Children.Add(new TextBlock
+                //{
+                //    //Text = ((i + 1) * 100).ToString(),
+                //    Text = stations[i].InsideNum.ToString(),
+                //    Width = 50,
+                //    VerticalAlignment = VerticalAlignment.Center
+                //});
 
-
+                stackPanel.Children.Add(stationInName[i]);
                 stackPanel.Children.Add(stationName[i]);
                 stackPanel.Children.Add(rfidReaderIP[i]);
                 stackPanel.Children.Add(StationNum[i]);
@@ -151,13 +174,15 @@ namespace HBYWCZP2024.View.CZPallet
             {
                 var station = MainStorage.Saves.Stage.Stations[i];
                 station.Name = stationName[i].Text;
-                station.ReaderIpAddr = rfidReaderIP[i].Text;
+                //station.SaoMaIP = textBoxes1[i].Text;
+                station.InsideNum = int.Parse(stationInName[i].Text);
                 station.OutsideStationNum = int.Parse(StationNum[i].Text);
                 station.ChannelNum = int.Parse(channelNum[i].Text);
                 station.Column = int.Parse(columnNum[i].Text);
+                station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
                 if (station is Pallet pallet)
-                    pallet.Type = (PalletType)comboBoxes[i].SelectedItem;
+                    pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
 
             }
 

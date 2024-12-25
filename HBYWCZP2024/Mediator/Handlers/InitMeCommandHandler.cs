@@ -70,9 +70,10 @@ namespace HBYWCZP2024.Mediator.Handlers
             }
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
+                Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
-                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.KeysSave[stage.Key].OpcIP), cancellationToken);
+                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
                 
                 
                 if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)

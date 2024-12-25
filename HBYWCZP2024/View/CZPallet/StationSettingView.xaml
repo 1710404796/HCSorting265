@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HBYWCZP2024.View.CZPallet"
         mc:Ignorable="d"
-        
+         xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
                 xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="DiaosuStage" Height="760" Width="1050"
@@ -17,66 +17,82 @@
             <RowDefinition/>
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-    
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+
+        <StackPanel 
+         Margin="10"
+         VerticalAlignment="Center" HorizontalAlignment="Center" 
+                 Orientation="Horizontal">
 
             <TextBlock 
-                Width="70"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                
-                
-                >内部编号</TextBlock>
+             Width="100"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             Text="{x:Static lang:Resources.InternalNumber}"
+             
+             
+             ></TextBlock>
             <TextBlock 
-                Width="130"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                TextAlignment="Center"
-                
-                >名字</TextBlock>
+             Width="150"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             TextAlignment="Center"
+             Text="{x:Static lang:Resources.Name}"
+             
+             ></TextBlock>
             <TextBlock 
-                Width="150"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                TextAlignment="Center"
-                
-                >扫码枪IP</TextBlock>
+             Width="150"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             TextAlignment="Center"
+             Text="{x:Static lang:Resources.BarcodeScannerIP}"
+             
+             ></TextBlock>
             <TextBlock 
-                Width="150"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                TextAlignment="Center"
-                >工位号 </TextBlock>    
+             Width="150"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             TextAlignment="Center"
+             Text="{x:Static lang:Resources.WorkstationNumber}"
+             
+             ></TextBlock>
             <TextBlock 
-                Width="150"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                TextAlignment="Center"
-                >托盘类型 </TextBlock>
+             Width="150"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             TextAlignment="Center"
+             Text="{x:Static lang:Resources.TrayType}"
+             
+             ></TextBlock>
             <TextBlock 
-                Width="150"
-                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                TextAlignment="Center"
-                >通道数</TextBlock>
+             Width="150"
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+             TextAlignment="Center"
+             Text="{x:Static lang:Resources.ChannelCount}"
+             
+             ></TextBlock>
             <TextBlock 
-    Width="150"
-    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-    TextAlignment="Center"
-    >托盘列数</TextBlock>
+ Width="150"
+ Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+ TextAlignment="Center"
+             Text="{x:Static lang:Resources.TrayColumnCount}"
+             
+ ></TextBlock>
             <TextBlock 
-    Width="100"
-    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-    TextAlignment="Center"
-    >是否启用</TextBlock>
+ Width="100"
+ Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+ TextAlignment="Center"
+             Text="{x:Static lang:Resources.Enable}"
+             
+ ></TextBlock>
         </StackPanel>
 
         <ScrollViewer 
-            Grid.Row="1"
-            >
+         Grid.Row="1"
+         >
 
-        <StackPanel 
-            Orientation="Vertical" 
-            HorizontalAlignment="Center"
-            Margin="10"
-            Name="DiaoPanel"
-            Grid.Row="1"
-            >
-        </StackPanel>
+            <StackPanel 
+         Orientation="Vertical" 
+         HorizontalAlignment="Center"
+         Margin="10"
+         Name="DiaoPanel"
+         Grid.Row="1"
+         >
+            </StackPanel>
         </ScrollViewer>
 
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2">
