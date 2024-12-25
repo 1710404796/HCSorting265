@@ -40,19 +40,50 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
             }
-            var data = await hBECSService.SendAsync<S104, E104>(new S104() {  TrayNumber =  pallet.PalletCode, TrayPosition= pallet.PalletId + 1 });
-
-            if (data == null)
+            if (pallet.Type == Models.CZPallet.PalletType.组盘)
             {
-                await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                return false;
+                var data = await hBECSService.SendAsync<S104, E104>(new S104() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1 });
+
+                if (data == null)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                    return false;
+                }
+                if (data.DeviceStatus != DeviceStatus2.OK)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                    return false;
+                }
+            }
+            else if (pallet.Type == Models.CZPallet.PalletType.拆盘 || pallet.Type == Models.CZPallet.PalletType.筛选)
+            {
+                var data = await hBECSService.SendAsync<S106, E106>(new S106() 
+                { 
+                    TrayNumber = pallet.PalletCode, 
+                    TrayPosition = pallet.PalletId + 1 ,
+                    BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum).Select(x => x.Code).ToList()
+                });
+
+                if (data == null)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                    return false;
+                }
+                if (data.DeviceStatus != DeviceStatus2.OK)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                    return false;
+                }
+            }
+            else
+            {
+                throw new Exception("托盘类型错误");
             }
 
-            if (data.DeviceStatus != DeviceStatus2.OK)
-            {
-                await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
-                return false;
-            }
+            // TODO: 结束要用106命令
+            
+
+            
 
             return true;
 

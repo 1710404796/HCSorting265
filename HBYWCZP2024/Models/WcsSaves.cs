@@ -72,8 +72,19 @@ namespace HBYWCZP2024.Models
         [JsonIgnore]
         public OpcPLCSetting PLCPSetting => KeysSave[SelectStageName].PLCPSetting;
         public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
+        [JsonIgnore]
 
-        public Dictionary<string, string> OpcTable => KeysSave[SelectStageName].OpcTable;
+        public Dictionary<string, string> OpcTable
+        {
+            get
+            {
+                return KeysSave[SelectStageName].OpcTable;
+            }
+            set
+            {
+                KeysSave[SelectStageName].OpcTable = value;
+            }
+        }
 
         public Dictionary<string, StageMono> KeysSave { get; set; } = [];
         [JsonIgnore]
@@ -130,6 +141,12 @@ namespace HBYWCZP2024.Models
         {
             get => KeysSave[SelectStageName].ApiEnableTable;
             set => KeysSave[SelectStageName].ApiEnableTable = value;
+        }
+        [JsonIgnore]
+        public bool ResetTable
+        {
+            get => KeysSave[SelectStageName].ResetTable;
+            set => KeysSave[SelectStageName].ResetTable = value;
         }
     }
 
@@ -214,7 +231,7 @@ namespace HBYWCZP2024.Models
             get;
             set;
         } = string.Empty;
-
+        public bool ResetTable { get; set; }
     }
 
     public class OKNGCnt

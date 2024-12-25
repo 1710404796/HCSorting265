@@ -10,6 +10,8 @@ namespace HBYWCZP2024.Data.Models
     public class OKNGCnt
     {
         // 想办法通知一下
+
+        
         public int Id { get; set; }
 
         public int OKCnt { get; set; }

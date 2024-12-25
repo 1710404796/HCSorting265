@@ -73,6 +73,29 @@ namespace HBYWCZP2024.Mediator.Handlers
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
                 await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", MainStorage.Saves.KeysSave[stage.Key].OpcIP), cancellationToken);
+                
+                
+                if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
+                {
+                    Console.WriteLine("尝试获取table");
+
+                    logger.LogWarning("OpcTable未设定");
+                    if (se.Context.Plc.Connected)
+                    {
+                        stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
+                        stage.Value.ResetTable = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("pLCTaskService未连接");
+                        logger.LogWarning("pLCTaskService未连接");
+
+                    }
+                    //MainStorage.Saves.OpcTable = [];
+
+                }
+                MainStorage.SaveManager.Save();
+
 
                 foreach (var pallet in stage.Value.Stage.Pallets)
                 {

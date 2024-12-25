@@ -4,6 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Utils;
@@ -108,12 +109,14 @@ namespace HBYWCZP2024.Service
             lock (_lockobj)
             {
                 var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
-
+                logger.LogInformation("{name}, 发送数据: {data}", Name, packMessage);
                 _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
                 CancellationTokenSource cts = new CancellationTokenSource();
                 cts.CancelAfter(60000);
 
                 var res = WaitFor<T2>(cts.Token);
+                logger.LogInformation("{name}, 接收数据: {data}", Name, JsonSerializer.Serialize(res));
+
                 return res;
 
             }

@@ -101,5 +101,10 @@ namespace HBYWCZP2024.View
             MainStorage.SaveManager.Save();
             MainWindow.NageTo<SettingView>();
         }
+
+        private void ResetTable_Click(object sender, RoutedEventArgs e)
+        {
+            MainStorage.Saves.ResetTable = true;
+        }
     }
 }
