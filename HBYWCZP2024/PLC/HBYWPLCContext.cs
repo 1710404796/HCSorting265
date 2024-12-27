@@ -67,8 +67,8 @@ namespace HBYWCZP2024.PLC
             await CheckError(DB500.ErrorCode);
             if (heartTag % 5 == 0)
             {
-                Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0, Name);
-
+                var test = Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0, Name);
+                Console.WriteLine("heartbeat:"+test + heartFlag);
 
                 heartFlag = !heartFlag;
 

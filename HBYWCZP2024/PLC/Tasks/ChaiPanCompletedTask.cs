@@ -40,7 +40,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
-            var res = await Context.Mediator.Send(new GrabActionCommand(Key, grabStation, false));
+            var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, grabStation, false));
             return res;
             //return await base.DoSth();
         }

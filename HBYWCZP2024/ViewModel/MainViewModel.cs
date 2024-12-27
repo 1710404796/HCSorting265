@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Models;
+using HBYWCZP2024.PLC;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
+using LinxUniverse.OPCUA;
 using MediatR;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
@@ -46,6 +48,7 @@ namespace HBYWCZP2024.ViewModel
 
         public IMediator Mediator { get; }
         public LinxAuthenticationStateProvider AuthenticationStateProvider { get; }
+        public IPLCTaskServiceFactory<HBYWPLCContext> PlctaskServiceFactory { get; }
         public ILogger<MainViewModel> Logger { get; }
         [ObservableProperty] private string _username;
 
@@ -70,6 +73,7 @@ namespace HBYWCZP2024.ViewModel
 
         public MainViewModel(IMediator mediator,
                 LinxAuthenticationStateProvider authenticationStateProvider,
+                IPLCTaskServiceFactory<HBYWPLCContext> plctaskServiceFactory,
                 ILogger<MainViewModel> logger, CacheService cacheService)
         {
 
@@ -106,6 +110,7 @@ namespace HBYWCZP2024.ViewModel
             _someThread.Start();
             Mediator = mediator;
             AuthenticationStateProvider = authenticationStateProvider;
+            PlctaskServiceFactory = plctaskServiceFactory;
             Logger = logger;
             CacheService = cacheService;
         }
@@ -122,8 +127,8 @@ namespace HBYWCZP2024.ViewModel
             }
             while (CacheService.Token.IsCancellationRequested)
             {
-
-                //PlcIsRunning = XcplcService.IsPlcRunning;
+                var XcplcService = PlctaskServiceFactory.CreateService(MainStorage.Saves.SelectStageName, null!);
+                PlcIsRunning = XcplcService?.IsRunning ?? false;
                 await Task.Delay(1000);
             }
         }

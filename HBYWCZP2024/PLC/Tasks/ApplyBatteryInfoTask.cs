@@ -45,7 +45,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
-            var res = await Context.Mediator.Send(new ApplyBatteryInfoCommand(Key, pallet.OutsideStationNum));
+            var res = await Context.Mediator.Send(new ApplyBatteryInfoCommand(Context.Name, pallet.OutsideStationNum));
 
             if (res == null)
             {

@@ -51,8 +51,8 @@ namespace HBYWCZP2024.PLC.Tasks
 
         public override async Task<bool> DoSth()
         {
-            var grab = CZPUtils.GetXYLStationByInsideNum(Key, grabStation);
-            var put = CZPUtils.GetXYLStationByInsideNum(Key, putStaion);
+            var grab = CZPUtils.GetXYLStationByInsideNum(Context.Name, grabStation);
+            var put = CZPUtils.GetXYLStationByInsideNum(Context.Name, putStaion);
              
             if (grab == null)
             {
@@ -163,7 +163,7 @@ namespace HBYWCZP2024.PLC.Tasks
             if (put is Pallet || grab is Pallet)
             {
                 // 要发两次可能
-                if (!await Context.Mediator.Send(new GrabCommand(Key, data)))
+                if (!await Context.Mediator.Send(new GrabCommand(Context.Name, data)))
                 {
                     //await Context.Mediator.Send(new WarningBoxCommand($"工位{grabStation} {grab!.Name} -> 工位{putStaion} {put!.Name}"));
                     return false;

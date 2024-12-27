@@ -21,6 +21,7 @@ namespace HBYWCZP2024.View.CZPallet
         TextBox[] channelNum;// = new TextBox[lent];
         TextBox[] columnNum;// = new TextBox[lent];
         ComboBox[] comboBoxes;// = new ComboBox[lent];
+        ComboBox[] OKNGBoxes;// = new ComboBox[lent];
         CheckBox[] isStationEnable;// = new ComboBox[lent];
 
         //public List<PalletType> PalletTypes { get; }
@@ -31,9 +32,14 @@ namespace HBYWCZP2024.View.CZPallet
 
         public List<string> PalletTypesStr { get; }
 
-            = new() { Properties.Resources.Assembly, Properties.Resources.Disassembly, //PalletType.异常口, PalletType.假电芯盘
+            = new() { Properties.Resources.Assembly, Properties.Resources.Disassembly, "筛选"
 }
             ;
+
+        public List<string> OKNGPalletTypeStr { get; }
+
+            = new() { Properties.Resources.Assembly, Properties.Resources.Disassembly, "筛选"
+        };
 
         public StationSettingView()
         {
@@ -52,6 +58,7 @@ namespace HBYWCZP2024.View.CZPallet
             channelNum = new TextBox[stations.Length];
             columnNum = new TextBox[stations.Length];
             comboBoxes = new ComboBox[stations.Length];
+            OKNGBoxes = new ComboBox[stations.Length];
             isStationEnable = new CheckBox[stations.Length];
 
             int idx = 0;
@@ -109,6 +116,14 @@ namespace HBYWCZP2024.View.CZPallet
                 {
                     comboBoxes[idx].SelectedIndex = PalletTypes.IndexOf(a.Type);
                 }
+
+                OKNGBoxes[idx] = new()
+                {
+                    Width = 150,
+                    ItemsSource = PalletTypesStr,
+
+                    IsEnabled = station is Pallet,
+                };
 
                 isStationEnable[idx] = new()
                 {

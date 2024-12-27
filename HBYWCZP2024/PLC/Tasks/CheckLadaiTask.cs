@@ -56,7 +56,7 @@ namespace HBYWCZP2024.PLC.Tasks
             }
             var battery = batteryCode.Select((s, i) => new MaterialInfo(s, i)).Where(s=> channelState[s.Channel]).ToArray();
 
-            var res = await Context.Mediator.Send(new CheckMaterialOnlineCommand(Key, battery));
+            var res = await Context.Mediator.Send(new CheckMaterialOnlineCommand(Context.Name, battery));
             if (res == null) { 
                 return false;
             }

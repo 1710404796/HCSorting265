@@ -16,6 +16,7 @@ namespace HBYWCZP2024.Models.CZPallet
         public Option<Reader> Reader { get; set; } = None;
         public int PalletId { get; set; }
         public PalletType Type { get; set; }
+        public OKNGPalletType OKNGType { get; set; }
 
 
         public bool CheckCodeRegular(string? code = null)
@@ -29,6 +30,12 @@ namespace HBYWCZP2024.Models.CZPallet
 
     }
 
+    public enum OKNGPalletType { 
+        OK,
+        NG,
+        其他
+    
+    }
     public enum PalletType
     {
         拆盘,
