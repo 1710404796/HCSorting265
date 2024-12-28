@@ -40,7 +40,7 @@ namespace HBYWCZP2024.Models
         /// </summary>
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(BorderBrush))]
-        BatteryLevel _batteryLevel = BatteryLevel.OK;
+        BatteryLevel _batteryLevel = BatteryLevel.EMPTY;
 
 
         /// <summary>

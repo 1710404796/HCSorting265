@@ -11,10 +11,10 @@ namespace HBYWCZP2024.Models.ECS
     /// 请求NG位置信息 请求电池位置信息
     /// 作业开始前获取电芯位置
     /// </summary>'
-    public class S103B : S103
-    {
+    //public class S103B : S103
+    //{
     
-    }
+    //}
     public class S103 : S102
     {
         public new string Type => "S103";

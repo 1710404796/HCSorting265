@@ -143,7 +143,7 @@ namespace HBYWCZP2024.Models
         {
             Channels[id].Code = code;
             Channels[id].BatteryLevel = batteryLevel;
-            if (code == StationChannel.DefaultCode)
+            if (code == StationChannel.DefaultCode || string.IsNullOrWhiteSpace(code))
             {
                 Channels[id].BatteryLevel = BatteryLevel.EMPTY;
             }

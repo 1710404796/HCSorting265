@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 throw new Exception("托盘不存在");
             }
 
-            var data = await hBECSService.SendAsync<S102, E102>(new S102() { TrayNumber = pallet.PalletCode });
+            var data = await hBECSService.SendAsync<S102, E102>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
             return data != null && data.ErrorCode == "0";
         }
     }

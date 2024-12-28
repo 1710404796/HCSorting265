@@ -40,9 +40,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
             }
-            if (pallet.Type == Models.CZPallet.PalletType.组盘)
+            if (request.Start)
             {
-                var data = await hBECSService.SendAsync<S104, E104>(new S104() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1 });
+                var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
 
                 if (data == null)
                 {
@@ -55,9 +55,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     return false;
                 }
             }
-            else if (pallet.Type == Models.CZPallet.PalletType.拆盘 || pallet.Type == Models.CZPallet.PalletType.筛选)
+            else 
             {
-                var data = await hBECSService.SendAsync<S106, E106>(new S106() 
+                // 上报数据
+                var data = await hBECSService.SendAsync<S105, E105>(new S105() 
                 { 
                     TrayNumber = pallet.PalletCode, 
                     TrayPosition = pallet.PalletId + 1 ,
@@ -74,16 +75,30 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
                     return false;
                 }
+                // 作业结束
+                var e106 = await hBECSService.SendAsync<S106, E106>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+
+                if (e106 == null)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                    return false;
+                }
+                if (e106.DeviceStatus != DeviceStatus2.OK)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                    return false;
+                }
+
             }
-            else
-            {
-                throw new Exception("托盘类型错误");
-            }
+            //else
+            //{
+            //    throw new Exception("托盘类型错误");
+            //}
 
             // TODO: 结束要用106命令
-            
 
-            
+
+
 
             return true;
 

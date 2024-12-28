@@ -14,13 +14,13 @@ namespace HBYWCZP2024.Models.ECS
     {
         public new string Type => "S102";
 
-        public int TrayPosition { get; set; }
-        public TrayType TrayType { get; set; }
-        public string TrayNumber { get; set; }
+        public required int TrayPosition { get; set; }
+        public required TrayType TrayType { get; set; }
+        public required string TrayNumber { get; set; }
 
         public string GetContent()
         {
-            return $"{TrayPosition}{(int)TrayType}{TrayNumber.PadRight(20)}";
+            return $"{TrayPosition}{(int)TrayType}{TrayNumber,-20}";
         }
 
         public void Parse(string content)

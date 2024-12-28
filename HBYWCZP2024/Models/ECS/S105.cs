@@ -15,11 +15,13 @@ public class S105 : IECSContent
     public int BatteryCount { get; set; }
     public List<string> BatteryBarcodes { get; set; }
     public string TrayNumber { get; set; }
+    public int TrayPosition { get; set; }
+    public TrayType TrayType { get; set; }
 
     public string GetContent()
     {
         var barcodes = string.Join("", BatteryBarcodes.Select(b => b.PadRight(24)));
-        return $"{BatteryCount,-2}{barcodes}{TrayNumber,-20}";
+        return $"{TrayPosition}{(int)TrayType}{TrayNumber,-20}{BatteryCount,-3}{barcodes}";
     }
 
     public void Parse(string content)
@@ -28,6 +30,9 @@ public class S105 : IECSContent
         {
             throw new ArgumentException("字符串长度不足!");
         }
+
+
+        TrayPosition = 
 
         BatteryCount = int.Parse(content.Substring(0, 2).Trim());
         BatteryBarcodes = new List<string>();

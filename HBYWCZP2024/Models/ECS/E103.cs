@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 namespace HBYWCZP2024.Models.ECS
 {
 
-    public class E103B : IECSContent
-    {
-        public string Type => "E103";
-        public string BatteryStatus
-        {
-            get; set;
-        } = string.Empty;
-        public int BatteryCount { get; set; }
+    //public class E103B : IECSContent
+    //{
+    //    public string Type => "E103";
+    //    public string BatteryStatus
+    //    {
+    //        get; set;
+    //    } = string.Empty;
+    //    public int BatteryCount { get; set; }
 
-        public BatteryLevel[] GetBatteryLevels()
-        {
-            var levels = new BatteryLevel[BatteryCount];
-            for (int i = 0; i < BatteryCount; i++)
-            {
-                levels[i] = BatteryStatus[i] switch
-                {
-                    '0' => BatteryLevel.EMPTY,
-                    '1' => BatteryLevel.OK,
-                    '2' => BatteryLevel.NG,
-                    _ => BatteryLevel.Unknown
-                };
-            }
-            return levels;
-        }
+    //    public BatteryLevel[] GetBatteryLevels()
+    //    {
+    //        var levels = new BatteryLevel[BatteryCount];
+    //        for (int i = 0; i < BatteryCount; i++)
+    //        {
+    //            levels[i] = BatteryStatus[i] switch
+    //            {
+    //                '0' => BatteryLevel.EMPTY,
+    //                '1' => BatteryLevel.OK,
+    //                '2' => BatteryLevel.NG,
+    //                _ => BatteryLevel.Unknown
+    //            };
+    //        }
+    //        return levels;
+    //    }
 
-        public string GetContent()
-        {
-            return $"{BatteryCount,-3}{BatteryStatus}";
-        }
+    //    public string GetContent()
+    //    {
+    //        return $"{BatteryCount,-3}{BatteryStatus}";
+    //    }
 
-        public void Parse(string content)
-        {
-            BatteryCount = int.Parse(content[..3].Trim());
-            BatteryStatus = content[3..];
-        }
-    }
+    //    public void Parse(string content)
+    //    {
+    //        BatteryCount = int.Parse(content[..3].Trim());
+    //        BatteryStatus = content[3..];
+    //    }
+    //}
     // 筛选所用协议类
     public class E103 : IECSContent
     {

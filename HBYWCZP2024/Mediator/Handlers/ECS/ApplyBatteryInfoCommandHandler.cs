@@ -35,19 +35,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (pallet.Type == Models.CZPallet.PalletType.拆盘)
             {
-                var data = await hBECSService.SendAsync<S103B, E103B>(new S103B() { TrayNumber = pallet.PalletCode });
+                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
                 if (data == null)
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
                     return null;
                 }
 
+                data.BatteryCodes.Select((s,i) => (s, i)).ToList().ForEach(async (data) =>
+                {
+                    var code = data.s.Trim();
+                   await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
+                })
+                    ;
 
-                return data.GetBatteryLevels();
+                return data.BatteryCodes.Select(s => string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new S103() { TrayNumber = pallet.PalletCode });
+                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
                 if (data == null)
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
