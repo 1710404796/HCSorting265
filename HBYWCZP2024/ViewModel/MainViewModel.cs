@@ -126,9 +126,13 @@ namespace HBYWCZP2024.ViewModel
 
             }
             Console.WriteLine("Wcs启动");
-            while (CacheService.Token.IsCancellationRequested)
+            while (!CacheService.Token.IsCancellationRequested)
             {
                 var XcplcService = PlctaskServiceFactory.CreateService(MainStorage.Saves.SelectStageName, null!);
+                //Console.WriteLine(XcplcService);
+                Console.WriteLine(XcplcService.GetHashCode());
+
+                Console.WriteLine(XcplcService?.IsRunning);
                 PlcIsRunning = XcplcService?.IsRunning ?? false;
                 await Task.Delay(1000);
             }

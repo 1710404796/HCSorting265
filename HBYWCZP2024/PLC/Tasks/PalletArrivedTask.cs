@@ -64,9 +64,9 @@ namespace HBYWCZP2024.PLC.Tasks
 
             }
 
+            return  await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
 
-
-            return await base.DoSth();
+            //return await base.DoSth();
 
 
         }
@@ -129,7 +129,9 @@ namespace HBYWCZP2024.PLC.Tasks
             //};
 
             var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, true));
-            return res;
+            return res && await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum));
+
+            //return res;
 
             return await base.DoSth();
         }

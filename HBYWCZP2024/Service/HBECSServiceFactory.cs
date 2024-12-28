@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace HBYWCZP2024.Service
         {
             if (!_serviceCache.ContainsKey(name))
             {
-                var service = new HBECSService(name, logger);
+                var meditor = App.GetService<IMediator>();
+                var service = new HBECSService(name, logger , meditor);
                 _serviceCache[name] = service;
             }
 

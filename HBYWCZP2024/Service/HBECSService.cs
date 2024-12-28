@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Utils;
 using LinxUniverse.SciSocket;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace HBYWCZP2024.Service
@@ -33,12 +35,14 @@ namespace HBYWCZP2024.Service
         private readonly ILogger<HBECSService> logger;
 
         public string Name { get; }
+        public IMediator Mediator { get; }
         public MesService MesService { get; }
 
-        public HBECSService(string name, ILogger<HBECSService> logger)
+        public HBECSService(string name, ILogger<HBECSService> logger, IMediator mediator)
         {
             Name = name;
             this.logger = logger;
+            Mediator = mediator;
             _clientSocket = new LinxClientSocket(new LinxClientSocketOption
             {
                 Address = MainStorage.Saves.KeysSave[name].ECSIP,
@@ -103,24 +107,36 @@ namespace HBYWCZP2024.Service
 
             _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
         }
-        public async Task<T2> SendAsync<T1, T2>(T1 req) where T1 : IECSContent where T2 : IECSContent, new()
+        public async Task<T2> SendAsync<T1, T2>(T1 req) where T1 : IECSContent where T2 : IECSContentRes, new()
         {
             await Task.Yield();
-            lock (_lockobj)
+            try
             {
-                var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
-                logger.LogInformation("{name}, 发送数据: {data}", Name, packMessage);
-                _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
-                CancellationTokenSource cts = new CancellationTokenSource();
-                cts.CancelAfter(60000);
+                lock (_lockobj)
+                {
+                    var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
+                    logger.LogInformation("{name}, 发送数据: {data}", Name, packMessage);
+                    _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+                    CancellationTokenSource cts = new CancellationTokenSource();
+                    cts.CancelAfter(60000);
 
-                var res = WaitFor<T2>(cts.Token);
-                logger.LogInformation("{name}, 接收数据: {data}", Name, JsonSerializer.Serialize(res));
+                    var res = WaitFor<T2>(cts.Token);
+                    logger.LogInformation("{name}, 接收数据: {data}", Name, JsonSerializer.Serialize(res));
+                    if (res.ErrorCode != "0")
+                    {
+                        throw new Exception(res.ErrorCode);
+                    }
 
-                return res;
+                    return res;
 
+                }
             }
+            catch (Exception ex)
+            {
 
+                await Mediator.Send(new WcsDataWarningBoxCommand(Name, $"等待{typeof(T2).Name}消息，发生问题 Error:" + ex.Message));
+                throw;
+            }
         }
 
         public T WaitFor<T>(CancellationToken? token) where T : IECSContent, new()
@@ -136,7 +152,13 @@ namespace HBYWCZP2024.Service
                     while (Messages.Count != 0)
                     {
                         var peek = Messages.Dequeue();
+                        if (peek.Command == "110") {
+                            var err = new E110();
+                            err.Parse(peek.Content);
+                            logger.LogError("{name}, 错误: {err}", Name, err.ErrorCode);
 
+                            throw new Exception(err.ErrorCode);
+                        }
                         if (peek.Command == res.Type)
                         {
                             res.Parse(peek.Content);

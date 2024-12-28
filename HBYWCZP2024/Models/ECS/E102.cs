@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Models.ECS
 {
-    public class E102 : IECSContent
+    public class E102 : IECSContentRes
     {
         public string Type => "E102";
         public DeviceStatus2 DeviceStatus { get; set; }

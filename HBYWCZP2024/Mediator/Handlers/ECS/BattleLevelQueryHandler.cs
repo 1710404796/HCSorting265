@@ -61,7 +61,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             
 
 
-            return request.Pallet with { Channels = channels.ToImmutableArray() };
+            return request.Pallet with { Channels = [.. channels] };
         }
     }
 }
