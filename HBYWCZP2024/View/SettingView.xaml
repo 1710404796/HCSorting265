@@ -97,6 +97,14 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionRemoveEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ApplyMaterialEnable}"
 >申请物料接口使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletArrivedEnable}"
+>托盘到位接口使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletOutEnable}"
+>托盘离开接口是能</CheckBox>
             </StackPanel>
 
 

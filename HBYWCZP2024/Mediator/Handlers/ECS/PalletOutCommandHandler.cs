@@ -16,7 +16,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<bool> Handle(PalletOutCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletArrivedEnable)
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletOutEnable)
             {
                 return true;
             }
