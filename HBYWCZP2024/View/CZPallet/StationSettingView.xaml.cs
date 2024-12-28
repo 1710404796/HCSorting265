@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.Models.ECS;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Windows;
@@ -36,10 +37,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; }
-
-            = new() { "OK", "NG", "其他"
-        };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "其他" };
 
         public StationSettingView()
         {
@@ -129,6 +127,7 @@ namespace HBYWCZP2024.View.CZPallet
                     OKNGBoxes[idx].SelectedIndex = (int)b.OKNGType;
                 }
 
+
                 isStationEnable[idx] = new()
                 {
                     IsChecked = station.IsEnable,
@@ -203,7 +202,7 @@ namespace HBYWCZP2024.View.CZPallet
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
                 if (station is Pallet pallet)
                 {
-                    pallet.OKNGType = (OKNGPalletType)OKNGBoxes[i].SelectedIndex;
+                    pallet.OKNGType = (TrayType)OKNGBoxes[i].SelectedIndex;
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 

@@ -47,7 +47,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new S103B() { TrayNumber = pallet.PalletCode });
+                var data = await hBECSService.SendAsync<S103, E103>(new S103() { TrayNumber = pallet.PalletCode });
                 if (data == null)
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));

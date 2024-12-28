@@ -53,7 +53,7 @@ namespace HBYWCZP2024.Models
         /// <summary>
         /// 托盘通道数
         /// </summary>
-        public int ChannelNum { get; set; } = 24;
+        public int ChannelNum { get; set; } = 2;
         public int Column { get; set; } = 1;
 
 
