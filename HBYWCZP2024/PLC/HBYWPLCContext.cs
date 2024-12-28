@@ -85,7 +85,7 @@ namespace HBYWCZP2024.PLC
                 {
 
 
-                    await Mediator.Publish(new UploadDeivceErrorNotice(errorCode));
+                    await Mediator.Publish(new UploadDeivceErrorNotice(Name, errorCode));
 
                 }
                 else
@@ -101,7 +101,7 @@ namespace HBYWCZP2024.PLC
                     //}
                     _lastErrorStartTime = DateTime.Now;
 
-                    await Mediator.Publish(new UploadDeivceErrorNotice(errorCode));
+                    await Mediator.Publish(new UploadDeivceErrorNotice(Name, errorCode));
 
 
                 }

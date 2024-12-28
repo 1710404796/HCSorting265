@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class ApplyBatteryInfoCommandHandler(HBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
+    public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
     {
 
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)

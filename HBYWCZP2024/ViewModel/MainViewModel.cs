@@ -130,9 +130,9 @@ namespace HBYWCZP2024.ViewModel
             {
                 var XcplcService = PlctaskServiceFactory.CreateService(MainStorage.Saves.SelectStageName, null!);
                 //Console.WriteLine(XcplcService);
-                Console.WriteLine(XcplcService.GetHashCode());
+                //Console.WriteLine(XcplcService.GetHashCode());
 
-                Console.WriteLine(XcplcService?.IsRunning);
+                //Console.WriteLine(XcplcService?.IsRunning);
                 PlcIsRunning = XcplcService?.IsRunning ?? false;
                 await Task.Delay(1000);
             }

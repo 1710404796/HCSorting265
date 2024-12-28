@@ -12,10 +12,12 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class GrabActionCommandHandler(HBECSService hBECSService, IMediator mediator) : IRequestHandler<GrabActionCommand, bool>
+    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<GrabActionCommand, bool>
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
+            HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
+
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
            
             if (pallet == null)

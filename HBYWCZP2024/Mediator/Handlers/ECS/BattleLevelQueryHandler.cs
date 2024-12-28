@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class BattleLevelQueryHandler(HBECSServiceFactory hBECSServiceFactory) : IRequestHandler<BattleLevelQuery, Pallet>
+    internal class BattleLevelQueryHandler(IHBECSServiceFactory hBECSServiceFactory) : IRequestHandler<BattleLevelQuery, Pallet>
     {
         public async Task<Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {

@@ -107,7 +107,7 @@ namespace HBYWCZP2024.PLC.Tasks
     {
         public GrabActionTask(int subIdx) : base(2)
         {
-            TaskName = $"{subIdx + 1} {Properties.Resources.DisassemblyStarted}";
+            TaskName = $"{subIdx + 1} 拆组盘开始";
             SubIdx = subIdx;
         }
 

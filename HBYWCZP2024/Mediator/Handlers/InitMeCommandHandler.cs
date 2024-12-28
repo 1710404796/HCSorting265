@@ -124,6 +124,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                                 return None;
                             }
                         );
+                        Console.WriteLine(pallet.Reader);
                     }
 
                 }

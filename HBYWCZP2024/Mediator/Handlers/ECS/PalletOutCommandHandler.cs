@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class PalletOutCommandHandler(HBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<PalletOutCommand, bool>
+    internal class PalletOutCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<PalletOutCommand, bool>
     {
         public async Task<bool> Handle(PalletOutCommand request, CancellationToken cancellationToken)
         {

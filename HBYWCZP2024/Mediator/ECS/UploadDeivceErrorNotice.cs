@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.ECS
 {
-    public record UploadDeivceErrorNotice(ushort ErrorCode) : IRequest;
+    public record UploadDeivceErrorNotice(string Key, ushort ErrorCode) : IRequest;
 }
