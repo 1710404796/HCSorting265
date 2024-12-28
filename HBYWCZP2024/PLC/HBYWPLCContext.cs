@@ -68,7 +68,6 @@ namespace HBYWCZP2024.PLC
             if (heartTag % 5 == 0)
             {
                 var test = Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0, Name);
-                Console.WriteLine("heartbeat:"+test + heartFlag);
 
                 heartFlag = !heartFlag;
 
@@ -121,6 +120,7 @@ namespace HBYWCZP2024.PLC
             Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name));
             Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name));
             Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name));
+
             return flag;
         }
     }

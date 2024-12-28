@@ -208,6 +208,10 @@ namespace HBYWCZP2024
 
             Log.Logger = new LoggerConfiguration()
               .MinimumLevel.Debug()
+              .MinimumLevel.Override("System.Net.Http.HttpClient", Serilog.Events.LogEventLevel.Warning)
+                            .MinimumLevel.Override("Quartz", Serilog.Events.LogEventLevel.Information)
+                            .MinimumLevel.Override("Microsoft.Extensions.Http", Serilog.Events.LogEventLevel.Information)
+              // 软件名字
               // 软件名字
               .WriteTo.File("logs/HBYWCZP2024.NET.log", rollingInterval: RollingInterval.Day,
               outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level}] |{SourceContext}.{Method}| - {Message}{NewLine}{Exception}")

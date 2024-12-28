@@ -38,7 +38,7 @@ namespace HBYWCZP2024.View.CZPallet
 
         public List<string> OKNGPalletTypeStr { get; }
 
-            = new() { Properties.Resources.Assembly, Properties.Resources.Disassembly, "筛选"
+            = new() { "OK", "NG", "其他"
         };
 
         public StationSettingView()
@@ -120,10 +120,14 @@ namespace HBYWCZP2024.View.CZPallet
                 OKNGBoxes[idx] = new()
                 {
                     Width = 150,
-                    ItemsSource = PalletTypesStr,
+                    ItemsSource = OKNGPalletTypeStr,
 
                     IsEnabled = station is Pallet,
                 };
+                if (station is Pallet b)
+                {
+                    OKNGBoxes[idx].SelectedIndex = (int)b.OKNGType;
+                }
 
                 isStationEnable[idx] = new()
                 {
@@ -170,6 +174,7 @@ namespace HBYWCZP2024.View.CZPallet
                 stackPanel.Children.Add(rfidReaderIP[i]);
                 stackPanel.Children.Add(StationNum[i]);
                 stackPanel.Children.Add(comboBoxes[i]);
+                stackPanel.Children.Add(OKNGBoxes[i]);
                 stackPanel.Children.Add(channelNum[i]);
                 stackPanel.Children.Add(columnNum[i]);
                 stackPanel.Children.Add(isStationEnable[i]);
@@ -197,7 +202,10 @@ namespace HBYWCZP2024.View.CZPallet
                 station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
                 if (station is Pallet pallet)
+                {
+                    pallet.OKNGType = (OKNGPalletType)OKNGBoxes[i].SelectedIndex;
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
+                }
 
             }
 

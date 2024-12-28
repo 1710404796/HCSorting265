@@ -9,6 +9,8 @@ public record GrabActionCommand(string Key, int StationNum, bool Start) : IReque
 /// 4.4
 /// </summary>
 /// <param name="data"></param>
+public record PalletArrivedCommand(string Key, int InsideStationNum) : IRequest<bool>;
+public record PalletOutCommand(string Key, int InsideStationNum) : IRequest<bool>;
 public record GrabCommand(string Key, S105 data) : IRequest<bool>;
 
 /// <summary>

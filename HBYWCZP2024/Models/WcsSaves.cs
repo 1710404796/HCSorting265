@@ -170,8 +170,7 @@ namespace HBYWCZP2024.Models
         {
             get; set;
         } = true;
-
-
+        public bool PalletArrivedEnable { get; internal set; }
     }
 
     public class StageMono

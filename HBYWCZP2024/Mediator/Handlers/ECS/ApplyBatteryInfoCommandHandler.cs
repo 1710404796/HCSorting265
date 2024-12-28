@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             }
 
-            var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
+            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.StationNum);
 
             if (pallet == null)
             {

@@ -58,6 +58,14 @@
              Text="{x:Static lang:Resources.TrayType}"
              
              ></TextBlock>
+
+            <TextBlock 
+  Width="150"
+  Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+  TextAlignment="Center"
+  Text="OK或NG托盘"
+  
+  ></TextBlock>
             <TextBlock 
              Width="150"
              Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
