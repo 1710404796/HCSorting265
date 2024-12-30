@@ -143,7 +143,7 @@ namespace HBYWCZP2024.Service
         {
             T res = new T();
             token ??= CancellationToken.None;
-            lock (_lockobj)
+            //lock (_lockobj)
             {
 
 
@@ -152,7 +152,8 @@ namespace HBYWCZP2024.Service
                     while (Messages.Count != 0)
                     {
                         var peek = Messages.Dequeue();
-                        if (peek.Command == "110") {
+                        if (peek.Command == "E110") {
+                            // 报警
                             var err = new E110();
                             err.Parse(peek.Content);
                             logger.LogError("{name}, 错误: {err}", Name, err.ErrorCode);

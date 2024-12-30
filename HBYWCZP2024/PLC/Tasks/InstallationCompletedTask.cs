@@ -49,7 +49,7 @@ namespace HBYWCZP2024.PLC.Tasks
         protected override Task WriteDataToPlc()
         {
             //Context.Plc.WriteNode("WCS_TO_PLC_ScanTheCode.WCS.to_putStation".GetOPCAddress(), putStation);
-            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.WCS.to_putStation", putStation, Context.Name);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", putStation, Context.Name);
 
             return base.WriteDataToPlc();
 
@@ -58,7 +58,7 @@ namespace HBYWCZP2024.PLC.Tasks
         protected override Task<bool> CleanData()
         {
             //Context.Plc.WriteNode("WCS_TO_PLC_ScanTheCode.WCS.to_putStation".GetOPCAddress(), 0);
-            Context.Plc.WriteTagNode("WCS_TO_PLC_ScanTheCode.WCS.to_putStation", (ushort)0, Context.Name);
+            Context.Plc.WriteTagNode("WCS_to_JXS.Data.to_putStation", (ushort)0, Context.Name);
 
             putStation = 0;
             return base.CleanData();
