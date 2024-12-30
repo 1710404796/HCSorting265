@@ -15,7 +15,12 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 {
     public HttpClient HttpClient { get; } = httpClient;
     public string Name { get; } = name;
-    public async Task<Either<string, CheckMaterialResponse>> CheckMaterialLevel(CheckMaterialRequest checkMaterialRequest)
+
+
+
+
+
+    public async Task<Either<string, CheckPalletResponse>> CheckPalletMaterialLevel(CheckPalletMaterialRequest checkMaterialRequest)
     {
         string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/pre/sorting/query";
         logger.LogInformation("请求MES地址: {url}", _url);
@@ -31,7 +36,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
                 var resdata = await res.Content.ReadAsStringAsync();
 
                 logger.LogInformation("MES返回数据: {resdata}", resdata);
-                var response = JsonSerializer.Deserialize<CheckMaterialResponse>(resdata);
+                var response = JsonSerializer.Deserialize<CheckPalletResponse>(resdata);
                 if (response != null)
                 {
                     return Right(response);
@@ -60,36 +65,6 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
 }
 
-public class CheckMaterialRequest(string name)
-{
-    [JsonPropertyName("siteCode")]
-    public string SiteCode => MainStorage.Saves.KeysSave[name].SiteCode;
-
-    [JsonPropertyName("lineCode")]
-    public string LineCode => MainStorage.Saves.KeysSave[name].LineCode;
-
-    [JsonPropertyName("equipNum")]
-    public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
-
-    [JsonPropertyName("materialCode")]
-    public string MaterialCode => MainStorage.Saves.KeysSave[name].MaterialCode;
-
-    [JsonPropertyName("productType")]
-    public string ProductType => MainStorage.Saves.KeysSave[name].ProductType;
-
-    [JsonPropertyName("containerCode")]
-    public string ContainerCode
-    {
-        get; set;
-    }
-
-    [JsonPropertyName("containerCellInfos")]
-    public required ContainerCellInfo[] ContainerCellInfos
-    {
-        get; set;
-    }
-}
-
 public class ContainerCellInfo
 {
     [JsonPropertyName("identification")]
@@ -100,30 +75,6 @@ public class ContainerCellInfo
 
     [JsonPropertyName("location")]
     public string Location
-    {
-        get; set;
-    }
-}
-
-
-
-
-public class CheckMaterialResponse
-{
-    [JsonPropertyName("rows")]
-    public Row[] Rows
-    {
-        get; set;
-    }
-
-    [JsonPropertyName("success")]
-    public bool Success
-    {
-        get; set;
-    }
-
-    [JsonPropertyName("total")]
-    public int Total
     {
         get; set;
     }

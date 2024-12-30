@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             .Map(s => new BatteryWithLevel(s.Code, Some(Models.BatteryLevel.OK))) 
                     }).ToImmutableArray() };
             }
-            CheckMaterialRequest checkMaterialRequest = new CheckMaterialRequest(request.Key)
+            CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
             {
                 ContainerCode = request.Pallet.PalletCode,
                 ContainerCellInfos = request.Pallet.Channels.Select(x => new ContainerCellInfo()
@@ -41,7 +41,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }).ToArray()
             };
 
-            var checkMaterialResponse = await hBECSService.MesService.CheckMaterialLevel(checkMaterialRequest);
+            var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
 
             var channels = checkMaterialResponse.Match(
                 Right: r => {

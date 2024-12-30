@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -43,10 +44,11 @@ namespace HBYWCZP2024.Service
             Name = name;
             this.logger = logger;
             Mediator = mediator;
+            var ipaddr = IPEndPoint.Parse(MainStorage.Saves.KeysSave[name].ECSIP);
             _clientSocket = new LinxClientSocket(new LinxClientSocketOption
             {
-                Address = MainStorage.Saves.KeysSave[name].ECSIP,
-                Port = MainStorage.Saves.KeysSave[name].ECSPort,
+                Address = ipaddr.Address.ToString(),
+                Port = (ushort)ipaddr.Port,
                 SplitChar = '#',
             });
             _clientSocket.Logger = logger;

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.PLC;
 using LinxUniverse.Auth;
@@ -135,6 +137,13 @@ namespace HBYWCZP2024.ViewModel
                 //Console.WriteLine(XcplcService?.IsRunning);
                 PlcIsRunning = XcplcService?.IsRunning ?? false;
                 await Task.Delay(1000);
+
+                var data =  await Mediator.Send(new BattleLevelQuery("Default", new Pallet("YWHC100001",
+                    [
+                    new Channel(1, Some(new BatteryWithLevel("04QCB43G16800JEB50000004", None)))
+                    ]
+                    )));
+                Console.WriteLine(data);
             }
         }
     }

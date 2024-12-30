@@ -39,15 +39,29 @@
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
                        >
-                    本地监听端口
+                    MESIP
                 </TextBlock>
                 <TextBox 
                     Width="200" 
                     Margin="0,10,0,0" 
                     HorizontalAlignment="Left"
                     x:Name="IPBox"
-                    Text="{Binding ViewModel.Saves.Port, Mode=TwoWay}"
+                    Text="{Binding ViewModel.Saves.MESIP, Mode=TwoWay}"
                 ></TextBox>
+
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    FMS地址
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="ECSIPBox"
+    Text="{Binding ViewModel.Saves.ECSIP, Mode=TwoWay}"
+></TextBox>
                 <TextBlock FontSize="15"
      Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
      Margin="0,15,0,0"
@@ -83,6 +97,49 @@
                     Click="SaveButton_Click">保存设定</Button>
             </StackPanel>
             <StackPanel Grid.Column="2">
+
+                <TextBlock FontSize="15"
+     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+     Margin="0,15,0,0"
+        >
+     SiteCode
+                </TextBlock>
+                <TextBox 
+     Width="200" 
+     Margin="0,10,0,0" 
+     HorizontalAlignment="Left"
+     x:Name="Site"
+     Text="{Binding ViewModel.Saves.SiteCode, Mode=TwoWay}"
+ ></TextBox>
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    LineCode
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="Line"
+    Text="{Binding ViewModel.Saves.LineCode, Mode=TwoWay}"
+></TextBox>
+
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    EquipNum
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="EquipNum"
+    Text="{Binding ViewModel.Saves.EquipNum, Mode=TwoWay}"
+></TextBox>
+
+
                 <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能</CheckBox>
