@@ -1,11 +1,13 @@
 ﻿
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
 using LinxUniverse.OPCUA;
 using LinxUniverse.OPCUA.Attributes;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,9 +56,9 @@ namespace HBYWCZP2024.PLC.Tasks
                 }
 
             }
-            var battery = batteryCode.Select((s, i) => new MaterialInfo(s, i)).Where(s=> channelState[s.Channel]).ToArray();
-
-            var res = await Context.Mediator.Send(new CheckMaterialOnlineCommand(Context.Name, battery));
+            //var battery = batteryCode.Select((s, i) => new MaterialInfo(s, i)).Where(s=> channelState[s.Channel]).ToArray();
+            var battery = batteryCode.Select((s, i) => new Channel(i, Some(new BatteryWithLevel(s, None)))).ToImmutableArray();
+            var res = await Context.Mediator.Send(new MaterialOnlineQuery(Context.Name, battery));
             if (res == null) { 
                 return false;
             }
@@ -64,13 +66,14 @@ namespace HBYWCZP2024.PLC.Tasks
 
             foreach (var item in res)
             {
-                batteryStatus[item.channel] = (byte)item.level;
+                BatteryLevel batteryLevel = item.BattleWithLevel.Bind(m => m.Level).Match(Some: s => s, None: () => BatteryLevel.NG);
+                batteryStatus[item.ChannelId] = (byte)batteryLevel;
 
-                if (item.level == BatteryLevel.NG)
+                if (batteryLevel == BatteryLevel.NG)
                 {
                     ng++;
                 }
-                else if (item.level == BatteryLevel.OK)
+                else if (batteryLevel == BatteryLevel.OK)
                 {
                     ok++;
                 }

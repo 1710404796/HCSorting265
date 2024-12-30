@@ -152,7 +152,7 @@ namespace HBYWCZP2024.Models
 
     public class ApiEnable
     {
-        public bool CheckMaterialEnable
+        public bool CheckPalletMaterialEnable
         {
             get; set;
         } = true;
@@ -172,6 +172,7 @@ namespace HBYWCZP2024.Models
         } = true;
         public bool PalletArrivedEnable { get; set; }
         public bool PalletOutEnable { get; set; }
+        public bool CheckMaterialEnable { get;  set; }
     }
 
     public class StageMono

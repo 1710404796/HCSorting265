@@ -16,7 +16,19 @@ namespace HBYWCZP2024.Mediator.Handlers
     {
         public async Task<Arr<Channel>> Handle(MaterialOnlineQuery request, CancellationToken cancellationToken)
         {
-            var service = factory.Create(request.Key);
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
+            {
+                return request.Channels.Map(c =>
+                    c with
+                    {
+                        BattleWithLevel = c.BattleWithLevel.Map(s => s with { Level = BatteryLevel.OK })
+                    }
+                ).ToArr();
+            }
+
+                var service = factory.Create(request.Key);
+
+
 
             var mRequest = new MaterialOnlineRequest(request.Key)
             {

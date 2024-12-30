@@ -23,6 +23,7 @@ public record ApplyBatteryInfoCommand(string Key, int StationNum) : IRequest<Bat
 /// 4.2
 /// </summary>
 /// <param name="MaterialInfos"></param>
+[Obsolete]
 public record CheckMaterialOnlineCommand(string Key, MaterialInfo[] MaterialInfos) : IRequest<(int channel, BatteryLevel level)[]?>;
 
 public record MaterialInfo(string MaterialCode, int Channel);

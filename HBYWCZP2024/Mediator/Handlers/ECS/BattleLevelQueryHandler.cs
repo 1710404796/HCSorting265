@@ -18,7 +18,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task< Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckPalletMaterialEnable)
             {
                 return request.Pallet with { 
                     Channels = request.Pallet.Channels
