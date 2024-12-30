@@ -39,6 +39,11 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
                 var response = JsonSerializer.Deserialize<CheckPalletResponse>(resdata);
                 if (response != null)
                 {
+                    if (response.Success == false)
+                    {
+                        return Left(resdata);
+
+                    }
                     return Right(response);
                 }
                 else
@@ -55,13 +60,57 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         {
             return Left($"请求MES异常, {ex.Message}");
         }
-       
+
 
         // 实现接口
 
     }
 
+    public async Task<Result<MaterialOnlineResponse>> MaterialOnline(MaterialOnlineRequest request)
+    {
+        string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/equipment/assembly/logistics/line";
+        logger.LogInformation("请求MES地址: {url}", _url);
+        string data = JsonSerializer.Serialize(request);
+        logger.LogInformation("请求MES数据: {data}", data);
+        try
+        {
+            var res = await httpClient.PostAsJsonAsync(_url, request);
 
+            if (res.IsSuccessStatusCode)
+            {
+                logger.LogInformation("请求MES成功");
+                var resdata = await res.Content.ReadAsStringAsync();
+
+                logger.LogInformation("MES返回数据: {resdata}", resdata);
+                var response = JsonSerializer.Deserialize<MaterialOnlineResponse>(resdata);
+                if (response != null)
+                {
+                    if (response.success == false)
+                    {
+                        return new(new Exception(resdata));
+
+                    }
+                    return response;
+                }
+                else
+                {
+                    return new(new Exception("json为空"));
+
+                }
+            }
+            else
+            {
+                    return new(new Exception($"请求MES失败, {res.StatusCode}"));
+            }
+        }
+        catch (Exception ex)
+        {
+            //return Left($"请求MES异常, {ex.Message}");
+            return new(new Exception($"请求MES异常, {ex.Message}"));
+
+        }
+
+    }
 
 }
 

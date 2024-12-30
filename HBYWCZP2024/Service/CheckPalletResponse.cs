@@ -8,7 +8,7 @@ public class CheckPalletResponse
     public Row[] Rows
     {
         get; set;
-    }
+    } = [];
 
     [JsonPropertyName("success")]
     public bool Success

@@ -137,13 +137,18 @@ namespace HBYWCZP2024.ViewModel
                 //Console.WriteLine(XcplcService?.IsRunning);
                 PlcIsRunning = XcplcService?.IsRunning ?? false;
                 await Task.Delay(1000);
+                //var testreq = new MaterialOnlineQuery
+                //    ("Default",
+                //    [new Channel(1, Some(new BatteryWithLevel("04QCB43G16800JEB50000004", None)))
 
-                var data =  await Mediator.Send(new BattleLevelQuery("Default", new Pallet("YWHC100001",
-                    [
-                    new Channel(1, Some(new BatteryWithLevel("04QCB43G16800JEB50000004", None)))
-                    ]
-                    )));
-                Console.WriteLine(data);
+                //    ]);
+                //var data = await Mediator.Send(testreq);
+                //var data =  await Mediator.Send(new BattleLevelQuery("Default", new Pallet("YWHC100001",
+                //    [
+                //    new Channel(1, Some(new BatteryWithLevel("04QCB43G16800JEB50000004", None)))
+                //    ]
+                //    )));
+                //Console.WriteLine(data);
             }
         }
     }

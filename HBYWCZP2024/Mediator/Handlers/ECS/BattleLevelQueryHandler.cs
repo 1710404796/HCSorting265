@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Mediator.Queries;
+﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using LanguageExt.UnitsOfMeasure;
@@ -12,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class BattleLevelQueryHandler(IHBECSServiceFactory hBECSServiceFactory) : IRequestHandler<BattleLevelQuery, Pallet>
+    internal class BattleLevelQueryHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<BattleLevelQuery, Pallet>
     {
-        public async Task<Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
+        public async Task< Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
@@ -54,7 +55,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         ));
                     return channels;
                 },
-                Left: x => throw new Exception(x)
+                Left: x => {
+
+                    mediator.Send(new WcsDataWarningBoxCommand(x)).Wait();
+                    throw new Exception(x); }
 
 
                 );
