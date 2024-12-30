@@ -143,6 +143,10 @@
                 <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能</CheckBox>
+
+                <CheckBox 
+                    IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckPalletMaterialEnable}"
+                    >托盘电芯等级获取接口使能</CheckBox>
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionInsertEnable}"
 >组盘开始接口使能</CheckBox>
