@@ -70,6 +70,24 @@ namespace HBYWCZP2024.Mediator.Handlers
             }
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
+                foreach (var pallet in stage.Value.Stage.Pallets)
+                {
+                    if (pallet.IsEnable)
+                    {
+                        pallet.Reader = fs(CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                            Right: reader => Some(reader),
+                            Left: s =>
+                            {
+                                mediator.Send(new WarningBoxCommand(s));
+                                return None;
+                            }
+                        );
+                        Console.WriteLine(pallet.Reader);
+                    }
+
+                }
+
+
                 Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
@@ -112,22 +130,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 MainStorage.SaveManager.Save();
 
 
-                foreach (var pallet in stage.Value.Stage.Pallets)
-                {
-                    if (pallet.IsEnable)
-                    {
-                        pallet.Reader = fs ( CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
-                            Right: reader => Some (reader),
-                            Left:  s =>
-                            {
-                                mediator.Send(new WarningBoxCommand(s));
-                                return None;
-                            }
-                        );
-                        Console.WriteLine(pallet.Reader);
-                    }
-
-                }
+               
 
                 // todo: 注册所有任务
                 //pLCTaskService.RegisterTask<ApplyBatteryInfoTask>();
