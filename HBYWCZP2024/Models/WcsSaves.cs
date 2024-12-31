@@ -148,6 +148,7 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ResetTable;
             set => KeysSave[SelectStageName].ResetTable = value;
         }
+        public int HeartbeartDuring { get; set; } = 5000;
     }
 
     public class ApiEnable

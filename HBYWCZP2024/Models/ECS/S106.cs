@@ -12,7 +12,11 @@ namespace HBYWCZP2024.Models.ECS
     /// </summary>
     public class S106 : S102
     {
-        public new string Type => "S106";
+        //public new string Type => "S106";
+        public S106()
+        {
+            Type = "S106";
+        }
         //public int BatteryCount { get; set; }
         //public int TrayPosition { get; set; }
         //public List<string> BatteryBarcodes { get; set; } = [];

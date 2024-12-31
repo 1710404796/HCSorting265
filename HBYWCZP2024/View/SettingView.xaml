@@ -97,7 +97,19 @@
                     Click="SaveButton_Click">保存设定</Button>
             </StackPanel>
             <StackPanel Grid.Column="2">
-
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    DeviceCode
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="DeviceCode"
+    Text="{Binding ViewModel.Saves.DeviceCode, Mode=TwoWay}"
+></TextBox>
                 <TextBlock FontSize="15"
      Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
      Margin="0,15,0,0"
@@ -196,6 +208,16 @@ Margin="0,10,0,0" FontSize="15"
 Width="200"
 HorizontalAlignment="Left"
         Text="{Binding ViewModel.Saves.LogDeleteDay}"></TextBox>
+
+                <TextBlock
+Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+Margin="0,10,0,0" FontSize="15" 
+>心跳上报时间(ms)</TextBlock>
+                <TextBox  Margin="0,10,0,0" 
+Width="200"
+HorizontalAlignment="Left"
+        Text="{Binding ViewModel.Saves.HeartbeartDuring}"></TextBox>
+
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPlc_Click">配置工位</Button>
 
                 <TextBlock Margin="0,10,0,0" FontSize="15"

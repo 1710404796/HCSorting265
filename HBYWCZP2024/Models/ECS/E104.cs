@@ -8,7 +8,10 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class E104 : E102
     {
-        public new string Type => "E104";
+        public E104()
+        {
+            Type = "E104";
+        }
 
     }
 

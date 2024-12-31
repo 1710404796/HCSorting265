@@ -46,11 +46,19 @@ namespace HBYWCZP2024.Mediator.Handlers
 
                 }
             }
+            //try
+            //{
             foreach (var item in Enum.GetNames<RoleEnum>())
             {
 
                 await role.CreateAsync(new LinxRole { RoleName = item });
             }
+            //}
+            //catch (Exception)
+            //{
+
+            //}
+
 
             if (MainStorage.Saves.KeysSave.Count == 0)
             {

@@ -15,21 +15,21 @@ namespace HBYWCZP2024.Utils
 
         public static string GetSocketMessage(string command, string deviceCode, string content)
         {
-            if (command.Length != 4) 
-            {
-                throw new ArgumentException($"command length must equal with 4: {command}");
-            }
+            //if (command.Length != 4) 
+            //{
+            //    throw new ArgumentException($"command length must equal with 4: {command}");
+            //}
 
-            if (deviceCode.Length != 8)
-            {
-                throw new ArgumentException($"deviceCode length must equal with 8: {deviceCode}");
-            }
+            //if (deviceCode.Length != 8)
+            //{
+            //    throw new ArgumentException($"deviceCode length must equal with 8: {deviceCode}");
+            //}
 
             if (content == null)
             {
                 throw new ArgumentException("content cannot be null");
             }
-            return $"{command}{deviceCode}{DateTime.Now:yyyyMMddHHmmss}${content}#";
+            return $"{command,-4}{deviceCode,-8}{DateTime.Now:yyyyMMddHHmmss}${content}#";
         }
 
 

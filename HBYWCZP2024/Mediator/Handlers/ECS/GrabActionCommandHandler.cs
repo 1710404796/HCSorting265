@@ -60,10 +60,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             else 
             {
                 // 上报数据
+
+                // TODO:上报数据结果权限添加
                 var data = await hBECSService.SendAsync<S105, E105>(new S105() 
                 { 
                     TrayNumber = pallet.PalletCode, 
                     TrayPosition = pallet.PalletId + 1 ,
+                    BatteryCount = pallet.ChannelNum,
                     BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum).Select(x => x.Code).ToList()
                 });
 

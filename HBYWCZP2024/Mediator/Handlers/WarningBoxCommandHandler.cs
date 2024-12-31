@@ -46,7 +46,7 @@ namespace HBYWCZP2024.Mediator.Handlers
     {
         public Task<MessageBoxResult> Handle(WcsDataWarningBoxCommand request, CancellationToken cancellationToken)
         {
-            return mediator.Send(new WarningBoxCommand($"WCS返回数据校验: \n{request.Message}", request.Caption, request.Button, request.SaveLog));
+            return mediator.Send(new WarningBoxCommand($"FMS返回数据校验: \n{request.Message}", request.Caption, request.Button, request.SaveLog));
         }
     }
 

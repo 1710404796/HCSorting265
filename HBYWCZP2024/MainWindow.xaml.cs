@@ -1,4 +1,6 @@
 ﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View;
 using HBYWCZP2024.View.CZPallet;
@@ -133,6 +135,32 @@ namespace HBYWCZP2024
         {
             NageTo<PalletLogView>();
 
+        }
+
+        private async void testzupan_Click(object sender, RoutedEventArgs e)
+        {
+            var mediator1 = App.GetService<IMediator>();
+            var key = "Default";
+            var res = await mediator1.Send(new PalletArrivedCommand(key, 2100)).ConfigureAwait(false);
+            await mediator1.Send(new InformationBoxCommand("托盘到位: " + res));
+            if (!res) return;
+
+
+            var data  = await mediator1.Send(new ApplyBatteryInfoCommand(key, 2100));
+            await mediator1.Send(new InformationBoxCommand("申请信息: " + res));
+            if (!res) return;
+
+            res = await mediator1.Send(new GrabActionCommand(key, 2100, true));
+            await mediator1.Send(new InformationBoxCommand("作业开始: " + res));
+            if (!res) return;
+
+            res = await mediator1.Send(new GrabActionCommand(key, 2100, false));
+            await mediator1.Send(new InformationBoxCommand("作业结束: " + res));
+            if (!res) return;
+
+            res = await mediator1.Send(new PalletOutCommand(key, 2100));
+            await mediator1.Send(new InformationBoxCommand("托盘离开: " + res));
+            if (!res) return;
         }
     }
 }

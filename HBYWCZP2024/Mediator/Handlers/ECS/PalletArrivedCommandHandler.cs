@@ -28,7 +28,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
 
             var data = await hBECSService.SendAsync<S102, E102>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
-            return data != null && data.ErrorCode == "0";
+            return data != null;// && data.ErrorCode == "0000";
         }
     }
 }

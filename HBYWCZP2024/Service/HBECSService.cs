@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Utils;
+using LinxUniverse.DI;
 using LinxUniverse.SciSocket;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -38,7 +39,7 @@ namespace HBYWCZP2024.Service
         public string Name { get; }
         public IMediator Mediator { get; }
         public MesService MesService { get; }
-
+        public Thread HeartbeatThread;
         public HBECSService(string name, ILogger<HBECSService> logger, IMediator mediator)
         {
             Name = name;
@@ -57,6 +58,19 @@ namespace HBYWCZP2024.Service
             var httplogger = App.GetService<ILogger<MesService>>();
             MesService = new MesService(httpClientFactory.CreateClient(name), name, httplogger);
             Init();
+            HeartbeatThread = new Thread(DoHeartBeat);
+            HeartbeatThread.Start();
+        }
+
+        async void DoHeartBeat()
+        {
+            var cache = App.GetService<CacheService>();
+
+            while (!cache.Token.IsCancellationRequested)
+            {
+               await SendAsync<S000, E000>(new S000());
+               await Task.Delay(MainStorage.Saves.HeartbeartDuring);
+            }
         }
 
         public void Init()
@@ -81,6 +95,7 @@ namespace HBYWCZP2024.Service
             {
                 HandlerDict[message.Command]?.Invoke(message.Content);
             }
+            Messages.Enqueue(message);
         }
 
         private void ClientSocket_OnComplete()
@@ -124,9 +139,9 @@ namespace HBYWCZP2024.Service
 
                     var res = WaitFor<T2>(cts.Token);
                     logger.LogInformation("{name}, 接收数据: {data}", Name, JsonSerializer.Serialize(res));
-                    if (res.ErrorCode != "0")
+                    if (res.ErrorCode != "0000")
                     {
-                        throw new Exception(res.ErrorCode);
+                        throw new Exception("错误码: " + res.ErrorCode);
                     }
 
                     return res;
@@ -170,7 +185,7 @@ namespace HBYWCZP2024.Service
 
                     }
                     Thread.Sleep(100);
-     
+                    
                 }
             }
 

@@ -11,7 +11,11 @@ namespace HBYWCZP2024.Models.ECS;
 /// </summary>
 public class S107 : S102
 {
-    public new string Type => "S107";
+    //public new string Type => "S107";
+    public S107()
+    {
+        Type = "S107";
+    }
     //public int TrayPosition { get; set; }
     //public TrayType TrayType { get; set; }
     //public string TrayNumber { get; set; }

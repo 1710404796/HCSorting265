@@ -8,7 +8,7 @@ namespace HBYWCZP2024.Models.ECS
 {
     public class E102 : IECSContentRes
     {
-        public string Type => "E102";
+        public string Type { get; set; } = "E102";
         public DeviceStatus2 DeviceStatus { get; set; }
         public string ErrorCode { get; set; }
 

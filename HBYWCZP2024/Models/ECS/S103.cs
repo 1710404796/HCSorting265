@@ -17,7 +17,11 @@ namespace HBYWCZP2024.Models.ECS
     //}
     public class S103 : S102
     {
-        public new string Type => "S103";
+        //public new string Type => "S103";
+        public S103()
+        {
+            Type = "S103";
+        }
         //public string TrayNumber { get; set; }
 
         //public string GetContent()
