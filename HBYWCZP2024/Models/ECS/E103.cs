@@ -26,10 +26,10 @@ namespace HBYWCZP2024.Models.ECS
         {
             int n = int.Parse(content.Substring(20, 3).Trim());
 
-            if (content.Length != n + 4)
-            {
-                throw new ArgumentException("字符串长度不足!");
-            }
+            //if (content.Length != n + 4)
+            //{
+            //    throw new ArgumentException("字符串长度不足!");
+            //}
 
             BatteryCount = n;
             TrayNumber = content[..20].Trim();

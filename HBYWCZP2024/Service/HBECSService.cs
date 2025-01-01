@@ -68,8 +68,16 @@ namespace HBYWCZP2024.Service
 
             while (!cache.Token.IsCancellationRequested)
             {
-               await SendAsync<S000, E000>(new S000());
-               await Task.Delay(MainStorage.Saves.HeartbeartDuring);
+                try
+                {
+                    await SendAsync<S000, E000>(new S000());
+                    await Task.Delay(MainStorage.Saves.HeartbeartDuring);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError( ex, "心跳");
+                }
+           
             }
         }
 
@@ -126,7 +134,8 @@ namespace HBYWCZP2024.Service
         }
         public async Task<T2> SendAsync<T1, T2>(T1 req) where T1 : IECSContent where T2 : IECSContentRes, new()
         {
-            await Task.Yield();
+            //if (_clientSocket.)
+            //await Task.Yield();
             try
             {
                 lock (_lockobj)
@@ -151,7 +160,7 @@ namespace HBYWCZP2024.Service
             catch (Exception ex)
             {
 
-                await Mediator.Send(new WcsDataWarningBoxCommand(Name, $"等待{typeof(T2).Name}消息，发生问题 Error:" + ex.Message));
+                await Mediator.Send(new WcsDataWarningBoxCommand(Name + "工作站\n" + $"等待{typeof(T2).Name}消息，发生问题 Error:" + ex.Message));
                 throw;
             }
         }

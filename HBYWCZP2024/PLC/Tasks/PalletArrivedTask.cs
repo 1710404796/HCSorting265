@@ -20,7 +20,7 @@ namespace HBYWCZP2024.PLC.Tasks
     {
         public PalletArrivedTask(int subIdx) : base(1)
         {
-            TaskName = $"{subIdx + 1} 组盘完成";
+            TaskName = $"{subIdx + 1} 托盘到位";
             //TaskName = $"{subIdx + 1} {Properties.Resources.TrayPositioningTask}";
             SubIdx = subIdx;
         }
@@ -129,7 +129,7 @@ namespace HBYWCZP2024.PLC.Tasks
             //};
 
             var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, true));
-            return res && await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum));
+            return res;//&& await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
 
             //return res;
 
@@ -160,6 +160,7 @@ namespace HBYWCZP2024.PLC.Tasks
             }
 
             pallet.ClearStage();
+            await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum));
             return true;
         }
     }

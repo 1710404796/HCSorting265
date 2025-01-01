@@ -171,9 +171,9 @@ Cursor="Hand"
                 权限管理
             </RadioButton>
 
-            <Button x:Name="testzupan" Click="testzupan_Click">
+            <!--<Button x:Name="testzupan" Click="testzupan_Click">
                 测试组盘
-            </Button>
+            </Button>-->
             <!--<CheckBox HorizontalAlignment="Center" 
               IsChecked="{Binding ViewModel.InsSaves.TestModel, UpdateSourceTrigger=PropertyChanged}"
         Visibility="{Binding ViewModel.View2}"

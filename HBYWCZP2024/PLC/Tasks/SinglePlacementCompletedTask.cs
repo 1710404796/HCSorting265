@@ -163,7 +163,7 @@ namespace HBYWCZP2024.PLC.Tasks
             if (put is Pallet || grab is Pallet)
             {
                 // 要发两次可能
-                if (!await Context.Mediator.Send(new GrabCommand(Context.Name, data)))
+                if (!await Context.Mediator.Send(new GrabCommand(Context.Name)))
                 {
                     //await Context.Mediator.Send(new WarningBoxCommand($"工位{grabStation} {grab!.Name} -> 工位{putStaion} {put!.Name}"));
                     return false;

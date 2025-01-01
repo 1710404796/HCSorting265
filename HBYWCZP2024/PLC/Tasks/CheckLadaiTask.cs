@@ -78,7 +78,7 @@ namespace HBYWCZP2024.PLC.Tasks
                     ok++;
                 }
             }
-
+            // bind一下结果
             MainStorage.Saves.OKNGCnt.OKCnt += ok;
             MainStorage.Saves.OKNGCnt.NG2Cnt += ng - ng1;
             MainStorage.Saves.OKNGCnt.NG1Cnt += ng1;
