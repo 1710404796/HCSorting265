@@ -33,6 +33,12 @@ namespace HBYWCZP2024.Mediator.Handlers
             var mRequest = new MaterialOnlineRequest(request.Key)
             {
                 batteryTrayBindVOList = [.. request.Channels
+                    //.Filter(s => 
+                    //s.BattleWithLevel
+                    //.Map(s => !s
+                    //    .Code.StartsWith("Noread", StringComparison.CurrentCultureIgnoreCase))
+                    //    .Match(Some: s => s, None: false)
+                    //)
                  .Map(c => 
                  new Batterytraybindvolist 
                  { identification = c.BattleWithLevel.Map(b => b.Code).Match(Some: s => s, None: () => "") 
@@ -40,7 +46,6 @@ namespace HBYWCZP2024.Mediator.Handlers
             };
 
             var res =await service.MesService.MaterialOnline(mRequest);
-
             var codeMap = res.Match(
             Succ: s => s.rows.Map(r =>
             (r.identification ?? "", r.qualityStatus?.ToLower() switch
@@ -58,9 +63,27 @@ namespace HBYWCZP2024.Mediator.Handlers
 
 
                 ).DistinctBy(s => s.Item1).ToMap();
+            var sthMaterialId = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
+                Succ: s => s.FirstOrDefault(), Fail: f =>
+                {
+
+                    mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                    throw f;
+                }
+
+
+                );
+            MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
+
             return request.Channels.Map(c =>
             c with { BattleWithLevel = c.BattleWithLevel.Map(b => new BatteryWithLevel(b.Code,
-            codeMap[b.Code])) }
+            b.Code switch { 
+                var x when x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) => BatteryLevel.NG,
+                _ => codeMap[b.Code]
+            }
+             
+             
+             )) }
             
             ).ToArr();
         }

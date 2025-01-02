@@ -38,7 +38,8 @@ namespace HBYWCZP2024.Service
     {
         public string? identification { get; set; }
         public string? qualityStatus { get; set; } // ok/ng
-      
+        public string? materialId { get; set; } // ok/ng
+
     }
 
 }

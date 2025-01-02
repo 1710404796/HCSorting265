@@ -43,9 +43,9 @@ namespace HBYWCZP2024.PLC.Tasks
             int ng1 = 0, ng = 0, ok = 0;
             for (int i = 0; i < batteryCode.Length; i++)
             {
-                if (batteryCode[i] == "ERROR")
+                if (batteryCode[i].ToLower() == "noread")
                 {
-                    batteryCode[i] = $"ERROR{i}";
+                    batteryCode[i] = $"Noread{i}";
                     ng1++;
                     // 尝试剪一下
                 }
