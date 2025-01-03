@@ -2,7 +2,7 @@
 
 namespace HBYWCZP2024.Service;
 
-public class CheckPalletResponse
+public class CheckPalletResponse: IMESResponse
 {
     [JsonPropertyName("rows")]
     public Row[] Rows
@@ -12,6 +12,11 @@ public class CheckPalletResponse
 
     [JsonPropertyName("success")]
     public bool Success
+    {
+        get; set;
+    }
+    [JsonPropertyName("message")]
+    public string? Message
     {
         get; set;
     }

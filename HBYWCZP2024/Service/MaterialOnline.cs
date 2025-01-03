@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Service
@@ -26,12 +27,20 @@ namespace HBYWCZP2024.Service
 
 
 
-    public class MaterialOnlineResponse
+    public class MaterialOnlineResponse : IMESResponse
     {
         public Row1[]? rows { get; set; } = [];
-        public bool success { get; set; }
         public int total { get; set; }
-        public string message { get; set; } = string.Empty;
+        [JsonPropertyName("success")]
+        public bool Success
+        {
+            get; set;
+        }
+        [JsonPropertyName("message")]
+        public string? Message
+        {
+            get; set;
+        }
     }
 
     public class Row1
@@ -42,4 +51,13 @@ namespace HBYWCZP2024.Service
 
     }
 
+}
+
+namespace HBYWCZP2024
+{
+    public interface IMESResponse
+    {
+        bool Success { get; }
+        string? Message { get; }
+    }
 }
