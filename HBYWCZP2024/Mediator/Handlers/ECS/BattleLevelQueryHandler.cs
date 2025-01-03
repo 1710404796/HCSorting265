@@ -45,7 +45,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
 
             var channels = checkMaterialResponse.Match(
-                Right: r => {
+                Succ: r => {
                     var channels = r.Rows.Select(x =>
                     new Channel(int.Parse(x.Location),
                         Some(
@@ -55,10 +55,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         ));
                     return channels;
                 },
-                Left: x => {
+                Fail: x => {
 
-                    mediator.Send(new WcsDataWarningBoxCommand(x)).Wait();
-                    throw new Exception(x); }
+                    mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                    throw x; }
 
 
                 );
