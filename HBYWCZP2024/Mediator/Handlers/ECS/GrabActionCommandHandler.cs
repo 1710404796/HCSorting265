@@ -44,6 +44,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (request.Start)
             {
+                // 拆组盘开始 作业开始
                 var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
 
                 if (data == null)
@@ -60,32 +61,71 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             else 
             {
                 // 上报数据
+                
+                // 拆组盘结束。步骤较多
+                // 1. 向FMS上报结果，这里感觉也需要加一下处理
+                // 2. 向MES上报结果
+                // 3. 向FMS上报组盘完成
+                
+
 
                 // TODO:上报数据结果权限添加
-                var data = await hBECSService.SendAsync<S105, E105>(new S105()
-                {
-                    TrayNumber = pallet.PalletCode,
-                    TrayPosition = pallet.PalletId + 1,
-                    MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
-                    BatteryCount = pallet.ChannelNum,
-                    BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum).Select(x => x.Code).ToList()
-                });
 
-                if (data == null)
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFmsDataEnable)
                 {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                    return false;
+
+                    var data = await hBECSService.SendAsync<S105, E105>(new S105()
+                    {
+                        TrayNumber = pallet.PalletCode,
+                        TrayPosition = pallet.PalletId + 1,
+                        MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
+                        BatteryCount = pallet.ChannelNum,
+                        BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum).Select(x => x.Code).ToList()
+                    });
+
+                    if (data == null)
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                        return false;
+                    }
+                    if (data.DeviceStatus != DeviceStatus2.OK)
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                        return false;
+                    }
                 }
-                if (data.DeviceStatus != DeviceStatus2.OK)
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable)
                 {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
-                    return false;
+                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                    {
+                        cellDataVOList = [.. pallet.Channels.Take(pallet.ChannelNum)
+                    .Select((x, i) =>
+                        new Celldatavolist
+                        {
+                            identification = x.Code,
+                            locationBat = (i + 1).ToString()
+                        })],
+                        containerCode = pallet.PalletCode
+
+                    }
+                );
+
+                    var mesdata = mesRes.Match(
+                        Succ: s => s,
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        }
+                        );
+
                 }
                 // 作业结束
                 var e106 = await hBECSService.SendAsync<S106, E106>(new() { 
                     TrayNumber = pallet.PalletCode, 
                     TrayPosition = pallet.PalletId + 1,
                     TrayType = pallet.OKNGType,
+                    OutSideStationNum = pallet.OutsideStationNum.ToString(),
                     PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
                 });
 

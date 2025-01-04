@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Service;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class GrabCommandHandler : IRequestHandler<GrabCommand, bool>
+    internal class GrabCommandHandler(IHBECSServiceFactory hBECSServiceFactory) : IRequestHandler<GrabCommand, bool>
     {
         public Task<bool> Handle(GrabCommand request, CancellationToken cancellationToken)
         {
+
             //throw new NotImplementedException();
+            // Todo: 新增MES接口
             return Task.FromResult (true);
         }
     }

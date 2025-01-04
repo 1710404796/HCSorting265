@@ -142,14 +142,14 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
                 {
                     if (response.Success == false)
                     {
-                        return new(new Exception(resdata));
+                        return new(new MesException(resdata));
 
                     }
                     return response;
                 }
                 else
                 {
-                    return new( new Exception("json为空"));
+                    return new( new MesException("json为空"));
                 }
             }
             else
@@ -161,6 +161,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         {
             return new(new MesException($"请求MES异常, {ex.Message}"));
         }
+ 
 
     }
 }

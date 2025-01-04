@@ -137,6 +137,13 @@ namespace HBYWCZP2024.Models
         }
 
         [JsonIgnore]
+        public string UserName
+        {
+            get => KeysSave[SelectStageName].UserName;
+            set => KeysSave[SelectStageName].UserName = value;
+        }
+
+        [JsonIgnore]
         public ApiEnable ApiEnableTable
         {
             get => KeysSave[SelectStageName].ApiEnableTable;
@@ -174,6 +181,8 @@ namespace HBYWCZP2024.Models
         public bool PalletArrivedEnable { get; set; }
         public bool PalletOutEnable { get; set; }
         public bool CheckMaterialEnable { get;  set; }
+        public bool UploadFmsDataEnable { get;  set; }
+        public bool UploadMesDataEnable { get; set; }
     }
 
     public class StageMono
@@ -201,6 +210,11 @@ namespace HBYWCZP2024.Models
         {
             get; set;
         } = "127.0.0.1";
+
+        public string UserName
+        {
+            get; set;
+        } = "test_hc";
 
         public string MESIP
         {
