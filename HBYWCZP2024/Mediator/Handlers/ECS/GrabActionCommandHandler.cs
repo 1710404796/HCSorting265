@@ -2,6 +2,7 @@
 using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
+using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using MediatR;
 using System;
@@ -136,7 +137,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
                 if (e106.DeviceStatus != DeviceStatus2.OK)
                 {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {e106.ErrorCode}"));
                     return false;
                 }
 
