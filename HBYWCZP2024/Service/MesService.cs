@@ -1,4 +1,5 @@
-﻿using LanguageExt.Common;
+﻿using HBYWCZP2024.Service.Models;
+using LanguageExt.Common;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -120,7 +121,10 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     {
         return SendRequest<UploadPalletResultResponse>("assemble/dismantle/info/group/disk/iface", request);
     }
-
+    public Task<Result<HighTempOnlineResponse>> HighTempOnlineAsync(HighTempOnlineRequest request)
+    {
+        return SendRequest<HighTempOnlineResponse>("equipment/assembly/logistics/line", request);
+    }
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
         string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/{api}";
@@ -142,7 +146,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
                 {
                     if (response.Success == false)
                     {
-                        return new(new MesException(resdata));
+                        return new(new MesException(response.Message));
 
                     }
                     return response;

@@ -1,6 +1,7 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Service;
+using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using LanguageExt.UnitsOfMeasure;
 using MediatR;

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HBYWCZP2024.Service;
+namespace HBYWCZP2024.Service.Models;
 
 public class CheckPalletMaterialRequest(string name)
 {

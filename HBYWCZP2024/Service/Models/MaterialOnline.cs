@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HBYWCZP2024.Service
+namespace HBYWCZP2024.Service.Models
 {
 
 
