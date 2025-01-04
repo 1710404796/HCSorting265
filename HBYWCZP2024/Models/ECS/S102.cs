@@ -18,7 +18,7 @@ namespace HBYWCZP2024.Models.ECS
         public required TrayType TrayType { get; set; }
         public required string TrayNumber { get; set; }
 
-        public string GetContent()
+        public virtual string GetContent()
         {
             return $"{TrayPosition}{(int)TrayType}{TrayNumber,-20}";
         }

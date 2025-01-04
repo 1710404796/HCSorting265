@@ -17,6 +17,15 @@ namespace HBYWCZP2024.Models.ECS
         {
             Type = "S106";
         }
+        public required string OutSideStationNum { get; set; }
+
+        public required PalletStatus PalletStatus { get; set; }
+
+        public override string GetContent()
+        {
+            return $"{TrayPosition}{(int)PalletStatus}{(int)TrayType}{OutSideStationNum,-4}{TrayNumber,-20}";
+            //return base.GetContent()/*;*/
+        }
         //public int BatteryCount { get; set; }
         //public int TrayPosition { get; set; }
         //public List<string> BatteryBarcodes { get; set; } = [];
@@ -56,4 +65,13 @@ namespace HBYWCZP2024.Models.ECS
         //}
     }
 
+}
+
+namespace HBYWCZP2024
+{
+    public enum PalletStatus
+    {
+        不满 = 0,
+        满盘 = 1,
+    }
 }

@@ -82,7 +82,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     return false;
                 }
                 // 作业结束
-                var e106 = await hBECSService.SendAsync<S106, E106>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+                var e106 = await hBECSService.SendAsync<S106, E106>(new() { 
+                    TrayNumber = pallet.PalletCode, 
+                    TrayPosition = pallet.PalletId + 1,
+                    TrayType = pallet.OKNGType,
+                    PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
+                });
 
                 if (e106 == null)
                 {
