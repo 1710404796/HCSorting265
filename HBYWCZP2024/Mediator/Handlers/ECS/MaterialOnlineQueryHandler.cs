@@ -82,15 +82,17 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var data = request.Channels.Map(c =>
             c with
             {
-                BattleWithLevel = c.BattleWithLevel.Map(b => new BatteryWithLevel(b.Code,
-            b.Code switch
-            {
-                var x when x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) => BatteryLevel.NG,
-                _ => codeMap[b.Code]
-            }
-
-
-             ))
+                BattleWithLevel = c.BattleWithLevel.Map
+                (b => 
+                new BatteryWithLevel(
+                    b.Code,
+                    b.Code switch
+                    {
+                        var x when x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) 
+                            => BatteryLevel.NG,
+                        _ => codeMap[b.Code]
+                    }
+                ))
             }
 
             ).ToArr();

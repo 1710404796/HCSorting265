@@ -16,7 +16,7 @@ namespace HBYWCZP2024.Service.Models
         public string materialCode => MainStorage.Saves.KeysSave[key].MaterialCode;
         public string userName => MainStorage.Saves.KeysSave[key].UserName;
         public required string identification { get; set; }
-        public string productType => "OK";
+        public string productType => MainStorage.Saves.KeysSave[key].ProductType;
 
     }
 
