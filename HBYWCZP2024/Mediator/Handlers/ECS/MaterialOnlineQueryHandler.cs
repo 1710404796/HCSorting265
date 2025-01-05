@@ -25,7 +25,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 return request.Channels.Map(c =>
                     c with
                     {
-                        BattleWithLevel = c.BattleWithLevel.Map(s => s with { Level = BatteryLevel.OK })
+                        BattleWithLevel = c.BattleWithLevel
+                                            .Map(s => s with { Level = BatteryLevel.OK })
                     }
                 ).ToArr();
             }
@@ -45,7 +46,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     )
                  .Map(c =>
                  new Batterytraybindvolist
-                 { identification = c.BattleWithLevel.Map(b => b.Code).Match(Some: s => s, None: () => "")
+                 { identification = c.BattleWithLevel
+                                    .Map(b => b.Code)
+                                    .IfNone("")
+                                    //.Match(Some: s => s, None: () => "")
                  })]
             };
 
@@ -88,7 +92,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     b.Code,
                     b.Code switch
                     {
-                        var x when x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) 
+                        var x when 
+                        x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) 
                             => BatteryLevel.NG,
                         _ => codeMap[b.Code]
                     }
@@ -98,19 +103,24 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             ).ToArr();
 
             // 高温静置入站
-            var rss = data.Filter(data => data.BattleWithLevel.Match(s => s.Level == BatteryLevel.OK, () => false))
-                 .AsParallel()
-                .Map( s =>
-            {
-                 return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
-                {
-                    identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
-                }).Result;
-            });
+            var rss = data.Filter(data => 
+                                    data.BattleWithLevel
+                                    .Map(s => s.Level == BatteryLevel.OK)
+                                    .IfNone(false)
+                        //.Match(s => s.Level == BatteryLevel.OK, () => false)
+                        )
+                        .AsParallel()
+                        .Map( s =>
+                        {
+                             return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                            {
+                                identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
+                            }).Result;
+                        });
             if (!rss.All(s => s.IsSuccess))
             {
                 var message = string.Join("\n", rss.Filter(s => !s.IsSuccess).Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-               await mediator.Send(new WcsDataWarningBoxCommand(message));
+                await mediator.Send(new WcsDataWarningBoxCommand(message));
                 throw new Exception(message);
             }
             return data;

@@ -20,7 +20,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 x.MaterialCode.ToLower() switch
                 {
                     "noread" => BatteryLevel.NG,
-
                     _ => BatteryLevel.OK
                 }
             )).ToArray();

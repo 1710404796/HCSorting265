@@ -15,7 +15,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
 
             //throw new NotImplementedException();
-            // Todo: 新增MES接口
+            // Todo: 新增MES接口 // 无需新增
             return Task.FromResult (true);
         }
     }

@@ -22,12 +22,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckPalletMaterialEnable)
             {
                 return request.Pallet with { 
-                    Channels = request.Pallet.Channels
+                    Channels = [.. request.Pallet.Channels
                     .Select(x => 
                         x with { 
                             BattleWithLevel = x.BattleWithLevel
-                            .Map(s => new BatteryWithLevel(s.Code, Some(Models.BatteryLevel.OK))) 
-                    }).ToImmutableArray() };
+                            .Map(s => new BatteryWithLevel(s.Code, Models.BatteryLevel.OK)) 
+                        }
+                        )]
+                };
             }
             CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
             {

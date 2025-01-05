@@ -106,6 +106,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 se.RegisterTask<ChaiPanCompletedTask>();
                 se.RegisterTask<InstallationCompletedTask>();
                 se .RegisterTask<SinglePlacementCompletedTask>();
+                se .RegisterTask<ChaiPanCompleted2Task>();
                 se.RegisterTask<AbnormalDischargeTask>();
           
 

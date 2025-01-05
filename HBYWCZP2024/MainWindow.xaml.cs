@@ -150,13 +150,13 @@ namespace HBYWCZP2024
             await mediator1.Send(new InformationBoxCommand("申请信息: " + res));
             if (!res) return;
 
-            res = await mediator1.Send(new GrabActionCommand(key, 2100, true));
-            await mediator1.Send(new InformationBoxCommand("作业开始: " + res));
-            if (!res) return;
+            //res = await mediator1.Send(new GrabActionCommand(key, 2100, true));
+            //await mediator1.Send(new InformationBoxCommand("作业开始: " + res));
+            //if (!res) return;
 
-            res = await mediator1.Send(new GrabActionCommand(key, 2100, false));
-            await mediator1.Send(new InformationBoxCommand("作业结束: " + res));
-            if (!res) return;
+            //res = await mediator1.Send(new GrabActionCommand(key, 2100, false));
+            //await mediator1.Send(new InformationBoxCommand("作业结束: " + res));
+            //if (!res) return;
 
             res = await mediator1.Send(new PalletOutCommand(key, 2100));
             await mediator1.Send(new InformationBoxCommand("托盘离开: " + res));
