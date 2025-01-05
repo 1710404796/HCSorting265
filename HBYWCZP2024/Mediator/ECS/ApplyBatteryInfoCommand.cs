@@ -3,7 +3,7 @@ using HBYWCZP2024.Models.ECS;
 using MediatR;
 namespace HBYWCZP2024.Mediator.ECS;
 
-public record GrabActionCommand(string Key, int StationNum, bool Start) : IRequest<bool>;
+public record GrabActionCommand(string Key, int StationNum, bool Start, bool isSpecial) : IRequest<bool>;
 
 /// <summary>
 /// 4.4

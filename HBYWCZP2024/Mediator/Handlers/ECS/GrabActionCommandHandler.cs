@@ -127,7 +127,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     TrayPosition = pallet.PalletId + 1,
                     TrayType = pallet.OKNGType,
                     OutSideStationNum = pallet.OutsideStationNum.ToString(),
-                    PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
+                    PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
+                    //PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
                 });
 
                 if (e106 == null)

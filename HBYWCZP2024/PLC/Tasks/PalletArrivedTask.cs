@@ -128,7 +128,7 @@ namespace HBYWCZP2024.PLC.Tasks
             //     //MaterialQuantity = pallet.GetActivecnt(),
             //};
 
-            var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, true));
+            var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, true, false));
             return res;//&& await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
 
             //return res;
