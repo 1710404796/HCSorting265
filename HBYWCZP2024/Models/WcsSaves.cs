@@ -183,6 +183,7 @@ namespace HBYWCZP2024.Models
         public bool CheckMaterialEnable { get;  set; }
         public bool UploadFmsDataEnable { get;  set; }
         public bool UploadMesDataEnable { get; set; }
+        public bool HighTempEnable { get; internal set; }
     }
 
     public class StageMono

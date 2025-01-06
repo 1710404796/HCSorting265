@@ -95,7 +95,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         return false;
                     }
                 }
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable)
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable 
+                    
+                    && MainStorage.Saves.KeysSave[request.Key].Stage.IncomingBelt.IsEnable)
                 {
                     var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                     {

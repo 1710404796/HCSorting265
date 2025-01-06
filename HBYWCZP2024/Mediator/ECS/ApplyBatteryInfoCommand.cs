@@ -13,6 +13,8 @@ public record PalletArrivedCommand(string Key, int InsideStationNum) : IRequest<
 public record PalletOutCommand(string Key, int InsideStationNum) : IRequest<bool>;
 public record GrabCommand(string Key) : IRequest<bool>;
 
+//public record GrabInfo(XYLStation From, XYLStation To, );
+
 /// <summary>
 /// 4.3
 /// </summary>

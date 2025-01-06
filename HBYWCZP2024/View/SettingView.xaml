@@ -206,6 +206,15 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletArrivedEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletOutEnable}"
 >托盘离开接口是能</CheckBox>
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesDataEnable}"
+>组盘组完成上报MES接口使能</CheckBox>
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFmsDataEnable}"
+>上报FMS数据使能</CheckBox>
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
+>接口高温入库使能</CheckBox>
             </StackPanel>
 
 

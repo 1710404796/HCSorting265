@@ -78,8 +78,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
                     throw f;
                 }
-
-
                 );
             MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
 
@@ -101,7 +99,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
 
             ).ToArr();
-
+            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
+            {
+                // 验证器
             // 高温静置入站
             var rss = data.Filter(data => 
                                     data.BattleWithLevel
@@ -123,6 +123,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 await mediator.Send(new WcsDataWarningBoxCommand(message));
                 throw new Exception(message);
             }
+            }
+
             return data;
         }
     }
