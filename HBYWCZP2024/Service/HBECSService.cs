@@ -91,6 +91,8 @@ namespace HBYWCZP2024.Service
 
         private void ClientSocket_RecviceLine(string obj)
         {
+            logger.LogInformation("接收数据 {msg}", obj);
+
             var message = MessageHelper.Parse(obj);
 
             Handler(message);
@@ -182,7 +184,7 @@ namespace HBYWCZP2024.Service
                             // 报警
                             var err = new E110();
                             err.Parse(peek.Content);
-                            logger.LogError("{name}, 错误: {err}", Name, err.ErrorCode);
+                            logger.LogError("{name}, E110报警 错误: {err}", Name, err.ErrorCode);
 
                             throw new Exception(err.ErrorCode);
                         }

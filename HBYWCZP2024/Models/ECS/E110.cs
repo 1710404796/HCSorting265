@@ -18,10 +18,10 @@ namespace HBYWCZP2024.Models.ECS
 
         public void Parse(string content)
         {
-            if (content.Length != 4)
-            {
-                throw new ArgumentException("字符串长度必须为4!");
-            }
+            //if (content.Length != 4)
+            //{
+            //    throw new ArgumentException("字符串长度必须为4!");
+            //}
             ErrorCode = content.Substring(0, 4).Trim();
         }
     }

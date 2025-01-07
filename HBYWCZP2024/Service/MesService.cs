@@ -1,4 +1,6 @@
-﻿using HBYWCZP2024.Service.Models;
+﻿using HBYWCZP2024.Data;
+using HBYWCZP2024.Data.Models;
+using HBYWCZP2024.Service.Models;
 using LanguageExt.Common;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,13 +9,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime.Serialization;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Service;
-public class MesService(HttpClient httpClient, string name, ILogger<MesService> logger)
+public class MesService(HttpClient httpClient, string name, ILogger<MesService> logger, LinxContext linxContext)
 {
     public HttpClient HttpClient { get; } = httpClient;
     public string Name { get; } = name;
@@ -127,10 +130,52 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     }
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
-        string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/{api}";
-        logger.LogInformation("请求MES地址: {url}", _url);
+        DateTime reqTime = DateTime.Now;
         string req = JsonSerializer.Serialize(data);
         logger.LogInformation("请求MES数据: {data}", req);
+        var data1 = await SendRequest1<T>(api, data);
+        WcsLog log = data1.Match(
+            Succ: s =>
+                new WcsLog
+                {
+                    IsSuccess = true,
+                    ApiName = api,
+                    RequestTime = reqTime,
+                    Request = req,
+                    Response = JsonSerializer.Serialize(s),
+                    ResponseTime = DateTime.Now,
+                },
+            Fail: f =>
+                new WcsLog
+                {
+                    IsSuccess = false,
+                    ApiName = api,
+                    RequestTime = reqTime,
+                    Request = req,
+                    Response = f.Message,
+                    ResponseTime = DateTime.Now,
+                }
+
+            );
+
+        try
+        {
+            linxContext.WcsLogs.Add(log);
+            linxContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+
+            logger.LogError( ex, "数据发生错误");
+        }
+        return data1;
+    }
+    public async Task<Result<T>> SendRequest1<T>(string api, object data) where T : IMESResponse
+    {
+        string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/{api}";
+      
+        logger.LogInformation("请求MES地址: {url}", _url);
+
         try
         {
             var res = await httpClient.PostAsJsonAsync(_url, data);

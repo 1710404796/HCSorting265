@@ -20,13 +20,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             // 先调用MES获取拆组盘信息
             // 再调用MES高温静置入站
 
+            bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s); 
+
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
             {
                 return request.Channels.Map(c =>
                     c with
                     {
                         BattleWithLevel = c.BattleWithLevel
-                                            .Map(s => s with { Level = BatteryLevel.OK })
+                                            .Map(s => s with { Level = isNG(s.Code) ? BatteryLevel.NG : BatteryLevel.OK })
                     }
                 ).ToArr();
             }
@@ -40,8 +42,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 batteryTrayBindVOList = [.. request.Channels
                     .Filter(s =>
                     s.BattleWithLevel
-                    .Map(s => !s
-                        .Code.StartsWith("Noread", StringComparison.CurrentCultureIgnoreCase))
+                    .Map(s => !isNG(s.Code))
+                        //.Code.StartsWith("Noread", StringComparison.CurrentCultureIgnoreCase))
                         .Match(Some: s => s, None: false)
                     )
                  .Map(c =>

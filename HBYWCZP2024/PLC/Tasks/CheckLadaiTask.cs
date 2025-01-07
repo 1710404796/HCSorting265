@@ -43,7 +43,8 @@ namespace HBYWCZP2024.PLC.Tasks
             int ng1 = 0, ng = 0, ok = 0;
             for (int i = 0; i < batteryCode.Length; i++)
             {
-                if (batteryCode[i].ToLower() == "noread")
+                if (!channelState[i]) continue;
+                if (batteryCode[i].ToLower() == "noread" || string.IsNullOrWhiteSpace(batteryCode[i]))
                 {
                     batteryCode[i] = $"Noread{i}";
                     ng1++;
@@ -57,7 +58,12 @@ namespace HBYWCZP2024.PLC.Tasks
 
             }
             //var battery = batteryCode.Select((s, i) => new MaterialInfo(s, i)).Where(s=> channelState[s.Channel]).ToArray();
-            var battery = batteryCode.Select((s, i) => new Channel(i, Some(new BatteryWithLevel(s, None)))).ToImmutableArray();
+            var battery = batteryCode
+                .Select((s, i) => new Channel(i, Some(new BatteryWithLevel(s, None))))
+                .Zip(channelState)
+                .Where(s => s.Item2)
+                .Select(s => s.Item1)
+                .ToImmutableArray();
             var res = await Context.Mediator.Send(new MaterialOnlineQuery(Context.Name, battery));
             if (res == null) { 
                 return false;

@@ -228,7 +228,7 @@ namespace HBYWCZP2024
         {
             LinxContext DB = GetService<LinxContext>();
             // DB.Database.EnsureCreated();
-            DB.Database.Migrate();
+            //DB.Database.Migrate();
             //
             //foreach (var batteryInfo in DB.BatteryInfos.ToList())
             //{
