@@ -49,7 +49,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 })
                     ;
 
-                return data.BatteryCodes.Select(s => string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
+                return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
@@ -60,7 +60,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     return null;
                 }
 
-                var palletR = new Pallet(data.TrayNumber, data.BatteryCodes.Select((x, i) => new Channel(i + 1, None)).ToImmutableArray());
+                var palletR = new Pallet(data.TrayNumber, 
+                    data.BatteryCodes
+                    .Select((x, i) => new Channel(i + 1, new BatteryWithLevel(x, None)))
+                    .Filter(s => !string.IsNullOrWhiteSpace( s.BattleWithLevel.Map(s => s.Code).IfNone("")))
+                    .ToImmutableArray()
+                    );
                 // 这里有条码 // bind一下去
                 var palletAfterQuery = await mediator.Send(new BattleLevelQuery(request.Key, palletR));
 

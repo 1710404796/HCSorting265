@@ -1,7 +1,9 @@
 ﻿using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Service.Models;
 using LanguageExt.Common;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Service;
-public class MesService(HttpClient httpClient, string name, ILogger<MesService> logger, LinxContext linxContext)
+public class MesService(HttpClient httpClient, string name, ILogger<MesService> logger)
 {
     public HttpClient HttpClient { get; } = httpClient;
     public string Name { get; } = name;
@@ -130,10 +132,13 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     }
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
+        LinxContext linxContext = App.GetService<LinxContext>();
         DateTime reqTime = DateTime.Now;
         string req = JsonSerializer.Serialize(data);
         logger.LogInformation("请求MES数据: {data}", req);
+        
         var data1 = await SendRequest1<T>(api, data);
+       
         WcsLog log = data1.Match(
             Succ: s =>
                 new WcsLog
@@ -166,9 +171,29 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         catch (Exception ex)
         {
 
-            logger.LogError( ex, "数据发生错误");
+            logger.LogError(ex, "数据发生错误");
         }
-        return data1;
+        var mediator = App.GetService<IMediator>();
+        if (data1.IsSuccess)
+        {
+            return data1;
+        }
+        else
+        {
+            var err = data1.Match(Succ: s => "", Fail: f => f.Message);
+            var wres = await mediator.Send(new WcsDataWarningBoxCommand
+                    (Name + "工作站\n" + $"MES返回错误信息，发生问题 Error:" + err + "\n点击ok重新发送此请求，点击cancel终止此任务！",
+                    Button: System.Windows.MessageBoxButton.OKCancel));
+            if (wres == System.Windows.MessageBoxResult.OK)
+            {
+                return await SendRequest<T>(api, data);
+            }
+            else
+            {
+                return data1;
+            }
+        }
+            //return data1;
     }
     public async Task<Result<T>> SendRequest1<T>(string api, object data) where T : IMESResponse
     {

@@ -162,7 +162,7 @@
     Width="200" 
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
-    Text="{Binding ViewMsodel.Saves.UserName, Mode=TwoWay}"
+    Text="{Binding ViewModel.Saves.UserName, Mode=TwoWay}"
 ></TextBox>
 
 

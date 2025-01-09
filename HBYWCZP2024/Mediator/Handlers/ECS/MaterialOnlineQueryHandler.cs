@@ -41,10 +41,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 batteryTrayBindVOList = [.. request.Channels
                     .Filter(s =>
-                    s.BattleWithLevel
-                    .Map(s => !isNG(s.Code))
+                        s.BattleWithLevel
+                        .Map(s => !isNG(s.Code))
+                        .IfNone(false)
                         //.Code.StartsWith("Noread", StringComparison.CurrentCultureIgnoreCase))
-                        .Match(Some: s => s, None: false)
                     )
                  .Map(c =>
                  new Batterytraybindvolist
@@ -92,9 +92,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     b.Code,
                     b.Code switch
                     {
-                        var x when 
-                        x.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) 
-                            => BatteryLevel.NG,
+                        var x when isNG(x) => BatteryLevel.NG,
                         _ => codeMap[b.Code]
                     }
                 ))
@@ -105,26 +103,29 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 // 验证器
             // 高温静置入站
-            var rss = data.Filter(data => 
-                                    data.BattleWithLevel
-                                    .Map(s => s.Level == BatteryLevel.OK)
-                                    .IfNone(false)
-                        //.Match(s => s.Level == BatteryLevel.OK, () => false)
-                        )
-                        .AsParallel()
-                        .Map( s =>
-                        {
-                             return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                var rss = data.Filter(data => 
+                                        data.BattleWithLevel
+                                        .Map(s => s.Level == BatteryLevel.OK)
+                                        .IfNone(false)
+                            //.Match(s => s.Level == BatteryLevel.OK, () => false)
+                            )
+                            .AsParallel()
+                            .Map( s =>
                             {
-                                identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
-                            }).Result;
-                        });
-            if (!rss.All(s => s.IsSuccess))
-            {
-                var message = string.Join("\n", rss.Filter(s => !s.IsSuccess).Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-                await mediator.Send(new WcsDataWarningBoxCommand(message));
-                throw new Exception(message);
-            }
+                                 return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                                {
+                                    identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
+                                }).Result;
+                            });
+                if (!rss.All(s => s.IsSuccess))
+                {
+                    var message = string.Join("\n",
+                        rss
+                        .Filter(s => !s.IsSuccess)
+                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
+                    await mediator.Send(new WcsDataWarningBoxCommand(message));
+                    throw new Exception(message);
+                }
             }
 
             return data;

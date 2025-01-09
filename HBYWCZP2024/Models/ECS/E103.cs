@@ -15,7 +15,7 @@ namespace HBYWCZP2024.Models.ECS
         public string[] BatteryCodes { get; set; } = [];
         public string TrayNumber { get; set; } = string.Empty;
 
-        public string ErrorCode => "0";
+        public string ErrorCode => "0000";
 
         public string GetContent()
         {

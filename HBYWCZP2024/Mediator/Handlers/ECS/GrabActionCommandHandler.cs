@@ -35,14 +35,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
             }
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
-            {
-                if (pallet.Type == Models.CZPallet.PalletType.拆盘 || pallet.Type == Models.CZPallet.PalletType.筛选)
-                {
-                    return true;
-                }
+            //if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
+            //{
+            //    if (pallet.Type == Models.CZPallet.PalletType.拆盘 || pallet.Type == Models.CZPallet.PalletType.筛选)
+            //    {
+            //        return true;
+            //    }
 
-            }
+            //}
             if (request.Start)
             {
                 // 拆组盘开始 作业开始
@@ -107,7 +107,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         {
                             identification = x.Code,
                             locationBat = (i + 1).ToString()
-                        })],
+                        }).Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
                         containerCode = pallet.PalletCode
 
                     }
@@ -124,25 +124,28 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 }
                 // 作业结束
-                var e106 = await hBECSService.SendAsync<S106, E106>(new() { 
-                    TrayNumber = pallet.PalletCode, 
-                    TrayPosition = pallet.PalletId + 1,
-                    TrayType = pallet.OKNGType,
-                    OutSideStationNum = pallet.OutsideStationNum.ToString(),
-                    PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
-                    //PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
-                });
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
+                {
+                        var e106 = await hBECSService.SendAsync<S106, E106>(new() { 
+                        TrayNumber = pallet.PalletCode, 
+                        TrayPosition = pallet.PalletId + 1,
+                        TrayType = pallet.OKNGType,
+                        OutSideStationNum = pallet.OutsideStationNum.ToString(),
+                        PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
+                        //PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
+                    });
+                    if (e106 == null)
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                        return false;
+                    }
+                    if (e106.DeviceStatus != DeviceStatus2.OK)
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {e106.ErrorCode}"));
+                        return false;
+                    }
+                }
 
-                if (e106 == null)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                    return false;
-                }
-                if (e106.DeviceStatus != DeviceStatus2.OK)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {e106.ErrorCode}"));
-                    return false;
-                }
 
             }
             //else

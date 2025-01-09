@@ -29,7 +29,7 @@ namespace HBYWCZP2024.View.CZPallet
 
         //    = new() { PalletType.组盘, PalletType.拆盘, //PalletType.异常口, PalletType.假电芯盘
         //    };
-        public List<PalletType> PalletTypes { get; } = new() { PalletType.组盘, PalletType.拆盘, PalletType.异常口, PalletType.假电芯盘 };
+        public List<PalletType> PalletTypes { get; } = new() { PalletType.组盘, PalletType.拆盘, PalletType.筛选, PalletType.假电芯盘 };
 
         public List<string> PalletTypesStr { get; }
 

@@ -23,7 +23,7 @@ namespace HBYWCZP2024.Models.ECS
 
         public override string GetContent()
         {
-            return $"{TrayPosition}{(int)PalletStatus}{(int)TrayType}{OutSideStationNum,-4}{TrayNumber,-20}";
+            return $"{TrayPosition}{OutSideStationNum,-4}{(int)TrayType}{(int)PalletStatus}{TrayNumber,-20}";
             //return base.GetContent()/*;*/
         }
         //public int BatteryCount { get; set; }

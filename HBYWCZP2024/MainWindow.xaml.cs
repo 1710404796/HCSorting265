@@ -139,8 +139,16 @@ namespace HBYWCZP2024
 
         private async void testzupan_Click(object sender, RoutedEventArgs e)
         {
+
+
+
             var mediator1 = App.GetService<IMediator>();
             var key = "Default";
+
+            var res2 = await mediator1.Send(new GrabActionCommand(key, 2450, false, true)).ConfigureAwait(false); ;
+
+            return;
+
             var res = await mediator1.Send(new PalletArrivedCommand(key, 2100)).ConfigureAwait(false);
             await mediator1.Send(new InformationBoxCommand("托盘到位: " + res));
             if (!res) return;
