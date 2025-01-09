@@ -14,7 +14,7 @@ using LinxUniverse.DI;
 using LinxUniverse.SciSocket;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+//using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace HBYWCZP2024.Service
 {
     public class HBECSService
