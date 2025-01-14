@@ -13,15 +13,15 @@ namespace HBYWCZP2024.Service.Models
         public string siteCode => MainStorage.Saves.KeysSave[key].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[key].LineCode;
         public string equipNum => MainStorage.Saves.KeysSave[key].EquipNum;
-        public required string containerCode { get; set; }
+        public string containerCode { get; set; }
         public string actionType { get; set; } = "IN";
-        public required Celldatavolist[] cellDataVOList { get; set; } = [];
+        public Celldatavolist[] cellDataVOList { get; set; } = [];
     }
 
     public class Celldatavolist
     {
-        public required string identification { get; set; }
-        public required string locationBat { get; set; }
+        public  string identification { get; set; }
+        public  string locationBat { get; set; }
     }
 
 
