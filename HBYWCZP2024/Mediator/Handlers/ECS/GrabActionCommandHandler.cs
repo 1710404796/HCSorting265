@@ -97,18 +97,33 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable 
                     
-                    && MainStorage.Saves.KeysSave[request.Key].Stage.IncomingBelt.IsEnable)
+                    //&& 
+                    //(
+                    //MainStorage.Saves.KeysSave[request.Key].Stage.IncomingBelt.IsEnable
+                    //|| MainStorage.Saves.KeysSave[request.Key].Stage.StrippingBelt.IsEnable
+                    //)
+                    )
                 {
                     var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                     {
-                        cellDataVOList = [.. pallet.Channels.Take(pallet.ChannelNum)
-                    .Select((x, i) =>
-                        new Celldatavolist
-                        {
-                            identification = x.Code,
-                            locationBat = (i + 1).ToString()
-                        }).Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
-                        containerCode = pallet.PalletCode
+                        cellDataVOList = [.. 
+                            pallet.Channels.Take(pallet.ChannelNum)
+                            .Select((x, i) =>
+                                new Celldatavolist
+                                {
+                                    identification = x.Code,
+                                    locationBat = (i + 1).ToString()
+                                })
+                            .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
+                        containerCode = pallet.PalletCode,
+                        actionType =
+                            pallet.Type switch
+                            {
+                                Models.CZPallet.PalletType.组盘 => "IN",
+                                Models.CZPallet.PalletType.拆盘 => "OUT",
+                                Models.CZPallet.PalletType.筛选 => "OUT",
+                                _ => "IN"
+                            }
 
                     }
                 );
