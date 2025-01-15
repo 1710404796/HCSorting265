@@ -20,7 +20,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
 
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
-           
+
             if (pallet == null)
             {
                 throw new Exception("托盘不存在");
@@ -59,15 +59,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     return false;
                 }
             }
-            else 
+            else
             {
                 // 上报数据
-                
+
                 // 拆组盘结束。步骤较多
                 // 1. 向FMS上报结果，这里感觉也需要加一下处理
                 // 2. 向MES上报结果
                 // 3. 向FMS上报组盘完成
-                
+
 
 
                 // TODO:上报数据结果权限添加
@@ -95,54 +95,55 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         return false;
                     }
                 }
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable 
-                    
-                    //&& 
-                    //(
-                    //MainStorage.Saves.KeysSave[request.Key].Stage.IncomingBelt.IsEnable
-                    //|| MainStorage.Saves.KeysSave[request.Key].Stage.StrippingBelt.IsEnable
-                    //)
-                    )
-                {
-                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
-                    {
-                        cellDataVOList = [.. 
-                            pallet.Channels.Take(pallet.ChannelNum)
-                            .Select((x, i) =>
-                                new Celldatavolist
-                                {
-                                    identification = x.Code,
-                                    locationBat = (i + 1).ToString()
-                                })
-                            .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
-                        containerCode = pallet.PalletCode,
-                        actionType =
-                            pallet.Type switch
-                            {
-                                Models.CZPallet.PalletType.组盘 => "IN",
-                                Models.CZPallet.PalletType.拆盘 => "OUT",
-                                Models.CZPallet.PalletType.筛选 => "OUT",
-                                _ => "IN"
-                            }
+                //if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable 
 
-                    }
-                );
+                //    //&& 
+                //    //(
+                //    //MainStorage.Saves.KeysSave[request.Key].Stage.IncomingBelt.IsEnable
+                //    //|| MainStorage.Saves.KeysSave[request.Key].Stage.StrippingBelt.IsEnable
+                //    //)
+                //    )
+                //{
+                //    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                //    {
+                //        cellDataVOList = [.. 
+                //            pallet.Channels.Take(pallet.ChannelNum)
+                //            .Select((x, i) =>
+                //                new Celldatavolist
+                //                {
+                //                    identification = x.Code,
+                //                    locationBat = (i + 1).ToString()
+                //                })
+                //            .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
+                //        containerCode = pallet.PalletCode,
+                //        actionType =
+                //            pallet.Type switch
+                //            {
+                //                Models.CZPallet.PalletType.组盘 => "IN",
+                //                Models.CZPallet.PalletType.拆盘 => "OUT",
+                //                Models.CZPallet.PalletType.筛选 => "OUT",
+                //                _ => "IN"
+                //            }
 
-                    var mesdata = mesRes.Match(
-                        Succ: s => s,
-                        Fail: f =>
-                        {
-                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
-                            throw f;
-                        }
-                        );
+                //    }
+                //);
 
-                }
+                //    var mesdata = mesRes.Match(
+                //        Succ: s => s,
+                //        Fail: f =>
+                //        {
+                //            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                //            throw f;
+                //        }
+                //        );
+
+                //}
                 // 作业结束
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
                 {
-                        var e106 = await hBECSService.SendAsync<S106, E106>(new() { 
-                        TrayNumber = pallet.PalletCode, 
+                    var e106 = await hBECSService.SendAsync<S106, E106>(new()
+                    {
+                        TrayNumber = pallet.PalletCode,
                         TrayPosition = pallet.PalletId + 1,
                         TrayType = pallet.OKNGType,
                         OutSideStationNum = pallet.OutsideStationNum.ToString(),

@@ -11,9 +11,10 @@ public record GrabActionCommand(string Key, int StationNum, bool Start, bool isS
 /// <param name="data"></param>
 public record PalletArrivedCommand(string Key, int InsideStationNum) : IRequest<bool>;
 public record PalletOutCommand(string Key, int InsideStationNum) : IRequest<bool>;
-public record GrabCommand(string Key) : IRequest<bool>;
+public record GrabCommand(string Key, GrabInfo GrabInfo) : IRequest<bool>;
 
-//public record GrabInfo(XYLStation From, XYLStation To, );
+public record GrabInfo(XYLStation From, XYLStation To, Arr<BatteryMoveInfo> Infos);
+public record BatteryMoveInfo(string Code, int FromChannel, int ToChannel);
 
 /// <summary>
 /// 4.3

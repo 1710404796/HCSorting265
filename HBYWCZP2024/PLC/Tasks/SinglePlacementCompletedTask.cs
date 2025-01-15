@@ -160,16 +160,25 @@ namespace HBYWCZP2024.PLC.Tasks
             //        return false;
             //    }
             //}
-            if (put is Pallet || grab is Pallet)
+            //if (put is Pallet || grab is Pallet)
+            //{
+            //    // 要发两次可能
+            //    if (!await Context.Mediator.Send(new GrabCommand(Context.Name)))
+            //    {
+            //        //await Context.Mediator.Send(new WarningBoxCommand($"工位{grabStation} {grab!.Name} -> 工位{putStaion} {put!.Name}"));
+            //        return false;
+            //    }
+            //}
+            var codes = Enumerable.Range(0, grabChannel.Length)
+                .Map(i => (grabChannel[i], putChannel[i], claw[i], batteryCodes[i]))
+                .Filter(s => s.Item3)
+                .Map(s => new BatteryMoveInfo(s.Item4, s.Item1, s.Item2))
+                .ToArr();
+            if (!await Context.Mediator.Send(new GrabCommand(Context.Name, new GrabInfo(grab, put, codes))))
             {
-                // 要发两次可能
-                if (!await Context.Mediator.Send(new GrabCommand(Context.Name)))
-                {
-                    //await Context.Mediator.Send(new WarningBoxCommand($"工位{grabStation} {grab!.Name} -> 工位{putStaion} {put!.Name}"));
-                    return false;
-                }
+                //await Context.Mediator.Send(new WarningBoxCommand($"工位{grabStation} {grab!.Name} -> 工位{putStaion} {put!.Name}"));
+                return false;
             }
-
 
             for (int i = 0; i < grabChannel.Length; ++i)
             {
