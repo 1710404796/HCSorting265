@@ -22,8 +22,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<bool> Handle(GrabCommand request, CancellationToken cancellationToken)
         {
             var hBECSService = hBECSServiceFactory.Create(request.Key);
-
-
             if (request.GrabInfo.From is Pallet from)
             {
                 // 拆上报
@@ -58,7 +56,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         );
                 }
             }
-
             if (request.GrabInfo.To is Pallet to)
             {
                 var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
