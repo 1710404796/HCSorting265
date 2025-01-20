@@ -92,7 +92,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 BatteryBarcodes = batteryCodes.Where(s => !string.IsNullOrWhiteSpace(s)).ToList(),
                 // 工位号是什么
             };
-
+            //var fincodes = 
 
             for (int i = 0; i < grabChannel.Length; i++)
             {
@@ -169,9 +169,16 @@ namespace HBYWCZP2024.PLC.Tasks
             //        return false;
             //    }
             //}
+
+            bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
+
             var codes = Enumerable.Range(0, grabChannel.Length)
-                .Map(i => (grabChannel[i], putChannel[i], claw[i], batteryCodes[i]))
+                .Map(i => (grabChannel[i], putChannel[i], claw[i],
+                    string.IsNullOrWhiteSpace(batteryCodes[i]) && claw[i] ? grab.Channels[grabChannel[i] - 1].Code : batteryCodes[i]
+                
+                ))
                 .Filter(s => s.Item3)
+                .Filter(s => !isNG(s.Item4))
                 .Map(s => new BatteryMoveInfo(s.Item4, s.Item1, s.Item2))
                 .ToArr();
             if (!await Context.Mediator.Send(new GrabCommand(Context.Name, new GrabInfo(grab, put, codes))))

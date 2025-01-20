@@ -20,7 +20,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
 
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
-
+            bool isCodeRuleNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
             if (pallet == null)
             {
                 throw new Exception("托盘不存在");
@@ -81,7 +81,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         TrayPosition = pallet.PalletId + 1,
                         MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
                         BatteryCount = pallet.ChannelNum,
-                        BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum).Select(x => x.Code).ToList()
+                        BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum)
+                        .Select(x => isCodeRuleNG(x.Code) ? "" : x.Code)
+                        //.Select(x => x.Code)
+                        .ToList()
                     });
 
                     if (data == null)

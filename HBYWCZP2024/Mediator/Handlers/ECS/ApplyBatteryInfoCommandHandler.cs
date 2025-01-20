@@ -24,7 +24,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
             {
-
+                return [];
             }
 
             var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.StationNum);
