@@ -152,7 +152,7 @@ namespace HBYWCZP2024.Service
                     logger.LogInformation("{name}, 接收数据: {data}", Name, JsonSerializer.Serialize(res));
                     if (res.ErrorCode != "0000")
                     {
-                        throw new Exception("错误码: " + res.ErrorCode);
+                        throw new Exception("错误码: " + MainStorage.GetError(res.ErrorCode));
                     }
 
                     return res;

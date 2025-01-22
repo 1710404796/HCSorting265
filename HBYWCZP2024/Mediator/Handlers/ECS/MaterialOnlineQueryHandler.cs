@@ -54,16 +54,21 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     //.Match(Some: s => s, None: () => "")
                  })]
             };
-
-            var res = await service.MesService.MaterialOnline(mRequest);
-            var codeMap = res.Match(
-            Succ: s => s.rows.Map(r =>
-            (r.identification ?? "", r.qualityStatus?.ToLower() switch
+            async Task<(Map<string, BatteryLevel> comap, string mid)> getCodeMap(MaterialOnlineRequest request)
             {
-                "ok" => BatteryLevel.OK,
-                "ng" => BatteryLevel.NG,
-                _ => BatteryLevel.NG,
-            })),
+                if (request.batteryTrayBindVOList.Length <= 0)
+                {
+                    return (new Map<string, BatteryLevel>(), "");
+                }
+                var res = await service.MesService.MaterialOnline(mRequest);
+                var cmap = res.Match(
+                    Succ: s => s.rows.Map(r =>
+                    (r.identification ?? "", r.qualityStatus?.ToLower() switch
+                    {
+                        "ok" => BatteryLevel.OK,
+                        "ng" => BatteryLevel.NG,
+                        _ => BatteryLevel.NG,
+                    })),
                 Fail: f =>
                 {
 
@@ -73,7 +78,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
 
                 ).DistinctBy(s => s.Item1).ToMap();
-            var sthMaterialId = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
+                var id = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
                 Succ: s => s.FirstOrDefault(), Fail: f =>
                 {
 
@@ -81,7 +86,23 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     throw f;
                 }
                 );
-            MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
+                return (cmap, id ?? "");
+            }
+           
+            var (codeMap, sthMaterialId) = await getCodeMap(mRequest);
+            //var sthMaterialId = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
+            //    Succ: s => s.FirstOrDefault(), Fail: f =>
+            //    {
+
+            //        mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+            //        throw f;
+            //    }
+            //    );
+            if (!string.IsNullOrEmpty(sthMaterialId))
+            {
+                MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
+
+            }
 
             var data = request.Channels.Map(c =>
             c with

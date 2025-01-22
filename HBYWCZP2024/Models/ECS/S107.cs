@@ -42,5 +42,7 @@ public enum TrayType
 {
     Engineering = 0,
     NG = 1,
-    Other = 2
+    Other = 2,
+    拆盘类型 = 3,
+    组盘类型 = 4,
 }
