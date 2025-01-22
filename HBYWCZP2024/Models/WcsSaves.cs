@@ -184,6 +184,7 @@ namespace HBYWCZP2024.Models
         public bool UploadFmsDataEnable { get;  set; }
         public bool UploadMesDataEnable { get; set; }
         public bool HighTempEnable { get;  set; }
+        public bool HCInStationEnable { get; set; }
     }
 
     public class StageMono

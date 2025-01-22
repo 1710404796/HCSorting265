@@ -212,6 +212,10 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesDataEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFmsDataEnable}"
 >上报FMS数据使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HCInStationEnable}"
+>化成首工序进站接口(暂时)使能</CheckBox>
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
 >接口高温入库使能</CheckBox>

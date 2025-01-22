@@ -130,6 +130,11 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     {
         return SendRequest<HighTempOnlineResponse>("equipment/assembly/logistics/line", request);
     }
+
+    public Task<Result<HCInStationResponse>> HCInStationAsync(HCInStationRequest request)
+    {
+        return SendRequest<HCInStationResponse>("in/station/process/currency", request);
+    }
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
         LinxContext linxContext = App.GetService<LinxContext>();
