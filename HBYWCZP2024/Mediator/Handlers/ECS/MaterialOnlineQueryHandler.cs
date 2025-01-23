@@ -22,6 +22,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s); 
 
+
+
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckMaterialEnable)
             {
                 return request.Channels.Map(c =>
@@ -32,8 +34,37 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     }
                 ).ToArr();
             }
-
+            
             var service = factory.Create(request.Key);
+            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HCInStationEnable)
+            {
+                var okCodes = request.Channels
+                .Map(c => c.BattleWithLevel.Map(s => s.Code))
+                .Map(s => s.IfNone(""))
+
+                .Filter(s => !isNG(s)).ToArr();
+                // 验证器
+                // 高温静置入站
+                var rss = okCodes
+                            .AsParallel()
+                            .Map(s =>
+                            {
+                                return service.MesService.HCInStationAsync(new HCInStationRequest(request.Key)
+                                {
+                                    identification = s,
+                                }).Result;
+                            });
+                if (!rss.All(s => s.IsSuccess))
+                {
+                    var message = string.Join("\n",
+                        rss
+                        .Filter(s => !s.IsSuccess)
+                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
+                    await mediator.Send(new WcsDataWarningBoxCommand(message));
+                    throw new Exception(message);
+                }
+            }
+
 
 
 
@@ -122,64 +153,35 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             ).ToArr();
 
 
-            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HCInStationEnable)
-            {
-                // 验证器
-                // 高温静置入站
-                var rss = data.Filter(data =>
-                                        data.BattleWithLevel
-                                        .Map(s => s.Level == BatteryLevel.OK)
-                                        .IfNone(false)
-                            //.Match(s => s.Level == BatteryLevel.OK, () => false)
-                            )
-                            .AsParallel()
-                            .Map(s =>
-                            {
-                                return service.MesService.HCInStationAsync(new HCInStationRequest(request.Key)
-                                {
-                                    identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
-                                }).Result;
-                            });
-                if (!rss.All(s => s.IsSuccess))
-                {
-                    var message = string.Join("\n",
-                        rss
-                        .Filter(s => !s.IsSuccess)
-                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-                    await mediator.Send(new WcsDataWarningBoxCommand(message));
-                    throw new Exception(message);
-                }
-            }
-
-
-            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
-            {
-                // 验证器
-            // 高温静置入站
-                var rss = data.Filter(data => 
-                                        data.BattleWithLevel
-                                        .Map(s => s.Level == BatteryLevel.OK)
-                                        .IfNone(false)
-                            //.Match(s => s.Level == BatteryLevel.OK, () => false)
-                            )
-                            .AsParallel()
-                            .Map( s =>
-                            {
-                                 return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
-                                {
-                                    identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
-                                }).Result;
-                            });
-                if (!rss.All(s => s.IsSuccess))
-                {
-                    var message = string.Join("\n",
-                        rss
-                        .Filter(s => !s.IsSuccess)
-                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-                    await mediator.Send(new WcsDataWarningBoxCommand(message));
-                    throw new Exception(message);
-                }
-            }
+            
+            //if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
+            //{
+            //    // 验证器
+            //// 高温静置入站
+            //    var rss = data.Filter(data => 
+            //                            data.BattleWithLevel
+            //                            .Map(s => s.Level == BatteryLevel.OK)
+            //                            .IfNone(false)
+            //                //.Match(s => s.Level == BatteryLevel.OK, () => false)
+            //                )
+            //                .AsParallel()
+            //                .Map( s =>
+            //                {
+            //                     return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+            //                    {
+            //                        identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
+            //                    }).Result;
+            //                });
+            //    if (!rss.All(s => s.IsSuccess))
+            //    {
+            //        var message = string.Join("\n",
+            //            rss
+            //            .Filter(s => !s.IsSuccess)
+            //            .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
+            //        await mediator.Send(new WcsDataWarningBoxCommand(message));
+            //        throw new Exception(message);
+            //    }
+            //}
 
             return data;
         }

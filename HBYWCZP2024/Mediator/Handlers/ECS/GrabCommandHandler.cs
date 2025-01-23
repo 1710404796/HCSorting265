@@ -1,5 +1,8 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+//using HBYWCZP2024.Mediator.Queries;
+using HBYWCZP2024.Models;
+
 
 //using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models.CZPallet;
@@ -86,6 +89,35 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     }
                     );
             }
+
+            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
+            {
+                var service = hBECSService;
+                // 验证器
+                // 高温静置入站
+                // 可能非ng盘上报 现在不管他
+                var rss = request.GrabInfo.Infos
+                    .Map(c => c.Code)
+      
+                            .AsParallel()
+                            .Map(s =>
+                            {
+                                return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                                {
+                                    identification = s
+                                }).Result;
+                            });
+                if (!rss.All(s => s.IsSuccess))
+                {
+                    var message = string.Join("\n",
+                        rss
+                        .Filter(s => !s.IsSuccess)
+                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
+                    await mediator.Send(new WcsDataWarningBoxCommand(message));
+                    throw new Exception(message);
+                }
+            }
+
 
             return true;
         }
