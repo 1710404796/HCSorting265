@@ -79,6 +79,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     {
                         TrayNumber = pallet.PalletCode,
                         TrayPosition = pallet.PalletId + 1,
+                        TrayType = pallet.OKNGType,
                         MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
                         BatteryCount = pallet.ChannelNum,
                         BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum)

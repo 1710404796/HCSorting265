@@ -196,7 +196,7 @@ namespace HBYWCZP2024.Service
                             err.Parse(peek.Content);
                             logger.LogError("{name}, E110报警 错误: {err}", Name, err.ErrorCode);
 
-                            throw new Exception(err.ErrorCode);
+                            throw new Exception(MainStorage.GetError(err.ErrorCode));
                         }
                         if (peek.Command == res.Type)
                         {
