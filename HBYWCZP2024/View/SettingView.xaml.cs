@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,8 @@ namespace HBYWCZP2024.View
             InitializeComponent();
             //StationNameBox.Text = MainStorage.Saves.SelectStageName;
             SelectBox.SelectedValue = MainStorage.Saves.SelectStageName;
+
+            ApiEnableStack.Visibility = App.GetService<IMediator>().Send(new CheckPowerQuery(Attritubes.PowerEnum.接口使能配置)).Result ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)

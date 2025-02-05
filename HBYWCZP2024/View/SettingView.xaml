@@ -179,7 +179,7 @@
     Text="{Binding ViewModel.Saves.ProductType, Mode=TwoWay}"
 ></TextBox>
 
-
+<StackPanel Orientation="Vertical" x:Name="ApiEnableStack">
                 <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能</CheckBox>
@@ -219,6 +219,7 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HCInStationEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
 >接口高温入库使能</CheckBox>
+            </StackPanel>
             </StackPanel>
 
 
