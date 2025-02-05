@@ -8,6 +8,7 @@ using HBYWCZP2024.Service;
 using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,12 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context) : IRequestHandler<GrabActionCommand, bool>
+    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, 
+        IMediator mediator, LinxContext context, ILogger<GrabActionCommandHandler> logger) : IRequestHandler<GrabActionCommand, bool>
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
-
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
             bool isCodeRuleNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
             if (pallet == null)
@@ -183,6 +184,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (!request.Start && pallet.Type == PalletType.组盘)
             {
+                try
+                {
+
+                
                 // 存一下托盘日志
                 var palletlog = new PalletLog
                 {
@@ -200,7 +205,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 context.Add(palletlog);
 
                 await context.SaveChangesAsync(cancellationToken);
+                }
+                catch (Exception ex)
+                {
 
+                    logger.LogError(ex, "组盘日志发生错误");
+                }
             }
 
             return true;

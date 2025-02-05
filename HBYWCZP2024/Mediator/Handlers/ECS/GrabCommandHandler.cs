@@ -62,7 +62,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (request.GrabInfo.To is Pallet to)
             {
-                var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable
+                   ) { 
+                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                 {
                     cellDataVOList = [..
                             request.GrabInfo.Infos
@@ -88,6 +90,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         throw f;
                     }
                     );
+                }
             }
 
             if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
