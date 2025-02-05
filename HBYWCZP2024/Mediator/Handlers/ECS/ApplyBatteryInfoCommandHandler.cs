@@ -1,4 +1,6 @@
-﻿using HBYWCZP2024.Mediator.Commands;
+﻿using HBYWCZP2024.Data;
+using HBYWCZP2024.Data.Models;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
@@ -6,6 +8,7 @@ using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
@@ -16,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
+    public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<ApplyBatteryInfoCommandHandler> logger) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
     {
 
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
@@ -48,6 +51,33 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                    await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
                 })
                     ;
+                // 存日志
+                try
+                {
+                    // 存一下托盘日志
+                    var palletlog = new PalletLog
+                    {
+                        PalletCode = pallet.PalletCode,
+                        BatteryInfo = pallet.Channels.Select(s => new BatteryInfo
+                        {
+                            BatteryCode = s.Code,
+                            BatteryLevel = s.BatteryLevel,
+                        }).Take(pallet.ChannelNum).ToList(),
+                        Column = pallet.Column,
+                        PalletType = pallet.Type
+
+                    };
+
+                    context.Add(palletlog);
+
+                    await context.SaveChangesAsync(cancellationToken);
+
+                }
+                catch (Exception ex)
+                {
+
+                    logger.LogError(ex, "组盘日志发生错误");
+                }
 
                 return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
             }
@@ -84,6 +114,34 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     await pallet.BindBattery(channel.ChannelId - 1, code, true, lv);
                 }
 
+                // 存日志
+                try
+                {
+                    // 存一下托盘日志
+                    var palletlog = new PalletLog
+                    {
+                        PalletCode = pallet.PalletCode,
+                        BatteryInfo = pallet.Channels.Select(s => new BatteryInfo
+                        {
+                            BatteryCode = s.Code,
+                            BatteryLevel = s.BatteryLevel,
+                        }).Take(pallet.ChannelNum).ToList(),
+                        Column = pallet.Column,
+                        PalletType = pallet.Type
+
+                    };
+
+                    context.Add(palletlog);
+
+                    await context.SaveChangesAsync(cancellationToken);
+
+                }
+                catch (Exception ex)
+                {
+
+                    logger.LogError(ex, "组盘日志发生错误");
+                }
+
                 return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
 
 
@@ -102,6 +160,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception("托盘类型错误");
             }
+
+
         }
     }
 }

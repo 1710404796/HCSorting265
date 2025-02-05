@@ -1,5 +1,8 @@
-﻿using HBYWCZP2024.Mediator.Commands;
+﻿using HBYWCZP2024.Data;
+using HBYWCZP2024.Data.Models;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Service.Models;
@@ -13,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<GrabActionCommand, bool>
+    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context) : IRequestHandler<GrabActionCommand, bool>
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
@@ -168,15 +171,37 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
 
             }
-            //else
-            //{
-            //    throw new Exception("托盘类型错误");
-            //}
+        //else
+        //{
+        //    throw new Exception("托盘类型错误");
+        //}
 
-            // TODO: 结束要用106命令
+        // TODO: 结束要用106命令
 
 
+        SaveLog:
 
+            if (!request.Start && pallet.Type == PalletType.组盘)
+            {
+                // 存一下托盘日志
+                var palletlog = new PalletLog
+                {
+                    PalletCode = pallet.PalletCode,
+                    BatteryInfo = pallet.Channels.Select(s => new BatteryInfo
+                    {
+                        BatteryCode = s.Code,
+                        BatteryLevel = s.BatteryLevel,
+                    }).Take(pallet.ChannelNum).ToList(),
+                    Column = pallet.Column,
+                    PalletType = pallet.Type
+
+                };
+
+                context.Add(palletlog);
+
+                await context.SaveChangesAsync(cancellationToken);
+
+            }
 
             return true;
 
