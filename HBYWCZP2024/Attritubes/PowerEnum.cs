@@ -19,7 +19,8 @@
         程序参数设定,
         交互日志,
         日志窗口,
-        重新匹配PLC节点
+        重新匹配PLC节点,
+        接口使能配置
     }
 
     public enum RoleEnum
