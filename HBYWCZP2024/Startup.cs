@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.Queries;
+using HBYWCZP2024.Models;
 using HBYWCZP2024.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +35,35 @@ namespace HBYWCZP2024
                                         .Select((s, i) => new Channel(i + 1, new BatteryWithLevel(s.Code, s.BatteryLevel)))]
                                             );
                 });
+
+                routes.MapPost("/updateStationInfo", (int sid, Arr<Channel> channels, bool isPut) =>
+                {
+                    var station = CZPUtils.GetXYLStationByInsideNum(MainStorage.Saves.SelectStageName, sid);
+                    if (station == null)
+                    {
+                        throw new Exception("station不存在");
+                    }
+
+                if (isPut)
+                {
+
+                    channels.Iter(
+                         (c) =>
+                         c.BattleWithLevel.Match(
+                             s => station.BindBattery(c.ChannelId - 1, s.Code, true, s.Level.IfNone(BatteryLevel.EMPTY) ).Result,
+                             () => false
+                        
+                        ));
+                    }
+                    else
+                    {
+                        channels.Iter((c) => station.UnbindBattery(c.ChannelId - 1));
+                    }
+                });
+
                 routes.MapControllers();
             });
+           
         }
     }
 

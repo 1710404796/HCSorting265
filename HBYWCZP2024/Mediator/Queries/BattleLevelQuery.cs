@@ -14,7 +14,7 @@ namespace HBYWCZP2024.Mediator.Queries
     // 直接返回level吧
 
     public record Pallet(string PalletCode, ImmutableArray<Channel> Channels);
-
+    // ChannelId从1开始
     public record Channel (int ChannelId, Option<BatteryWithLevel> BattleWithLevel);
 
     public record BatteryWithLevel(string Code, Option<BatteryLevel> Level);

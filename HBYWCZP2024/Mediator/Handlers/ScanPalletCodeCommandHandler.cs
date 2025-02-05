@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers
 
                 if (pallet == null)
                 {
-                    throw new Exception($"托盘{request.PalletIdx}");
+                    throw new Exception($"托盘{request.PalletIdx} 不存在");
                 }
                 var f = async (CognexBCR.Reader reader) =>
                 {

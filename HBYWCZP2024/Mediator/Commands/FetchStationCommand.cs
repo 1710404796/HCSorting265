@@ -9,4 +9,5 @@ using System.Threading.Tasks;
 namespace HBYWCZP2024.Mediator.Commands
 {
     public record FetchStationCommand(string name, int stationNum) : IRequest<Pallet>;
+    public record PushDataToStationCommand(string name, int stationNum, Arr<Channel> Channels, bool isPut) : IRequest<Pallet>;
 }
