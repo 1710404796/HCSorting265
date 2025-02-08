@@ -42,8 +42,8 @@ namespace HBYWCZP2024.Service.Models
     {
         public string siteCode => MainStorage.Saves.KeysSave[key].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[key].LineCode;
-        public string equipNum => MainStorage.Saves.KeysSave[key].EquipNum;
-        public string materialCode => MainStorage.Saves.KeysSave[key].MaterialCode;
+        public string equipNum => "601HTW01";
+        public string materialCode => "81028395";
         public string userName => MainStorage.Saves.KeysSave[key].UserName;
         public string identification { get; set; } = string.Empty;
         public string productType => MainStorage.Saves.KeysSave[key].ProductType;

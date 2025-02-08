@@ -60,7 +60,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         rss
                         .Filter(s => !s.IsSuccess)
                         .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-                    await mediator.Send(new WcsDataWarningBoxCommand(message));
+                    await mediator.Send(new WcsDataWarningBoxCommand("进站MES报警： " + message));
                     throw new Exception(message);
                 }
             }

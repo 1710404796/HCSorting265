@@ -128,7 +128,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     }
     public Task<Result<HighTempOnlineResponse>> HighTempOnlineAsync(HighTempOnlineRequest request)
     {
-        return SendRequest<HighTempOnlineResponse>("equipment/assembly/logistics/line", request);
+        return SendRequest<HighTempOnlineResponse>("formation/section/arrival", request);
     }
 
     public Task<Result<HCInStationResponse>> HCInStationAsync(HCInStationRequest request)

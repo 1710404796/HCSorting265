@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var hBECSService = hBECSServiceFactory.Create(request.Key);
             if (request.GrabInfo.Infos.Length <= 0) return true;
 
-            if (!string.IsNullOrWhiteSpace( request.GrabInfo.From.ServerIp) && request.GrabInfo.From.GetFromServer)
+            if (!string.IsNullOrWhiteSpace(request.GrabInfo.From.ServerIp) && request.GrabInfo.From.GetFromServer)
             {
                 await mediator.Send(new FetchStationCommand(request.GrabInfo.From.OutsideStationNum));
             }
@@ -73,15 +73,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             if (request.GrabInfo.To is Pallet to)
             {
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable
-                   ) { 
-                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                   )
                 {
-                    cellDataVOList = [..
+                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                    {
+                        cellDataVOList = [..
                             request.GrabInfo.Infos
                             .Map(s => new Celldatavolist{ identification = s.Code, locationBat = s.ToChannel.ToString()})
                             .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
-                    containerCode = to.PalletCode,
-                    actionType =
+                        containerCode = to.PalletCode,
+                        actionType =
                    to.Type switch
                    {
                        PalletType.组盘 => "IN",
@@ -90,46 +91,52 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                        _ => "IN"
                    }
 
-                }
-           );
-                var mesdata = mesRes.Match(
-                    Succ: s => s,
-                    Fail: f =>
-                    {
-                        mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
-                        throw f;
                     }
-                    );
+           );
+                    var mesdata = mesRes.Match(
+                        Succ: s => s,
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        }
+                        );
                 }
+
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
+                {
+                    if (MainStorage.Saves.Stage.IncomingBelt.IsEnable && to.OKNGType == TrayType.Engineering)
+                    {
+
+                        var service = hBECSService;
+                        // 验证器
+                        // 高温静置入站
+                        // 可能非ng盘上报 现在不管他
+                        var rss = request.GrabInfo.Infos
+                            .Map(c => c.Code)
+
+                                    .AsParallel()
+                                    .Map(s =>
+                                    {
+                                        return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                                        {
+                                            identification = s
+                                        }).Result;
+                                    });
+                        if (!rss.All(s => s.IsSuccess))
+                        {
+                            var message = string.Join("\n",
+                                rss
+                                .Filter(s => !s.IsSuccess)
+                                .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
+                            await mediator.Send(new WcsDataWarningBoxCommand(message));
+                            throw new Exception(message);
+                        }
+                    }
+                }
+
             }
 
-            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
-            {
-                var service = hBECSService;
-                // 验证器
-                // 高温静置入站
-                // 可能非ng盘上报 现在不管他
-                var rss = request.GrabInfo.Infos
-                    .Map(c => c.Code)
-      
-                            .AsParallel()
-                            .Map(s =>
-                            {
-                                return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
-                                {
-                                    identification = s
-                                }).Result;
-                            });
-                if (!rss.All(s => s.IsSuccess))
-                {
-                    var message = string.Join("\n",
-                        rss
-                        .Filter(s => !s.IsSuccess)
-                        .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-                    await mediator.Send(new WcsDataWarningBoxCommand(message));
-                    throw new Exception(message);
-                }
-            }
 
 
             return true;
