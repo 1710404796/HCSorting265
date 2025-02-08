@@ -45,4 +45,5 @@ public enum TrayType
     Other = 2,
     拆盘类型 = 3,
     组盘类型 = 4,
+    空筛选类型 = 4,
 }

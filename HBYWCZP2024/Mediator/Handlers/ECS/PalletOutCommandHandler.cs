@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
@@ -26,8 +27,19 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception("托盘不存在");
             }
-
-            var data = await hBECSService.SendAsync<S107, E107>(new () { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+            TrayType Get(Pallet pallet)
+            {
+                if (pallet.Type == PalletType.筛选)
+                {
+                    if (pallet.Channels.Take(pallet.ChannelNum).All(s => string.IsNullOrWhiteSpace(s.Code)))
+                    {
+                        return TrayType.空筛选类型;
+                    }
+                }
+                return pallet.OKNGType;
+            }
+            var type = Get(pallet);
+            var data = await hBECSService.SendAsync<S107, E107>(new () { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = type });
             return data != null;// && data.ErrorCode == "0";
         }
     }
