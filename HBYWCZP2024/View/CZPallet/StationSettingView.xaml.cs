@@ -37,7 +37,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "其他", "拆盘类型", "组盘类型" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "拆盘类型", "组盘类型" };
 
         public StationSettingView()
         {

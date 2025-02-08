@@ -26,6 +26,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             var hBECSService = hBECSServiceFactory.Create(request.Key);
             if (request.GrabInfo.Infos.Length <= 0) return true;
+
+            if (!string.IsNullOrWhiteSpace( request.GrabInfo.From.ServerIp) && request.GrabInfo.From.GetFromServer)
+            {
+                await mediator.Send(new FetchStationCommand(request.GrabInfo.From.OutsideStationNum));
+            }
+            if (!string.IsNullOrWhiteSpace(request.GrabInfo.To.ServerIp) && request.GrabInfo.To.GetFromServer)
+            {
+                await mediator.Send(new FetchStationCommand(request.GrabInfo.To.OutsideStationNum));
+            }
+
             if (request.GrabInfo.From is Pallet from)
             {
                 // 拆上报

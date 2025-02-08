@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -126,7 +128,7 @@ namespace HBYWCZP2024.Models
                 // 目前只需校验当前的重复性 无需管理其他托盘
                 if (CheckBatterySerial(code) || force)
                 {
-                    SetChanelStage(id, code, batteryLevel);
+                    await SetChanelStage(id, code, batteryLevel);
                     //OnSuccess?.Invoke(this, "绑定成功!");
                     return true;
                 }
@@ -145,14 +147,23 @@ namespace HBYWCZP2024.Models
                 return false;
             }
         }
-        private void SetChanelStage(int id, string code, BatteryLevel batteryLevel)
+        private async ValueTask SetChanelStage(int id, string code, BatteryLevel batteryLevel)
         {
-            Channels[id].Code = code;
-            Channels[id].BatteryLevel = batteryLevel;
-            if (code == StationChannel.DefaultCode || string.IsNullOrWhiteSpace(code))
+            if (!string.IsNullOrWhiteSpace(ServerIp) && GetFromServer)
             {
-                Channels[id].BatteryLevel = BatteryLevel.EMPTY;
+                await _mediator.Send(new PushDataToStationCommand(OutsideStationNum, [new Channel(id + 1, new BatteryWithLevel(code, batteryLevel))], true));
             }
+            else
+            {
+                Channels[id].Code = code;
+                Channels[id].BatteryLevel = batteryLevel;
+                if (code == StationChannel.DefaultCode || string.IsNullOrWhiteSpace(code))
+                {
+                    Channels[id].BatteryLevel = BatteryLevel.EMPTY;
+                }
+            }
+
+            
         }
 
         /// <summary>
@@ -189,9 +200,17 @@ namespace HBYWCZP2024.Models
         {
             if (Channels[id].Code != StationChannel.DefaultCode)
             {
-
-                Channels[id].Reset();
-                return true;
+                if (!string.IsNullOrWhiteSpace(ServerIp) && GetFromServer)
+                {
+                     _mediator.Send(new PushDataToStationCommand(OutsideStationNum, [new Channel(id + 1, None)], false));
+                    return true;
+                }
+                else
+                {
+                    Channels[id].Reset();
+                    return true;
+                }
+                
             }
             else
             {

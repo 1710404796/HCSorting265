@@ -1,4 +1,5 @@
-﻿using Cognex.NET;
+﻿using BCR.Common.Fs;
+using Cognex.NET;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Utils;
 using MediatR;
@@ -37,7 +38,14 @@ namespace HBYWCZP2024.Mediator.Handlers
                 };
                 var code = await pallet.Reader.ToEither("未找到扫码器").BindAsync(  f
                     );
-
+                if (code.IsLeft)
+                {
+                    pallet.Reader.IfSome(f => CognexBCR.close(f));
+                    pallet.Reader = fs(CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                            Right: reader => Some(reader),
+                            Left: e => pallet.Reader
+                        );
+                }
                 var data = code.Match(
                     Right: c => c,
                     Left: e => throw new Exception(e)
