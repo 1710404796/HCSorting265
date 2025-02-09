@@ -123,7 +123,7 @@ namespace HBYWCZP2024.Utils
             {
                 stationTo.Channels[channelTo].BatteryLevel = BatteryLevel.OK;
             }
-            stationFrom.Channels[channelFrom].Reset();
+            stationFrom.Channels[channelFrom].Reset(stationFrom.IsFake);
 
             return true;
         }

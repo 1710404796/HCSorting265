@@ -21,7 +21,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
     public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<ApplyBatteryInfoCommandHandler> logger) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
     {
-
+        bool isFake(string code)
+        {
+            return false;
+        }
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
@@ -48,7 +51,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 data.BatteryCodes.Select((s,i) => (s, i)).ToList().ForEach(async (data) =>
                 {
                     var code = data.s.Trim();
-                   await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
+                    if (isFake(code))
+                    {
+                        await pallet.BindBattery(data.i, code, true, BatteryLevel.Fake);
+
+                    }
+                    else
+                    {
+                        await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
+
+                    }
                 })
                     ;
                 // 存日志

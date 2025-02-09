@@ -65,7 +65,7 @@ namespace HBYWCZP2024.Models
         public int Column { get; set; } = 1;
 
 
-
+        public bool IsFake => OutsideStationNum >= 10000 && OutsideStationNum < 11000;
 
         public ObservableCollection<StationChannel> Channels { get; set; } = new ObservableCollection<StationChannel>(
             Enumerable.Range(0, 256).Select(s => new StationChannel() { Location = s })
@@ -207,7 +207,7 @@ namespace HBYWCZP2024.Models
                 }
                 else
                 {
-                    Channels[id].Reset();
+                    Channels[id].Reset(IsFake);
                     return true;
                 }
                 
@@ -259,7 +259,7 @@ namespace HBYWCZP2024.Models
             PalletCode = string.Empty;
             foreach (var channel in Channels)
             {
-                channel.Reset();
+                channel.Reset(IsFake);
             }
         }
 

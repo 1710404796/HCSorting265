@@ -85,13 +85,13 @@ namespace HBYWCZP2024.PLC.Tasks
                 }
             }
 
-            var data = new S105
-            {
-                TrayNumber = put is Pallet ? put!.PalletCode : string.Empty,
-                BatteryCount = grabChannel.Count(s => s > 0),
-                BatteryBarcodes = batteryCodes.Where(s => !string.IsNullOrWhiteSpace(s)).ToList(),
-                // 工位号是什么
-            };
+            //var data = new S105
+            //{
+            //    TrayNumber = put is Pallet ? put!.PalletCode : string.Empty,
+            //    BatteryCount = grabChannel.Count(s => s > 0),
+            //    BatteryBarcodes = batteryCodes.Where(s => !string.IsNullOrWhiteSpace(s)).ToList(),
+            //    // 工位号是什么
+            //};
             //var fincodes = 
 
             for (int i = 0; i < grabChannel.Length; i++)

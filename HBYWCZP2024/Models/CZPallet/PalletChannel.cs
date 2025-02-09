@@ -102,6 +102,22 @@ namespace HBYWCZP2024.Models
             }
             return colorDefault;
         }
+        public void Reset(bool isFake)
+        {
+            string fakeCode = "";
+            if (isFake)
+            {
+                Code = fakeCode;
+                BatteryLevel = BatteryLevel.Fake;
+                ContainerFrom = string.Empty;
+                StationFrom = 0;
+                ChannelFrom = 0;
+            }
+            else
+            {
+                Reset();
+            }
+        }
         public void Reset()
         {
             Code = DefaultCode;
