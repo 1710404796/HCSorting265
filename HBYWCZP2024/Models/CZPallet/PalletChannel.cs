@@ -26,6 +26,8 @@ namespace HBYWCZP2024.Models
     }
     public partial class StationChannel : ObservableObject
     {
+        private static string V = "JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ"[..24];
+
         /// <summary>
         /// 条码默认值 避免range出错 默认是30个空格
         /// </summary>
@@ -102,12 +104,12 @@ namespace HBYWCZP2024.Models
             }
             return colorDefault;
         }
+        public static string FakeCode => V;
         public void Reset(bool isFake)
         {
-            string fakeCode = "";
             if (isFake)
             {
-                Code = fakeCode;
+                Code = FakeCode;
                 BatteryLevel = BatteryLevel.Fake;
                 ContainerFrom = string.Empty;
                 StationFrom = 0;

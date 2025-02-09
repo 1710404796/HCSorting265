@@ -23,7 +23,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
     {
         bool isFake(string code)
         {
-            return false;
+            return 
+                //code.Length == 24 && 
+                code.All(c => c == 'J');
         }
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
         {
