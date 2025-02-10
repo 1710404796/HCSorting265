@@ -33,7 +33,9 @@ namespace HBYWCZP2024.View.CZPallet
             Name = RuleName.Text;
             RegexStr = RegexString.Text;
             //FakeStr = FakeString.Text;
-            ChannelNum = int.Parse(Channels.Text);
+            int v;
+            int.TryParse(Channels.Text, out v);
+            ChannelNum = v;
             DialogResult = true;
             Close();
         }
