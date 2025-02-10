@@ -27,6 +27,8 @@ namespace HBYWCZP2024.Mediator.Handlers
         public async Task Handle(InitMeCommand request, CancellationToken cancellationToken)
         {
             FilenameHelper.CreateDir("Data2D");
+            FilenameHelper.CreateDir("RemoveLog");
+            FilenameHelper.CreateDir("InsertLog");
 
 
 
@@ -71,6 +73,8 @@ namespace HBYWCZP2024.Mediator.Handlers
             {
                 MainStorage.Saves.KeysSave[item.Name] = item;
             }
+
+
 
             if (!MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
             {
