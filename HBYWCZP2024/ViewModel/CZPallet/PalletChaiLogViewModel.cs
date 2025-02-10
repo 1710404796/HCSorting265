@@ -40,7 +40,7 @@ namespace HBYWCZP2024.ViewModel
 
         public void RefreshContext()
         {
-            _logs = context.PalletLogs.AsNoTracking().OrderByDescending(s => s.Id).Where(s => s.PalletType == PalletType.拆盘).Take(100);
+            _logs = context.PalletLogs.AsNoTracking().OrderByDescending(s => s.Id).Where(s => s.PalletType == PalletType.拆盘 || s.PalletType == PalletType.筛选).Take(100);
             Search();
         }
 
