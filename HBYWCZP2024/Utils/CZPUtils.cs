@@ -28,6 +28,7 @@ namespace HBYWCZP2024.Utils
             "F" => BatteryLevel.F,
             "FC" => BatteryLevel.REWORK,
             "Fake" => BatteryLevel.Fake,
+            "MARK" => BatteryLevel.OK,
             _ => BatteryLevel.EMPTY,
         };
 
