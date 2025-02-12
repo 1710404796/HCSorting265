@@ -35,7 +35,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 await mediator.Send(new FetchStationCommand(request.GrabInfo.To.OutsideStationNum));
             }
-
+            bool isFake(string code)
+            {
+                return
+                    //code.Length == 24 && 
+                    code.All(c => c == 'J');
+            }
             if (request.GrabInfo.From is Pallet from)
             {
                 // 拆上报
@@ -47,6 +52,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         cellDataVOList = [..
                             request.GrabInfo.Infos
                             .Map(s => new Celldatavolist{ identification = s.Code, locationBat = s.FromChannel.ToString()})
+                            .Filter(s => !isFake(s.identification))
                             .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
                         containerCode = from.PalletCode,
                         actionType =
