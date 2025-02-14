@@ -152,7 +152,7 @@ namespace HBYWCZP2024
                          services.AddDbContext<LinxUserDBContext<LinxUser>, LinxContext>(option =>
                          {
                              option.UseSqlServer(context.Configuration.GetConnectionString("LinxContextConnection"));
-                         }, ServiceLifetime.Singleton, ServiceLifetime.Singleton);
+                         }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 
                          services.AddMediatR(cfg =>
