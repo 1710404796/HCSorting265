@@ -56,12 +56,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     if (isFake(code))
                     {
                         await pallet.BindBattery(data.i, code, true, BatteryLevel.Fake);
-
                     }
                     else
                     {
                         await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
-
                     }
                 })
                     ;
@@ -93,7 +91,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     logger.LogError(ex, "组盘日志发生错误");
                 }
 
-                return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
+                //return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
+                return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
@@ -108,6 +108,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     data.BatteryCodes
                     .Select((x, i) => new Channel(i + 1, new BatteryWithLevel(x, None)))
                     .Filter(s => !string.IsNullOrWhiteSpace( s.BattleWithLevel.Map(s => s.Code).IfNone("")))
+                    .Filter(s => !isFake(s.BattleWithLevel.Map(s => s.Code).IfNone("")))
+                    
                     .ToImmutableArray()
                     );
                 // 这里有条码 // bind一下去

@@ -171,7 +171,12 @@ namespace HBYWCZP2024.PLC.Tasks
             //}
 
             bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
-
+            bool isFake(string code)
+            {
+                return
+                    //code.Length == 24 && 
+                    code.All(c => c == 'J');
+            }
             var codes = Enumerable.Range(0, grabChannel.Length)
                 .Map(i => (grabChannel[i], putChannel[i], claw[i],
                     string.IsNullOrWhiteSpace(batteryCodes[i]) && claw[i] ? grab.Channels[grabChannel[i] - 1].Code : batteryCodes[i]
@@ -179,6 +184,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 ))
                 .Filter(s => s.Item3)
                 .Filter(s => !isNG(s.Item4))
+                .Filter(s => !isFake(s.Item4))
                 .Map(s => new BatteryMoveInfo(s.Item4, s.Item1, s.Item2))
                 .ToArr();
             if (!await Context.Mediator.Send(new GrabCommand(Context.Name, new GrabInfo(grab, put, codes))))

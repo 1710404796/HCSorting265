@@ -34,6 +34,8 @@ namespace HBYWCZP2024.PLC.Tasks
                 //Context.Logger.LogError("");
                 return false;
             }
+            pallet.ClearStage();
+
             Context.Logger.LogInformation("准备获取托盘{idx}条码", SubIdx);
             pallet.PalletCode = string.Empty;
             pallet.PalletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(Context.Name, SubIdx)))?.Trim() ?? string.Empty;
