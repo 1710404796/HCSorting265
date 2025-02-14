@@ -154,7 +154,6 @@ namespace HBYWCZP2024
                              option.UseSqlServer(context.Configuration.GetConnectionString("LinxContextConnection"));
                          }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
-
                          services.AddMediatR(cfg =>
                          {
                              cfg.RegisterServicesFromAssemblyContaining<App>();

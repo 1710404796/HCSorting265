@@ -52,10 +52,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         actionType =
                             from.Type switch
                             {
-                                PalletType.组盘 => "IN",
+                                PalletType.组盘 => "OUT",
                                 PalletType.拆盘 => "OUT",
                                 PalletType.筛选 => "OUT",
-                                _ => "IN"
+                                _ => "OUT"
                             }
 
                     }
@@ -86,8 +86,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                    to.Type switch
                    {
                        PalletType.组盘 => "IN",
-                       PalletType.拆盘 => "OUT",
-                       PalletType.筛选 => "OUT",
+                       PalletType.拆盘 => "IN",
+                       PalletType.筛选 => "IN",
                        _ => "IN"
                    }
 
