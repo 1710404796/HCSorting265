@@ -126,10 +126,21 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     var (code, lv) = channel.BattleWithLevel.Match(
                         Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
-                        None: (string.Empty, BatteryLevel.EMPTY)
+                        None: (string.Empty, BatteryLevel.EMPTY)c
                     );
                     await pallet.BindBattery(channel.ChannelId - 1, code, true, lv);
                 }
+                int codeidx = 0;
+                foreach (var code in data.BatteryCodes)
+                {
+                    if (isFake(code))
+                    {
+                        await pallet.BindBattery(codeidx, code, true, BatteryLevel.Fake);
+                    }
+                    codeidx++;
+                }
+
+
 
                 // 存日志
                 try
