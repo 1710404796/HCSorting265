@@ -171,20 +171,21 @@ namespace HBYWCZP2024
                          logging.AddSerilog(dispose: true);
                          //logging.AddConsole();
                          //logging.AddDebug();
-                     }).
-                     ConfigureWebHostDefaults(webHostBuilder =>
-                     {
+                     })
+                     //.ConfigureWebHostDefaults(webHostBuilder =>
+                     //{
 
-                         webHostBuilder.UseStartup<Startup>();
-                         webHostBuilder.UseUrls($"http://*:{MainViewModel.Saves.Port}");
-                         webHostBuilder.ConfigureKestrel((context, options) =>
-                         {
-                             // Handle requests up to 50 MB
-                             options.Limits.MaxRequestBodySize = 16_000_000_000_000_000;
-                             options.Limits.KeepAliveTimeout = TimeSpan.FromHours(10);
-                         });
+                     //    webHostBuilder.UseStartup<Startup>();
+                     //    webHostBuilder.UseUrls($"http://*:{MainViewModel.Saves.Port}");
+                     //    webHostBuilder.ConfigureKestrel((context, options) =>
+                     //    {
+                     //        // Handle requests up to 50 MB
+                     //        options.Limits.MaxRequestBodySize = 16_000_000_000_000_000;
+                     //        options.Limits.KeepAliveTimeout = TimeSpan.FromHours(10);
+                     //    });
 
-                     }).ConfigureServices(services =>
+                     //})
+                     .ConfigureServices(services =>
                      {
                          services.Configure<FormOptions>(options =>
                          {

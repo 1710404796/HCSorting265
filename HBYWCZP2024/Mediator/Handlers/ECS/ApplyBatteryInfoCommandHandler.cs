@@ -30,17 +30,18 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
-            {
-                return [];
-            }
-
+            
             var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.StationNum);
 
             if (pallet == null)
             {
                 throw new Exception("托盘不存在");
             }
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
+            {
+                return Enumerable.Repeat(0, 24).Select(s => BatteryLevel.EMPTY).ToArray();
+            }
+
             if (pallet.Type == Models.CZPallet.PalletType.拆盘)
             {
                 var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });

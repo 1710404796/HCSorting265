@@ -56,13 +56,13 @@ namespace HBYWCZP2024.PLC.Tasks
              
             if (grab == null)
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.CaptureWorkstation}: {grabStation} {Properties.Resources.NotFound}"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"工作站:{Context.Name}\n {Properties.Resources.CaptureWorkstation}: {grabStation} {Properties.Resources.NotFound}"));
                 return false;
             }
 
             if (put == null)
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.PlaceWorkstation}: {putStaion} {Properties.Resources.NotFound}"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"工作站:{Context.Name}\n {Properties.Resources.PlaceWorkstation}: {putStaion} {Properties.Resources.NotFound}"));
                 return false;
             }
              
@@ -71,7 +71,7 @@ namespace HBYWCZP2024.PLC.Tasks
             {
                 if (string.IsNullOrEmpty(grabPallet.PalletCode))
                 {
-                    await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.CaptureWorkstation}: {grabStation} {Properties.Resources.Tray}{grabPallet.PalletId} {Properties.Resources.BarcodeIsEmpty}"));
+                    await Context.Mediator.Send(new PlcDataWarningBoxCommand($"工作站:{Context.Name}\n {Properties.Resources.CaptureWorkstation}: {grabStation} {Properties.Resources.Tray}{grabPallet.PalletId} {Properties.Resources.BarcodeIsEmpty}"));
                     return false;
                 }
             }
@@ -80,7 +80,7 @@ namespace HBYWCZP2024.PLC.Tasks
             {
                 if (string.IsNullOrEmpty(putPallet.PalletCode))
                 {
-                    await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.PlaceWorkstation}: {putStaion} {Properties.Resources.Tray} {putPallet.PalletId} {Properties.Resources.BarcodeIsEmpty}"));
+                    await Context.Mediator.Send(new PlcDataWarningBoxCommand($"工作站:{Context.Name}\n {Properties.Resources.PlaceWorkstation}: {putStaion} {Properties.Resources.Tray} {putPallet.PalletId} {Properties.Resources.BarcodeIsEmpty}"));
                     return false;
                 }
             }
