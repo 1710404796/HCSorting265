@@ -126,7 +126,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     var (code, lv) = channel.BattleWithLevel.Match(
                         Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
-                        None: (string.Empty, BatteryLevel.EMPTY)c
+                        None: (string.Empty, BatteryLevel.EMPTY)
                     );
                     await pallet.BindBattery(channel.ChannelId - 1, code, true, lv);
                 }
