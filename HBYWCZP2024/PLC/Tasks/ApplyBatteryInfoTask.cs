@@ -98,6 +98,7 @@ namespace HBYWCZP2024.PLC.Tasks
         }
         public byte GetPlcCode(BatteryLevel batteryLevel)
         {
+            return CZPUtils.GetPlcBatteryLevelCode(batteryLevel);
             if (batteryLevel == BatteryLevel.None) return (byte)BatteryLevel.EMPTY;
             if (batteryLevel == BatteryLevel.Fake) return 11;
 

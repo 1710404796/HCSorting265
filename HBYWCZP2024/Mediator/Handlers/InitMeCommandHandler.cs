@@ -98,7 +98,10 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
 
                 }
-
+                if ( stage.Value.ResetTable)
+                {
+                    MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+                }
 
                 Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
                 var ecs = hBECSService.Create(stage.Key);
@@ -123,6 +126,8 @@ namespace HBYWCZP2024.Mediator.Handlers
                 }
                 if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
                 {
+                    //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+
                     Console.WriteLine("尝试获取table");
 
                     logger.LogWarning("OpcTable未设定");

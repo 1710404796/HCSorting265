@@ -22,6 +22,10 @@ namespace HBYWCZP2024.Models
         D = 10,
         E = 11,
         F = 12,
+        Mark = 13,
+        V = 14,
+        Asub = 15,
+        Bsub = 16,
         Unknown = 999,
     }
     public partial class StationChannel : ObservableObject

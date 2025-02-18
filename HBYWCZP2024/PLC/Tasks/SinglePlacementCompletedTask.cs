@@ -101,7 +101,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 if (claw[i])
                 {
                     Context.Logger.LogInformation
-                    ("grabStation:{grabStation} grabChannel:{grabChannel} putStation:{putStaion} putChannel:{putChannel} batteryCode:{batteryCode}",
+                    ("工作站:{ContextName}\n grabStation:{grabStation} grabChannel:{grabChannel} putStation:{putStaion} putChannel:{putChannel} batteryCode:{batteryCode}", Context.Name,
                     grabStation, grabChannel[i], putStaion, putChannel[i], batteryCodes[i]);
 
                     if (grabChannel[i] <= 0) // || grabChannel[i] >= grab.ChannelNum)

@@ -21,7 +21,9 @@ namespace HBYWCZP2024.Utils
             "OK" => BatteryLevel.OK,
             "NG" => BatteryLevel.NG,
             "A" => BatteryLevel.A,
+            "A-" => BatteryLevel.Asub,
             "B" => BatteryLevel.B,
+            "B-" => BatteryLevel.Bsub,
             "C" => BatteryLevel.C,
             "D" => BatteryLevel.D,
             "E" => BatteryLevel.E,
@@ -29,23 +31,28 @@ namespace HBYWCZP2024.Utils
             "FC" => BatteryLevel.REWORK,
             "Fake" => BatteryLevel.Fake,
             "MARK" => BatteryLevel.OK,
+            "V" => BatteryLevel.V,
             _ => BatteryLevel.EMPTY,
         };
 
-        public static int GetPlcBatteryLevelCode(BatteryLevel level) => level switch
+        public static byte GetPlcBatteryLevelCode(BatteryLevel level) => level switch
         {
             BatteryLevel.OK => 1,
             BatteryLevel.NG => 2,
-            BatteryLevel.Fake => 3,
+            BatteryLevel.Fake => 11,
+            BatteryLevel.None => 5,
             BatteryLevel.REWORK => 4,
             BatteryLevel.EMPTY => 5,
-            BatteryLevel.A => 7,
-            BatteryLevel.B => 8,
+            BatteryLevel.V => 11,
+            BatteryLevel.A => 12,
+            BatteryLevel.Asub => 13,
+            BatteryLevel.B => 14,
+            BatteryLevel.Bsub => 15,
             BatteryLevel.C => 9,
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
             BatteryLevel.F => 12,
-            _ => 0,
+            _ => (byte)level,
         };
 
 
