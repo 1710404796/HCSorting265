@@ -59,7 +59,7 @@ namespace HBYWCZP2024.Utils
         }
         public static string GetOPCAddress(this string address, string name)
         {
-            if (MainStorage.Saves.OpcTable == null) return default;
+            if (MainStorage.Saves.KeysSave[name].OpcTable == null) return default;
             var res = MainStorage.Saves.KeysSave[name].OpcTable.TryGetValue(address, out var opcAddress);
             return opcAddress;
         }

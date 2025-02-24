@@ -3,6 +3,8 @@ using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Service.Models;
+using HBYWCZP2024.Utils;
+using LanguageExt.UnitsOfMeasure;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
@@ -68,9 +70,83 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
 
 
-            var mRequest = new MaterialOnlineRequest(request.Key)
+
+
+            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.FXQueryEnable)
             {
-                batteryTrayBindVOList = [.. request.Channels
+                CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
+                {
+                    ContainerCode = "",
+                    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
+                    {
+                        Location = x.ChannelId.ToString(),
+                        Identification = x.BattleWithLevel.Match(
+                            Some: battleWithLevel => battleWithLevel.Code,
+                            None: string.Empty
+                        ),
+
+                    })
+                    .Filter(s => !isNG(s.Identification))
+                    .ToArray()
+                };
+
+                async Task<Map<string, BatteryLevel>> getCodeMap(CheckPalletMaterialRequest request)
+                {
+                    if (request.ContainerCellInfos.Length <= 0)
+                    {
+                        return new Map<string, BatteryLevel>();
+                    }
+                    var checkMaterialResponse = await service.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
+
+                    var cmap = checkMaterialResponse.Match(
+                        Succ: r => {
+                            var channels = r.Rows.Select(x =>
+              
+                                    (x.Identification, CZPUtils.GetLevelFromMes(x.Grade))
+                               
+                            );
+                            return channels;
+                        },
+                        Fail: x => {
+
+                            mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                            throw x;
+                        }
+
+
+                        ).DistinctBy(s => s.Identification).ToMap();
+                    return cmap;
+                }
+                
+                var codeMap = await getCodeMap(checkMaterialRequest);
+
+                var data = request.Channels.Map(c =>
+                    c with
+                    {
+                        BattleWithLevel = c.BattleWithLevel.Map
+                        (b =>
+                        new BatteryWithLevel(
+                            b.Code,
+                            b.Code switch
+                            {
+                                var x when isNG(x) => BatteryLevel.NG,
+                                _ => codeMap[b.Code]
+                            }
+                        ))
+                    }
+
+                    ).ToArr();
+
+
+
+                return data;
+            }
+            else
+            {
+
+                var mRequest = new MaterialOnlineRequest(request.Key)
+                {
+                    batteryTrayBindVOList = [.. request.Channels
                     .Filter(s =>
                         s.BattleWithLevel
                         .Map(s => !isNG(s.Code))
@@ -84,106 +160,75 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     .IfNone("")
                                     //.Match(Some: s => s, None: () => "")
                  })]
-            };
-            async Task<(Map<string, BatteryLevel> comap, string mid)> getCodeMap(MaterialOnlineRequest request)
-            {
-                if (request.batteryTrayBindVOList.Length <= 0)
+                };
+                async Task<(Map<string, BatteryLevel> comap, string mid)> getCodeMap(MaterialOnlineRequest request)
                 {
-                    return (new Map<string, BatteryLevel>(), "");
-                }
-                var res = await service.MesService.MaterialOnline(mRequest);
-                var cmap = res.Match(
-                    Succ: s => s.rows.Map(r =>
-                    (r.identification ?? "", r.qualityStatus?.ToLower() switch
+                    if (request.batteryTrayBindVOList.Length <= 0)
                     {
-                        "ok" => BatteryLevel.OK,
-                        "ng" => BatteryLevel.NG,
-                        _ => BatteryLevel.NG,
-                    })),
-                Fail: f =>
-                {
-
-                    mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
-                    throw f;
-                }
-
-
-                ).DistinctBy(s => s.Item1).ToMap();
-                var id = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
-                Succ: s => s.FirstOrDefault(), Fail: f =>
-                {
-
-                    mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
-                    throw f;
-                }
-                );
-                return (cmap, id ?? "");
-            }
-           
-            var (codeMap, sthMaterialId) = await getCodeMap(mRequest);
-            //var sthMaterialId = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
-            //    Succ: s => s.FirstOrDefault(), Fail: f =>
-            //    {
-
-            //        mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
-            //        throw f;
-            //    }
-            //    );
-            if (!string.IsNullOrEmpty(sthMaterialId))
-            {
-                MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
-
-            }
-
-            var data = request.Channels.Map(c =>
-            c with
-            {
-                BattleWithLevel = c.BattleWithLevel.Map
-                (b => 
-                new BatteryWithLevel(
-                    b.Code,
-                    b.Code switch
-                    {
-                        var x when isNG(x) => BatteryLevel.NG,
-                        _ => codeMap[b.Code]
+                        return (new Map<string, BatteryLevel>(), "");
                     }
-                ))
+                    var res = await service.MesService.MaterialOnline(mRequest);
+                    var cmap = res.Match(
+                        Succ: s => s.rows.Map(r =>
+                        (r.identification ?? "", CZPUtils.GetLevelFromMes(r.qualityStatus ?? "")
+                        //r.qualityStatus?.ToLower() switch
+                        //{
+                        //    "ok" => BatteryLevel.OK,
+                        //    "ng" => BatteryLevel.NG,
+                        //    _ => BatteryLevel.NG,
+                        //}
+                        )
+                        ),
+                    Fail: f =>
+                    {
+
+                        mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                        throw f;
+                    }
+
+
+                    ).DistinctBy(s => s.Item1).ToMap();
+                    var id = res.Map(s => s.rows.Map(s => s.materialId).Distinct()).Match(
+                    Succ: s => s.FirstOrDefault(), Fail: f =>
+                    {
+
+                        mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                        throw f;
+                    }
+                    );
+                    return (cmap, id ?? "");
+                }
+           
+                var (codeMap, sthMaterialId) = await getCodeMap(mRequest);
+
+                if (!string.IsNullOrEmpty(sthMaterialId))
+                {
+                    MainStorage.Saves.KeysSave[request.Key].MaterialCode = sthMaterialId ?? string.Empty;
+
+                }
+
+                var data = request.Channels.Map(c =>
+                c with
+                {
+                    BattleWithLevel = c.BattleWithLevel.Map
+                    (b => 
+                    new BatteryWithLevel(
+                        b.Code,
+                        b.Code switch
+                        {
+                            var x when isNG(x) => BatteryLevel.NG,
+                            _ => codeMap[b.Code]
+                        }
+                    ))
+                }
+
+                ).ToArr();
+
+
+
+                return data;
             }
 
-            ).ToArr();
-
-
-            
-            //if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
-            //{
-            //    // 验证器
-            //// 高温静置入站
-            //    var rss = data.Filter(data => 
-            //                            data.BattleWithLevel
-            //                            .Map(s => s.Level == BatteryLevel.OK)
-            //                            .IfNone(false)
-            //                //.Match(s => s.Level == BatteryLevel.OK, () => false)
-            //                )
-            //                .AsParallel()
-            //                .Map( s =>
-            //                {
-            //                     return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
-            //                    {
-            //                        identification = s.BattleWithLevel.Match(s => s.Code, () => ""),
-            //                    }).Result;
-            //                });
-            //    if (!rss.All(s => s.IsSuccess))
-            //    {
-            //        var message = string.Join("\n",
-            //            rss
-            //            .Filter(s => !s.IsSuccess)
-            //            .Map(s => s.Match(Succ: su => "", Fail: fa => fa.Message)));
-            //        await mediator.Send(new WcsDataWarningBoxCommand(message));
-            //        throw new Exception(message);
-            //    }
-            //}
-
-            return data;
         }
     }
 }

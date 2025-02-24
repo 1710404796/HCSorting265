@@ -134,7 +134,7 @@ namespace HBYWCZP2024.Service
 
             _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
         }
-        public async Task<T2> SendAsync<T1, T2>(T1 req) where T1 : IECSContent where T2 : IECSContentRes, new()
+        public async Task<T2> SendAsync<T1, T2>(T1 req, int stationNum = 0) where T1 : IECSContent where T2 : IECSContentRes, new()
         {
             //if (_clientSocket.)
             //await Task.Yield();
@@ -163,11 +163,11 @@ namespace HBYWCZP2024.Service
             {
 
                 var wres = await Mediator.Send(new WcsDataWarningBoxCommand
-                    (Name + "工作站\n" + $"等待{typeof(T2).Name}消息，发生问题 Error:" + ex.Message + "\n点击ok重新发送此请求，点击cancel终止此任务！", Button: System.Windows.MessageBoxButton.OKCancel));
+                    (Name + "工作站\n" + $"站台号: {stationNum}" + $"等待{typeof(T2).Name}消息，发生问题 Error:" + ex.Message + "\n点击ok重新发送此请求，点击cancel终止此任务！", Button: System.Windows.MessageBoxButton.OKCancel));
                 //throw;
                 if (wres == System.Windows.MessageBoxResult.OK)
                 {
-                    return await SendAsync<T1, T2>(req);
+                    return await SendAsync<T1, T2>(req, stationNum);
                 }
                 else
                 {

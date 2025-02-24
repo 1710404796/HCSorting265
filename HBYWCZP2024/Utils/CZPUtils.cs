@@ -16,7 +16,7 @@ namespace HBYWCZP2024.Utils
 {
     public static class CZPUtils
     {
-        public static BatteryLevel GetLevelFromMes(string level) => level switch
+        public static BatteryLevel GetLevelFromMes(string level) => level.ToUpper() switch
         {
             "OK" => BatteryLevel.OK,
             "NG" => BatteryLevel.NG,
@@ -30,7 +30,7 @@ namespace HBYWCZP2024.Utils
             "F" => BatteryLevel.F,
             "FC" => BatteryLevel.REWORK,
             "Fake" => BatteryLevel.Fake,
-            "MARK" => BatteryLevel.OK,
+            "MARK" => BatteryLevel.Mark,
             "V" => BatteryLevel.V,
             _ => BatteryLevel.EMPTY,
         };
@@ -39,6 +39,7 @@ namespace HBYWCZP2024.Utils
         {
             BatteryLevel.OK => 1,
             BatteryLevel.NG => 2,
+            //BatteryLevel.NG => 16,
             BatteryLevel.Fake => 11,
             BatteryLevel.None => 5,
             BatteryLevel.REWORK => 4,
@@ -52,6 +53,8 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
             BatteryLevel.F => 12,
+            BatteryLevel.Mark => 3, // 筛选4
+            //BatteryLevel.Mark => 1, // 其余筛选
             _ => (byte)level,
         };
 

@@ -44,7 +44,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (pallet.Type == Models.CZPallet.PalletType.拆盘)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
                 if (data == null)
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
@@ -98,7 +98,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
                 if (data == null)
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));

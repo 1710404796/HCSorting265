@@ -50,7 +50,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             if (request.Start)
             {
                 // 拆组盘开始 作业开始
-                var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType });
+                var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
 
                 if (data == null)
                 {
@@ -90,7 +90,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         .Select(x => isCodeRuleNG(x.Code) ? "" : x.Code)
                         //.Select(x => x.Code)
                         .ToList()
-                    });
+                    }, pallet.OutsideStationNum);
 
                     if (data == null)
                     {
@@ -157,7 +157,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         OutSideStationNum = pallet.OutsideStationNum.ToString(),
                         PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
                         //PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
-                    });
+                    }, pallet.OutsideStationNum);
                     if (e106 == null)
                     {
                         await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));

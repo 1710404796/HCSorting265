@@ -74,7 +74,7 @@ namespace HBYWCZP2024.ViewModel
         {
             lock (context)
             {
-                _logs = context.PalletLogs.AsNoTracking().Where(s => s.PalletType == PalletType.拆盘).OrderByDescending(s => s.Id);
+                _logs = context.PalletLogs.AsNoTracking().Where(s => s.PalletType == PalletType.拆盘 || s.PalletType == PalletType.筛选).OrderByDescending(s => s.Id);
 
             }
             var afterFilter = _logs.Where(s => s.ZuPanTime >= StartTime && s.ZuPanTime <= EndTime);

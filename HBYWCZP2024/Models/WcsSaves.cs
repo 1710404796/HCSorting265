@@ -185,6 +185,11 @@ namespace HBYWCZP2024.Models
         public bool UploadMesDataEnable { get; set; }
         public bool HighTempEnable { get;  set; }
         public bool HCInStationEnable { get; set; }
+        /// <summary>
+        /// 分选挡位查询接口
+        /// </summary>
+        public bool FXQueryEnable { get; set; }
+
     }
 
     public class StageMono

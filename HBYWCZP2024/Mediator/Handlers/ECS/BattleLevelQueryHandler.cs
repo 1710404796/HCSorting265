@@ -45,6 +45,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }).ToArray()
             };
 
+
+
             var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
 
             var channels = checkMaterialResponse.Match(

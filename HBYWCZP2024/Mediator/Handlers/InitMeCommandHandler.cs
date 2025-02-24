@@ -109,6 +109,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
 
                 se.RegisterTask<CheckLadaiTask>();
+                se.RegisterTask<CheckLadaiTask2>();
                 se.RegisterTask<ApplyBatteryInfoTask>();
                 se.RegisterTask<ChaiPanCompletedTask>();
                 se.RegisterTask<InstallationCompletedTask>();

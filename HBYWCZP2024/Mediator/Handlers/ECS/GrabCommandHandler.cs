@@ -123,6 +123,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                             identification = s
                                         }).Result;
                                     });
+
+                        //bool CheckAll()
+
                         if (!rss.All(s => s.IsSuccess))
                         {
                             var message = string.Join("\n",

@@ -183,10 +183,14 @@
                 <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能(MES)</CheckBox>
-
-                <CheckBox 
+                    <CheckBox 
+     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FXQueryEnable}"
+     >分选入料校验(MES,分选)</CheckBox>
+                    <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckPalletMaterialEnable}"
                     >托盘电芯等级获取接口使能(MES,筛选)</CheckBox>
+    
+    
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionInsertEnable}"
 >组盘开始接口使能</CheckBox>

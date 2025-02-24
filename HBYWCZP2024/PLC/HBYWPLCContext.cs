@@ -40,7 +40,7 @@ namespace HBYWCZP2024.PLC
         public DB11 DB11 { get; set; } = new();
         public IMediator Mediator { get; } = mediator;
         public ILogger<HBYWPLCContext> Logger { get; } = logger;
-        public Dictionary<string, string> OpcTable => MainStorage.Saves.OpcTable;
+        public Dictionary<string, string> OpcTable => MainStorage.Saves.KeysSave[Name].OpcTable;
 
         public ITaskCodeDelectDB GetCodeDelectDB(int idx) => idx switch
         {
