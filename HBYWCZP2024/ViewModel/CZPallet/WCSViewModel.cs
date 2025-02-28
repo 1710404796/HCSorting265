@@ -26,14 +26,20 @@ namespace HBYWCZP2024.ViewModel.CZPallet
         public string SelectName { get; set; } = "(全部)";
 
         public WcsLog SelectLog { get; set; }
-        public string[] Apinames { get; } = ["(全部)", "getCellModelAsync",
-        "getCellGradeAsync",
-        "getShopNameAsync",
-        "UpMESCartonDataAsync",
-        "UpMESBoxtDataAsync",
-        "getIDCardCheckAsync",
-        "CheckCartonDataAsync",
-        "CheckMESBoxtDataAsync",
+        public string[] Apinames { get; } = ["(全部)", 
+        //"getCellModelAsync",
+        //"getCellGradeAsync",
+        //"getShopNameAsync",
+        //"UpMESCartonDataAsync",
+        //"UpMESBoxtDataAsync",
+        //"getIDCardCheckAsync",
+        //"CheckCartonDataAsync",
+        //"CheckMESBoxtDataAsync",
+            "pre/sorting/query",
+            "equipment/assembly/logistics/line",
+            "assemble/dismantle/info/group/disk/iface",
+            "formation/section/arrival",
+            "in/station/process/currency",
     ];
 
         public void AddLog(WcsLog log)

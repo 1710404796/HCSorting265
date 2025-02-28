@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HBYWCZP2024"
         mc:Ignorable="d"
       xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
-      
+      WindowStartupLocation="CenterScreen"
        Closed="Window_Closed" 
         d:DataContext="{d:DesignInstance Type=local:MainWindow}"
       xmlns:view="clr-namespace:HBYWCZP2024.View"

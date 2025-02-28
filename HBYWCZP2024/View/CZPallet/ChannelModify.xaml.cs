@@ -25,7 +25,7 @@ namespace HBYWCZP2024.View.CZPallet
 
             InitializeComponent();
         }
-        public int Tid => StageChannel.Location + 1;
+        public int Tid => id + 1;
         public StationChannel StageChannel { get; }
         public XYLStation DiaoDuStage { get; }
 

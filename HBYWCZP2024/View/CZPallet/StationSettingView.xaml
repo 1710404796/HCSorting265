@@ -8,7 +8,8 @@
          xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
                 xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="DiaosuStage" Height="760" Width="1050"
+        WindowStartupLocation="CenterScreen"
+        Title="DiaosuStage" Height="760" Width="1250"
         
         >
     <Grid>

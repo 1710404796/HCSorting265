@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HBYWCZP2024.View.CZPallet"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
          xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
  
