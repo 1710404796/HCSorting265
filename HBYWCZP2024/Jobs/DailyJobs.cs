@@ -31,4 +31,18 @@ namespace HBYWCZP2024.Jobs
             return Task.CompletedTask;
         }
     }
+
+    class SaveJobs() : IJob
+    {
+        /// <summary>
+        /// 每日执行任务
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public Task Execute(IJobExecutionContext context)
+        {
+            MainStorage.SaveManager.Save();
+            return Task.CompletedTask;
+        }
+    }
 }

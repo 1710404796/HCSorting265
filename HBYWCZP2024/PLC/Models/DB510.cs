@@ -20,8 +20,10 @@ namespace HBYWCZP2024.PLC.Models
 
         [OPCMember("channelState")]
         public bool[] ChannelStates { get; set; } = new bool[16];
+        //public bool[] ChannelStates { get; set; } = new bool[20];
 
         [OPCMember("batteryCode")]
         public string[] BatteryCodes { get; set; } = new string[16];
+        //public string[] BatteryCodes { get; set; } = new string[20];
     }
 }

@@ -88,6 +88,12 @@ namespace HBYWCZP2024
                              {
                                  trigger.ForJob(jobKey).WithCronSchedule("10 0 0 * * ?");
                              });
+                             JobKey jobKey1 = JobKey.Create(nameof(SaveJobs));
+
+                             config.AddJob<SaveJobs>(jobKey1).AddTrigger(trigger =>
+                             {
+                                 trigger.ForJob(jobKey1).WithCronSchedule("0 */5 * * * ?");
+                             });
                          });
                          services.AddQuartzHostedService(config =>
                          {
