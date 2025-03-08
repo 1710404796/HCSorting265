@@ -109,7 +109,12 @@ namespace HBYWCZP2024
         private async Task Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var mediator = App.GetService<IMediator>();
-
+            var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
+            if (cc == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
             if (await mediator.Send(new CheckPowerQuery(PowerEnum.关闭软件)))
             {
                 e.Cancel = false;
@@ -187,14 +192,14 @@ namespace HBYWCZP2024
             if (!res) return;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
-            if (cc == MessageBoxResult.Cancel)
-            {
-                e.Cancel = true;
-            }
-        }
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
+        //    if (cc == MessageBoxResult.Cancel)
+        //    {
+        //        e.Cancel = true;
+        //    }
+        //}
 
     }
 }

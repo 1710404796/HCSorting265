@@ -12,8 +12,7 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindow}"
       xmlns:view="clr-namespace:HBYWCZP2024.View"
         xmlns:ui="http://schemas.modernwpf.com/2019"
-        Closing="Window_Closing"
-        ui:WindowHelper.UseModernWindowStyle="True"
+        ui:WindowHelper.UseModersnWindowStyle="True"
         
         
         Title="MainWindow" Height="800" Width="1440">
