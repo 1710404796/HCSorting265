@@ -53,8 +53,8 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
             BatteryLevel.F => 12,
-            BatteryLevel.Mark => 3, // 筛选4
-            //BatteryLevel.Mark => 1, // 其余筛选
+            //BatteryLevel.Mark => 3, // 筛选4
+            BatteryLevel.Mark => 1, // 其余筛选
             _ => (byte)level,
         };
 

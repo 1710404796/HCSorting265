@@ -110,6 +110,7 @@ namespace HBYWCZP2024.Mediator.Handlers
 
                 se.RegisterTask<CheckLadaiTask>();
                 se.RegisterTask<CheckLadaiTask2>();
+                se.RegisterTask<CheckLadaiTask3>();
                 se.RegisterTask<ApplyBatteryInfoTask>();
                 se.RegisterTask<ChaiPanCompletedTask>();
                 se.RegisterTask<InstallationCompletedTask>();

@@ -187,6 +187,14 @@ namespace HBYWCZP2024
             if (!res) return;
         }
 
-   
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
+            if (cc == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+
     }
 }
