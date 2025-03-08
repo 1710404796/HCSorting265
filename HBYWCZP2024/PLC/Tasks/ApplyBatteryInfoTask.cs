@@ -81,7 +81,7 @@ namespace HBYWCZP2024.PLC.Tasks
         protected override Task<bool> CleanData()
         {
             var pallet = CZPUtils.GetPalletByInsideNum(Context.Name, grabStation);
-
+            if (pallet == null) return base.CleanData();
             //Context.Plc.Write("DB501.DBW4", 0);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 501, 10, Enumerable.Repeat((byte)0, 256).ToArray());
             //Context.Plc.WriteNode("WCS_to_JXS.Data.to_grabStation".GetOPCAddress(), 0);

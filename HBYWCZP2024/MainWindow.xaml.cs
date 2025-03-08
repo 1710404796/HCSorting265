@@ -170,5 +170,14 @@ namespace HBYWCZP2024
             await mediator1.Send(new InformationBoxCommand("托盘离开: " + res));
             if (!res) return;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
+            if (cc == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
