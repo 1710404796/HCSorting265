@@ -106,6 +106,22 @@ namespace HBYWCZP2024
             ViewModel.CacheService.Cancel();
             MainStorage.SaveManager.Save();
         }
+        private async Task Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var mediator = App.GetService<IMediator>();
+
+            if (await mediator.Send(new CheckPowerQuery(PowerEnum.关闭软件)))
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                e.Cancel = true;
+                MessageBox.Show("您当前没有权限关闭软件");
+            }
+        }
+
+
 
         private void GongWeiBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -179,5 +195,6 @@ namespace HBYWCZP2024
                 e.Cancel = true;
             }
         }
+
     }
 }
