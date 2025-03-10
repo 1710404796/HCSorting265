@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -29,10 +30,12 @@ namespace HBYWCZP2024
         {
             get; set;
         }
+        public readonly IMediator mediator;
         public MainWindow()
         {
             MainStorage.SaveManager.Load();
             DataContext = this;
+            mediator=App.GetService<IMediator>();
             ViewModel = App.GetService<MainViewModel>();
             InitializeComponent();
         }
@@ -101,14 +104,14 @@ namespace HBYWCZP2024
             NageTo<UserManagerView>();
 
         }
-        private void Window_Closed(object sender, EventArgs e)
+        private async void Window_Closed(object sender, EventArgs e)
         {
             ViewModel.CacheService.Cancel();
             MainStorage.SaveManager.Save();
+            await mediator.Send(new OperatorLogCommand("关闭了软件"));
         }
-        private async Task Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var mediator = App.GetService<IMediator>();
             var cc = MessageBox.Show("确定要关闭吗", "关闭确认", MessageBoxButton.OKCancel);
             if (cc == MessageBoxResult.Cancel)
             {

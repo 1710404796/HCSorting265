@@ -121,15 +121,16 @@ namespace HBYWCZP2024.View.CZPallet
                 //ScanAgain.IsEnabled = true;
 
             }
+            await meditor.Send(new OperatorLogCommand("进行了重新扫码"));
         }
 
-        private void Clear_Click(object sender, RoutedEventArgs e)
+        private async void Clear_Click(object sender, RoutedEventArgs e)
         {
             var res = MessageBox.Show($"确认要清除此{Station.Name}记忆吗？", " 写入确认", MessageBoxButton.OKCancel);
             if (res != MessageBoxResult.OK) return;
 
             //App.GetService<ILogger<MainViewModel>>().LogInformation($"清除了{ViewModel.PalletViewModel.Pallet.Name}记忆");
-
+            await meditor.Send(new OperatorLogCommand($"清除{Station.Name}所有数据"));
             Station.ClearStage();
         }
 

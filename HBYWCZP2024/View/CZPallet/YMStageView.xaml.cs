@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using HBYWCZP2024.Mediator.Commands;
+using MediatR;
 
 namespace HBYWCZP2024.View.CZPallet
 {
@@ -14,9 +16,10 @@ namespace HBYWCZP2024.View.CZPallet
     [PowerView(PowerEnum.工位状态)]
     public partial class YWStageView : UserControl
     {
-
+        public readonly IMediator mediator;
         public YWStageView()
         {
+            mediator = App.GetService<IMediator>();
             DataContext = this;
             //ViewModel = App.GetService<YWStageViewModel>();
             InitializeComponent();
@@ -102,7 +105,7 @@ namespace HBYWCZP2024.View.CZPallet
 
         }
 
-        private void ClearAll_Click(object sender, RoutedEventArgs e)
+        private async void ClearAll_Click(object sender, RoutedEventArgs e)
         {
             var res = MessageBox.Show(Properties.Resources.DeleteConfirmation, "", MessageBoxButton.YesNo);
             if (res == MessageBoxResult.Yes)
@@ -112,6 +115,7 @@ namespace HBYWCZP2024.View.CZPallet
                     item.ClearStage();
                 }
             }
+            await mediator.Send(new OperatorLogCommand("清除了当前工位的所有数据"));
         }
     }
 }
