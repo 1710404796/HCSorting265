@@ -142,7 +142,7 @@ namespace HBYWCZP2024.View.CZPallet
 
         }
 
-        private void Force_Click(object sender, RoutedEventArgs e)
+        private async void Force_Click(object sender, RoutedEventArgs e)
         {
             var res = MessageBox.Show("确认要强制写入条码吗？", " 写入确认", MessageBoxButton.OKCancel);
             if (res != MessageBoxResult.OK) return;
@@ -151,6 +151,7 @@ namespace HBYWCZP2024.View.CZPallet
             {
                 //YWUtils.plcVM.FMSPLC.WritePalletCheckForce(pall.PalletId, pall.Palletcode);
             }
+            await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{pall.PalletCode}成功"));
         }
 
         //private void BanSaoma_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,6 @@
-﻿using HBYWCZP2024.Models;
+﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Models;
+using MediatR;
 using System.Windows;
 
 
@@ -11,6 +13,7 @@ namespace HBYWCZP2024.View.CZPallet
     {
         private readonly int id;
 
+        public readonly IMediator mediator;
         public string Title { get; set; } = "修改通道信息";
 
         /// <summary>
@@ -22,7 +25,7 @@ namespace HBYWCZP2024.View.CZPallet
             DiaoDuStage = diaoDuStage;
             this.id = id;
             StageChannel = diaoDuStage.Channels[id];
-
+            mediator=App.GetService<IMediator>();
             InitializeComponent();
         }
         public int Tid => id + 1;
@@ -43,10 +46,17 @@ namespace HBYWCZP2024.View.CZPallet
         /// <param name="e"></param>
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            string OldBarCode = StageChannel.Code;
+            if (string.IsNullOrEmpty(OldBarCode))
+            {
+                OldBarCode ="（原电芯条码为空）";
+            }
+
             // 强制修改条码限制取消
             if (await DiaoDuStage.UpdateBattery(id, CodeBox.Text, true))
             {
                 MessageBox.Show("修改成功!");
+                await mediator.Send(new OperatorLogCommand($"原电芯条码{OldBarCode}被修改为{CodeBox.Text}")); 
                 Close();
             }
             else
