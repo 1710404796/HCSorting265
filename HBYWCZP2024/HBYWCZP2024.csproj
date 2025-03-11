@@ -7,16 +7,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	  <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+	  <ApplicationIcon>EVE.ico</ApplicationIcon>
 
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\beier.png" />
     <None Remove="Images\linx.png" />
+    <None Remove="Images\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include=".template.config\template.json" />
+    <Content Include="EVE.ico" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
@@ -63,6 +66,7 @@
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
 	  <Resource Include="Images\linx.png" />
+	  <Resource Include="Images\logo.png" />
 	</ItemGroup>
 
 	<ItemGroup>
