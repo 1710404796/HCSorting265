@@ -106,7 +106,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
                 var ecs = hBECSService.Create(stage.Key);
                 var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
-                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "one111", stage.Value.PLCPSetting.IP), cancellationToken);
+                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
 
                 se.RegisterTask<CheckLadaiTask>();
                 se.RegisterTask<CheckLadaiTask2>();
