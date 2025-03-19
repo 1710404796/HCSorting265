@@ -135,6 +135,11 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     {
         return SendRequest<HCInStationResponse>("in/station/process/currency", request);
     }
+
+    public Task<Result<FxCheckResponse>> FxCheckAsync(FxCheckRequest request)
+    {
+        return SendRequest<FxCheckResponse>("eve/pm/eqm/auto/grading", request);
+    }
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
         LinxContext linxContext = App.GetService<LinxContext>();

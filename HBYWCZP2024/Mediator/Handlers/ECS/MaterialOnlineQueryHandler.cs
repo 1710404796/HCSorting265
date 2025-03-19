@@ -74,35 +74,46 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.FXQueryEnable)
             {
-                CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
+                FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
                 {
-                    ContainerCode = "",
-                    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
-                    {
-                        Location = x.ChannelId.ToString(),
-                        Identification = x.BattleWithLevel.Match(
-                            Some: battleWithLevel => battleWithLevel.Code,
-                            None: string.Empty
-                        ),
-
-                    })
-                    .Filter(s => !isNG(s.Identification))
-                    .ToArray()
+                    MateriallotCodeList = 
+                        request.Channels
+                        .Map(s => s.BattleWithLevel)
+                        .Choose(s => s)
+                        .Map(s => s.Code)
+                        .ToArray()
                 };
 
-                async Task<Map<string, BatteryLevel>> getCodeMap(CheckPalletMaterialRequest request)
+
+                //CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
+                //{
+                //    ContainerCode = "",
+                //    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
+                //    {
+                //        Location = x.ChannelId.ToString(),
+                //        Identification = x.BattleWithLevel.Match(
+                //            Some: battleWithLevel => battleWithLevel.Code,
+                //            None: string.Empty
+                //        ),
+
+                //    })
+                //    .Filter(s => !isNG(s.Identification))
+                //    .ToArray()
+                //};
+
+                async Task<Map<string, BatteryLevel>> getCodeMap(FxCheckRequest request)
                 {
-                    if (request.ContainerCellInfos.Length <= 0)
+                    if (request.MateriallotCodeList.Length <= 0)
                     {
                         return new Map<string, BatteryLevel>();
                     }
-                    var checkMaterialResponse = await service.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
+                    var checkMaterialResponse = await service.MesService.FxCheckAsync(fxCheckRequest);
 
                     var cmap = checkMaterialResponse.Match(
                         Succ: r => {
                             var channels = r.Rows.Select(x =>
               
-                                    (x.Identification, CZPUtils.GetLevelFromMes(x.Grade))
+                                    (x.identification, CZPUtils.GetLevelFromMes(x.rank))
                                
                             );
                             return channels;
@@ -114,11 +125,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         }
 
 
-                        ).DistinctBy(s => s.Identification).ToMap();
+                        ).DistinctBy(s => s.identification).ToMap();
                     return cmap;
                 }
                 
-                var codeMap = await getCodeMap(checkMaterialRequest);
+                var codeMap = await getCodeMap(fxCheckRequest);
 
                 var data = request.Channels.Map(c =>
                     c with
