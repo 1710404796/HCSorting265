@@ -586,4 +586,7 @@
   <data name="SaveAndReset" xml:space="preserve">
     <value>保存并重置</value>
   </data>
+  <data name="UserManagementInterface" xml:space="preserve">
+    <value>用户管理界面</value>
+  </data>
 </root>

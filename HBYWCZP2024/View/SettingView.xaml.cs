@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.View.User;
@@ -62,9 +63,19 @@ namespace HBYWCZP2024.View
             new PLCListWindow().ShowDialog();
         }
 
-        private void SetPower_Click(object sender, RoutedEventArgs e)
+        private async void SetPower_Click(object sender, RoutedEventArgs e)
         {
-            new PowerSettingWindows().ShowDialog(); 
+            var mediator=App.GetService<IMediator>();
+            var checkPowerQuery=new CheckPowerQuery(PowerEnum.权限配置);
+            bool result=await mediator.Send(checkPowerQuery);
+            if (result)
+            {
+                App.GetService<PowerSettingWindows>().ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("当前没有此权限");   
+            }
         }
 
         private void StationSetting_Click(object sender, RoutedEventArgs e)

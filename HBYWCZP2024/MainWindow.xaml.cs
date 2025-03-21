@@ -4,10 +4,12 @@ using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View;
 using HBYWCZP2024.View.CZPallet;
+using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
 using MediatR;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -93,16 +95,43 @@ namespace HBYWCZP2024
             NageTo<LogDashBoardView>();
         }
 
-        private void Setting_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 程序参数设定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Setting_Click(object sender, RoutedEventArgs e)
         {
-            NageTo<SettingView>();
+            var mediator = App.GetService<IMediator>();
+            var checkPowerQuery = new CheckPowerQuery(PowerEnum.程序参数设定);
+            bool result = await mediator.Send(checkPowerQuery);
+            if (result)
+            {
+                NageTo<SettingView>();
+            }
+            else
+            {
+                MessageBox.Show("当前没有此权限");
+            }
 
         }
-
-        private void PowerManager_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 权限管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void PowerManager_Click(object sender, RoutedEventArgs e)
         {
-            NageTo<UserManagerView>();
-
+            var mediator = App.GetService<IMediator>();
+            var checkPowerQuery = new CheckPowerQuery(PowerEnum.用户管理界面);
+            bool result = await mediator.Send(checkPowerQuery);
+            if (result)
+            {
+                NageTo<UserManagerView>();
+            }
+            else {
+                MessageBox.Show("当前没有此权限");
+            }
         }
         private async void Window_Closed(object sender, EventArgs e)
         {

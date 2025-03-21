@@ -29,6 +29,7 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using HBYWCZP2024.View.User;
 
 
 namespace HBYWCZP2024
@@ -139,7 +140,7 @@ namespace HBYWCZP2024
                          services.AddSingleton<PalletLogViewModel>();
                          services.AddSingleton<CacheService>();
 
-
+                         services.AddTransient<PowerSettingWindows>();
 
                          services.AddTransient<StationSettingView>();
                          services.AddTransient<PalletRuleEditView>();
