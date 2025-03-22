@@ -100,33 +100,18 @@ namespace HBYWCZP2024
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Setting_Click(object sender, RoutedEventArgs e)
+        private void Setting_Click(object sender, RoutedEventArgs e) 
         {
-            var mediator = App.GetService<IMediator>();
-            if (await mediator.Send(new CheckPowerQuery(PowerEnum.程序参数设定)))
-            {
-                NageTo<SettingView>();
-            }
-            else {
-                MessageBox.Show("当前没有权限访问此页面");
-            }
+            NageTo<SettingView>();
         }
         /// <summary>
         /// 权限管理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void PowerManager_Click(object sender, RoutedEventArgs e)
+        private void PowerManager_Click(object sender, RoutedEventArgs e)
         {
-            var mediator = App.GetService<IMediator>();
-
-            if (await mediator.Send(new CheckPowerQuery(PowerEnum.用户管理界面)))
-            {
-                NageTo<UserManagerView>();
-            }
-            else {
-                MessageBox.Show("当前没有权限访问此页面");
-            }
+            NageTo<UserManagerView>();
         }
         private async void Window_Closed(object sender, EventArgs e)
         {

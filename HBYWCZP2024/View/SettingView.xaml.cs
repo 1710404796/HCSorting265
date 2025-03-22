@@ -25,6 +25,7 @@ namespace HBYWCZP2024.View
     /// <summary>
     /// SettingView.xaml 的交互逻辑
     /// </summary>
+    [PowerView(PowerEnum.程序参数设定)]
     public partial class SettingView : Page
     {
 
@@ -60,7 +61,7 @@ namespace HBYWCZP2024.View
 
         private void SetPlc_Click(object sender, RoutedEventArgs e)
         {
-            new PLCListWindow().ShowDialog();
+                new PLCListWindow().ShowDialog();
         }
 
         private async void SetPower_Click(object sender, RoutedEventArgs e)
@@ -116,10 +117,26 @@ namespace HBYWCZP2024.View
             MainStorage.SaveManager.Save();
             MainWindow.NageTo<SettingView>();
         }
-
-        private void ResetTable_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 重置OPCUA缓存表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void ResetTable_ClickAsync(object sender, RoutedEventArgs e)
         {
-            MainStorage.Saves.ResetTable = true;
+            var mediator = App.GetService<IMediator>();
+            var checkPowerQuery = new CheckPowerQuery(PowerEnum.重新匹配PLC节点);
+            bool result = await mediator.Send(checkPowerQuery);
+            if (result)
+            {
+                MainStorage.Saves.ResetTable = true;
+                MessageBox.Show("重新匹配成功");
+            }
+            else
+            {
+                MessageBox.Show("当前没有此权限");
+            }
+            
         }
     }
 }
