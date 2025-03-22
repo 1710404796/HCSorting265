@@ -44,7 +44,7 @@ namespace HBYWCZP2024.Utils
                 PowerEnum.组盘日志 => Properties.Resources.AssemblyLog,
                 PowerEnum.调度号工位表 => Properties.Resources.DispatchNumberAndWorkstationNumberTable,
                 PowerEnum.条码规则表 => Properties.Resources.BarcodeRulesTable,
-                PowerEnum.权限配置 => Properties.Resources.AccessControl,
+                PowerEnum.权限管理 => Properties.Resources.AccessControl,
                 PowerEnum.程序参数设定 => Properties.Resources.ParameterSettings,
                 PowerEnum.交互日志 => Properties.Resources.InteractionLog,
 

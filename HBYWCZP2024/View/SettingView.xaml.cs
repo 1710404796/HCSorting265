@@ -66,7 +66,7 @@ namespace HBYWCZP2024.View
         private async void SetPower_Click(object sender, RoutedEventArgs e)
         {
             var mediator=App.GetService<IMediator>();
-            var checkPowerQuery=new CheckPowerQuery(PowerEnum.权限配置);
+            var checkPowerQuery=new CheckPowerQuery(PowerEnum.权限管理);
             bool result=await mediator.Send(checkPowerQuery);
             if (result)
             {
