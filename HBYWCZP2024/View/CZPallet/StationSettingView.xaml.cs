@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models.CZPallet;
+﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// DiaosuStage.xaml 的交互逻辑 用于配置工位号对饮关系
     /// </summary>
+    [PowerView(PowerEnum.调度号工位表)]
     public partial class StationSettingView : Window
     {
         private const int lent = 14;
