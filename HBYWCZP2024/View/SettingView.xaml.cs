@@ -122,7 +122,7 @@ namespace HBYWCZP2024.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void ResetTable_ClickAsync(object sender, RoutedEventArgs e)
+        private async void ResetTable_Click(object sender, RoutedEventArgs e)
         {
             var mediator = App.GetService<IMediator>();
             var checkPowerQuery = new CheckPowerQuery(PowerEnum.重新匹配PLC节点);

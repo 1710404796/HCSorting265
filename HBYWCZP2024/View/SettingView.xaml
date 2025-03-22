@@ -245,7 +245,7 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
         Click="RuleSetting_Click">配置</Button>
 
                 <Button Margin="0,10,0,0" x:Name="ResetTable" 
-Click="ResetTable_ClickAsync">重置OPCUA缓存表</Button>
+Click="ResetTable_Click">重置OPCUA缓存表</Button>
                 <TextBlock
 Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
 Margin="0,10,0,0" FontSize="15" 
