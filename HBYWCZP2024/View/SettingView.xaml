@@ -88,6 +88,19 @@
     Text="{Binding ViewModel.Saves.DeviceCode, Mode=TwoWay}"
 ></TextBox>
 
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    Mark下发等级
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    Text="{Binding ViewModel.Saves.MarkCode, Mode=TwoWay}"
+></TextBox>
+
                 <Button 
                 IsEnabled="{Binding ViewModel.CanEditing}"
                 
@@ -186,6 +199,9 @@
                     <CheckBox 
      IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FXQueryEnable}"
      >分选入料校验(MES,分选)</CheckBox>
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HHFilterQueryEnable}"
+>后氦Mark校验(MES,后氦)</CheckBox>
                     <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckPalletMaterialEnable}"
                     >托盘电芯等级获取接口使能(MES,筛选)</CheckBox>

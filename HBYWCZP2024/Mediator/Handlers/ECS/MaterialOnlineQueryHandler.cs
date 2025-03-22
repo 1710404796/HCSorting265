@@ -154,10 +154,58 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else
             {
+                CheckPalletMaterialRequest checkMaterialRequest = new (request.Key)
+                {
+                    ContainerCode = "",
+                    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
+                    {
+                        Location = x.ChannelId.ToString(),
+                        Identification = x.BattleWithLevel.Match(
+                            Some: battleWithLevel => battleWithLevel.Code,
+                            None: string.Empty
+                        ),
+
+                    })
+                    .Filter(s => !isNG(s.Identification))
+                    .ToArray()
+                };
+                //var res = await service.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
+
+                async Task<string[]> GetMarkBatterys(CheckPalletMaterialRequest request1)
+                {
+                    if (
+                !MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HHFilterQueryEnable
+                        )
+                    {
+                        return [];
+                    }
+                        if (request1.ContainerCellInfos.Length <= 0)
+                    {
+                        return [];
+                    }
+                    var res = await service.MesService.CheckPalletMaterialLevel(request1);
+
+                    return res.Match(
+                        Succ: s => s.Rows.Filter(s => CZPUtils.GetLevelFromMes(s.Grade) ==  BatteryLevel.Mark).Map(s => s.Identification),
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        }
+                    ).ToArray();
+
+                }
+
+                var markBatterys = await GetMarkBatterys(checkMaterialRequest);
+
+
 
                 var mRequest = new MaterialOnlineRequest(request.Key)
                 {
                     batteryTrayBindVOList = [.. request.Channels
+                    .Filter(s =>
+                        s.BattleWithLevel.Match(s => !markBatterys.Contains(s.Code), () => false)
+                        )
                     .Filter(s =>
                         s.BattleWithLevel
                         .Map(s => !isNG(s.Code))
@@ -227,6 +275,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         b.Code,
                         b.Code switch
                         {
+                            var x when markBatterys.Contains(x) => BatteryLevel.Mark,
                             var x when isNG(x) => BatteryLevel.NG,
                             _ => codeMap[b.Code]
                         }

@@ -156,6 +156,8 @@ namespace HBYWCZP2024.Models
             set => KeysSave[SelectStageName].ResetTable = value;
         }
         public int HeartbeartDuring { get; set; } = 5000;
+        public byte MarkCode { get; set; } = 1;
+        public byte NgCode { get; set; } = 1;
     }
 
     public class ApiEnable
@@ -189,7 +191,7 @@ namespace HBYWCZP2024.Models
         /// 分选挡位查询接口
         /// </summary>
         public bool FXQueryEnable { get; set; }
-
+        public bool HHFilterQueryEnable { get; set; }
     }
 
     public class StageMono
