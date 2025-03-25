@@ -100,6 +100,18 @@
     HorizontalAlignment="Left"
     Text="{Binding ViewModel.Saves.MarkCode, Mode=TwoWay}"
 ></TextBox>
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    NG下发等级
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    Text="{Binding ViewModel.Saves.NgCode, Mode=TwoWay}"
+></TextBox>
 
                 <Button 
                 IsEnabled="{Binding ViewModel.CanEditing}"
@@ -198,7 +210,10 @@
                     >入料校验接口使能(MES)</CheckBox>
                     <CheckBox 
      IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FXQueryEnable}"
-     >分选入料校验(MES,分选)</CheckBox>
+     >分选入料校验(MES,I区分选)</CheckBox>
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionFXQueryEnable}"
+>分选入料校验(MES,G区分选)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HHFilterQueryEnable}"
 >后氦Mark校验(MES,后氦)</CheckBox>

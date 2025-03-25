@@ -114,7 +114,7 @@ namespace HBYWCZP2024.PLC
             if (!Plc.Connected) return false;
             var flag = true;
             // Todo: 要加名字参数
-            string[] a = ["WCS_JXS.Data", "WCS_to_JXS.Data", "PLC_TO_WCS_ScanTheCode.PLC", "WCS_TO_PLC_ScanTheCode.WCS", "PLC_TO_WCS_Tray", "WCS_TO_PLC_Tray"];
+            string[] a = ["WCS_JXS.Data", "WCS_to_JXS.Data", "PLC_TO_WCS_ScanTh eCode.PLC", "WCS_TO_PLC_ScanTheCode.WCS", "PLC_TO_WCS_Tray", "WCS_TO_PLC_Tray"];
 
 
 

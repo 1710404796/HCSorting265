@@ -191,7 +191,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         else
         {
             var err = data1.Match(Succ: s => "", Fail: f => f.Message);
-            var wres = await mediator.Send(new WcsDataWarningBoxCommand
+            var wres = await mediator.Send(new WarningBoxCommand
                     (Name + "工作站\n" + $"MES返回错误信息，发生问题 Error:" + err + "\n点击ok重新发送此请求，点击cancel终止此任务！",
                     Button: System.Windows.MessageBoxButton.OKCancel));
             if (wres == System.Windows.MessageBoxResult.OK)

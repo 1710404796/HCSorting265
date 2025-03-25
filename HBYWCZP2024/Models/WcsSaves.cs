@@ -157,7 +157,7 @@ namespace HBYWCZP2024.Models
         }
         public int HeartbeartDuring { get; set; } = 5000;
         public byte MarkCode { get; set; } = 1;
-        public byte NgCode { get; set; } = 1;
+        public byte NgCode { get; set; } = 2;
     }
 
     public class ApiEnable
@@ -191,6 +191,7 @@ namespace HBYWCZP2024.Models
         /// 分选挡位查询接口
         /// </summary>
         public bool FXQueryEnable { get; set; }
+        public bool GRegionFXQueryEnable { get; set; }
         public bool HHFilterQueryEnable { get; set; }
     }
 
