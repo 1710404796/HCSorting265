@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Data.Models;
+﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
@@ -24,6 +25,7 @@ namespace HBYWCZP2024.View
     /// <summary>
     /// UserManagerView.xaml 的交互逻辑
     /// </summary>
+    [PowerView(PowerEnum.用户管理界面)]
     public partial class UserManagerView : Page
     {
         private readonly UserManager<LinxUser> _userManager;

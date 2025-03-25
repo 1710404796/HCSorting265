@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Models.CZPallet;
+﻿using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Models.CZPallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// PalletRuleEditView.xaml 的交互逻辑
     /// </summary>
+    [PowerView(PowerEnum.条码规则表)]
     public partial class PalletRuleEditView : Window
     {
 

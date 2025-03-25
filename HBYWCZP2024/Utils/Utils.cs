@@ -37,7 +37,7 @@ namespace HBYWCZP2024.Utils
             {
                 PowerEnum.报警日志 => Properties.Resources.AlarmLog,
                 PowerEnum.WCS交互日志 => Properties.Resources.InteractionLog,
-                PowerEnum.用户管理界面 => Properties.Resources.AccessControl,
+                PowerEnum.用户管理界面 => Properties.Resources.UserManagementInterface,
 
                 PowerEnum.工位状态 => Properties.Resources.WorkstationStatus,
                 PowerEnum.电芯计数 => Properties.Resources.CellCount,

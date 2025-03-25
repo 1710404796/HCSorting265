@@ -249,6 +249,12 @@ namespace HBYWCZP2024.Properties {
             }
         }
         
+        public static string UserManagementInterface {
+            get {
+                return ResourceManager.GetString("UserManagementInterface",resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 条码规则表 的本地化字符串。
         /// </summary>

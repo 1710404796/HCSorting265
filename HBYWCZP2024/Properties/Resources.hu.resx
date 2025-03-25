@@ -582,4 +582,7 @@
   <data name="SaveAndReset" xml:space="preserve">
     <value>Mentés és alaphelyzetbe állítás</value>
   </data>
+  <data name="UserManagementInterface" xml:space="preserve">
+    <value>Felhasználókezelő felület</value>
+  </data>
 </root>

@@ -4,10 +4,12 @@ using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.View;
 using HBYWCZP2024.View.CZPallet;
+using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
 using MediatR;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -93,16 +95,23 @@ namespace HBYWCZP2024
             NageTo<LogDashBoardView>();
         }
 
-        private void Setting_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 程序参数设定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Setting_Click(object sender, RoutedEventArgs e) 
         {
             NageTo<SettingView>();
-
         }
-
+        /// <summary>
+        /// 权限管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PowerManager_Click(object sender, RoutedEventArgs e)
         {
             NageTo<UserManagerView>();
-
         }
         private async void Window_Closed(object sender, EventArgs e)
         {
