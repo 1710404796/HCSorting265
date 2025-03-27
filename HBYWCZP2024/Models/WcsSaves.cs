@@ -193,6 +193,7 @@ namespace HBYWCZP2024.Models
         public bool FXQueryEnable { get; set; }
         public bool GRegionFXQueryEnable { get; set; }
         public bool HHFilterQueryEnable { get; set; }
+        public bool TrayLevelUpdate { get; set; }
     }
 
     public class StageMono

@@ -34,11 +34,28 @@ namespace HBYWCZP2024.Utils
             "V" => BatteryLevel.V,
             _ => BatteryLevel.EMPTY,
         };
-
+        public static string GetMESLevel(BatteryLevel level) => level switch
+        {
+            BatteryLevel.OK =>  "OK",
+              BatteryLevel.NG     => "NG"   ,
+              BatteryLevel.A      => "A"    ,
+              BatteryLevel.Asub   => "A-"   ,
+              BatteryLevel.B      => "B"    ,
+              BatteryLevel.Bsub   => "B-"   ,
+              BatteryLevel.C      => "C"    ,
+              BatteryLevel.D      => "D"    ,
+              BatteryLevel.E      => "E"    ,
+              BatteryLevel.F      => "F"    ,
+              BatteryLevel.REWORK => "FC"   ,
+              BatteryLevel.Fake   => "Fake" ,
+            BatteryLevel.Mark => "MARK" ,
+            BatteryLevel.V =>  "V",
+            _ => "",
+        };
         public static byte GetPlcBatteryLevelCode(BatteryLevel level) => level switch
         {
             BatteryLevel.OK => 1,
-            BatteryLevel.NG => 2,
+            BatteryLevel.NG => MainStorage.Saves.NgCode,
             //BatteryLevel.NG => 16,
             BatteryLevel.Fake => 11,
             BatteryLevel.None => 5,
@@ -49,7 +66,7 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.Asub => 13,
             BatteryLevel.B => 14,
             BatteryLevel.Bsub => 15,
-            BatteryLevel.C => 9,
+            BatteryLevel.C => MainStorage.Saves.NgCode,
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
             BatteryLevel.F => 12,

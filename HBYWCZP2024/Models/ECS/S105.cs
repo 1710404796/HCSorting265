@@ -17,6 +17,7 @@ public class S105 : IECSContent
     /// 物料编码
     /// </summary>
     public string MaterialId { get; set; }
+    public string TrayLevel { get; set; }
     public List<string> BatteryBarcodes { get; set; }
     public string TrayNumber { get; set; }
     public int TrayPosition { get; set; }
@@ -25,7 +26,7 @@ public class S105 : IECSContent
     public string GetContent()
     {
         var barcodes = string.Join("", BatteryBarcodes.Select(b => b.PadRight(24)));
-        return $"{TrayPosition}{(int)TrayType}{MaterialId,-8}{TrayNumber,-20}{BatteryCount,-3}{barcodes}";
+        return $"{TrayPosition}{(int)TrayType}{MaterialId,-8}{TrayLevel,-20}{TrayNumber,-20}{BatteryCount,-3}{barcodes}";
     }
 
     public void Parse(string content)

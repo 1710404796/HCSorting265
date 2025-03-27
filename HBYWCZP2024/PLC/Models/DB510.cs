@@ -19,11 +19,11 @@ namespace HBYWCZP2024.PLC.Models
         //public byte Actions(int idx) => Action;
 
         [OPCMember("channelState")]
-        public bool[] ChannelStates { get; set; } = new bool[16];
-        //public bool[] ChannelStates { get; set; } = new bool[20];
+        //public bool[] ChannelStates { get; set; } = new bool[16];
+        public bool[] ChannelStates { get; set; } = new bool[20];
 
         [OPCMember("batteryCode")]
-        public string[] BatteryCodes { get; set; } = new string[16];
-        //public string[] BatteryCodes { get; set; } = new string[20];
+        //public string[] BatteryCodes { get; set; } = new string[16];
+        public string[] BatteryCodes { get; set; } = new string[20];
     }
 }

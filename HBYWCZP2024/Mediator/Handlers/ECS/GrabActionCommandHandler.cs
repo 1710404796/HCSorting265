@@ -2,11 +2,13 @@
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
+using LanguageExt.UnitsOfMeasure;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory, 
+    public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory,
         IMediator mediator, LinxContext context, ILogger<GrabActionCommandHandler> logger) : IRequestHandler<GrabActionCommand, bool>
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
@@ -78,12 +80,110 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFmsDataEnable)
                 {
+                    string tempLv = "";
+                    if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate)
+                    {
 
+                        if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GRegionFXQueryEnable)
+                        {
+                            CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
+                            {
+                                ContainerCode = "",
+                                ContainerCellInfos = pallet.Channels.Filter(s => s.BatteryLevel != BatteryLevel.EMPTY).Take(1).Select(x => new ContainerCellInfo()
+                                {
+                                    Location = x.Location.ToString(),
+                                    Identification = x.Code
+
+                                })
+                                .ToArray()
+                            };
+                            async Task<string> getCodeMap(CheckPalletMaterialRequest request)
+                            {
+                                if (request.ContainerCellInfos.Length <= 0)
+                                {
+                                    return "";
+                                }
+                                var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
+
+                                var cmap = checkMaterialResponse.Match(
+                                    Succ: r =>
+                                    {
+                                        var channels = r.Rows.Select(x =>
+
+                                               x.Grade
+
+                                        );
+                                        return channels;
+                                    },
+                                    Fail: x =>
+                                    {
+
+                                        mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                                        throw x;
+                                    }
+
+
+                                    ).FirstOrDefault();
+                                return cmap ?? "";
+                            }
+
+                            var codeMap = await getCodeMap(checkMaterialRequest);
+                            tempLv = codeMap;
+                        }
+                        else if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.FXQueryEnable)
+                        {
+                            FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
+                            {
+                                MateriallotCodeList =
+                        pallet.Channels
+                        .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
+                        .Take(1).Select(x => x.Code)
+                        .ToArray()
+                            };
+                            async Task<string> getCodeMap(FxCheckRequest request)
+                            {
+                                if (request.MateriallotCodeList.Length <= 0)
+                                {
+                                    return "";
+                                }
+                                var checkMaterialResponse = await hBECSService.MesService.FxCheckAsync(fxCheckRequest);
+
+                                var cmap = checkMaterialResponse.Match(
+                                    Succ: r =>
+                                    {
+                                        var channels = r.Rows.Select(x =>
+
+                                                x.rank
+
+                                        )
+                                        .Map(s => s.ToUpper() == "C" ? "NG" : s)
+                                        ;
+                                        return channels;
+                                    },
+                                    Fail: x =>
+                                    {
+
+                                        mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                                        throw x;
+                                    }
+
+
+                                    ).FirstOrDefault();
+                                return cmap ?? "";
+                            }
+
+                            tempLv = await getCodeMap(fxCheckRequest);
+
+                        }
+                    }
                     var data = await hBECSService.SendAsync<S105, E105>(new S105()
                     {
                         TrayNumber = pallet.PalletCode,
                         TrayPosition = pallet.PalletId + 1,
                         TrayType = pallet.OKNGType,
+                        TrayLevel = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate
+                                    ? tempLv
+                                    : "",
                         MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
                         BatteryCount = pallet.ChannelNum,
                         BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum)
@@ -187,24 +287,24 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 try
                 {
 
-                
-                // 存一下托盘日志
-                var palletlog = new PalletLog
-                {
-                    PalletCode = pallet.PalletCode,
-                    BatteryInfo = pallet.Channels.Select(s => new BatteryInfo
+
+                    // 存一下托盘日志
+                    var palletlog = new PalletLog
                     {
-                        BatteryCode = s.Code,
-                        BatteryLevel = s.BatteryLevel,
-                    }).Take(pallet.ChannelNum).ToList(),
-                    Column = pallet.Column,
-                    PalletType = pallet.Type
+                        PalletCode = pallet.PalletCode,
+                        BatteryInfo = pallet.Channels.Select(s => new BatteryInfo
+                        {
+                            BatteryCode = s.Code,
+                            BatteryLevel = s.BatteryLevel,
+                        }).Take(pallet.ChannelNum).ToList(),
+                        Column = pallet.Column,
+                        PalletType = pallet.Type
 
-                };
+                    };
 
-                context.Add(palletlog);
+                    context.Add(palletlog);
 
-                await context.SaveChangesAsync(cancellationToken);
+                    await context.SaveChangesAsync(cancellationToken);
                 }
                 catch (Exception ex)
                 {

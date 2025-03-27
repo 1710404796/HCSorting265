@@ -83,24 +83,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         .Map(s => s.Code)
                         .ToArray()
                 };
-
-
-                //CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
-                //{
-                //    ContainerCode = "",
-                //    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
-                //    {
-                //        Location = x.ChannelId.ToString(),
-                //        Identification = x.BattleWithLevel.Match(
-                //            Some: battleWithLevel => battleWithLevel.Code,
-                //            None: string.Empty
-                //        ),
-
-                //    })
-                //    .Filter(s => !isNG(s.Identification))
-                //    .ToArray()
-                //};
-
                 async Task<Map<string, BatteryLevel>> getCodeMap(FxCheckRequest request)
                 {
                     if (request.MateriallotCodeList.Length <= 0)

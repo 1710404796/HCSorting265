@@ -193,6 +193,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
+
             for (int i = 0; i < grabChannel.Length; ++i)
             {
                 if (claw[i])
