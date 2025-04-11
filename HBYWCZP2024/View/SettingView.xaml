@@ -218,6 +218,9 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionFXQueryEnable}"
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.TrayLevelUpdate}"
 >分选档位上传(分选)</CheckBox>
                     <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFMSChaiHuanpanEnable}"
+>换盘单拆上报FMS(换盘)</CheckBox>
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HHFilterQueryEnable}"
 >后氦Mark校验(MES,后氦)</CheckBox>
                     <CheckBox 

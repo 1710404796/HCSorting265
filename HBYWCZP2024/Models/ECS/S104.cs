@@ -19,6 +19,17 @@ namespace HBYWCZP2024.Models.ECS
         {
             Type = "S104";
         }
+
+        public int BatteryCount { get; set; }
+        public (int id, string code)[] Battery { get; set; } = [];
+
+        public override string GetContent()
+        {
+            var barcodes = string.Join("", Battery.Select(b => $"{b.id,-2}{b.code,-24}"));
+            return $"{TrayPosition}{(int)TrayType}{TrayNumber,-20}{BatteryCount:00}{barcodes}";
+        }
+
+
         //public int TrayPosition { get; set; }
         //public string TrayNumber { get; set; }
 

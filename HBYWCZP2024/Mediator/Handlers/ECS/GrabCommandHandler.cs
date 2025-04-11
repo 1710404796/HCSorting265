@@ -1,5 +1,6 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+
 //using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
 
@@ -38,6 +39,34 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (request.GrabInfo.From is Pallet from)
             {
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFMSChaiHuanpanEnable
+                    )
+                {
+                    var codes = request.GrabInfo.Infos
+                        .Map(s => (s.FromChannel, s.Code))
+                        .ToArray();
+                    var data = await hBECSService.SendAsync<S104, E104>(
+                        new S104() { 
+                            TrayNumber = from.PalletCode, 
+                            TrayPosition = from.PalletId + 1, 
+                            TrayType = from.OKNGType,
+                            BatteryCount = codes.Length,
+                            Battery = codes
+                        }
+                        , from.OutsideStationNum
+                        );
+
+                    if (data == null)
+                    {
+                        //await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                        return false;
+                    }
+                    //if (data.DeviceStatus != DeviceStatus2.OK)
+                    //{
+                    //    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                    //    return false;
+                    //}
+                }
                 // 拆上报
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable
                     )

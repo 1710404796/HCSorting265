@@ -52,18 +52,20 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             if (request.Start)
             {
                 // 拆组盘开始 作业开始
-                var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
+                //var data = await hBECSService.SendAsync<S104, E104>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
 
-                if (data == null)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                    return false;
-                }
-                if (data.DeviceStatus != DeviceStatus2.OK)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
-                    return false;
-                }
+                //if (data == null)
+                //{
+                //    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                //    return false;
+                //}
+                //if (data.DeviceStatus != DeviceStatus2.OK)
+                //{
+                //    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
+                //    return false;
+                //}
+
+
             }
             else
             {
