@@ -142,6 +142,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             };
                             async Task<string> getCodeMap(FxCheckRequest request)
                             {
+                                //return "NG";
                                 if (request.MateriallotCodeList.Length <= 0)
                                 {
                                     return "";

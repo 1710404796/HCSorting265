@@ -115,7 +115,7 @@ namespace HBYWCZP2024
                          services.AddSingleton<UserManagerViewModel>();
                          services.AddTransient<UserManagerView>();
 
-                         services.AddSingleton<WCSLogViewModel>();
+                         services.AddTransient<WCSLogViewModel>();
                          services.AddTransient<WCSLogView>();
 
                          services.AddTransient<YWStageView>();
@@ -134,10 +134,10 @@ namespace HBYWCZP2024
                          services.AddSingleton<CacheService>();
 
                          services.AddTransient<PalletChaiLogView>();
-                         services.AddSingleton<PalletChaiLogViewModel>();
+                         services.AddTransient<PalletChaiLogViewModel>();
 
                          services.AddTransient<PalletLogView>();
-                         services.AddSingleton<PalletLogViewModel>();
+                         services.AddTransient<PalletLogViewModel>();
                          services.AddSingleton<CacheService>();
 
                          services.AddTransient<PowerSettingWindows>();
