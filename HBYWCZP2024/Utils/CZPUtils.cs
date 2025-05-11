@@ -31,17 +31,23 @@ namespace HBYWCZP2024.Utils
             "FC" => BatteryLevel.REWORK,
             "Fake" => BatteryLevel.Fake,
             "MARK" => BatteryLevel.Mark,
-            "V" => BatteryLevel.V,
+            "V1" => BatteryLevel.V,
+
+            "V2" => BatteryLevel.NG,
+            "V3" => BatteryLevel.A,
+            "V4" => BatteryLevel.Asub,
+            "V5" => BatteryLevel.B,
+
             _ => BatteryLevel.EMPTY,
         };
         public static string GetMESLevel(BatteryLevel level) => level switch
         {
             BatteryLevel.OK =>  "OK",
               BatteryLevel.NG     => "NG"   ,
-              BatteryLevel.A      => "A"    ,
-              BatteryLevel.Asub   => "A-"   ,
-              BatteryLevel.B      => "B"    ,
-              BatteryLevel.Bsub   => "B-"   ,
+              BatteryLevel.A      => "V2"    ,
+              BatteryLevel.Asub   => "V3"   ,
+              BatteryLevel.B      => "V4"    ,
+              BatteryLevel.Bsub   => "V5"   ,
               BatteryLevel.C      => "C"    ,
               BatteryLevel.D      => "D"    ,
               BatteryLevel.E      => "E"    ,
@@ -49,7 +55,7 @@ namespace HBYWCZP2024.Utils
               BatteryLevel.REWORK => "FC"   ,
               BatteryLevel.Fake   => "Fake" ,
             BatteryLevel.Mark => "MARK" ,
-            BatteryLevel.V =>  "V",
+            BatteryLevel.V =>  "V1",
             _ => "",
         };
         public static byte GetPlcBatteryLevelCode(BatteryLevel level) => level switch
@@ -72,6 +78,10 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.F => 12,
             //BatteryLevel.Mark => 3, // 筛选4
             BatteryLevel.Mark => MainStorage.Saves.MarkCode, // 其余筛选
+
+
+
+
             _ => (byte)level,
         };
 

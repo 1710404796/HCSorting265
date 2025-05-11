@@ -81,6 +81,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         .Map(s => s.BattleWithLevel)
                         .Choose(s => s)
                         .Map(s => s.Code)
+                        .Filter(s => !isNG(s))
                         .ToArray()
                 };
                 async Task<Map<string, BatteryLevel>> getCodeMap(FxCheckRequest request)
