@@ -27,6 +27,7 @@ namespace HBYWCZP2024.Models
         Asub = 15,
         Bsub = 16,
         Unknown = 999,
+        V1 = 1000,
     }
     public partial class StationChannel : ObservableObject
     {
