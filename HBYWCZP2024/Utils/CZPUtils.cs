@@ -16,14 +16,29 @@ namespace HBYWCZP2024.Utils
 {
     public static class CZPUtils
     {
+         static BatteryLevel GetLevelFromDigit(this int i)
+        {
+            return i switch
+            {
+                0 => BatteryLevel.V,
+                1 => BatteryLevel.A,
+                2 => BatteryLevel.Asub,
+                3 => BatteryLevel.B,
+                4 => BatteryLevel.Bsub,
+                5 => BatteryLevel.V1,
+                6 => BatteryLevel.NG,
+                _ => BatteryLevel.NG
+            }
+            ;
+        }
         public static BatteryLevel GetLevelFromMes(string level) => level.ToUpper() switch
         {
             "OK" => BatteryLevel.OK,
             "NG" => BatteryLevel.NG,
-            "A" => BatteryLevel.A,
-            "A-" => BatteryLevel.Asub,
-            "B" => BatteryLevel.B,
-            "B-" => BatteryLevel.Bsub,
+            //"A" => BatteryLevel.A,
+            //"A-" => BatteryLevel.Asub,
+            //"B" => BatteryLevel.B,
+            //"B-" => BatteryLevel.Bsub,
             "C" => BatteryLevel.C,
             "D" => BatteryLevel.D,
             "E" => BatteryLevel.E,
@@ -31,14 +46,15 @@ namespace HBYWCZP2024.Utils
             "FC" => BatteryLevel.REWORK,
             "Fake" => BatteryLevel.Fake,
             "MARK" => BatteryLevel.Mark,
-            "V0" => BatteryLevel.V,
-            "V1" => BatteryLevel.V1,
+            //"V0" => BatteryLevel.V,
+            //"V1" => BatteryLevel.V1,
 
-            "V2" => BatteryLevel.NG,
-            "V3" => BatteryLevel.A,
-            "V4" => BatteryLevel.Asub,
-            "V5" => BatteryLevel.B,
-
+            //"V2" => BatteryLevel.NG,
+            //"V3" => BatteryLevel.A,
+            //"V4" => BatteryLevel.Asub,
+            //"V5" => BatteryLevel.B,
+            var x when MainStorage.Saves.BatteryLevelList.Any(s => s.Contains(x)) 
+                => MainStorage.Saves.BatteryLevelList.FindIndex(s => s.Contains(x)).GetLevelFromDigit(),
             _ => BatteryLevel.EMPTY,
         };
         public static string GetMESLevel(BatteryLevel level) => level switch
@@ -78,7 +94,7 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.Asub => 13,
             BatteryLevel.B => 14,
             BatteryLevel.Bsub => 15,
-            BatteryLevel.V1 => 15,
+            BatteryLevel.V1 => 16,
             BatteryLevel.C => MainStorage.Saves.NgCode,
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
@@ -108,7 +124,6 @@ namespace HBYWCZP2024.Utils
         public static Pallet? GetPalletByOutsideNum(string name, int outsideNum)
         {
             if (outsideNum <= 0) return null;
-
             return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
         }
 

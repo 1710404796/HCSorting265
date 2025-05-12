@@ -138,5 +138,17 @@ namespace HBYWCZP2024.View
             }
             
         }
+
+        private void FXLevelConfig_Click(object sender, RoutedEventArgs e)
+        {
+            var fxLevelWindows = new FXLevelWindows(MainStorage.Saves.BatteryLevelList);
+            fxLevelWindows.ShowDialog();
+            if (fxLevelWindows.DialogResult == true)
+            {
+                MainStorage.Saves.BatteryLevelList = fxLevelWindows.Datas;
+                MainStorage.SaveManager.Save();
+            }
+
+        }
     }
 }

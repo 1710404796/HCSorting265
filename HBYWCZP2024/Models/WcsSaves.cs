@@ -38,6 +38,7 @@ namespace HBYWCZP2024.Models
         public bool TwoOk { get; set; } = false;
         //public PLCCpuType PLCCpuType { get; set; } = PLCCpuType.小端;
 
+        public List<string[]> BatteryLevelList { get; set; } = Enumerable.Range(0,7).Select(s => new string[0]).ToList();
 
         public int LogDeleteDay { get; set; } = 30;
         public bool TestMode => KeysSave[SelectStageName].TestMode;
@@ -196,12 +197,18 @@ namespace HBYWCZP2024.Models
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }
     }
-
+    public class LevelName
+    {
+        public string Name { get; set; }
+        = string.Empty;
+        public BatteryLevel BatteryLevel { get; set; }
+    }
     public class StageMono
     {
         public OKNGCnt OKNGCnt { get; set; } = new();
         public Dictionary<PowerEnum, Dictionary<RoleEnum, bool>> PowerTable { get; set; } = [];
         public Dictionary<string, string> OpcTable { get; set; } = [];
+
 
         public string ECSIP { get; set; } = "127.0.0.1";
         public ushort ECSPort { get; set; } = 50005;
@@ -260,6 +267,8 @@ namespace HBYWCZP2024.Models
             set;
         } = string.Empty;
         public bool ResetTable { get; set; }
+
+
     }
 
     public class OKNGCnt

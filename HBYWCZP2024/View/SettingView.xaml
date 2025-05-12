@@ -302,6 +302,7 @@ HorizontalAlignment="Left"
         Text="{Binding ViewModel.Saves.HeartbeartDuring}"></TextBox>
 
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPlc_Click">配置工位</Button>
+                <Button Width="100" Margin="0,10,0,0"  Click="FXLevelConfig_Click">分选档位配置</Button>
 
                 <TextBlock Margin="0,10,0,0" FontSize="15"
        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
