@@ -193,6 +193,7 @@ namespace HBYWCZP2024.Models
         /// </summary>
         public bool FXQueryEnable { get; set; }
         public bool GRegionFXQueryEnable { get; set; }
+        public bool AllLevelUploadEnable { get; set; }
         public bool HHFilterQueryEnable { get; set; }
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }

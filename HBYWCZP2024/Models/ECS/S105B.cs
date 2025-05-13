@@ -9,26 +9,26 @@ namespace HBYWCZP2024.Models.ECS;
 /// 抓取电池结果上报
 /// 机械手每抓一次电池都要进行上报
 /// </summary>
-public class S105B : IECSContent
-{
-        public new string Type => "S105";
-    public int Position { get; set; }
-    public string TrayNumber { get; set; } = string.Empty;
+//public class S105B : IECSContent
+//{
+//        public new string Type => "S105";
+//    public int Position { get; set; }
+//    public string TrayNumber { get; set; } = string.Empty;
 
-    public string GetContent()
-    {
-        return $"{Position,-3}{TrayNumber,-20}";
-    }
+//    public string GetContent()
+//    {
+//        return $"{Position,-3}{TrayNumber,-20}";
+//    }
 
-    public void Parse(string content)
-    {
-        if (content.Length < 24)
-        {
-            throw new ArgumentException("字符串长度不足!");
-        }
-        Position = int.Parse(content.Substring(0, 3).Trim());
+//    public void Parse(string content)
+//    {
+//        if (content.Length < 24)
+//        {
+//            throw new ArgumentException("字符串长度不足!");
+//        }
+//        Position = int.Parse(content.Substring(0, 3).Trim());
 
 
-        TrayNumber = content.Substring(3, 20).Trim();
-    }
-}
+//        TrayNumber = content.Substring(3, 20).Trim();
+//    }
+//}

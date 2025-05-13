@@ -56,3 +56,50 @@ public class S105 : IECSContent
         TrayNumber = content.Substring(content.Length - 20).Trim();
     }
 }
+public class S105B : IECSContent
+{
+    public new string Type => "S105";
+    public int BatteryCount { get; set; }
+    /// <summary>
+    /// 物料编码
+    /// </summary>
+    public string MaterialId { get; set; }
+    public string TrayLevel { get; set; }
+    public List<(string code, string lv)> BatteryBarcodes { get; set; } = [];
+    public string TrayNumber { get; set; }
+    public int TrayPosition { get; set; }
+    public TrayType TrayType { get; set; }
+
+    public string GetContent()
+    {
+        var barcodes = string.Join("", BatteryBarcodes.Select(b => b.code.PadRight(24) + b.lv.PadRight(2)));
+        return $"{TrayPosition}{(int)TrayType}{MaterialId,-8}{TrayLevel,-20}{TrayNumber,-20}{BatteryCount,-3}{barcodes}";
+    }
+
+    public void Parse(string content)
+    {
+        //if (content.Length < 24)
+        //{
+        //    throw new ArgumentException("字符串长度不足!");
+        //}
+
+
+        //TrayPosition =
+
+        //BatteryCount = int.Parse(content.Substring(0, 2).Trim());
+        //BatteryBarcodes = new List<string>();
+
+        //int barcodeLength = 24;
+        //for (int i = 0; i < BatteryCount; i++)
+        //{
+        //    int startIndex = 2 + i * barcodeLength;
+        //    if (startIndex + barcodeLength > content.Length - 20)
+        //    {
+        //        throw new ArgumentException("字符串长度不足，无法解析电芯条码!");
+        //    }
+        //    BatteryBarcodes.Add(content.Substring(startIndex, barcodeLength).Trim());
+        //}
+
+        //TrayNumber = content.Substring(content.Length - 20).Trim();
+    }
+}
