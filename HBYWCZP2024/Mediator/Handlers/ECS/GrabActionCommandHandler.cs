@@ -193,50 +193,102 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         }
                         else if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.FXQueryEnable)
                         {
-                            FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
+                            if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.AllLevelUploadEnable)
                             {
-                                MateriallotCodeList =
-                        pallet.Channels
-                        .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
-                        .Take(1).Select(x => x.Code)
-                        .ToArray()
-                            };
-                            async Task<string> getCodeMap(FxCheckRequest request)
-                            {
-                                //return "NG";
-                                if (request.MateriallotCodeList.Length <= 0)
+                                FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
                                 {
-                                    return "";
-                                }
-                                var checkMaterialResponse = await hBECSService.MesService.FxCheckAsync(fxCheckRequest);
-
-                                var cmap = checkMaterialResponse.Match(
-                                    Succ: r =>
+                                    MateriallotCodeList =
+                                    pallet.Channels
+                                    .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
+                                    //.Take(1)
+                                    .Select(x => x.Code)
+                                    .ToArray()
+                                };
+                                async Task<Map<string, string>> getCodeMap(FxCheckRequest request)
+                                {
+                                    //return "NG";
+                                    if (request.MateriallotCodeList.Length <= 0)
                                     {
-                                        var channels = r.Rows.Select(x =>
-
-                                                x.rank
-
-                                        )
-                                        .Map(s => s.ToUpper() == "C" ? "NG" : s)
-                                        ;
-                                        return channels;
-                                    },
-                                    Fail: x =>
-                                    {
-
-                                        mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
-                                        throw x;
+                                        return [];
                                     }
+                                    var checkMaterialResponse = await hBECSService.MesService.FxCheckAsync(fxCheckRequest);
+
+                                    var cmap = checkMaterialResponse.Match(
+                                        Succ: r =>
+                                        {
+                                            var channels = r.Rows.Select(x =>
+
+                                                    (x.identification,
+                                                    x.rank)
+
+                                            )
+                                            //.Map(s => s.rank.ToUpper() == "C" ? "NG" : s)
+                                            ;
+                                            return channels;
+                                        },
+                                        Fail: x =>
+                                        {
+
+                                            mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                                            throw x;
+                                        }
 
 
-                                    ).FirstOrDefault();
-                                return cmap ?? "";
+                                        ).DistinctBy(s => s.identification).ToMap();
+                                    return cmap;// ?? "";
+                                }
+                                codeMapTemp = await getCodeMap(fxCheckRequest);
                             }
+                            else
+                            {
 
-                            tempLv = await getCodeMap(fxCheckRequest);
+                                FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
+                                {
+                                    MateriallotCodeList =
+                                    pallet.Channels
+                                    .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
+                                    .Take(1)
+                                    .Select(x => x.Code)
+                                    .ToArray()
+                                };
+                                async Task<string> getCodeMap(FxCheckRequest request)
+                                {
+                                    //return "NG";
+                                    if (request.MateriallotCodeList.Length <= 0)
+                                    {
+                                        return "";
+                                    }
+                                    var checkMaterialResponse = await hBECSService.MesService.FxCheckAsync(fxCheckRequest);
 
+                                    var cmap = checkMaterialResponse.Match(
+                                        Succ: r =>
+                                        {
+                                            var channels = r.Rows.Select(x =>
+
+                                                    x.rank
+
+                                            )
+                                            .Map(s => s.ToUpper() == "C" ? "NG" : s)
+                                            ;
+                                            return channels;
+                                        },
+                                        Fail: x =>
+                                        {
+
+                                            mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                                            throw x;
+                                        }
+
+
+                                        ).FirstOrDefault();
+                                    return cmap ?? "";
+                                }
+
+                                tempLv = await getCodeMap(fxCheckRequest);
+
+                            }
                         }
+
                     }
 
                     async Task<E105> GetData()
