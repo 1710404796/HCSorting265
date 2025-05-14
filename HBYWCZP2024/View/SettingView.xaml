@@ -217,6 +217,10 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionFXQueryEnable}"
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.TrayLevelUpdate}"
 >分选档位上传(分选)</CheckBox>
+
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.AllLevelUploadEnable}"
+>组盘上报所有电池档位(预分选,需启用分选档位上传)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFMSChaiHuanpanEnable}"
 >换盘单拆上报FMS(换盘)</CheckBox>
