@@ -118,7 +118,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                         {
                                             var channels = r.Rows.Select(x =>
 
-                                                  ( x.Grade, x.Identification)
+                                                  (x.Identification, x.Grade)
 
                                             );
                                             return channels;
@@ -128,10 +128,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        }
+                                        } 
 
 
-                                        ).DistinctBy(s => s.Identification).ToMap();
+                                        ).DistinctBy(s => s.Identification)
+                                        .ToMap();
                                     return cmap;
                                 }
 

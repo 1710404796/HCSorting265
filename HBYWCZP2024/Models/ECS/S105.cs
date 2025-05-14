@@ -72,7 +72,7 @@ public class S105B : IECSContent
 
     public string GetContent()
     {
-        var barcodes = string.Join("", BatteryBarcodes.Select(b => b.code.PadRight(24) + b.lv.PadRight(2)));
+        var barcodes = string.Join("", BatteryBarcodes.Select(b => b.code.PadRight(24) + b.lv.PadRight(20)));
         return $"{TrayPosition}{(int)TrayType}{MaterialId,-8}{TrayLevel,-20}{TrayNumber,-20}{BatteryCount,-3}{barcodes}";
     }
 

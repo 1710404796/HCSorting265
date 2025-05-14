@@ -1,14 +1,16 @@
 ﻿global using LanguageExt;
-global using static LanguageExt.Prelude;
 global using static LanguageExt.FSharp;
-
+global using static LanguageExt.Prelude;
 using HBYWCZP2024.Data;
 using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
+using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.PLC;
 using HBYWCZP2024.Service;
+using HBYWCZP2024.Utils;
 using HBYWCZP2024.View;
 using HBYWCZP2024.View.CZPallet;
+using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
 using HBYWCZP2024.ViewModel.CZPallet;
 using LinxUniverse.Auth;
@@ -29,7 +31,6 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using HBYWCZP2024.View.User;
 
 
 namespace HBYWCZP2024
@@ -202,7 +203,11 @@ namespace HBYWCZP2024
                      }).
                      Build();
             InitContext();
+            var dd = MainStorage.Saves.BatteryLevelList.Any(s => s.Contains("Xn1y"));
+            var data = CZPUtils.GetLevelFromMes("Xn1y");
 
+            //var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(), BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.Engineering };
+            //var b = MessageHelper.GetSocketMessage(a.Type, "401", a.GetContent());
             //Host.UseSwagger();
             //Host.UseSwaggerUI(options => {
             //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -212,7 +217,6 @@ namespace HBYWCZP2024
             aa.IsReadOnly = true;
             aa.Background = System.Windows.Media.Brushes.Black;
             aa.TextChanged += Aa_TextChanged;
-
             Log.Logger = new LoggerConfiguration()
               .MinimumLevel.Debug()
               .MinimumLevel.Override("System.Net.Http.HttpClient", Serilog.Events.LogEventLevel.Warning)
