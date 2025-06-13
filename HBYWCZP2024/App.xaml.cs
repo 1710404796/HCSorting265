@@ -204,10 +204,10 @@ namespace HBYWCZP2024
                      Build();
             InitContext();
             var dd = MainStorage.Saves.BatteryLevelList.Any(s => s.Contains("Xn1y"));
-            var data = CZPUtils.GetLevelFromMes("Xn1y");
+            var data = CZPUtils.GetLevelFromMes("WGNG");
 
-            //var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(), BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.Engineering };
-            //var b = MessageHelper.GetSocketMessage(a.Type, "401", a.GetContent());
+            var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(), BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.Engineering };
+            var b = MessageHelper.GetSocketMessage(a.Type, "413", a.GetContent());
             //Host.UseSwagger();
             //Host.UseSwaggerUI(options => {
             //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

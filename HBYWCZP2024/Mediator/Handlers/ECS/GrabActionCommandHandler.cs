@@ -27,6 +27,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
             bool isCodeRuleNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
+            bool isCodeRuleNG1(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase);
             if (pallet == null)
             {
                 throw new Exception("托盘不存在");
@@ -96,6 +97,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     ContainerCode = "",
                                     ContainerCellInfos = pallet.Channels
                                     .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
+                                    .Filter(s => !isCodeRuleNG(s.Code))
                                     //.Take(1)
                                     .Select(x => new ContainerCellInfo()
                                     {
@@ -201,6 +203,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     pallet.Channels
                                     .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
                                     //.Take(1)
+                                    .Filter(s => !isCodeRuleNG(s.Code))
+
                                     .Select(x => x.Code)
                                     .ToArray()
                                 };
@@ -304,8 +308,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 MaterialId = MainStorage.Saves.KeysSave[request.Key].MaterialCode,
                                 BatteryCount = pallet.ChannelNum,
                                 BatteryBarcodes = pallet.Channels.Take(pallet.ChannelNum)
-                               .Select(x => isCodeRuleNG(x.Code) ? ("", "NG") : (x.Code, codeMapTemp[x.Code]))
-                               //.Select(x => x.Code)
+                               .Select(x =>
+                                            string.IsNullOrWhiteSpace(x.Code) ? ("", "") :
+                                                            (isCodeRuleNG1(x.Code) 
+                                                            ? ("", "NG") 
+                                                            : (x.Code, codeMapTemp[x.Code]))) // todo: 可能有空的吗
+                                               //.Select(x => x.Code)
                                .ToList()
                             }, pallet.OutsideStationNum);
                             return data;

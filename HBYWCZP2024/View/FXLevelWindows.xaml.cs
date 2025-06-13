@@ -41,7 +41,7 @@ namespace HBYWCZP2024.View
                 textblock.Text = $"电池{i + 11}等级";
                 if (i == 6) textblock.Text = $"电池NG等级";
 
-                var textBox = new TextBox() { Width = 100 };
+                var textBox = new TextBox() { Width = 200 };
                 textBox.Text = string.Join(",", Datas[i]);
 
                 stack.Children.Add(textblock);

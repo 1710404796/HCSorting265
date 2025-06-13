@@ -33,6 +33,8 @@ namespace HBYWCZP2024.Utils
         }
         public static BatteryLevel GetLevelFromMes(string level) => level.ToUpper() switch
         {
+            var x when MainStorage.Saves.BatteryLevelList.Any(s => s.Contains(level))
+              => MainStorage.Saves.BatteryLevelList.FindIndex(s => s.Contains(level)).GetLevelFromDigit(),
             "OK" => BatteryLevel.OK,
             "NG" => BatteryLevel.NG,
             //"A" => BatteryLevel.A,
@@ -53,8 +55,7 @@ namespace HBYWCZP2024.Utils
             //"V3" => BatteryLevel.A,
             //"V4" => BatteryLevel.Asub,
             //"V5" => BatteryLevel.B,
-            var x when MainStorage.Saves.BatteryLevelList.Any(s => s.Contains(level)) 
-                => MainStorage.Saves.BatteryLevelList.FindIndex(s => s.Contains(level)).GetLevelFromDigit(),
+          
             _ => BatteryLevel.EMPTY,
         };
         public static string GetMESLevel(BatteryLevel level) => level switch
