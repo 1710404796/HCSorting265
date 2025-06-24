@@ -321,28 +321,38 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
 
-                async Task<string[]> GetMarkBatterys1(CheckMaterialRequest request1)
+                async Task<(string[] Marks, string[] NGs)> GetMarkBatterys1(CheckMaterialRequest request1)
                 {
                     if (
                 !MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.Mark2Enable
                         )
                     {
-                        return [];
+                        return ([], []);
                     }
                     if (request1.ContainerCellInfos.Length <= 0)
                     {
-                        return [];
+                        return ([], []);
                     }
                     var res = await service.MesService.CheckPalletLevel(request1);
 
-                    return res.Match(
-                        Succ: s => s.Rows.Filter(s => s.Grade == "2").Map(s => s.Identification),
+                    var marks = res.Match(
+                        Succ: s => s.Rows.Filter(s => s.Grade == "B").Map(s => s.Identification),
                         Fail: f =>
                         {
                             mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
                             throw f;
                         }
                     ).ToArray();
+
+                    var ng = res.Match(
+                        Succ: s => s.Rows.Filter(s => s.Grade == "NG").Map(s => s.Identification),
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        }
+                    ).ToArray();
+                    return (marks, ng);
 
                 }
                 CheckMaterialRequest checkMaterialRequest1 = new(request.Key)
@@ -372,7 +382,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         b.Code switch
                         {
                             var x when markBatterys.Contains(x) => BatteryLevel.Mark,
-                            var x when markBatterys1.Contains(x) => BatteryLevel.Mark,
+                            var x when markBatterys1.Marks.Contains(x) => BatteryLevel.Mark,
+                            var x when markBatterys1.NGs.Contains(x) => BatteryLevel.NG,
                             var x when isNG(x) => BatteryLevel.NG,
                             _ => codeMap[b.Code]
                         }
