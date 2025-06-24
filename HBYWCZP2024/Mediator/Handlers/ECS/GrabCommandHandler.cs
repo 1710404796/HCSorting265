@@ -131,7 +131,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         }
                         );
                 }
-
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
                 {
                     if (MainStorage.Saves.Stage.IncomingBelt.IsEnable && to.OKNGType == TrayType.Engineering)

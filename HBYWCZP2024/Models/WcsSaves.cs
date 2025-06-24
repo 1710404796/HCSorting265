@@ -197,6 +197,7 @@ namespace HBYWCZP2024.Models
         public bool HHFilterQueryEnable { get; set; }
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }
+        public bool Mark2Enable { get; set; }
     }
     public class LevelName
     {

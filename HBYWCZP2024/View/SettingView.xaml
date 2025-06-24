@@ -228,6 +228,9 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFMSChaiHuanpanEnable}"
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HHFilterQueryEnable}"
 >后氦Mark校验(MES,后氦)</CheckBox>
                     <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.Mark2Enable}"
+>后氦Mark复验(MES,后氦)</CheckBox>
+                    <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckPalletMaterialEnable}"
                     >托盘电芯等级获取接口使能(MES,筛选)</CheckBox>
     

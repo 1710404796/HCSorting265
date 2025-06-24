@@ -27,3 +27,30 @@ public class CheckPalletResponse : IMESResponse
         get; set;
     }
 }
+
+
+public class CheckMaterialResponse : IMESResponse
+{
+    [JsonPropertyName("rows")]
+    public Row[] Rows
+    {
+        get; set;
+    } = [];
+
+    [JsonPropertyName("success")]
+    public bool Success
+    {
+        get; set;
+    }
+    [JsonPropertyName("message")]
+    public string? Message
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("total")]
+    public int Total
+    {
+        get; set;
+    }
+}

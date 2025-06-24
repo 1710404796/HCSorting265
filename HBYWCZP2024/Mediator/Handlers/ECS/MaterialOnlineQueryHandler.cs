@@ -251,6 +251,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 var markBatterys = await GetMarkBatterys(checkMaterialRequest);
 
+                // 这里再加一个接口
 
 
                 var mRequest = new MaterialOnlineRequest(request.Key)
@@ -319,6 +320,48 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 }
 
+
+                async Task<string[]> GetMarkBatterys1(CheckMaterialRequest request1)
+                {
+                    if (
+                !MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.Mark2Enable
+                        )
+                    {
+                        return [];
+                    }
+                    if (request1.ContainerCellInfos.Length <= 0)
+                    {
+                        return [];
+                    }
+                    var res = await service.MesService.CheckPalletLevel(request1);
+
+                    return res.Match(
+                        Succ: s => s.Rows.Filter(s => s.Grade == "2").Map(s => s.Identification),
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        }
+                    ).ToArray();
+
+                }
+                CheckMaterialRequest checkMaterialRequest1 = new(request.Key)
+                {
+                    ContainerCode = "",
+                    ContainerCellInfos = request.Channels.Select(x => new ContainerCellInfo()
+                    {
+                        Location = x.ChannelId.ToString(),
+                        Identification = x.BattleWithLevel.Match(
+                            Some: battleWithLevel => battleWithLevel.Code,
+                            None: string.Empty
+                        ),
+
+                    })
+                   .Filter(s => !isNG(s.Identification))
+                   .ToArray()
+                };
+                var markBatterys1 = await GetMarkBatterys1(checkMaterialRequest1);
+
                 var data = request.Channels.Map(c =>
                 c with
                 {
@@ -329,6 +372,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         b.Code switch
                         {
                             var x when markBatterys.Contains(x) => BatteryLevel.Mark,
+                            var x when markBatterys1.Contains(x) => BatteryLevel.Mark,
                             var x when isNG(x) => BatteryLevel.NG,
                             _ => codeMap[b.Code]
                         }
