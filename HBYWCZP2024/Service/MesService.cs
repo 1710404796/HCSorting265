@@ -29,7 +29,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
     public Task<Result<CheckMaterialResponse>> CheckPalletLevel(CheckMaterialRequest request)
     {
-        return SendRequest<CheckMaterialResponse>("api/public/pre/sorting/query", request);
+        return SendRequest<CheckMaterialResponse>("pre/sorting/query", request);
 
         
     }

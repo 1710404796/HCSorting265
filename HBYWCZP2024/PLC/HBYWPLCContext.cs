@@ -114,22 +114,40 @@ namespace HBYWCZP2024.PLC
             if (!Plc.Connected) return false;
             var flag = true;
             // Todo: 要加名字参数
-            string[] a = ["WCS_JXS.Data", "WCS_to_JXS.Data", "PLC_TO_WCS_ScanTh eCode.PLC", "WCS_TO_PLC_ScanTheCode.WCS", "PLC_TO_WCS_Tray", "WCS_TO_PLC_Tray"];
+            string[] a = [
+                "WCS_JXS.Data", 
+                "WCS_to_JXS.Data", 
+                "PLC_TO_WCS_ScanTheCode.PLC", 
+                "WCS_TO_PLC_ScanTheCode.WCS", 
+                "PLC_TO_WCS_Tray", 
+                "WCS_TO_PLC_Tray"
+                ];
 
+            var task1 = Task.Run(() => Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name)));
+            var task2 = Task.Run(() => Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name)));
+            var task3 = Task.Run(() => Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name)));
+            var task4 = Task.Run(() => Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name)));
+            var task5 = Task.Run(() => Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name)));
+            var task6 = Task.Run(() => Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name)));
 
+            Task[] tasks = [task1, task2, task3, task4, task5, task6];
+
+            await Task.WhenAll(tasks);
 
 
             //a.AsParallel().Iter(s =>
             //{
-                
-            //})
 
-            Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name));
-            Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name));
-            Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name));
-            Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name));
-            Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name));
-            Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name));
+            //});
+
+            
+
+            //Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name));
+            //Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name));
+            //Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name));
+            //Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name));
+            //Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name));
+            //Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name));
 
             return flag;
         }
