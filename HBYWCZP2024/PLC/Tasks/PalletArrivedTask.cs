@@ -166,4 +166,32 @@ namespace HBYWCZP2024.PLC.Tasks
             return true;
         }
     }
+
+    [OPCDelectInfo(10, 11)]
+    public class GrabActionExitTask : HBBaseTask
+    {
+        public GrabActionExitTask(int subIdx) : base(4)
+        {
+            TaskName = $"{subIdx + 1} 拆组盘结束";
+            SubIdx = subIdx;
+        }
+
+        public override async Task<bool> DoSth()
+        {
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
+            if (pallet == null || !pallet.IsEnable)
+            {
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDisassemblyTaskStarted}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
+                return false;
+            }
+            Context.Logger.LogInformation("托盘{idx} 上报拆组盘接口", SubIdx);
+            var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, false, false));
+            return res;//&& await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
+
+            //return res;
+
+            return await base.DoSth();
+        }
+    }
+
 }
