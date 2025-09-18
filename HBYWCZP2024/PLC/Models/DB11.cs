@@ -10,6 +10,8 @@ using LinxUniverse.OPCUA.Attributes;
 
 namespace HBYWCZP2024.PLC.Models
 {
+   
+
     [OPCMember("WCS_TO_PLC_Tray")]
     public class DB11 : ITaskCodeFeedbackDB
     {
