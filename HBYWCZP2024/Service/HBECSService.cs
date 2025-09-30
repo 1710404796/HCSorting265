@@ -32,8 +32,11 @@ namespace HBYWCZP2024.Service
 
         }
 
+        public NewECSService NewECSService { get; set; }
 
-        private LinxClientSocket _clientSocket;
+        public NewFMSService NewFMSService { get; set; }
+
+        //private LinxClientSocket _clientSocket;
         private readonly ILogger<HBECSService> logger;
 
         public string Name { get; }
@@ -45,18 +48,30 @@ namespace HBYWCZP2024.Service
             Name = name;
             this.logger = logger;
             Mediator = mediator;
-            var ipaddr = IPEndPoint.Parse(MainStorage.Saves.KeysSave[name].ECSIP);
-            _clientSocket = new LinxClientSocket(new LinxClientSocketOption
-            {
-                Address = ipaddr.Address.ToString(),
-                Port = (ushort)ipaddr.Port,
-                SplitChar = '#',
-            });
-            _clientSocket.Logger = logger;
+            //var ipaddr = IPEndPoint.Parse(MainStorage.Saves.KeysSave[name].ECSIP);
+            //_clientSocket = new LinxClientSocket(new LinxClientSocketOption
+            //{
+            //    Address = ipaddr.Address.ToString(),
+            //    Port = (ushort)ipaddr.Port,
+            //    SplitChar = '#',
+            //});
+            //_clientSocket.Logger = logger;
 
             IHttpClientFactory httpClientFactory = App.GetService<IHttpClientFactory>();
             var httplogger = App.GetService<ILogger<MesService>>();
+            var httpECSlogger = App.GetService<ILogger<NewECSService>>();
             MesService = new MesService(httpClientFactory.CreateClient(name), name, httplogger);
+            var ecsServiceClient = httpClientFactory.CreateClient(name +"ecs");
+            //ecsServiceClient.BaseAddress = new (MainStorage.Saves.KeysSave[name].ECSUrl); // 可能要加后缀
+            NewECSService = new NewECSService(ecsServiceClient, name, httpECSlogger)
+            {
+
+            };
+            HttpClient fmsHttpClient = httpClientFactory.CreateClient(name + "fms");
+            //fmsHttpClient.BaseAddress = new (MainStorage.Saves.KeysSave[name].FMSUrl);
+            NewFMSService = new NewFMSService(fmsHttpClient, name, App.GetService<ILogger<NewFMSService>>());
+
+
             Init();
             HeartbeatThread = new Thread(DoHeartBeat);
             HeartbeatThread.Start();
@@ -83,10 +98,10 @@ namespace HBYWCZP2024.Service
 
         public void Init()
         {
-            _clientSocket.OnComplete += ClientSocket_OnComplete;
-            _clientSocket.RecviceLine += ClientSocket_RecviceLine;
+            //_clientSocket.OnComplete += ClientSocket_OnComplete;
+            //_clientSocket.RecviceLine += ClientSocket_RecviceLine;
 
-            _clientSocket.Connect();
+            //_clientSocket.Connect();
         }
 
         private void ClientSocket_RecviceLine(string obj)
@@ -110,7 +125,7 @@ namespace HBYWCZP2024.Service
 
         private void ClientSocket_OnComplete()
         {
-            _clientSocket.Connect();
+            //_clientSocket.Connect();
         }
 
         object _lockobj = new object();
@@ -120,7 +135,7 @@ namespace HBYWCZP2024.Service
             {
                 var packMessage = MessageHelper.GetSocketMessage(command, MainStorage.Saves.KeysSave[Name].DeviceCode, content);
 
-                _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+                //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
 
                 after.Invoke();
             }
@@ -132,7 +147,7 @@ namespace HBYWCZP2024.Service
 
             var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
 
-            _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+            //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
         }
         public async Task<T2> SendAsync<T1, T2>(T1 req, int stationNum = 0) where T1 : IECSContent where T2 : IECSContentRes, new()
         {
@@ -144,7 +159,7 @@ namespace HBYWCZP2024.Service
                 {
                     var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
                     logger.LogInformation("{name}, 发送数据: {data}", Name, packMessage);
-                    _clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
+                    //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
                     CancellationTokenSource cts = new CancellationTokenSource();
                     cts.CancelAfter(60000);
 

@@ -16,7 +16,7 @@ namespace HBYWCZP2024.PLC.Tasks
     /// 托盘到位任务 任务号1
     /// </summary>
     [OPCDelectInfo(10, 11)]
-    public sealed class PalletArrivedTask : HBBaseTask
+    public class PalletArrivedTask : HBBaseTask
     {
         public PalletArrivedTask(int subIdx) : base(1)
         {

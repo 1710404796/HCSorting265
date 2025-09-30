@@ -165,8 +165,6 @@ namespace HBYWCZP2024.Models
                     Channels[id].BatteryLevel = BatteryLevel.EMPTY;
                 }
             }
-
-            
         }
 
         /// <summary>

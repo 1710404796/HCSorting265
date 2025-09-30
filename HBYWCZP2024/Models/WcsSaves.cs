@@ -49,18 +49,26 @@ namespace HBYWCZP2024.Models
 
 
         [JsonIgnore]
-        public string ECSIP
+        public string ECSUrl
         {
-            get => KeysSave[SelectStageName].ECSIP;
-            set => KeysSave[SelectStageName].ECSIP = value;
+            get => KeysSave[SelectStageName].ECSUrl;
+            set => KeysSave[SelectStageName].ECSUrl = value;
         }
 
+
         [JsonIgnore]
-        public ushort ECSPort
+        public string FMSUrl
         {
-            get => KeysSave[SelectStageName].ECSPort;
-            set => KeysSave[SelectStageName].ECSPort = value;
+            get => KeysSave[SelectStageName].FMSUrl;
+            set => KeysSave[SelectStageName].FMSUrl = value;
         }
+
+        //[JsonIgnore]
+        //public ushort ECSPort
+        //{
+        //    get => KeysSave[SelectStageName].ECSPort;
+        //    set => KeysSave[SelectStageName].ECSPort = value;
+        //}
 
         [JsonIgnore]
         public string DeviceCode
@@ -135,6 +143,12 @@ namespace HBYWCZP2024.Models
         {
             get => KeysSave[SelectStageName].ProductType;
             set => KeysSave[SelectStageName].ProductType = value;
+        }
+        [JsonIgnore]
+        public string StepCode
+        {
+            get => KeysSave[SelectStageName].StepCode;
+            set => KeysSave[SelectStageName].StepCode = value;
         }
 
         [JsonIgnore]
@@ -212,8 +226,17 @@ namespace HBYWCZP2024.Models
         public Dictionary<string, string> OpcTable { get; set; } = [];
 
 
-        public string ECSIP { get; set; } = "127.0.0.1";
-        public ushort ECSPort { get; set; } = 50005;
+        // 读取EXDB的任务
+        public bool ExDb { get; set; } = false;
+
+
+        public string ECSUrl { get; set; } = "127.0.0.1";
+        //public ushort ECSPort { get; set; } = 50005;
+
+        public string FMSUrl { get; set; } = "127.0.0.1";
+        //public ushort FMSPort { get; set; } = 50005;
+
+
         public string Name { get; set; } = "Default";
         public XYLStage Stage { get; set; } = new();
         public OpcPLCSetting PLCPSetting { get; set; } = new();
@@ -254,6 +277,11 @@ namespace HBYWCZP2024.Models
             set;
         } = string.Empty;
         public string EquipNum
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string StepCode
         {
             get;
             set;

@@ -98,19 +98,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
-                if (data == null)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                    return null;
-                }
 
-                var palletR = new Pallet(data.TrayNumber, 
-                    data.BatteryCodes
+
+                var palletR = new Pallet(pallet.PalletCode,
+                    pallet.Channels.Take(pallet.ChannelNum).Select(s => s.Code)
                     .Select((x, i) => new Channel(i + 1, new BatteryWithLevel(x, None)))
                     .Filter(s => !string.IsNullOrWhiteSpace( s.BattleWithLevel.Map(s => s.Code).IfNone("")))
-                    .Filter(s => !isFake(s.BattleWithLevel.Map(s => s.Code).IfNone("")))
-                    
+                    //.Filter(s => !isFake(s.BattleWithLevel.Map(s => s.Code).IfNone("")))
                     .ToImmutableArray()
                     );
                 // 这里有条码 // bind一下去
@@ -131,14 +125,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     await pallet.BindBattery(channel.ChannelId - 1, code, true, lv);
                 }
                 int codeidx = 0;
-                foreach (var code in data.BatteryCodes)
-                {
-                    if (isFake(code))
-                    {
-                        await pallet.BindBattery(codeidx, code, true, BatteryLevel.Fake);
-                    }
-                    codeidx++;
-                }
+                //foreach (var code in data.BatteryCodes)
+                //{
+                //    if (isFake(code))
+                //    {
+                //        await pallet.BindBattery(codeidx, code, true, BatteryLevel.Fake);
+                //    }
+                //    codeidx++;
+                //}
 
 
 
@@ -173,16 +167,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
 
 
-                //return palletAfterQuery.Channels.Select(x => x.BattleWithLevel.Match(
-                //    Some: battleWithLevel => battleWithLevel.Level.Match(
-                //        Some: level => level,
-                //        None: BatteryLevel.Unknown
-                //    ),
-                //    None: BatteryLevel.Unknown
-                //)).ToArray();
-
-
-
+         
             }
             else
             {

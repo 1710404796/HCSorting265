@@ -105,50 +105,107 @@ namespace HBYWCZP2024.Mediator.Handlers
 
                 Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
                 var ecs = hBECSService.Create(stage.Key);
-                var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
-                await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
-
-                se.RegisterTask<CheckLadaiTask>();
-                se.RegisterTask<CheckLadaiTask2>();
-                se.RegisterTask<CheckLadaiTask3>();
-                se.RegisterTask<ApplyBatteryInfoTask>();
-                se.RegisterTask<ChaiPanCompletedTask>();
-                se.RegisterTask<InstallationCompletedTask>();
-                se.RegisterTask<SinglePlacementCompletedTask>();
-                se.RegisterTask<ChaiPanCompleted2Task>();
-                se.RegisterTask<AbnormalDischargeTask>();
-          
-
-                for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
+                if (stage.Value.ExDb)
                 {
-                    se.RegisterTask(new PalletArrivedTask(i));
-                    se.RegisterTask(new GrabActionTask(i));
-                    se.RegisterTask(new PalletOutTask(i));
-                    se.RegisterTask(new GrabActionExitTask(i));
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
 
-                }
-                if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
-                {
-                    //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
 
-                    Console.WriteLine("尝试获取table");
+                    await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
 
-                    logger.LogWarning("OpcTable未设定");
-                    if (se.Context.Plc.Connected)
+
+
+                    se.RegisterTask<CheckLadaiTaskB>();
+                    se.RegisterTask<CheckLadaiTask2B>();
+                    se.RegisterTask<CheckLadaiTask3B>();
+                    se.RegisterTask<ApplyBatteryInfoTaskB>();
+ 
+                    se.RegisterTask<SinglePlacementCompletedTaskB>();
+                    se.RegisterTask<ChaiPanCompleted2Task>();
+
+
+                    for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
                     {
-                        stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
-                        stage.Value.ResetTable = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("pLCTaskService未连接");
-                        logger.LogWarning("pLCTaskService未连接");
+                        se.RegisterTask(new PalletArrivedTaskB(i));
+                        se.RegisterTask(new GrabActionTaskB(i));
+                        se.RegisterTask(new PalletOutTaskB(i));
+                        se.RegisterTask(new GrabActionExitTaskB(i));
 
                     }
-                    //MainStorage.Saves.OpcTable = [];
+                    if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
+                    {
+                        //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
 
+                        Console.WriteLine("尝试获取table");
+
+                        logger.LogWarning("OpcTable未设定");
+                        if (se.Context.Plc.Connected)
+                        {
+                            stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
+                            stage.Value.ResetTable = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("pLCTaskService未连接");
+                            logger.LogWarning("pLCTaskService未连接");
+
+                        }
+                        //MainStorage.Saves.OpcTable = [];
+
+                    }
                 }
-                MainStorage.SaveManager.Save();
+                else
+                {
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
+
+
+                    await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+
+
+
+                    se.RegisterTask<CheckLadaiTask>();
+                    se.RegisterTask<CheckLadaiTask2>();
+                    se.RegisterTask<CheckLadaiTask3>();
+                    se.RegisterTask<ApplyBatteryInfoTask>();
+                    se.RegisterTask<ChaiPanCompletedTask>();
+                    se.RegisterTask<InstallationCompletedTask>();
+                    se.RegisterTask<SinglePlacementCompletedTask>();
+                    se.RegisterTask<ChaiPanCompleted2Task>();
+                    se.RegisterTask<AbnormalDischargeTask>();
+
+
+                    for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
+                    {
+                        se.RegisterTask(new PalletArrivedTask(i));
+                        se.RegisterTask(new GrabActionTask(i));
+                        se.RegisterTask(new PalletOutTask(i));
+                        se.RegisterTask(new GrabActionExitTask(i));
+
+                    }
+                    if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
+                    {
+                        //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+
+                        Console.WriteLine("尝试获取table");
+
+                        logger.LogWarning("OpcTable未设定");
+                        if (se.Context.Plc.Connected)
+                        {
+                            stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
+                            stage.Value.ResetTable = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("pLCTaskService未连接");
+                            logger.LogWarning("pLCTaskService未连接");
+
+                        }
+                        //MainStorage.Saves.OpcTable = [];
+
+                    }
+                }
+
+
+                    MainStorage.SaveManager.Save();
 
 
                
