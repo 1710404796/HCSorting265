@@ -31,6 +31,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception("托盘不存在");
             }
+
             Result<EquipEnterResponse> response = await newEcsService.EquipEnterAsync(
                 new EquipEnterRequest(request.Key)
                 {
@@ -38,6 +39,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     TrayType = pallet.Type.ToString(),
                     Location = pallet.PalletId.ToString() // 可能+1
                 });
+            // 不知道要不要上报
+            //var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.T));
+            ////PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
+
+            //if (!data)
+            //{
+            //    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+            //    return false;
+            //}
 
 
             var a = await response.Match(

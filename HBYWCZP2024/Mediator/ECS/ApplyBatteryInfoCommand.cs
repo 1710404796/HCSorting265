@@ -1,5 +1,6 @@
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.ECS;
+using HBYWCZP2024.Service;
 using MediatR;
 namespace HBYWCZP2024.Mediator.ECS;
 
@@ -34,3 +35,13 @@ public record MaterialInfo(string MaterialCode, int Channel);
 
 public record AskFakeCellPalletCommand(int StationNum) : IRequest;
 public record MoveFakeCellPalletCommand(int StationNum) : IRequest<bool>;
+/// <summary>
+/// 状态变更即上报
+/// </summary>
+/// <param name="Key"></param>
+/// <param name="InsideStationNum"></param>
+/// <param name="EquipStatus"></param>
+public record EquipStatusReportCommand(string Key, int InsideStationNum, EquipStatus EquipStatus) : IRequest<bool>;
+
+
+

@@ -46,7 +46,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (request.Start)
             {
+                var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.R));
+                //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
 
+                if (!data)
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+                    return false;
+                }
 
             }
             else
@@ -292,15 +299,37 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         {
 
                             var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
-                            { trayCode = pallet.PalletCode, trayType = ((int)Get(pallet)).ToString() }
+                            { trayCode = pallet.PalletCode, trayType = ((int)Get(pallet)).ToString()
+                            , CellList = pallet.Channels.Take(pallet.ChannelNum).Select(s => new CellInfo
+                                {
+                                    CellCode = s.Code,
+                                    Channel = s.Location + 1,
+                                    GradingType = 
+                                    MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                    (
+                                        codeMapTemp.Find(s.Code).Match(
+                                            Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                            None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                        )
+                                    ).ToString() :
+                                    (
+                                        tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                        isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                    ).ToString(),
+                                    CellType = s.GetCellType()
+                                }).ToArray()
+                            }
                             );
 
                             return res.IsSuccess;
                         }
                         else if (pallet.Type == PalletType.组盘)
                         {
+                            // 一注组盘可能要传
                             var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
-                            { trayCode = pallet.PalletCode }
+                            { trayCode = pallet.PalletCode,
+                              //cellCodes =  s
+                            }
                            );
                             return res.IsSuccess;
 
@@ -328,33 +357,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 // 作业结束
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
                 {
-                    ecsService.EquipOutAsync(new EquipOutRequest(request.Key)
-                    {
-                        TrayCode = pallet.PalletCode,
-                        TrayType = pallet.OKNGType.ToString(),
-                        Location = (pallet.PalletId + 1).ToString(),
-                    }).Wait();
+                    var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.E));
                     //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
 
+                    if (!data)
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+                        return false;
+                    }
 
-                    var e106 = await hBECSService.SendAsync<S106, E106>(new()
-                    {
-                        TrayNumber = pallet.PalletCode,
-                        TrayPosition = pallet.PalletId + 1,
-                        TrayType = pallet.OKNGType,
-                        OutSideStationNum = pallet.OutsideStationNum.ToString(),
-                        //PalletStatus = pallet.Channels.Take(pallet.ChannelNum).All(s => s.BatteryLevel != Models.BatteryLevel.None && s.BatteryLevel != Models.BatteryLevel.EMPTY) ? PalletStatus.满盘 : PalletStatus.不满
-                    }, pallet.OutsideStationNum);
-                    if (e106 == null)
-                    {
-                        await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                        return false;
-                    }
-                    if (e106.DeviceStatus != DeviceStatus2.OK)
-                    {
-                        await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {e106.ErrorCode}"));
-                        return false;
-                    }
                 }
 
 

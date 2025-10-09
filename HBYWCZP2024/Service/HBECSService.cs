@@ -85,7 +85,7 @@ namespace HBYWCZP2024.Service
             {
                 try
                 {
-                    await SendAsync<S000, E000>(new S000());
+                    //await SendAsync<S000, E000>(new S000());
                     await Task.Delay(MainStorage.Saves.HeartbeartDuring);
                 }
                 catch (Exception ex)

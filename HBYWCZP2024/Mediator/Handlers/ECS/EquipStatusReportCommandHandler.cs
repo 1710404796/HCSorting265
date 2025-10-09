@@ -1,0 +1,62 @@
+﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.ECS;
+using HBYWCZP2024.Service;
+using HBYWCZP2024.Utils;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HBYWCZP2024.Mediator.Handlers.ECS
+{
+    internal class EquipStatusReportCommandHandler(IHBECSServiceFactory hBECSServiceFactory,
+        IMediator mediator) : IRequestHandler<EquipStatusReportCommand, bool>
+    {
+        public async Task<bool> Handle(EquipStatusReportCommand request, CancellationToken cancellationToken)
+        {
+            var hbecsService = hBECSServiceFactory.Create(request.Key);
+            var newECSService = hbecsService.NewECSService;
+
+            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
+
+            if (pallet == null)
+            {
+                throw new Exception("托盘不存在");
+            }
+
+            if (pallet.Type == Models.CZPallet.PalletType.筛选)
+            {
+                var loc = pallet.OKNGType == TrayType.NG ? "ng托盘" : "筛选托盘";
+                return (await newECSService.EquipStatusReportAsync([new EquipStatusRequest(request.Key)
+                {
+                    TrayCode = pallet.PalletCode,
+                    Location = loc,
+                    StatusEnum = request.EquipStatus
+                }])).Map(r => true).IfFail(ex =>
+                {
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}状态上报MES失败: {ex.Message}")).Wait();
+                    return false;
+                });
+            }
+            else
+            {
+                return (await newECSService.StageStatusReportAsync([new StageStatusRequest(request.Key)
+                {
+                    TrayCode = pallet.PalletCode,
+                    Location = pallet.PalletId.ToString(),
+                    StatusEnum = request.EquipStatus
+                }])).Map(r => true).IfFail(ex =>
+                {
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}状态上报MES失败: {ex.Message}")).Wait();
+                    return false;
+                });
+
+
+            }
+           
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.Service;
 using LinxUniverse.Utils;
 using System;
 using System.Collections.Generic;
@@ -170,6 +171,14 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ResetTable;
             set => KeysSave[SelectStageName].ResetTable = value;
         }
+
+
+        [JsonIgnore]
+        public EquipmentType EquipType
+        {
+            get => KeysSave[SelectStageName].EquipType;
+            set => KeysSave[SelectStageName].EquipType = value;
+        }
         public int HeartbeartDuring { get; set; } = 5000;
         public byte MarkCode { get; set; } = 1;
         public byte NgCode { get; set; } = 2;
@@ -281,6 +290,11 @@ namespace HBYWCZP2024.Models
             get;
             set;
         } = string.Empty;
+        public EquipmentType EquipType
+        {
+            get;
+            set;
+        } = EquipmentType.AEB;
         public string StepCode
         {
             get;

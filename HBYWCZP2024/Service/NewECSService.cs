@@ -68,7 +68,7 @@ namespace HBYWCZP2024.Service
         }
 
         /// <summary>
-        /// 库位状态上报
+        /// 库位状态上报(暂时不用)
         /// </summary>
         /// <param name="request">库位状态上报请求参数</param>
         /// <returns>库位状态上报响应结果</returns>
@@ -78,7 +78,7 @@ namespace HBYWCZP2024.Service
         }
 
         /// <summary>
-        /// 火警信息上报
+        /// 火警信息上报(暂时不用)
         /// </summary>
         /// <param name="request">火警上报请求参数</param>
         /// <returns>火警上报响应结果</returns>
@@ -332,7 +332,7 @@ namespace HBYWCZP2024.Service
         public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
 
         [JsonPropertyName("equipType")]
-        public int EquipType { get; set; }
+        public EquipmentType EquipType  => MainStorage.Saves.KeysSave[name].EquipType;
 
         [JsonPropertyName("trayCode")]
         public string TrayCode { get; set; } = string.Empty;
@@ -350,49 +350,57 @@ namespace HBYWCZP2024.Service
     /// <summary>
     /// 设备状态上报请求
     /// </summary>
-    public class EquipStatusRequest
+    public class EquipStatusRequest(string name)
     {
         [JsonPropertyName("equipNum")]
-        public string EquipNum { get; set; } = string.Empty;
+        public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
 
         [JsonPropertyName("equipType")]
-        public int EquipType { get; set; }
+        public EquipmentType EquipType => MainStorage.Saves.KeysSave[name].EquipType;
 
         [JsonPropertyName("location")]
         public string? Location { get; set; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
+        public string Status => StatusEnum.ToString();
+        [JsonIgnore]
+        public EquipStatus StatusEnum { get; set; } 
 
         [JsonPropertyName("trayCode")]
         public string? TrayCode { get; set; }
 
         [JsonPropertyName("cellCode")]
-        public string? CellCode { get; set; }
+        public string? CellCode { get; set; } = "";
 
         [JsonPropertyName("ErrorMsg")]
-        public string? ErrorMsg { get; set; }
+        public string? ErrorMsg { get; set; } = "";
 
         [JsonPropertyName("ErrorCode")]
-        public string? ErrorCode { get; set; }
+        public string? ErrorCode { get; set; } = "";
     }
+
+    //public enum EquipStatusType
+
 
     /// <summary>
     /// 库位状态上报请求
     /// </summary>
-    public class StageStatusRequest
+    public class StageStatusRequest(string name)
     {
         [JsonPropertyName("equipNum")]
-        public string EquipNum { get; set; } = string.Empty;
+        public string EquipNum  => MainStorage.Saves.KeysSave[name].EquipNum;
 
         [JsonPropertyName("equipType")]
-        public int EquipType { get; set; }
+        public EquipmentType EquipType => MainStorage.Saves.KeysSave[name].EquipType;
 
         [JsonPropertyName("location")]
         public string? Location { get; set; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
+        public string Status => StatusEnum.ToString();
+        [JsonIgnore]
+        public EquipStatus StatusEnum { get; set; }
+
 
         [JsonPropertyName("trayCode")]
         public string? TrayCode { get; set; }
@@ -645,5 +653,82 @@ namespace HBYWCZP2024.Service
 
     #endregion
 
+    public enum EquipmentType
+    {
+        // 设备类型代码为 0: OCV
+        OCV = 0,
+
+        // 设备类型代码为 1: 化成 FMT
+        FMT = 1,
+
+        // 设备类型代码为 2: DCIR
+        DCIR = 2,
+
+        // 设备类型代码为 3: 筛选 SEL
+        SEL = 3,
+
+        // 设备类型代码为 4: 物流线 CV
+        CV = 4,
+
+        // 设备类型代码为 5: 堆垛机 STACKER
+        STACKER = 5,
+
+        // 设备类型代码为 6: 扫码轮 BCR
+        BCR = 6,
+
+        // 设备类型代码为 7: 组盘机 AEB
+        AEB = 7,
+
+        // 设备类型代码为 8: 拆盘机 DAEB
+        DAEB = 8,
+
+        // 设备类型代码为 9: 注液机 LIQUID
+        LIQUID = 9,
+
+        // 设备类型代码为 10: 包膜机 LAMINAT
+        LAMINAT = 10,
+
+        // 设备类型代码为 11: 充气打扣机 NAIL
+        NAIL = 11,
+
+        // 设备类型代码为 12: 清洗机 CLEAR
+        CLEAR = 12,
+
+        // 设备类型代码为 13: 后气检机 HELIUM
+        HELIUM = 13,
+
+        // 设备类型代码为 14: 密封打扣机 SEAL
+        SEAL = 14,
+
+        // 设备类型代码为 15: 外观检测机 INSPECT
+        INSPECT = 15,
+
+        // 设备类型代码为 16: 火灾 FIRE
+        FIRE = 16,
+
+        // 设备类型代码为 17: 扣束机 RESTRAINT
+        RESTRAINT = 17,
+
+        // 设备类型代码为 18: 拧扣机 PININ
+        PININ = 18,
+
+        // 设备类型代码为 19: 拧盘机 PINOUT
+        PINOUT = 19,
+
+        // 设备类型代码为 20: 换盘机 CEB
+        CEB = 20,
+
+        // 设备类型代码为 21: 预充 PRECHARGE
+        PRECHARGE = 21,
+
+        // 设备类型代码为 22: 分容机 CAPACITY
+        CAPACITY = 22,
+
+        // 设备类型代码为 23: SOC
+        SOC = 23,
+
+        // 设备类型代码为 24: 其他 OTHER
+        OTHER = 24
+    }
 
 }

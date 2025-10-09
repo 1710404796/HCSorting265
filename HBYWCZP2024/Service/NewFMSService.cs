@@ -30,6 +30,12 @@ namespace HBYWCZP2024.Service
             _logger = logger;
         }
 
+        /// <summary>
+        /// 圆柱产品获取配方，我不管
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+
         public Task<Result<ScreenRecipeResponse>> ScreenRecipeAsync(ScreenRecipeRequest request) //暂时不用
         {
             return SendFmsRequest<ScreenRecipeResponse>("api/fms/screen/recipe", request);

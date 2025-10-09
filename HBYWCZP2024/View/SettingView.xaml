@@ -60,7 +60,7 @@
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
     x:Name="ECSIPBox"
-    Text="{Binding ViewModel.Saves.ECSIP, Mode=TwoWay}"
+    Text="{Binding ViewModel.Saves.ECSUrl, Mode=TwoWay}"
 ></TextBox>
                 <TextBlock FontSize="15"
      Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -203,8 +203,25 @@
     HorizontalAlignment="Left"
     Text="{Binding ViewModel.Saves.ProductType, Mode=TwoWay}"
 ></TextBox>
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    设备类型
+                </TextBlock>
+                <ComboBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="EquipmentTypeComboBox"
+    ItemsSource="{Binding ViewModel.EquipmentTypes}"
+    DisplayMemberPath="Value"
+    SelectedValuePath="Key"
+    SelectedValue="{Binding ViewModel.Saves.EquipType, Mode=TwoWay}"
+></ComboBox>
 
-<StackPanel Orientation="Vertical" x:Name="ApiEnableStack">
+
+                <StackPanel Orientation="Vertical" x:Name="ApiEnableStack">
                 <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能(MES)</CheckBox>

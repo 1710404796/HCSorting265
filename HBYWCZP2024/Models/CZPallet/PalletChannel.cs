@@ -82,6 +82,17 @@ namespace HBYWCZP2024.Models
         /// 获取等级颜色
         /// </summary>
         /// <returns></returns>
+        public int GetCellType()
+        {
+            return BatteryLevel switch
+            {
+                BatteryLevel.None => 0,
+                BatteryLevel.EMPTY => 0,
+                BatteryLevel.NG => 2,
+                BatteryLevel.Fake => 3,
+                _ => 1,
+            };
+        }
         public Brush GetBrush()
         {
             Brush colorDefault = (Brush)Application.Current.Resources["SystemControlPageTextBaseHighBrush"];
