@@ -1,4 +1,5 @@
-﻿using HBYWCZP2024.Data;
+﻿using Azure;
+using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Service.Models;
@@ -85,6 +86,11 @@ namespace HBYWCZP2024.Service
         public Task<Result<FireAlarmResponse>> FireAlarmReportAsync(FireAlarmRequest request)
         {
             return SendEcsRequest<FireAlarmResponse>("/ecs/api/fire/alarm", request);
+        }
+
+        public Task<Result<CvResponse>> CvRequestAsync(CvRequest request)
+        {
+            return SendEcsRequest<CvResponse>("/ecs/api/cvrequest", request);
         }
 
         #endregion
@@ -178,6 +184,7 @@ namespace HBYWCZP2024.Service
 
             try
             {
+                //, options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
                 var res = await _httpClient.PostAsJsonAsync(_url, data);
                 //var res = await _httpClient.PostAsJsonAsync(api, data);
 
@@ -299,9 +306,37 @@ namespace HBYWCZP2024.Service
 
     #region 请求模型
 
+    public class CvRequest(string name)
+
+    {
+        [JsonPropertyName("equipNum")]
+        public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
+
+        [JsonPropertyName("equipType")]
+        public int EquipType { get; set; }
+
+        [JsonPropertyName("trayCode")]
+        public string TrayCode { get; set; } = string.Empty;
+
+        [JsonPropertyName("location")]
+        public string? Location { get; set; }
+
+        [JsonPropertyName("trayType")]
+        public string? TrayType { get; set; }
+
+        [JsonPropertyName("cellCode")]
+        public string? CellCode { get; set; }
+
+
+        [JsonPropertyName("dest")]
+        public string? Dest { get; set; }
+    }
+
+
     /// <summary>
     /// 设备进站请求
     /// </summary>
+
     public class EquipEnterRequest(string name)
     {
         [JsonPropertyName("equipNum")]
@@ -459,18 +494,18 @@ namespace HBYWCZP2024.Service
     {
         public string trayCode { get; set; }
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
-        public string ProductModelCode { get; set; }
+        public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].ProductModelCode;
         public string stepCode { get; set; } = MainStorage.Saves.KeysSave[name].StepCode;
-        public string lotNo { get; set; }
-        public Cellcodes cellCodes { get; set; }
+        public string lotNo { get; set; } = string.Empty;
+        public Cellcode[] cellCodes { get; set; } = [];
     }
 
-    public class Cellcodes
+    public class Cellcode
     {
-        public string cellCode { get; set; }
+        public string cellCode { get; set; } = string.Empty;
         public int channel { get; set; }
         public int cellType { get; set; }
-        public string gradingType { get; set; }
+        public string gradingType { get; set; } = string.Empty;
     }
 
 
@@ -502,6 +537,15 @@ namespace HBYWCZP2024.Service
         [JsonPropertyName("time")]
         public string Time { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// 设备进站响应
+    /// </summary>
+    public class CvResponse : EcsResponseBase
+    {
+
+    }
+
 
     /// <summary>
     /// 设备进站响应

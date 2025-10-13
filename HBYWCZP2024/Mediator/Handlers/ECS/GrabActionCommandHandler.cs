@@ -300,10 +300,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                             var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
                             { trayCode = pallet.PalletCode, trayType = ((int)Get(pallet)).ToString()
-                            , CellList = pallet.Channels.Take(pallet.ChannelNum).Select(s => new CellInfo
+                            , CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
                                 {
                                     CellCode = s.Code,
-                                    Channel = s.Location + 1,
+                                    Channel = i + 1,
                                     GradingType = 
                                     MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
                                     (
@@ -317,7 +317,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                         isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
                                     ).ToString(),
                                     CellType = s.GetCellType()
-                                }).ToArray()
+                                })
+                            .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
+                            .ToArray()
                             }
                             );
 
@@ -328,7 +330,28 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             // 一注组盘可能要传
                             var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                             { trayCode = pallet.PalletCode,
-                              //cellCodes =  s
+                               cellCodes = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
+                                {
+                                    cellCode = s.Code,
+                                    channel = i + 1,
+                                    gradingType = 
+                                    MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                    (
+                                        codeMapTemp.Find(s.Code).Match(
+                                            Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                            None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                        )
+                                    ).ToString() :
+                                    (
+                                        tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                        isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                    ).ToString(),
+                                    cellType = s.GetCellType()
+                                })
+                                .Filter(s => !string.IsNullOrWhiteSpace(s.cellCode))
+
+                               .ToArray()
+                                //cellCodes =  s
                             }
                            );
                             return res.IsSuccess;

@@ -171,7 +171,13 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ResetTable;
             set => KeysSave[SelectStageName].ResetTable = value;
         }
+        [JsonIgnore]
 
+        public string ProductModelCode
+        {
+            get => KeysSave[SelectStageName].ProductModelCode;
+            set => KeysSave[SelectStageName].ProductModelCode = value;
+        }
 
         [JsonIgnore]
         public EquipmentType EquipType
@@ -179,6 +185,13 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].EquipType;
             set => KeysSave[SelectStageName].EquipType = value;
         }
+        [JsonIgnore]
+        public bool ExDb
+        {
+            get => KeysSave[SelectStageName].ExDb;
+            set => KeysSave[SelectStageName].ExDb = value;
+        }
+
         public int HeartbeartDuring { get; set; } = 5000;
         public byte MarkCode { get; set; } = 1;
         public byte NgCode { get; set; } = 2;
@@ -310,9 +323,9 @@ namespace HBYWCZP2024.Models
             get;
             set;
         } = string.Empty;
+        public string ProductModelCode { get; set; } = string.Empty;
+
         public bool ResetTable { get; set; }
-
-
     }
 
     public class OKNGCnt

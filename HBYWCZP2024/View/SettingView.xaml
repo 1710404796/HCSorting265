@@ -48,7 +48,19 @@
                     x:Name="IPBox"
                     Text="{Binding ViewModel.Saves.MESIP, Mode=TwoWay}"
                 ></TextBox>
-
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    ECSIP
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    x:Name="IPBox11"
+    Text="{Binding ViewModel.Saves.ECSUrl, Mode=TwoWay}"
+></TextBox>
                 <TextBlock FontSize="15"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
     Margin="0,15,0,0"
@@ -60,7 +72,7 @@
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
     x:Name="ECSIPBox"
-    Text="{Binding ViewModel.Saves.ECSUrl, Mode=TwoWay}"
+    Text="{Binding ViewModel.Saves.FMSUrl, Mode=TwoWay}"
 ></TextBox>
                 <TextBlock FontSize="15"
      Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -188,6 +200,32 @@
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
     Text="{Binding ViewModel.Saves.UserName, Mode=TwoWay}"
+></TextBox>
+
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    StepCode(FMS)
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    Text="{Binding ViewModel.Saves.StepCode, Mode=TwoWay}"
+></TextBox>
+
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    ProductModelCode(FMS)
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    Text="{Binding ViewModel.Saves.ProductModelCode, Mode=TwoWay}"
 ></TextBox>
 
 
@@ -342,6 +380,10 @@ HorizontalAlignment="Left"
 
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPower_Click">权限配置</Button>
 
+                <CheckBox Margin="0,10,0,0" 
+          IsChecked="{Binding ViewModel.Saves.ExDb}">
+                    多工位额外db flag
+                </CheckBox>
                 <CheckBox Margin="0,10,0,0" 
           IsChecked="{Binding ViewModel.IsBackGround}">
                     是否有背景

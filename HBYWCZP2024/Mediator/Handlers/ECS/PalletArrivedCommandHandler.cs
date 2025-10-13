@@ -37,7 +37,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     TrayCode = pallet.PalletCode,
                     TrayType = pallet.Type.ToString(),
-                    Location = pallet.PalletId.ToString() // 可能+1
+                    Location = pallet.OutsideStationNum.ToString() // 可能+1
                 });
             // 不知道要不要上报
             //var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.T));

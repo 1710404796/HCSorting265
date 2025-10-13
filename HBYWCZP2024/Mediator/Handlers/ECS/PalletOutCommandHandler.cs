@@ -12,6 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LanguageExt;
+using static LanguageExt.Prelude;
+
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
     internal class PalletOutCommandHandler(IHBECSServiceFactory hBECSServiceFactory, 
@@ -37,17 +40,38 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 TrayCode = pallet.PalletCode,
                 TrayType = pallet.Type.ToString(),
-                Location = pallet.PalletId.ToString()
+                Location = pallet.OutsideStationNum.ToString()
+            });
+            var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            {
+                TrayCode = pallet.PalletCode,
+                TrayType = pallet.Type.ToString(),
+                Location = pallet.OutsideStationNum.ToString()
             });
 
-            return response.Match(
+            var v = response
+                .Match(
                 Succ: r => true,
                 Fail: ex =>
                 {
-                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报MES失败: {ex.Message}")).Wait();
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
                     return false;
                 }
                 );
+
+            if (!v) return false;
+
+            return rrn
+                .Match(
+                Succ: r => true,
+                Fail: ex =>
+                {
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+                    return false;
+                }
+                );
+
+
 
             //TrayType Get(Pallet pallet)
             //{

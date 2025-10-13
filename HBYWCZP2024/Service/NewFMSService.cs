@@ -38,26 +38,26 @@ namespace HBYWCZP2024.Service
 
         public Task<Result<ScreenRecipeResponse>> ScreenRecipeAsync(ScreenRecipeRequest request) //暂时不用
         {
-            return SendFmsRequest<ScreenRecipeResponse>("api/fms/screen/recipe", request);
+            return SendFmsRequest<ScreenRecipeResponse>("/api/fms/screen/recipe", request);
         }
 
 
 
         public Task<Result<ScreenUploadResponse>> ScreenUploadAsync(ScreenRecipeRequest request)
         {
-            return SendFmsRequest<ScreenUploadResponse>("api/fms/screen/upload", request);
+            return SendFmsRequest<ScreenUploadResponse>("/api/fms/screen/upload", request);
         }
 
         public Task<Result<MpSplitResponse>> MpSplitAsync(MpSplitRequest request)
         {
-            return SendFmsRequest<MpSplitResponse>("api/fms/mp/split", request);
+            return SendFmsRequest<MpSplitResponse>("/api/fms/mp/split", request);
         }
 
 
 
         public Task<Result<MpUploadResponse>> MpUploadAsync(MpUploadRequest request)
         {
-            return SendFmsRequest<MpUploadResponse>("api/fms/mp/upload", request);
+            return SendFmsRequest<MpUploadResponse>("/api/fms/mp/upload", request);
         }
 
         public async Task<Result<T>> SendFmsRequest<T>(string api, object data) where T : IFmsResponse
@@ -133,7 +133,7 @@ namespace HBYWCZP2024.Service
         private async Task<Result<T>> SendFmsRequest1<T>(string api, object data) where T : IFmsResponse
         {
             // 这里需要根据实际的ECS服务器地址配置
-            string _url = $"http://{MainStorage.Saves.KeysSave[Name].ECSUrl}{api}";
+            string _url = $"http://{MainStorage.Saves.KeysSave[Name].FMSUrl}{api}";
 
             _logger.LogInformation("请求ECS地址: {url}", _url);
 
@@ -144,10 +144,10 @@ namespace HBYWCZP2024.Service
 
                 if (res.IsSuccessStatusCode)
                 {
-                    _logger.LogInformation("请求ECS成功");
+                    _logger.LogInformation("请求FMS成功");
                     var resdata = await res.Content.ReadAsStringAsync();
 
-                    _logger.LogInformation("ECS返回数据: {resdata}", resdata);
+                    _logger.LogInformation("FMS返回数据: {resdata}", resdata);
                     var response = JsonSerializer.Deserialize<T>(resdata);
                     if (response != null)
                     {
