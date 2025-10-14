@@ -161,8 +161,8 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
-            pallet.ClearStage();
             await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum));
+            pallet.ClearStage();
             return true;
         }
     }

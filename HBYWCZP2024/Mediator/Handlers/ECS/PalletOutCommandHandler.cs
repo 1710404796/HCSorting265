@@ -42,12 +42,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 TrayType = ((int)pallet.OKNGType).ToString(),
                 Location = pallet.OutsideStationNum.ToString()
             });
-            var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
-            {
-                TrayCode = pallet.PalletCode,
-                TrayType = ((int)pallet.OKNGType).ToString(),
-                Location = pallet.OutsideStationNum.ToString()
-            });
+           
 
             var v = response
                 .Match(
@@ -60,7 +55,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 );
 
             if (!v) return false;
-
+            var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            {
+                TrayCode = pallet.PalletCode,
+                TrayType = ((int)pallet.OKNGType).ToString(),
+                Location = pallet.OutsideStationNum.ToString()
+            });
             return rrn
                 .Match(
                 Succ: r => true,
