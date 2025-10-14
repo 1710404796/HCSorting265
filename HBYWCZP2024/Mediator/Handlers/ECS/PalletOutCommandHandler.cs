@@ -39,13 +39,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             Result<EquipOutResponse> response = await newECSService.EquipOutAsync(new EquipOutRequest(request.Key)
             {
                 TrayCode = pallet.PalletCode,
-                TrayType = pallet.Type.ToString(),
+                TrayType = ((int)pallet.OKNGType).ToString(),
                 Location = pallet.OutsideStationNum.ToString()
             });
             var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
             {
                 TrayCode = pallet.PalletCode,
-                TrayType = pallet.Type.ToString(),
+                TrayType = ((int)pallet.OKNGType).ToString(),
                 Location = pallet.OutsideStationNum.ToString()
             });
 

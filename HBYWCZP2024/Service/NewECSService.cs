@@ -343,7 +343,7 @@ namespace HBYWCZP2024.Service
         public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
 
         [JsonPropertyName("equipType")]
-        public int EquipType { get; set; }
+        public EquipmentType EquipType => MainStorage.Saves.KeysSave[name].EquipType;
 
         [JsonPropertyName("trayCode")]
         public string TrayCode { get; set; } = string.Empty;
@@ -621,7 +621,7 @@ namespace HBYWCZP2024.Service
     public class EquipEnterResult
     {
         [JsonPropertyName("channelNum")]
-        public int ChannelNum { get; set; }
+        public int? ChannelNum { get; set; }
 
         [JsonPropertyName("cellList")]
         public CellInfo[] CellList { get; set; } = new CellInfo[0];
@@ -630,7 +630,7 @@ namespace HBYWCZP2024.Service
         public string? TrayCode { get; set; }
 
         [JsonPropertyName("trayType")]
-        public int TrayType { get; set; }
+        public string? TrayType { get; set; }
 
         [JsonPropertyName("ret")]
         public int Ret { get; set; }
@@ -645,7 +645,7 @@ namespace HBYWCZP2024.Service
     public class EquipOutResult
     {
         [JsonPropertyName("channelNum")]
-        public int ChannelNum { get; set; }
+        public int? ChannelNum { get; set; }
 
         [JsonPropertyName("cellList")]
         public CellInfo[] CellList { get; set; } = new CellInfo[0];
@@ -654,7 +654,7 @@ namespace HBYWCZP2024.Service
         public string? TrayCode { get; set; }
 
         [JsonPropertyName("trayType")]
-        public int TrayType { get; set; }
+        public string? TrayType { get; set; }
 
         [JsonPropertyName("ret")]
         public int Ret { get; set; }

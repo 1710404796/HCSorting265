@@ -36,7 +36,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 new EquipEnterRequest(request.Key)
                 {
                     TrayCode = pallet.PalletCode,
-                    TrayType = pallet.Type.ToString(),
+                    TrayType = ((int)pallet.OKNGType).ToString(),
                     Location = pallet.OutsideStationNum.ToString() // 可能+1
                 });
             // 不知道要不要上报
@@ -65,7 +65,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             _ => Models.BatteryLevel.EMPTY
 
                         };
-                        await pallet.BindBattery(channelId, cell.CellCode, true, type);
+                        await pallet.BindBattery(channelId - 1, cell.CellCode, true, type);
                     });
 
                     return true;    
