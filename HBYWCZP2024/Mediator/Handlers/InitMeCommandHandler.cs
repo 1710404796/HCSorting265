@@ -178,6 +178,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                         se.RegisterTask(new PalletArrivedTask(i));
                         se.RegisterTask(new GrabActionTask(i));
                         se.RegisterTask(new PalletOutTask(i));
+                        se.RegisterTask(new PalletOutTask2(i));
                         se.RegisterTask(new GrabActionExitTask(i));
 
                     }
