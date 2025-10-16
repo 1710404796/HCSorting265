@@ -178,6 +178,13 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ProductModelCode;
             set => KeysSave[SelectStageName].ProductModelCode = value;
         }
+        [JsonIgnore]
+
+        public string FilterSpecialNum
+        {
+            get => KeysSave[SelectStageName].FilterSpecialNum;
+            set => KeysSave[SelectStageName].FilterSpecialNum = value;
+        }
 
         [JsonIgnore]
         public EquipmentType EquipType
@@ -234,6 +241,7 @@ namespace HBYWCZP2024.Models
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }
+        public bool FilterSpecialEnable { get; set; }
     }
     public class LevelName
     {
@@ -324,6 +332,12 @@ namespace HBYWCZP2024.Models
             set;
         } = string.Empty;
         public string ProductModelCode { get; set; } = string.Empty;
+
+        public string FilterSpecialNum
+        {
+            get;
+            set;
+        } = string.Empty;
 
         public bool ResetTable { get; set; }
     }
