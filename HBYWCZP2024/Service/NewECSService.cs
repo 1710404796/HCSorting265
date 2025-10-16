@@ -90,7 +90,7 @@ namespace HBYWCZP2024.Service
 
         public Task<Result<CvResponse>> CvRequestAsync(CvRequest request)
         {
-            return SendEcsRequest<CvResponse>("/ecs/api/cvrequest", request);
+            return SendEcsRequest<CvResponse>("/ecs/api/equip/cvrequest", request);
         }
 
         #endregion
@@ -313,7 +313,8 @@ namespace HBYWCZP2024.Service
         public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
 
         [JsonPropertyName("equipType")]
-        public int EquipType { get; set; }
+        //public int EquipType { get; set; }
+        public EquipmentType EquipType => MainStorage.Saves.KeysSave[name].EquipType;
 
         [JsonPropertyName("trayCode")]
         public string TrayCode { get; set; } = string.Empty;
