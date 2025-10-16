@@ -241,6 +241,22 @@
     HorizontalAlignment="Left"
     Text="{Binding ViewModel.Saves.ProductType, Mode=TwoWay}"
 ></TextBox>
+
+                <TextBlock FontSize="15"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    Margin="0,15,0,0"
+       >
+    特殊筛选目的工位号
+                </TextBlock>
+                <TextBox 
+    Width="200" 
+    Margin="0,10,0,0" 
+    HorizontalAlignment="Left"
+    Text="{Binding ViewModel.Saves.FilterSpecialNum, Mode=TwoWay}"
+></TextBox>
+
+
+
                 <TextBlock FontSize="15"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
     Margin="0,15,0,0"
@@ -322,7 +338,12 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HCInStationEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
 >接口高温入库使能(MES)</CheckBox>
-            </StackPanel>
+
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FilterSpecialEnable}"
+>特殊筛选工位使能(筛选)</CheckBox>
+
+                </StackPanel>
             </StackPanel>
 
 

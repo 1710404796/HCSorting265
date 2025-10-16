@@ -142,6 +142,33 @@ namespace HBYWCZP2024.PLC.Tasks
     /// <summary>
     /// 托盘离开任务 任务号3
     /// </summary>
+    [OPCDelectInfo(10, 11)]
+    public class PalletOutTask2 : HBBaseTask
+    {
+        public PalletOutTask2(int subIdx) : base(13)
+        {
+            TaskName = $"{subIdx} {Properties.Resources.TrayDepartureTask}";
+            SubIdx = subIdx;
+        }
+
+        public override async Task<bool> DoSth()
+        {
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
+            if (pallet == null || !pallet.IsEnable)
+            {
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
+                return false;
+            }
+
+            if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum, true)))
+            {
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
+
+            }
+            pallet.ClearStage();
+            return true;
+        }
+    }
 
     [OPCDelectInfo(10, 11)]
     public class PalletOutTask : HBBaseTask
