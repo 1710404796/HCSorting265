@@ -354,7 +354,7 @@ namespace HBYWCZP2024.Service
         public string? Location { get; set; }
 
         [JsonPropertyName("trayType")]
-        public int? TrayType { get; set; }
+        public string? TrayType { get; set; }
 
         [JsonPropertyName("cellCode")]
         public string? CellCode { get; set; }
@@ -646,8 +646,8 @@ namespace HBYWCZP2024.Service
         public int? ChannelNum { get; set; }
 
         [JsonPropertyName("cellList")]
-        //public CellInfo[] CellList { get; set; } = new CellInfo[0];
-        public CellInfo[]? CellList { get; set; } = null;
+        public CellInfo[] CellList { get; set; } = new CellInfo[0];
+        //public CellInfo[]? CellList { get; set; } = null;
 
         [JsonPropertyName("trayCode")]
         public string? TrayCode { get; set; }
@@ -656,7 +656,7 @@ namespace HBYWCZP2024.Service
         public string? TrayType { get; set; }
 
         [JsonPropertyName("productType")]
-        public string ProductType { get; set; }
+        public string? ProductType { get; set; }
 
         [JsonPropertyName("ret")]
         public int Ret { get; set; }

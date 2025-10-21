@@ -36,8 +36,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 new EquipEnterRequest(request.Key)
                 {
                     TrayCode = pallet.PalletCode,
-                    //TrayType = ((int)pallet.OKNGType).ToString(),
-                    TrayType = ((int)pallet.OKNGType),
+                    TrayType = ((int)pallet.OKNGType).ToString(),
                     Location = pallet.OutsideStationNum.ToString() // 可能+1
                 });
             // 不知道要不要上报
