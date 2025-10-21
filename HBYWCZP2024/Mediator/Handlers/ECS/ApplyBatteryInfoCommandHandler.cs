@@ -44,25 +44,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (pallet.Type == Models.CZPallet.PalletType.拆盘)
             {
-                var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
-                if (data == null)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                    return null;
-                }
+                //var data = await hBECSService.SendAsync<S103, E103>(new() { TrayNumber = pallet.PalletCode, TrayPosition = pallet.PalletId + 1, TrayType = pallet.OKNGType }, pallet.OutsideStationNum);
+                //if (data == null)
+                //{
+                //    await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
+                //    return null;
+                //}
 
-                data.BatteryCodes.Select((s,i) => (s, i)).ToList().ForEach(async (data) =>
-                {
-                    var code = data.s.Trim();
-                    if (isFake(code))
-                    {
-                        await pallet.BindBattery(data.i, code, true, BatteryLevel.Fake);
-                    }
-                    else
-                    {
-                        await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
-                    }
-                })
+                //data.BatteryCodes.Select((s,i) => (s, i)).ToList().ForEach(async (data) =>
+                //{
+                //    var code = data.s.Trim();
+                //    if (isFake(code))
+                //    {
+                //        await pallet.BindBattery(data.i, code, true, BatteryLevel.Fake);
+                //    }
+                //    else
+                //    {
+                //        await pallet.BindBattery(data.i, code, true, BatteryLevel.OK);
+                //    }
+                //})
                     ;
                 // 存日志
                 try
