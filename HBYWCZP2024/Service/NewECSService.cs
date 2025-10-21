@@ -488,8 +488,17 @@ namespace HBYWCZP2024.Service
     {
         public string trayCode { get; set; } = string.Empty;
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+        [JsonPropertyName("cells")]
+        public CellInfo1[] Cells { get; set; } = new CellInfo[0];
     }
+    public class CellInfo1
+    {
+        [JsonPropertyName("cellNo")]
+        public string CellCode { get; set; } = string.Empty;
 
+        [JsonPropertyName("channel")]
+        public int Channel { get; set; }
+    }
     public class MpUnbindWholeTrayRequest(string name)
     {
         public string trayCode { get; set; } = string.Empty;

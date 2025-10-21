@@ -26,6 +26,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         public async Task<bool> Handle(GrabCommand request, CancellationToken cancellationToken)
         {
             var hBECSService = hBECSServiceFactory.Create(request.Key);
+            var newEcsService = hBECSService.NewECSService;
+            var newFMSService = hBECSService.NewFMSService;
             if (request.GrabInfo.Infos.Length <= 0) return true;
 
             if (!string.IsNullOrWhiteSpace(request.GrabInfo.From.ServerIp) && request.GrabInfo.From.GetFromServer)
@@ -45,16 +47,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     var codes = request.GrabInfo.Infos
                         .Map(s => (s.FromChannel, s.Code))
                         .ToArray();
-                    var data = await hBECSService.SendAsync<S104, E104>(
-                        new S104() { 
-                            TrayNumber = from.PalletCode, 
-                            TrayPosition = from.PalletId + 1, 
-                            TrayType = from.OKNGType,
-                            BatteryCount = codes.Length,
-                            Battery = codes
-                        }
-                        , from.OutsideStationNum
-                        );
+                    //var data = await hBECSService.SendAsync<S104, E104>(
+                    //    new S104() { 
+                    //        TrayNumber = from.PalletCode, 
+                    //        TrayPosition = from.PalletId + 1, 
+                    //        TrayType = from.OKNGType,
+                    //        BatteryCount = codes.Length,
+                    //        Battery = codes
+                    //    }
+                    //    , from.OutsideStationNum
+                    //    );
+
+                    var data = await newFMSService.MpSplitAsync(new MpSplitRequest(request.Key)
+                    {
+                        trayCode = from.PalletCode,
+                        Cells = [..
+                            request.GrabInfo.Infos
+                            .Map(s => new CellInfo1{ CellCode = s.Code, Channel = s.FromChannel})
+                            .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))]
+                    }, from.OutsideStationNum);
 
                     if (data == null)
                     {
