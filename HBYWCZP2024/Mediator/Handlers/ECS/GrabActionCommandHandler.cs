@@ -359,7 +359,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         }
                         else if (pallet.Type == PalletType.拆盘)
                         {
-                            var res = await fmsService.MpSplitAsync(new MpSplitRequest(request.Key)
+                            var res = await fmsService.MpunbindWholeTrayAsync(new MpUnbindWholeTrayRequest(request.Key)
                             { trayCode = pallet.PalletCode }
                            );
                             return res.IsSuccess;

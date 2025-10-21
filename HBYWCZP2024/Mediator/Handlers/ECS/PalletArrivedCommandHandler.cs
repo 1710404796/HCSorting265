@@ -53,7 +53,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var a = await response.Match(
                 Succ: async r =>
                 {
-                    r.Result?.CellList.ToList().ForEach(async cell =>
+                    r.Result?.CellList?.ToList().ForEach(async cell =>
                     {
                         var channelId = cell.Channel;
                         var type = cell.CellType switch

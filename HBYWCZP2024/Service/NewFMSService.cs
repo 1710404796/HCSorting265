@@ -53,7 +53,10 @@ namespace HBYWCZP2024.Service
             return SendFmsRequest<MpSplitResponse>("/api/fms/mp/split", request);
         }
 
-
+        public Task<Result<MpUnbindWholeTrayResponse>> MpunbindWholeTrayAsync(MpUnbindWholeTrayRequest request)
+        {
+            return SendFmsRequest<MpUnbindWholeTrayResponse>("/api/fms/mp/unbindWholeTray", request);
+        }
 
         public Task<Result<MpUploadResponse>> MpUploadAsync(MpUploadRequest request)
         {
