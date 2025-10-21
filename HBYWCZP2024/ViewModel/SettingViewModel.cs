@@ -45,7 +45,8 @@ namespace HBYWCZP2024.ViewModel
             new(EquipmentType.NAIL, "NAIL - 充气打扣机"),
             new(EquipmentType.CLEAR, "CLEAR - 清洗机"),
             new(EquipmentType.HELIUM, "HELIUM - 后气检机"),
-            new(EquipmentType.SEAL, "SEAL - 密封打扣机")
+            new(EquipmentType.SEAL, "SEAL - 密封打扣机"),
+            new(EquipmentType.CEB, "CEB - 换盘机")
         };
     }
 }

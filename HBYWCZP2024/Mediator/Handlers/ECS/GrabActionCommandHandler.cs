@@ -365,6 +365,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             return res.IsSuccess;
 
                         }
+                        else if (pallet.Type == PalletType.拆盘单爪)
+                        {
+                            var res = await fmsService.MpSplitAsync(new MpSplitRequest(request.Key)
+                            { trayCode = pallet.PalletCode }
+                           );
+                            return res.IsSuccess;
+
+                        }
                         return false;
                     }
 

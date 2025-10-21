@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -353,7 +354,7 @@ namespace HBYWCZP2024.Service
         public string? Location { get; set; }
 
         [JsonPropertyName("trayType")]
-        public string? TrayType { get; set; }
+        public int? TrayType { get; set; }
 
         [JsonPropertyName("cellCode")]
         public string? CellCode { get; set; }
@@ -488,7 +489,16 @@ namespace HBYWCZP2024.Service
     {
         public string trayCode { get; set; } = string.Empty;
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+        public Call[] calls { get; set; } = [];
+        
     }
+
+    public class Call
+    { 
+        public string cellNo { get; set; } = string.Empty;
+        public string channel { get; set; } = string.Empty;
+    }
+
 
     public class MpUnbindWholeTrayRequest(string name)
     {

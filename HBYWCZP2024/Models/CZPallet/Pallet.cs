@@ -39,6 +39,7 @@ namespace HBYWCZP2024.Models.CZPallet
     public enum PalletType
     {
         拆盘,
+        拆盘单爪,
         组盘,
         筛选,
         异常口,
