@@ -490,6 +490,11 @@ namespace HBYWCZP2024.Service
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
     }
 
+    public class MpUnbindWholeTrayRequest(string name)
+    {
+        public string trayCode { get; set; } = string.Empty;
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+    }
 
     public class MpUploadRequest(string name)
     {
@@ -607,6 +612,12 @@ namespace HBYWCZP2024.Service
     {
 
     }
+
+    public class MpUnbindWholeTrayResponse : FmsResponseBase
+    { 
+    
+    }
+
     public class MpUploadResponse : FmsResponseBase
     {
 
@@ -625,7 +636,8 @@ namespace HBYWCZP2024.Service
         public int? ChannelNum { get; set; }
 
         [JsonPropertyName("cellList")]
-        public CellInfo[] CellList { get; set; } = new CellInfo[0];
+        //public CellInfo[] CellList { get; set; } = new CellInfo[0];
+        public CellInfo[]? CellList { get; set; } = null;
 
         [JsonPropertyName("trayCode")]
         public string? TrayCode { get; set; }
@@ -633,11 +645,15 @@ namespace HBYWCZP2024.Service
         [JsonPropertyName("trayType")]
         public string? TrayType { get; set; }
 
+        [JsonPropertyName("productType")]
+        public string ProductType { get; set; }
+
         [JsonPropertyName("ret")]
         public int Ret { get; set; }
 
         [JsonPropertyName("ngCodes")]
-        public string[] NgCodes { get; set; } = new string[0];
+        //public string[] NgCodes { get; set; } = new string[0];
+        public string[]? NgCodes { get; set; } = null;
     }
 
     /// <summary>
