@@ -65,7 +65,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             request.GrabInfo.Infos
                             .Map(s => new CellInfo1{ CellCode = s.Code, Channel = s.FromChannel})
                             .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))]
-                    }, from.OutsideStationNum);
+                    });
 
                     if (data == null)
                     {

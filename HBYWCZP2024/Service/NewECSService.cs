@@ -489,7 +489,7 @@ namespace HBYWCZP2024.Service
         public string trayCode { get; set; } = string.Empty;
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
         [JsonPropertyName("cells")]
-        public CellInfo1[] Cells { get; set; } = new CellInfo[0];
+        public CellInfo1[] Cells { get; set; } = new CellInfo1[0];
     }
     public class CellInfo1
     {
