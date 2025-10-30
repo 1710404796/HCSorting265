@@ -39,7 +39,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "拆盘类型", "组盘类型" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "空筛选" , "拆盘托盘", "组盘托盘" };
 
         public StationSettingView()
         {
@@ -202,11 +202,27 @@ namespace HBYWCZP2024.View.CZPallet
                 station.Column = int.Parse(columnNum[i].Text);
                 station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
+             
+
                 if (station is Pallet pallet)
                 {
-                    pallet.OKNGType = (TrayType)OKNGBoxes[i].SelectedIndex;
+                    if (OKNGBoxes[i].SelectedIndex >= 0 && OKNGBoxes[i].SelectedIndex < OKNGBoxes[i].Items.Count)
+                    {
+                        pallet.OKNGType = (TrayType)OKNGBoxes[i].SelectedIndex;
+                        //switch
+                        //{
+                        //    0 => TrayType.Engineering,
+                        //    1 => TrayType.NG,
+                        //    2 => TrayType.空筛选类型,
+                        //    3 => TrayType.拆盘托盘,
+                        //    4 => TrayType.组盘托盘,
+                        //};
+                    }
+
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
+
+               
 
             }
 

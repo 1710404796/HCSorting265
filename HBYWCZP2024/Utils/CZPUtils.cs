@@ -1,6 +1,8 @@
 ﻿using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.ViewModel;
+using LanguageExt;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,7 +18,22 @@ namespace HBYWCZP2024.Utils
 {
     public static class CZPUtils
     {
-         static BatteryLevel GetLevelFromDigit(this int i)
+        public static string GetTrayTypeStr(this TrayType trayType)
+        {
+            _logger.LogInformation($"托盘类型: {trayType}");
+            return trayType switch
+            {
+
+                TrayType.Engineering => "0",
+                TrayType.NG => "1",
+                TrayType.Other => "2",
+                TrayType.空筛选类型 => "3",
+                TrayType.拆盘托盘 => "11",
+                TrayType.组盘托盘 => "12", 
+                _ => ((int)trayType).ToString(),
+            }; 
+        }
+        static BatteryLevel GetLevelFromDigit(this int i)
         {
             return i switch
             {
@@ -55,20 +72,20 @@ namespace HBYWCZP2024.Utils
             //"V3" => BatteryLevel.A,
             //"V4" => BatteryLevel.Asub,
             //"V5" => BatteryLevel.B,
-          
+
             _ => BatteryLevel.EMPTY,
         };
         public static string GetMESLevel(BatteryLevel level) => level switch
         {
             BatteryLevel.OK =>  "OK",
               BatteryLevel.NG     => "NG"   ,
-              //BatteryLevel.A      => "V2"    ,
+            //BatteryLevel.A      => "V2"    ,
               BatteryLevel.A      => "A"    ,
-              //BatteryLevel.Asub   => "V3"   ,
+            //BatteryLevel.Asub   => "V3"   ,
               BatteryLevel.Asub   => "A-"   ,
-              //BatteryLevel.B      => "V4"    ,
+            //BatteryLevel.B      => "V4"    ,
               BatteryLevel.B      => "B"    ,
-              //BatteryLevel.Bsub   => "V5"   ,
+            //BatteryLevel.Bsub   => "V5"   ,
               BatteryLevel.Bsub   => "B-"   ,
               BatteryLevel.C      => "C"    ,
               BatteryLevel.D      => "D"    ,

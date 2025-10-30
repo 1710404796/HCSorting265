@@ -510,7 +510,7 @@ namespace HBYWCZP2024.Service
     {
         public string trayCode { get; set; }
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
-        public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].ProductModelCode;
+        public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].MaterialCode;
         public string stepCode { get; set; } = MainStorage.Saves.KeysSave[name].StepCode;
         public string lotNo { get; set; } = string.Empty;
         public Cellcode[] cellCodes { get; set; } = [];
@@ -653,10 +653,10 @@ namespace HBYWCZP2024.Service
         public string? TrayCode { get; set; }
 
         [JsonPropertyName("trayType")]
-        public string? TrayType { get; set; }
+        public int? TrayType { get; set; }
 
         [JsonPropertyName("productType")]
-        public string? ProductType { get; set; }
+        public int? ProductType { get; set; }
 
         [JsonPropertyName("ret")]
         public int Ret { get; set; }
@@ -681,7 +681,7 @@ namespace HBYWCZP2024.Service
         public string? TrayCode { get; set; }
 
         [JsonPropertyName("trayType")]
-        public string? TrayType { get; set; }
+        public int? TrayType { get; set; }
 
         [JsonPropertyName("ret")]
         public int Ret { get; set; }

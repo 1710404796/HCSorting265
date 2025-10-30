@@ -29,14 +29,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
             if (pallet == null)
             {
-                throw new Exception("托盘不存在");
+                throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
 
             Result<EquipEnterResponse> response = await newEcsService.EquipEnterAsync(
                 new EquipEnterRequest(request.Key)
                 {
                     TrayCode = pallet.PalletCode,
-                    TrayType = ((int)pallet.OKNGType).ToString(),
+                    TrayType = pallet.OKNGType.GetTrayTypeStr(),
                     Location = pallet.OutsideStationNum.ToString() // 可能+1
                 });
             // 不知道要不要上报

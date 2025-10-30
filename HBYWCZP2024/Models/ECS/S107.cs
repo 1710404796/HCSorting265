@@ -43,7 +43,7 @@ public enum TrayType
     Engineering = 0,
     NG = 1,
     Other = 2,
-    拆盘类型 = 3,
-    组盘类型 = 4,
-    空筛选类型 = 4,
+    空筛选类型 = 3,
+    拆盘托盘 = 4,
+    组盘托盘 = 5,
 }
