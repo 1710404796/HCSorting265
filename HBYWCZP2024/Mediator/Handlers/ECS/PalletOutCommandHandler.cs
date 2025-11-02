@@ -45,7 +45,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             });
 
 
-            var v = response
+            return response
                 .Match(
                 Succ: r => true,
                 Fail: ex =>
@@ -55,48 +55,49 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
                 );
 
-            if (!v) return false;
-
-            if (request.isSpecial)
-            {
-                if (MainStorage.Saves.ApiEnableTable.FilterSpecialEnable)
-                {
-                    var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
-                    {
-                        TrayCode = pallet.PalletCode,
-                        TrayType = ((int)pallet.OKNGType).ToString(),
-                        Location = pallet.OutsideStationNum.ToString(),
-                        Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
-                    });
-                    return rrn
-                        .Match(
-                        Succ: r => true,
-                        Fail: ex =>
-                        {
-                            mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
-                            return false;
-                        }
-                        );
-                }
-            }
+            //if (!v) return false;
 
 
 
-            var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
-            {
-                TrayCode = pallet.PalletCode,
-                TrayType = ((int)pallet.OKNGType).ToString(),
-                Location = pallet.OutsideStationNum.ToString()
-            });
-            return rrn1
-                .Match(
-                Succ: r => true,
-                Fail: ex =>
-                {
-                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
-                    return false;
-                }
-                );
+            //if (request.isSpecial)
+            //{
+            //    if (MainStorage.Saves.ApiEnableTable.FilterSpecialEnable)
+            //    {
+            //        var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            //        {
+            //            TrayCode = pallet.PalletCode,
+            //            TrayType = ((int)pallet.OKNGType).ToString(),
+            //            Location = pallet.OutsideStationNum.ToString(),
+            //            Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
+            //        });
+            //        return rrn
+            //            .Match(
+            //            Succ: r => true,
+            //            Fail: ex =>
+            //            {
+            //                mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+            //                return false;
+            //            }
+            //            );
+            //    }
+            //}
+
+
+
+            //var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            //{
+            //    TrayCode = pallet.PalletCode,
+            //    TrayType = ((int)pallet.OKNGType).ToString(),
+            //    Location = pallet.OutsideStationNum.ToString()
+            //});
+            //return rrn1
+            //    .Match(
+            //    Succ: r => true,
+            //    Fail: ex =>
+            //    {
+            //        mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+            //        return false;
+            //   });
 
 
 

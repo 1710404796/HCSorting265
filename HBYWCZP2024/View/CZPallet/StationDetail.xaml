@@ -16,7 +16,7 @@
             <RowDefinition Height="70" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Margin="40, 0,0,0"  Grid.Row="1">
+        <StackPanel Orientation="Horizontal" Margin="5,0,0,0"  Grid.Row="1">
             <Button Click="Button_Click">←返回</Button>
             <!--<Button x:Name="BindWithHuman" Click="BindWithHuman_Click">人工绑盘</Button>-->
             <Button x:Name="ScanAgain" Click="ScanAgain_Click">重新扫码</Button>
@@ -31,7 +31,7 @@
                 >托盘号：</TextBlock>
             <TextBox Margin="10,0,0,0"
                      x:Name="Pikachu"
-                     Width="200"
+                     Width="180"
                      InputMethod.IsInputMethodEnabled="false"
                        FontSize="20" VerticalAlignment="Center"
                        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -48,6 +48,7 @@
                 Margin="10,0,0,0"
                 IsChecked="{Binding ViewModel.PalletViewModel.Pallet.BanSaoma}"
                 >屏蔽扫码器</CheckBox>
+            <Button x:Name="CvRequest" Click="CvRequest_Click">CvRequest</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock

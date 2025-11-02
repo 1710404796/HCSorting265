@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
 using MediatR;
@@ -153,6 +154,20 @@ namespace HBYWCZP2024.View.CZPallet
             }
             await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{pall.PalletCode}成功"));
         }
+
+        private async void CvRequest_Click(object sender, RoutedEventArgs e)
+        {
+            var res = MessageBox.Show("确定要重新调用CvRequest接口吗？", " 确认", MessageBoxButton.OKCancel);
+            if (res != MessageBoxResult.OK) return;
+            var pall = Station as Pallet;
+            if (pall != null)
+            {
+                await meditor.Send(new CvRequestCommand(Station.Name, Station.InsideNum, true));
+            }
+
+        }
+
+
 
         //private void BanSaoma_Click(object sender, RoutedEventArgs e)
         //{
