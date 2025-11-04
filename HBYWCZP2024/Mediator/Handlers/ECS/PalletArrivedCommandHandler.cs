@@ -31,10 +31,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
-            if (pallet.PalletCode == null)
+            if (string.IsNullOrWhiteSpace(pallet.PalletCode))
             {
-               await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.InsideStationNum}进站托盘条码为空"));
-               return false;
+                await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.InsideStationNum}进站托盘条码为空"));
+                return false;
             }
 
             Result<EquipEnterResponse> response = await newEcsService.EquipEnterAsync(

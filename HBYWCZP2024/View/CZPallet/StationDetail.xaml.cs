@@ -162,7 +162,7 @@ namespace HBYWCZP2024.View.CZPallet
             var pall = Station as Pallet;
             if (pall != null)
             {
-                await meditor.Send(new CvRequestCommand(Station.Name, Station.InsideNum, true));
+                await meditor.Send(new CvRequestCommand(Station.Name, Station.InsideNum, false));
             }
 
         }
