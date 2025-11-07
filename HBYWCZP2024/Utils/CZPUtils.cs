@@ -33,7 +33,7 @@ namespace HBYWCZP2024.Utils
                 _ => ((int)trayType).ToString(),
             }; 
         }
-        static BatteryLevel GetLevelFromDigit(this int i)
+        public static BatteryLevel GetLevelFromDigit(this int i)
         {
             return i switch
             {

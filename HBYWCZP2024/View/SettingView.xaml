@@ -342,10 +342,12 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FilterSpecialEnable}"
 >特殊筛选工位使能(筛选)</CheckBox>
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionCvRequestEnable}"
+>G区预分选智能工位使能(筛选)</CheckBox>
 
                 </StackPanel>
 
-                <Button Margin="0,10,0,0" Width="150" Click="StationLevelConfig_Click">工位等级配置</Button>
             </StackPanel>
 
 
@@ -381,10 +383,12 @@ HorizontalAlignment="Left"
 Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
 Margin="0,10,0,0" FontSize="15" 
 >心跳上报时间(ms)</TextBlock>
+
                 <TextBox  Margin="0,10,0,0" 
 Width="200"
 HorizontalAlignment="Left"
         Text="{Binding ViewModel.Saves.HeartbeartDuring}"></TextBox>
+                <Button Margin="0,10,0,0" Width="150" Click="StationLevelConfig_Click">工位等级配置</Button>
 
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPlc_Click">配置工位</Button>
                 <Button Width="100" Margin="0,10,0,0"  Click="FXLevelConfig_Click">分选档位配置</Button>

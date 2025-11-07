@@ -249,6 +249,11 @@ namespace HBYWCZP2024.Models
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }
         public bool FilterSpecialEnable { get; set; }
+
+        /// <summary>
+        /// G区预分选特殊档位接口
+        /// </summary>
+        public bool GRegionCvRequestEnable { get; set; }
     }
     public class LevelName
     {

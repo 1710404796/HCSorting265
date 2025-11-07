@@ -4,16 +4,17 @@ using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
     internal class CvRequestCommandHandler(IHBECSServiceFactory hBECSServiceFactory,
         //NewECSService newMesService,
+        ILogger<CvRequestCommandHandler> logger,
         IMediator mediator) : IRequestHandler<CvRequestCommand, bool>
     {
         public async Task<bool> Handle(CvRequestCommand request, CancellationToken cancellationToken)
@@ -36,6 +37,28 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 if (MainStorage.Saves.ApiEnableTable.FilterSpecialEnable)
                 {
+                    var Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum;
+
+                    if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable)
+                    {
+                        var batteryLevels = pallet.Channels
+                            .Take(pallet.ChannelNum)
+                            .Select(s => s.BatteryLevel)
+                            .Filter(s => s != Models.BatteryLevel.EMPTY && s != Models.BatteryLevel.None);
+                        var next = MainStorage.Saves.StationLevelMap.FirstOrDefault(s => batteryLevels.Contains((s.Level - 10).GetLevelFromDigit()));
+                        if (next != null)
+                        {
+                            logger.LogInformation("存在下一级电芯站台, {station}", next.Station);
+                            Dest = next.Station.ToString();
+                        }
+                        else
+                        {
+                            // 没有下一级了 撤退
+                            logger.LogInformation("没有下一级电芯了");
+                            Dest = "";
+                        }
+                    }
+
                     var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
                     {
                         TrayCode = pallet.PalletCode,
