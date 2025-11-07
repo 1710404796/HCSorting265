@@ -33,7 +33,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             bool isCodeRuleNG1(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase);
             if (pallet == null)
             {
-                throw new Exception("托盘不存在");
+                throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
 
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable)

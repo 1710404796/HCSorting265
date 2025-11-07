@@ -24,7 +24,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (pallet == null)
             {
-                throw new Exception("托盘不存在");
+                throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
 
             //if (pallet.Type == Models.CZPallet.PalletType.筛选)

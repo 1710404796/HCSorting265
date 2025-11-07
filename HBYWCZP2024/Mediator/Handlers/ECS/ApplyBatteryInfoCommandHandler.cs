@@ -35,7 +35,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (pallet == null)
             {
-                throw new Exception("托盘不存在");
+                throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
             {
@@ -89,7 +89,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 catch (Exception ex)
                 {
 
-                    logger.LogError(ex, "组盘日志发生错误");
+                    logger.LogError(ex, $"{request.Key},{request.StationNum}组盘日志发生错误");
                 }
 
                 //return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
@@ -161,7 +161,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 catch (Exception ex)
                 {
 
-                    logger.LogError(ex, "组盘日志发生错误");
+                    logger.LogError(ex, $"{request.Key},{request.StationNum}组盘日志发生错误");
                 }
 
                 return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
@@ -171,7 +171,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else
             {
-                throw new Exception("托盘类型错误");
+                throw new Exception($"{request.Key},{request.StationNum}未设置托盘类型或托盘类型不符合当前工位");
             }
 
 
