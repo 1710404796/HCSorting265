@@ -160,7 +160,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
-            if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum, true)))
+            if (!await Context.Mediator.Send(new CvRequestCommand(Context.Name, pallet.InsideNum)))
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
 
@@ -197,6 +197,38 @@ namespace HBYWCZP2024.PLC.Tasks
             return true;
         }
     }
+
+    /// <summary>
+    /// 物流线路径请求  8
+    /// </summary>
+    [OPCDelectInfo(10, 11)]
+    public class CvRequestTask : HBBaseTask
+    {
+        public CvRequestTask(int subIdx) : base(8)
+        {
+            TaskName = $"{subIdx} 调用CvRequest接口";
+            SubIdx = subIdx;
+        }
+
+        public override async Task<bool> DoSth()
+        {
+            var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx + 1);
+            if (pallet == null || !pallet.IsEnable)
+            {
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
+                return false;
+            }
+
+            if (!await Context.Mediator.Send(new CvRequestCommand(Context.Name, pallet.InsideNum)))
+            {
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
+
+            }
+            pallet.ClearStage();
+            return true;
+        }
+    }
+
 
     [OPCDelectInfo(10, 11)]
     public class GrabActionExitTask : HBBaseTask

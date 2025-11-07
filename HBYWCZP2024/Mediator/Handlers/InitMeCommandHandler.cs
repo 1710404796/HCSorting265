@@ -180,7 +180,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                         se.RegisterTask(new PalletOutTask(i));
                         se.RegisterTask(new PalletOutTask2(i));
                         se.RegisterTask(new GrabActionExitTask(i));
-
+                        se.RegisterTask(new CvRequestTask(i));
                     }
                     if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
                     {

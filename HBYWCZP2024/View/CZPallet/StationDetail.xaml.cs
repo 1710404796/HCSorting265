@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
 using MediatR;
@@ -126,11 +127,11 @@ namespace HBYWCZP2024.View.CZPallet
 
         private async void Clear_Click(object sender, RoutedEventArgs e)
         {
-            var res = MessageBox.Show($"确认要清除此{Station.Name}记忆吗？", " 写入确认", MessageBoxButton.OKCancel);
+            var res = MessageBox.Show($"确认要清除此{Station.Name},{Station.InsideNum}记忆吗？", " 写入确认", MessageBoxButton.OKCancel);
             if (res != MessageBoxResult.OK) return;
 
             //App.GetService<ILogger<MainViewModel>>().LogInformation($"清除了{ViewModel.PalletViewModel.Pallet.Name}记忆");
-            await meditor.Send(new OperatorLogCommand($"清除{Station.Name}所有数据"));
+            await meditor.Send(new OperatorLogCommand($"清除{Station.Name},{Station.InsideNum}所有数据"));
             Station.ClearStage();
         }
 
@@ -153,6 +154,20 @@ namespace HBYWCZP2024.View.CZPallet
             }
             await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{pall.PalletCode}成功"));
         }
+
+        private async void CvRequest_Click(object sender, RoutedEventArgs e)
+        {
+            var res = MessageBox.Show("确定要重新调用CvRequest接口吗？", " 确认", MessageBoxButton.OKCancel);
+            if (res != MessageBoxResult.OK) return;
+            var pall = Station as Pallet;
+            if (pall != null)
+            {
+                await meditor.Send(new CvRequestCommand(Station.Name, Station.InsideNum, false));
+            }
+
+        }
+
+
 
         //private void BanSaoma_Click(object sender, RoutedEventArgs e)
         //{
