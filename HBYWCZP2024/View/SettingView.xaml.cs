@@ -150,5 +150,11 @@ namespace HBYWCZP2024.View
             }
 
         }
+
+        private void StationLevelConfig_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new View.CZPallet.StationLevelConfigWindow();
+            win.ShowDialog();
+        }
     }
 }

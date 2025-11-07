@@ -344,6 +344,8 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FilterSpecialEnable}"
 >特殊筛选工位使能(筛选)</CheckBox>
 
                 </StackPanel>
+
+                <Button Margin="0,10,0,0" Width="150" Click="StationLevelConfig_Click">工位等级配置</Button>
             </StackPanel>
 
 

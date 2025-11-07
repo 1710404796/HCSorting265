@@ -41,7 +41,7 @@ namespace HBYWCZP2024.Models
 
         public List<string[]> BatteryLevelList { get; set; } = Enumerable.Range(0,7).Select(s => new string[0]).ToList();
 
-        public int LogDeleteDay { get; set; } = 30;
+        public int LogDeleteDay { get; set; } =30;
         public bool TestMode => KeysSave[SelectStageName].TestMode;
 
 
@@ -199,9 +199,16 @@ namespace HBYWCZP2024.Models
             set => KeysSave[SelectStageName].ExDb = value;
         }
 
-        public int HeartbeartDuring { get; set; } = 5000;
-        public byte MarkCode { get; set; } = 1;
-        public byte NgCode { get; set; } = 2;
+        public int HeartbeartDuring { get; set; } =5000;
+        public byte MarkCode { get; set; } =1;
+        public byte NgCode { get; set; } =2;
+
+        [JsonIgnore]
+        public List<StationLevelMapItem> StationLevelMap
+        {
+            get => KeysSave[SelectStageName].StationLevelMap;
+            set => KeysSave[SelectStageName].StationLevelMap = value;
+        }
     }
 
     public class ApiEnable
@@ -226,10 +233,10 @@ namespace HBYWCZP2024.Models
         } = true;
         public bool PalletArrivedEnable { get; set; }
         public bool PalletOutEnable { get; set; }
-        public bool CheckMaterialEnable { get;  set; }
-        public bool UploadFmsDataEnable { get;  set; }
+        public bool CheckMaterialEnable { get; set; }
+        public bool UploadFmsDataEnable { get; set; }
         public bool UploadMesDataEnable { get; set; }
-        public bool HighTempEnable { get;  set; }
+        public bool HighTempEnable { get; set; }
         public bool HCInStationEnable { get; set; }
         /// <summary>
         /// 分选挡位查询接口
@@ -249,6 +256,12 @@ namespace HBYWCZP2024.Models
         = string.Empty;
         public BatteryLevel BatteryLevel { get; set; }
     }
+    public class StationLevelMapItem
+    {
+        public int Station { get; set; }
+        public int Level { get; set; }
+    }
+
     public class StageMono
     {
         public OKNGCnt OKNGCnt { get; set; } = new();
@@ -340,6 +353,8 @@ namespace HBYWCZP2024.Models
         } = string.Empty;
 
         public bool ResetTable { get; set; }
+
+        public List<StationLevelMapItem> StationLevelMap { get; set; } = new();
     }
 
     public class OKNGCnt
