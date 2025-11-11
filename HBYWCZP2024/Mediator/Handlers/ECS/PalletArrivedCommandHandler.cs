@@ -1,5 +1,6 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
@@ -21,16 +22,33 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             var newEcsService = hBECSService.NewECSService;
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletArrivedEnable)
-            {
-                return true;
-            }
+            
 
             var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
             if (pallet == null)
             {
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
+
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletArrivedEnable)
+            {
+                if (pallet.Type == Models.CZPallet.PalletType.拆盘)
+                {
+                    if (MainStorage.Saves.ApiEnableTable.GRegionFXQueryEnable)
+                    {
+                        BatteryLevel[] batteryLevel = [BatteryLevel.A, BatteryLevel.B];
+                        for (int i = 0; i < 2; ++i)
+                        {
+                            await pallet.BindBattery(i, $"test{i:00}", true, batteryLevel[i]);
+
+                        }
+                    }
+                }
+
+
+                    return true;
+            }
+
             if (string.IsNullOrWhiteSpace(pallet.PalletCode))
             {
                 await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.InsideStationNum}进站托盘条码为空"));
@@ -67,7 +85,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             1 => Models.BatteryLevel.OK,
                             2 => Models.BatteryLevel.NG,
                             3 => Models.BatteryLevel.Fake,
-                            _ => Models.BatteryLevel.EMPTY
+                            _ => Models.BatteryLevel.EMPTY // 这里需要 那个映射一下
 
                         };
                         await pallet.BindBattery(channelId - 1, cell.CellCode, true, type);
