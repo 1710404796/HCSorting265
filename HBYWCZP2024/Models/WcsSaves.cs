@@ -203,12 +203,12 @@ namespace HBYWCZP2024.Models
         public byte MarkCode { get; set; } =1;
         public byte NgCode { get; set; } =2;
 
-        [JsonIgnore]
-        public List<StationLevelMapItem> StationLevelMap
-        {
-            get => KeysSave[SelectStageName].StationLevelMap;
-            set => KeysSave[SelectStageName].StationLevelMap = value;
-        }
+        //[JsonIgnore]
+        public List<StationLevelMapItem> StationLevelMap { get; set; } = new();
+        //{
+        //    get => KeysSave[SelectStageName].StationLevelMap;
+        //    set => KeysSave[SelectStageName].StationLevelMap = value;
+        //}
     }
 
     public class ApiEnable

@@ -81,7 +81,7 @@ namespace HBYWCZP2024.PLC
 
             601 => DB501B,
             611 => DB511B,
-            21 => DB511B,
+            21 => DB11B,
 
 
             _ => DB501,
@@ -156,17 +156,19 @@ namespace HBYWCZP2024.PLC
             {
                 var task1 = Task.Run(() => Plc.ReadClass(DB500B, "WCS_JXS.Data2".GetOPCAddress(Name)));
                 var task2 = Task.Run(() => Plc.ReadClass(DB501B, "WCS_to_JXS.Data2".GetOPCAddress(Name)));
-                var task3 = Task.Run(() => Plc.ReadClass(DB510B, "PLC_TO_WCS_ScanTheCode2.PLC".GetOPCAddress(Name)));
-                var task4 = Task.Run(() => Plc.ReadClass(DB511B, "WCS_TO_PLC_ScanTheCode2.WCS".GetOPCAddress(Name)));
+                //var task3 = Task.Run(() => Plc.ReadClass(DB510B, "PLC_TO_WCS_ScanTheCode2.PLC".GetOPCAddress(Name)));
+                //var task4 = Task.Run(() => Plc.ReadClass(DB511B, "WCS_TO_PLC_ScanTheCode2.WCS".GetOPCAddress(Name)));
                 var task5 = Task.Run(() => Plc.ReadClass(DB10B, "PLC_TO_WCS_Tray2".GetOPCAddress(Name)));
                 var task6 = Task.Run(() => Plc.ReadClass(DB11B, "WCS_TO_PLC_Tray2".GetOPCAddress(Name)));
 
 
 
-
-                Task[] tasks = [task1, task2, task3, task4, task5, task6];
+                Task[] tasks = [task1, task2,
+                    //task3, task4,
+                    task5, task6];
 
                 await Task.WhenAll(tasks);
+                //Logger.LogInformation("正在读取扩展db数据... {data}", string.Join(",", DB10B.PalletArrvied.ToArray().Select(s => s.ToString())));
             }
             else
             {

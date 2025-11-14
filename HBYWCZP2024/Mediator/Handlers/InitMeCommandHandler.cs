@@ -108,7 +108,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 var ecs = hBECSService.Create(stage.Key);
                 if (stage.Value.ExDb)
                 {
-                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key, ExDb = stage.Value.ExDb });
 
 
                     if (plcIpGuidMap.ContainsKey(stage.Value.PLCPSetting.IP))
@@ -122,9 +122,9 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
 
 
-                    se.RegisterTask<CheckLadaiTaskB>();
-                    se.RegisterTask<CheckLadaiTask2B>();
-                    se.RegisterTask<CheckLadaiTask3B>();
+                    //se.RegisterTask<CheckLadaiTaskB>();
+                    //se.RegisterTask<CheckLadaiTask2B>();
+                    //se.RegisterTask<CheckLadaiTask3B>();
                     se.RegisterTask<ApplyBatteryInfoTaskB>();
  
                     se.RegisterTask<SinglePlacementCompletedTaskB>();
@@ -163,7 +163,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 }
                 else
                 {
-                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key , ExDb = stage.Value.ExDb});
 
 
                     //await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);

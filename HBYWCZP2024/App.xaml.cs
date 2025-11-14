@@ -6,6 +6,7 @@ using HBYWCZP2024.Jobs;
 using HBYWCZP2024.Mediator.Behaviors;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.PLC;
+using HBYWCZP2024.PLC.Models;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using HBYWCZP2024.View;
@@ -72,6 +73,10 @@ namespace HBYWCZP2024
                 Application.Current.Shutdown();
                 return;
             }
+            //DB10B dB10B  = new();
+            //DB10 dB10  = new();
+            //var cc = dB10B.GetType().GetProperties();
+            //var cc1 = dB10.GetType().GetProperties();
             MainStorage.Init();
             //DB.Database.Migrate();
             Host = Microsoft.Extensions.Hosting.Host.
