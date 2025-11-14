@@ -80,6 +80,7 @@ namespace HBYWCZP2024.Mediator.Handlers
             {
                 MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
             }
+            Dictionary<string, string> plcIpGuidMap = new();
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
                 foreach (var pallet in stage.Value.Stage.Pallets)
@@ -110,8 +111,15 @@ namespace HBYWCZP2024.Mediator.Handlers
                     var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
 
 
-                    await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
-
+                    if (plcIpGuidMap.ContainsKey(stage.Value.PLCPSetting.IP))
+                    {
+                        await se.Init(plcIpGuidMap[stage.Value.PLCPSetting.IP], cancellationToken);
+                    }
+                    else
+                    {
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
+                    }
 
 
                     se.RegisterTask<CheckLadaiTaskB>();
@@ -158,8 +166,16 @@ namespace HBYWCZP2024.Mediator.Handlers
                     var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key });
 
 
-                    await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
-
+                    //await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                    if (plcIpGuidMap.ContainsKey(stage.Value.PLCPSetting.IP))
+                    {
+                        await se.Init(plcIpGuidMap[stage.Value.PLCPSetting.IP], cancellationToken);
+                    }
+                    else
+                    {
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
+                    }
 
 
                     se.RegisterTask<CheckLadaiTask>();
