@@ -297,6 +297,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     {
                         if (pallet.Type == PalletType.筛选)
                         {
+                            if (string.IsNullOrWhiteSpace(pallet.PalletCode))
+                            {
+                                await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘条码不能为空"));
+                                return false;
+                            }
 
                             var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
                             { trayCode = pallet.PalletCode, trayType = ((int)Get(pallet)).ToString()
