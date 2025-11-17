@@ -21,12 +21,12 @@ namespace HBYWCZP2024.PLC.Tasks
 
     public class SinglePlacementCompletedTask : HBBaseTask
     {
-        private ushort grabStation;
-        private ushort putStaion;
-        private ushort[] grabChannel;
-        private ushort[] putChannel;
-        private bool[] claw;
-        private string[] batteryCodes;
+        protected ushort grabStation;
+        protected ushort putStaion;
+        protected ushort[] grabChannel;
+        protected ushort[] putChannel;
+        protected bool[] claw;
+        protected string[] batteryCodes;
 
         public SinglePlacementCompletedTask() : base(5)
         {
