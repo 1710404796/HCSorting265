@@ -154,8 +154,8 @@ namespace HBYWCZP2024.PLC
 
             if (ExDb)
             {
-                var task1 = Task.Run(() => Plc.ReadClass(DB500B, "WCS_JXS.Data2".GetOPCAddress(Name)));
-                var task2 = Task.Run(() => Plc.ReadClass(DB501B, "WCS_to_JXS.Data2".GetOPCAddress(Name)));
+                var task1 = Task.Run(() => Plc.ReadClass(DB500B, "WCS_JXS2.Data".GetOPCAddress(Name)));
+                var task2 = Task.Run(() => Plc.ReadClass(DB501B, "WCS_to_JXS2.Data".GetOPCAddress(Name)));
                 //var task3 = Task.Run(() => Plc.ReadClass(DB510B, "PLC_TO_WCS_ScanTheCode2.PLC".GetOPCAddress(Name)));
                 //var task4 = Task.Run(() => Plc.ReadClass(DB511B, "WCS_TO_PLC_ScanTheCode2.WCS".GetOPCAddress(Name)));
                 var task5 = Task.Run(() => Plc.ReadClass(DB10B, "PLC_TO_WCS_Tray2".GetOPCAddress(Name)));
