@@ -18,9 +18,9 @@ namespace HBYWCZP2024.PLC.Tasks
 
     public class ApplyBatteryInfoTask : HBBaseTask
     {
-        private ushort grabStation;
-        private BatteryLevel[] _batteryLevels;
-        private bool isFake;
+        protected ushort grabStation;
+        protected BatteryLevel[] _batteryLevels;
+        protected bool isFake;
 
 
         public ApplyBatteryInfoTask(): base(1)
