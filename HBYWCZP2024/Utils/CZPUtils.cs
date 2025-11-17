@@ -146,6 +146,14 @@ namespace HBYWCZP2024.Utils
         }
 
 
+        public static XYLStation? GetAllXYLStationByInsideNum( int insideNum)
+        {
+
+            if (insideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave.Values.SelectMany(s => s.Stage.Stations).FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+        }
+
+
         public static XYLStation? GetXYLStationByInsideNum(string name, int insideNum)
         {
 

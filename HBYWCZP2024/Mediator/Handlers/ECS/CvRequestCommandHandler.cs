@@ -45,7 +45,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             .Take(pallet.ChannelNum)
                             .Select(s => s.BatteryLevel)
                             .Filter(s => s != Models.BatteryLevel.EMPTY && s != Models.BatteryLevel.None);
-                        var next = MainStorage.Saves.StationLevelMap.FirstOrDefault(s => batteryLevels.Contains((s.Level - 10).GetLevelFromDigit()));
+                        var next = 
+                            MainStorage.Saves.StationLevelMap
+                            .Filter(s => string.IsNullOrWhiteSpace( CZPUtils.GetAllXYLStationByInsideNum(s.Station)?.PalletCode))
+                            .FirstOrDefault(
+                            s => batteryLevels
+                                    .Contains((s.Level - 10)
+                                    .GetLevelFromDigit()
+                            ));
                         if (next != null)
                         {
                             logger.LogInformation("存在下一级电芯站台, {station}", next.Station);
