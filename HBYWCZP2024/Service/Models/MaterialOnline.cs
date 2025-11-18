@@ -14,7 +14,7 @@ namespace HBYWCZP2024.Service.Models
         public Batterytraybindvolist[] batteryTrayBindVOList { get; set; } = [];
         public string siteCode => MainStorage.Saves.KeysSave[name].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[name].LineCode;
-        public string equipNum => MainStorage.Saves.KeysSave[name].EquipNum;
+        public string equipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
         public string containerCode { get; set; } = "";
         public string actionType { get; set; } = "IN";
     }

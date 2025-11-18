@@ -12,7 +12,7 @@ namespace HBYWCZP2024.Service.Models
     {
         public string siteCode => MainStorage.Saves.KeysSave[key].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[key].LineCode;
-        public string equipNum => MainStorage.Saves.KeysSave[key].EquipNum;
+        public string equipNum => MainStorage.Saves.KeysSave[key].DeviceCode;
         public string materialCode => MainStorage.Saves.KeysSave[key].MaterialCode;
         public string userName => MainStorage.Saves.KeysSave[key].UserName;
         public string identification { get; set; } = string.Empty;

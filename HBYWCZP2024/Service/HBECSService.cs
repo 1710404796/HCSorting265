@@ -133,7 +133,7 @@ namespace HBYWCZP2024.Service
         {
             lock (_lockobj)
             {
-                var packMessage = MessageHelper.GetSocketMessage(command, MainStorage.Saves.KeysSave[Name].DeviceCode, content);
+                var packMessage = MessageHelper.GetSocketMessage(command, MainStorage.Saves.KeysSave[Name].EquipNum, content);
 
                 //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
 
@@ -145,7 +145,7 @@ namespace HBYWCZP2024.Service
         public void Send<T1>(T1 req) where T1 : IECSContent
         {
 
-            var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
+            var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].EquipNum, req.GetContent());
 
             //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
         }
@@ -157,7 +157,7 @@ namespace HBYWCZP2024.Service
             {
                 lock (_lockobj)
                 {
-                    var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].DeviceCode, req.GetContent());
+                    var packMessage = MessageHelper.GetSocketMessage(req.Type, MainStorage.Saves.KeysSave[Name].EquipNum, req.GetContent());
                     logger.LogInformation("{name}, 发送数据: {data}", Name, packMessage);
                     //_clientSocket.Send(Encoding.UTF8.GetBytes(packMessage));
                     CancellationTokenSource cts = new CancellationTokenSource();

@@ -480,7 +480,7 @@ namespace HBYWCZP2024.Service
     public class ScreenRecipeRequest(string name)
     {
         public string trayCode { get; set; } = string.Empty;
-        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].DeviceCode;
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
         public string trayType { get; set; } = "1";
         [JsonPropertyName("cellList")]
         public CellInfo[] CellList { get; set; } = new CellInfo[0];

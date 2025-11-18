@@ -91,7 +91,7 @@
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
     Margin="0,15,0,0"
        >
-    设备号
+    设备号(ECS)
                 </TextBlock>
                 <TextBox 
     Width="200" 
@@ -138,14 +138,14 @@
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
     Margin="0,15,0,0"
        >
-    EquipNum(MES)
+    EquipNum(FMS)
                 </TextBlock>
                 <TextBox 
     Width="200" 
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
     x:Name="DeviceCode"
-    Text="{Binding ViewModel.Saves.DeviceCode, Mode=TwoWay}"
+    Text="{Binding ViewModel.Saves.EquipNum, Mode=TwoWay}"
 ></TextBox>
                 <TextBlock FontSize="15"
      Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -178,14 +178,14 @@
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
     Margin="0,15,0,0"
        >
-    EquipNum(FMS)
+    EquipNum(MES)
                 </TextBlock>
                 <TextBox 
     Width="200" 
     Margin="0,10,0,0" 
     HorizontalAlignment="Left"
     x:Name="EquipNum"
-    Text="{Binding ViewModel.Saves.EquipNum, Mode=TwoWay}"
+    Text="{Binding ViewModel.Saves.DeviceCode, Mode=TwoWay}"
 ></TextBox>
 
 

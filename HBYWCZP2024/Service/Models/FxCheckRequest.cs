@@ -17,7 +17,7 @@ namespace HBYWCZP2024.Service.Models
         public string LineCode => MainStorage.Saves.KeysSave[name].LineCode;
 
         [JsonPropertyName("equipCode")]
-        public string EquipNum => MainStorage.Saves.KeysSave[name].EquipNum;
+        public string EquipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
         public int qty{ get; set; }
         //[JsonPropertyName("materialCode")]
         //public string MaterialCode => MainStorage.Saves.KeysSave[name].MaterialCode;
