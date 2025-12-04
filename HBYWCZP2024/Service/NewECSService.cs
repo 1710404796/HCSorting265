@@ -510,7 +510,8 @@ namespace HBYWCZP2024.Service
     {
         public string trayCode { get; set; }
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
-        public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].MaterialCode;
+        //public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].MaterialCode;
+        public string ProductModelCode { get; set; } = MainStorage.Saves.KeysSave[name].ProductModelCode;
         public string stepCode { get; set; } = MainStorage.Saves.KeysSave[name].StepCode;
         public string lotNo { get; set; } = string.Empty;
         public Cellcode[] cellCodes { get; set; } = [];

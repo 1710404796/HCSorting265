@@ -42,22 +42,41 @@ namespace HBYWCZP2024.Service
         }
 
 
-
+        /// <summary>
+        /// 筛选后组盘结果上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<Result<ScreenUploadResponse>> ScreenUploadAsync(ScreenRecipeRequest request)
         {
             return SendFmsRequest<ScreenUploadResponse>("/api/fms/screen/upload", request);
         }
 
+        /// <summary>
+        /// 单拆解绑
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<Result<MpSplitResponse>> MpSplitAsync(MpSplitRequest request)
         {
             return SendFmsRequest<MpSplitResponse>("/api/fms/mp/split", request);
         }
 
+        /// <summary>
+        /// 整盘解绑
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<Result<MpUnbindWholeTrayResponse>> MpunbindWholeTrayAsync(MpUnbindWholeTrayRequest request)
         {
             return SendFmsRequest<MpUnbindWholeTrayResponse>("/api/fms/mp/unbindWholeTray", request);
         }
 
+        /// <summary>
+        /// 组盘结果上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<Result<MpUploadResponse>> MpUploadAsync(MpUploadRequest request)
         {
             return SendFmsRequest<MpUploadResponse>("/api/fms/mp/upload", request);

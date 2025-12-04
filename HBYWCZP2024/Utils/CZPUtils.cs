@@ -25,11 +25,13 @@ namespace HBYWCZP2024.Utils
             {
 
                 TrayType.Engineering => "0",
-                TrayType.NG => "1",
+                TrayType.NG => "4",
                 TrayType.Other => "2",
                 TrayType.空筛选类型 => "3",
                 TrayType.拆盘托盘 => "11",
                 TrayType.组盘托盘 => "12", 
+                TrayType.挑选位托盘=> "13",
+                TrayType.组盘位托盘=> "14",
                 _ => ((int)trayType).ToString(),
             }; 
         }

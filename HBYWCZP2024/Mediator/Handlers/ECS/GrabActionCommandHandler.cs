@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
@@ -304,8 +305,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
 
                             var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
-                            { trayCode = pallet.PalletCode, trayType = ((int)Get(pallet)).ToString()
-                            , CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                            { 
+                                trayCode = pallet.PalletCode, 
+                                trayType = ((int)Get(pallet)).ToString(),
+                                CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
                                 {
                                     CellCode = s.Code,
                                     Channel = i + 1,
@@ -325,8 +328,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 })
                             .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
                             .ToArray()
-                            }
-                            );
+                            });
 
                             return res.IsSuccess;
                         }
@@ -334,13 +336,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         {
                             // 一注组盘可能要传
                             var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
-                            { trayCode = pallet.PalletCode,
-                               cellCodes = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
+                            {
+                                trayCode = pallet.PalletCode,
+                                cellCodes = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
                                 {
                                     cellCode = s.Code,
                                     channel = i + 1,
-                                    gradingType = 
-                                    MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                    gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
                                     (
                                         codeMapTemp.Find(s.Code).Match(
                                             Some: lv => CZPUtils.GetLevelFromMes(lv),
@@ -361,7 +363,44 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                            );
                             return res.IsSuccess;
 
+
+
+                            //var cellCodes = pallet.Channels.Take(pallet.ChannelNum)
+                            //        .Select((s, i) => new Cellcode
+                            //        {
+                            //            cellCode = s.Code,
+                            //            channel = i + 1,
+                            //            gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                            //            (
+                            //                codeMapTemp.Find(s.Code).Match(
+                            //                    Some: lv => CZPUtils.GetLevelFromMes(lv),
+                            //                    None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                            //                )
+                            //            ).ToString() :
+                            //            (
+                            //                tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                            //                isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                            //            ).ToString(),
+                            //            cellType = s.GetCellType()
+                            //        })
+                            //        .Filter(s => !string.IsNullOrWhiteSpace(s.cellCode))
+                            //        .ToArray();
+                            //    if (cellCodes.Length != pallet.ChannelNum)
+                            //    {
+                            //    logger.LogError( $"条码数量与通道数量不匹配！通道数量：{pallet.ChannelNum}，有效条码数量：{cellCodes.Length}");
+                            //    throw new InvalidOperationException($"电芯条码数量与通道数量不匹配！通道数量：{pallet.ChannelNum}，有效条码数量：{cellCodes.Length}");
+
+                            //}
+
+                            //    var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
+                            //    {
+                            //        trayCode = pallet.PalletCode,
+                            //        cellCodes = cellCodes
+                            //    });
+                            //    return res.IsSuccess;
                         }
+
+                        
                         else if (pallet.Type == PalletType.拆盘)
                         {
                             var res = await fmsService.MpunbindWholeTrayAsync(new MpUnbindWholeTrayRequest(request.Key)

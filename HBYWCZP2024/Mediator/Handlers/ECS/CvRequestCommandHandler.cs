@@ -47,7 +47,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             .Filter(s => s != Models.BatteryLevel.EMPTY && s != Models.BatteryLevel.None);
                         var next = 
                             MainStorage.Saves.StationLevelMap
-                            .Filter(s => string.IsNullOrWhiteSpace( CZPUtils.GetAllXYLStationByInsideNum(s.Station)?.PalletCode))
+                            // 智能分选 .Filter(s => string.IsNullOrWhiteSpace( CZPUtils.GetAllXYLStationByInsideNum(s.Station)?.PalletCode))
                             .FirstOrDefault(
                             s => batteryLevels
                                     .Contains((s.Level - 10)

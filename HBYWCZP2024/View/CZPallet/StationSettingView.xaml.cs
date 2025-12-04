@@ -1,8 +1,11 @@
 ﻿using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
+using HBYWCZP2024.ViewModel;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -39,7 +42,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "空筛选" , "拆盘托盘", "组盘托盘" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "空筛选" , "拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘" };
 
         public StationSettingView()
         {
@@ -183,6 +186,10 @@ namespace HBYWCZP2024.View.CZPallet
 
             }
         }
+        [JsonIgnore]
+        static Lazy<ILogger> _lazyLogger = new Lazy<ILogger>(App.GetService<ILogger<MainViewModel>>);
+        [JsonIgnore]
+        static ILogger _logger => _lazyLogger.Value;
         /// <summary>
         /// 保存
         /// </summary>
@@ -218,7 +225,7 @@ namespace HBYWCZP2024.View.CZPallet
                         //    4 => TrayType.组盘托盘,
                         //};
                     }
-
+                    //_logger.LogDebug($"{station.OutsideStationNum}TrayType类型为: {pallet.OKNGType}");
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 
