@@ -32,11 +32,11 @@ namespace HBYWCZP2024.Utils
                 TrayType.复测托盘=>"5",
                 //TrayType.Other => "6",
                 //TrayType.空筛选类型 => "7",
-                TrayType.拆盘托盘 => "11",
-                TrayType.组盘托盘 => "12",
-                TrayType.挑选位托盘 => "13",
-                TrayType.组盘位托盘 => "14",
-                TrayType.补盘位托盘 => "15",
+                //TrayType.拆盘托盘 => "11",
+                //TrayType.组盘托盘 => "12",
+                //TrayType.挑选位托盘 => "13",
+                //TrayType.组盘位托盘 => "14",
+                //TrayType.补盘位托盘 => "15",
                 _ => ((int)trayType).ToString(),
             }; 
         }
