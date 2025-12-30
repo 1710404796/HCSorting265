@@ -26,6 +26,8 @@ namespace HBYWCZP2024.Models
         V = 14,
         Asub = 15,
         Bsub = 16,
+        待判定 = 17,
+        待复测 = 18,
         Unknown = 999,
         V1 = 1000,
     }
@@ -88,6 +90,7 @@ namespace HBYWCZP2024.Models
             {
                 BatteryLevel.None => 0,
                 BatteryLevel.EMPTY => 0,
+                BatteryLevel.OK => 1,
                 BatteryLevel.NG => 2,
                 BatteryLevel.Fake => 3,
                 _ => 1,

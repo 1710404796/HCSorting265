@@ -287,7 +287,7 @@ namespace HBYWCZP2024.Service
         扫码枪_BCR = 6,
         组盘机_AEB = 7,
         拆盘机_DAEB = 8,
-        其它_OTHER = 24
+        分档机_OTHER = 24
     }
 
     /// <summary>
@@ -799,7 +799,7 @@ namespace HBYWCZP2024.Service
         // 设备类型代码为 23: SOC
         SOC = 23,
 
-        // 设备类型代码为 24: 其他 OTHER
+        // 设备类型代码为 24: 分档机 OTHER
         OTHER = 24
     }
 

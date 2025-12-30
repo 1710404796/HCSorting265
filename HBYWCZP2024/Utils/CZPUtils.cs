@@ -20,32 +20,63 @@ namespace HBYWCZP2024.Utils
     {
         public static string GetTrayTypeStr(this TrayType trayType)
         {
-            _logger.LogInformation($"托盘类型: {trayType}");
+            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
+
             return trayType switch
             {
-
-                TrayType.Engineering => "0",
-                TrayType.NG => "4",
-                TrayType.Other => "2",
-                TrayType.空筛选类型 => "3",
+               // TrayType.Engineering => "0",
+                TrayType.空托盘 => "1",
+                TrayType.实托盘=>"2",
+                TrayType.满盘OK => "3",
+                TrayType.NG托盘 => "4",
+                TrayType.复测托盘=>"5",
+                //TrayType.Other => "6",
+                //TrayType.空筛选类型 => "7",
                 TrayType.拆盘托盘 => "11",
-                TrayType.组盘托盘 => "12", 
-                TrayType.挑选位托盘=> "13",
-                TrayType.组盘位托盘=> "14",
+                TrayType.组盘托盘 => "12",
+                TrayType.挑选位托盘 => "13",
+                TrayType.组盘位托盘 => "14",
+                TrayType.补盘位托盘 => "15",
                 _ => ((int)trayType).ToString(),
             }; 
         }
+
+        public static string GetOUTTrayTypeStr(this TrayType trayType)
+        {
+            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
+
+            return trayType switch
+            {
+               
+                TrayType.拆盘托盘 => "11",
+                TrayType.组盘托盘 => "12",
+                TrayType.挑选位托盘 => "13",
+                TrayType.组盘位托盘 => "14",
+                TrayType.补盘位托盘 => "15",
+                _ => ((int)trayType).ToString(),
+            };
+        }
+
+
         public static BatteryLevel GetLevelFromDigit(this int i)
         {
             return i switch
             {
-                0 => BatteryLevel.V,
+                //0 => BatteryLevel.V,
+                //1 => BatteryLevel.A,
+                //2 => BatteryLevel.Asub,
+                //3 => BatteryLevel.B,
+                //4 => BatteryLevel.Bsub,
+                //5 => BatteryLevel.V1,
+                //6 => BatteryLevel.NG,
+                //_ => BatteryLevel.NG
+
+                0 => BatteryLevel.V1,
                 1 => BatteryLevel.A,
                 2 => BatteryLevel.Asub,
                 3 => BatteryLevel.B,
-                4 => BatteryLevel.Bsub,
-                5 => BatteryLevel.V1,
-                6 => BatteryLevel.NG,
+                4 => BatteryLevel.待复测,
+                5 => BatteryLevel.待判定,
                 _ => BatteryLevel.NG
             }
             ;
@@ -57,7 +88,7 @@ namespace HBYWCZP2024.Utils
             "OK" => BatteryLevel.OK,
             "NG" => BatteryLevel.NG,
             //"A" => BatteryLevel.A,
-            //"A-" => BatteryLevel.Asub,
+            "A-" => BatteryLevel.Asub,
             //"B" => BatteryLevel.B,
             //"B-" => BatteryLevel.Bsub,
             "C" => BatteryLevel.C,
@@ -95,9 +126,9 @@ namespace HBYWCZP2024.Utils
               BatteryLevel.F      => "F"    ,
               BatteryLevel.REWORK => "FC"   ,
               BatteryLevel.Fake   => "Fake" ,
-            BatteryLevel.Mark => "MARK" ,
-            BatteryLevel.V =>  "V0",
-            BatteryLevel.V1 =>  "V1",
+              BatteryLevel.Mark => "MARK" ,
+              BatteryLevel.V =>  "V0",
+              BatteryLevel.V1 =>  "V1",
             _ => "",
         };
         public static byte GetPlcBatteryLevelCode(BatteryLevel level) => level switch
@@ -109,12 +140,12 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.None => 5,
             BatteryLevel.REWORK => 4,
             BatteryLevel.EMPTY => 5,
-            BatteryLevel.V => 11,
+            BatteryLevel.V1 => 11,
             BatteryLevel.A => 12,
             BatteryLevel.Asub => 13,
             BatteryLevel.B => 14,
-            BatteryLevel.Bsub => 15,
-            BatteryLevel.V1 => 16,
+            BatteryLevel.待复测 => 15,
+            BatteryLevel.待判定 => 16,
             BatteryLevel.C => MainStorage.Saves.NgCode,
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,

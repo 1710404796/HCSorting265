@@ -25,11 +25,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             var newECSService = hBECSService.NewECSService;
+            //托盘离开接口使能
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletOutEnable)
             {
                 return true;
             }
 
+            //按内部编号获取托盘
             var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
             if (pallet == null)
             {
@@ -45,7 +47,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 TrayCode = pallet.PalletCode,
                 //TrayType = ((int)pallet.OKNGType).ToString(),
-                TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
                 Location = pallet.OutsideStationNum.ToString()
             });
 
@@ -55,7 +57,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 Succ: r => true,
                 Fail: ex =>
                 {
-                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
                     return false;
                 }
                 );
@@ -66,21 +68,33 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (request.isSpecial)
             {
+
+                //G区预分选智能工位使能(筛选)
                 if (MainStorage.Saves.ApiEnableTable.FilterSpecialEnable)
                 {
+                    string Dest1;
+                    var TrayTypeStr = pallet.OKNGType.GetTrayTypeStr();
+                    if (TrayTypeStr == "15")
+                    {
+                        Dest1 = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum;
+                        mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}进入{Dest1}")).Wait();
+                    }
+
                     var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
                     {
                         TrayCode = pallet.PalletCode,
-                        TrayType = ((int)pallet.OKNGType).ToString(),
-                        Location = pallet.OutsideStationNum.ToString(),
-                        Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
+                        //TrayType = ((int)pallet.OKNGType).ToString(),
+                        TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                        //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
+                        Location = pallet.OutsideStationNum.ToString(),                     //当前位置
+                        Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum     //目标位置
                     });
                     return rrn
                         .Match(
                         Succ: r => true,
                         Fail: ex =>
                         {
-                            mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+                            mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
                             return false;
                         }
                         );
@@ -92,7 +106,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
             {
                 TrayCode = pallet.PalletCode,
-                TrayType = ((int)pallet.OKNGType).ToString(),
+                //TrayType = ((int)pallet.OKNGType).ToString(),
+                TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
                 Location = pallet.OutsideStationNum.ToString()
             });
             return rrn1
@@ -100,7 +116,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 Succ: r => true,
                 Fail: ex =>
                 {
-                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}离开上报ECS失败: {ex.Message}")).Wait();
+                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
                     return false;
                });
 

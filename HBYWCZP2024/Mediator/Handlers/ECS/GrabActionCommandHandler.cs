@@ -119,7 +119,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        } 
+                                        }
 
 
                                         ).DistinctBy(s => s.Identification)
@@ -127,7 +127,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     return cmap;
                                 }
 
-                                 codeMapTemp = await getCodeMap(checkMaterialRequest);
+                                codeMapTemp = await getCodeMap(checkMaterialRequest);
                                 //tempLv = codeMap;
                             }
                             else
@@ -289,7 +289,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         {
                             if (pallet.Channels.Take(pallet.ChannelNum).All(s => string.IsNullOrWhiteSpace(s.Code)))
                             {
-                                return TrayType.空筛选类型;
+                                //return TrayType.空筛选类型;
+                                return TrayType.空托盘;
                             }
                         }
                         return pallet.OKNGType;
@@ -304,33 +305,38 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 return false;
                             }
 
-                            var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
-                            { 
-                                trayCode = pallet.PalletCode, 
-                                trayType = ((int)Get(pallet)).ToString(),
-                                CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                            if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable == false)
+                            {
+                                var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
                                 {
-                                    CellCode = s.Code,
-                                    Channel = i + 1,
-                                    GradingType = 
-                                    MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
-                                    (
-                                        codeMapTemp.Find(s.Code).Match(
-                                            Some: lv => CZPUtils.GetLevelFromMes(lv),
-                                            None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                        )
-                                    ).ToString() :
-                                    (
-                                        tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
-                                        isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                    ).ToString(),
-                                    CellType = s.GetCellType()
-                                })
-                            .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
-                            .ToArray()
-                            });
+                                    trayCode = pallet.PalletCode,
+                                    //trayType = ((int)Get(pallet)).ToString(),
+                                    trayType = pallet.OKNGType.GetTrayTypeStr(),
+                                    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                                    {
+                                        CellCode = s.Code,
+                                        Channel = i + 1,
+                                        GradingType =
+                                        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                        (
+                                            codeMapTemp.Find(s.Code).Match(
+                                                Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                            )
+                                        ).ToString() :
+                                        (
+                                            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                        ).ToString(),
+                                        CellType = s.GetCellType()
+                                    })
+                                    .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
+                                    .ToArray()
+                                });
+                                return res.IsSuccess;
+                            }
 
-                            return res.IsSuccess;
+                            return true;
                         }
                         else if (pallet.Type == PalletType.组盘)
                         {
@@ -400,7 +406,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //    return res.IsSuccess;
                         }
 
-                        
+
                         else if (pallet.Type == PalletType.拆盘)
                         {
                             var res = await fmsService.MpunbindWholeTrayAsync(new MpUnbindWholeTrayRequest(request.Key)
@@ -437,12 +443,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
 
             }
-        //else
-        //{
-        //    throw new Exception("托盘类型错误");
-        //}
+            //else
+            //{
+            //    throw new Exception("托盘类型错误");
+            //}
 
-        // TODO: 结束要用106命令
+            // TODO: 结束要用106命令
 
 
         SaveLog:

@@ -29,7 +29,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             //if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-                var loc = pallet.OKNGType == TrayType.NG ? "ng托盘" : "筛选托盘";
+                var loc = pallet.OKNGType == TrayType.NG托盘 ? "ng托盘" : "筛选托盘";
                 if (pallet.Type != Models.CZPallet.PalletType.筛选)
                 {
                     loc = (pallet.PalletId + 1).ToString();

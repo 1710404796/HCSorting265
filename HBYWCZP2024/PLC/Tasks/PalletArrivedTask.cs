@@ -20,7 +20,7 @@ namespace HBYWCZP2024.PLC.Tasks
     {
         public PalletArrivedTask(int subIdx) : base(1)
         {
-            TaskName = $"{subIdx + 1} 托盘到位";
+            TaskName = $"托盘：{subIdx + 1} 托盘到位";
             //TaskName = $"{subIdx + 1} {Properties.Resources.TrayPositioningTask}";
             SubIdx = subIdx;
         }
@@ -36,7 +36,7 @@ namespace HBYWCZP2024.PLC.Tasks
             }
             pallet.ClearStage();
 
-            Context.Logger.LogInformation("准备获取托盘{idx}条码", SubIdx);
+            Context.Logger.LogInformation("准备获取托盘：{idx}条码", SubIdx);
             pallet.PalletCode = string.Empty;
             pallet.PalletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(Context.Name, SubIdx)))?.Trim() ?? string.Empty;
             // 条码校验
@@ -109,7 +109,7 @@ namespace HBYWCZP2024.PLC.Tasks
     {
         public GrabActionTask(int subIdx) : base(2)
         {
-            TaskName = $"{subIdx + 1} 拆组盘开始";
+            TaskName = $"托盘：{subIdx + 1} 拆组盘开始";
             SubIdx = subIdx;
         }
 
@@ -121,7 +121,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDisassemblyTaskStarted}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
                 return false;
             }
-            Context.Logger.LogInformation("托盘{idx} 上报拆组盘接口", SubIdx);
+            Context.Logger.LogInformation("托盘：{idx} 上报拆组盘接口", SubIdx + 1);
             //new GrabActionRequest
             //{
             //    SelfActionType = pallet.Type switch { PalletType.组盘 => ActionType.insertStart, PalletType.拆盘 => ActionType.removeStart, _ => ActionType.removeStart },
@@ -140,14 +140,14 @@ namespace HBYWCZP2024.PLC.Tasks
     }
 
     /// <summary>
-    /// 托盘离开任务 任务号3
+    /// 特殊托盘离开任务 任务号13
     /// </summary>
     [OPCDelectInfo(10, 11)]
     public class PalletOutTask2 : HBBaseTask
     {
         public PalletOutTask2(int subIdx) : base(13)
         {
-            TaskName = $"{subIdx} {Properties.Resources.TrayDepartureTask}";
+            TaskName = $"托盘：{subIdx + 1} {Properties.Resources.TrayDepartureTask}";
             SubIdx = subIdx;
         }
 
@@ -162,7 +162,7 @@ namespace HBYWCZP2024.PLC.Tasks
 
             if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum,true)))
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}：{SubIdx + 1}，{pallet.InsideNum}上传失败"));
 
             }
             pallet.ClearStage();
@@ -170,12 +170,15 @@ namespace HBYWCZP2024.PLC.Tasks
         }
     }
 
+    /// <summary>
+    /// 托盘离开任务 任务号3
+    /// </summary>
     [OPCDelectInfo(10, 11)]
     public class PalletOutTask : HBBaseTask
     {
         public PalletOutTask(int subIdx) : base(3)
         {
-            TaskName = $"{subIdx} {Properties.Resources.TrayDepartureTask}";
+            TaskName = $"托盘：{subIdx + 1} {Properties.Resources.TrayDepartureTask}";
             SubIdx = subIdx;
         }
 
@@ -184,13 +187,13 @@ namespace HBYWCZP2024.PLC.Tasks
             var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
             if (pallet == null || !pallet.IsEnable)
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}：{SubIdx + 1}{Properties.Resources.NotFound}"));
                 return false;
             }
 
             if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum)))
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}： {SubIdx + 1}，{pallet.InsideNum}上传失败"));
 
             }
             pallet.ClearStage();
@@ -206,7 +209,7 @@ namespace HBYWCZP2024.PLC.Tasks
     {
         public CvRequestTask(int subIdx) : base(8)
         {
-            TaskName = $"{subIdx} 调用CvRequest接口";
+            TaskName = $"托盘：{subIdx + 1} 调用CvRequest接口";
             SubIdx = subIdx;
         }
 
@@ -215,13 +218,13 @@ namespace HBYWCZP2024.PLC.Tasks
             var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx + 1);
             if (pallet == null || !pallet.IsEnable)
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.Tray}：{SubIdx + 1}{Properties.Resources.NotFound}"));
                 return false;
             }
 
             if (!await Context.Mediator.Send(new CvRequestCommand(Context.Name, pallet.InsideNum)))
             {
-                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}{SubIdx + 1}上传失败"));
+                await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}： {SubIdx + 1}，{pallet.InsideNum}上传失败"));
 
             }
             pallet.ClearStage();
@@ -230,12 +233,15 @@ namespace HBYWCZP2024.PLC.Tasks
     }
 
 
+    /// <summary>
+    /// 拆组结束
+    /// </summary>
     [OPCDelectInfo(10, 11)]
     public class GrabActionExitTask : HBBaseTask
     {
         public GrabActionExitTask(int subIdx) : base(4)
         {
-            TaskName = $"{subIdx + 1} 拆组盘结束";
+            TaskName = $"托盘：{subIdx + 1} 拆组盘结束";
             SubIdx = subIdx;
         }
 
@@ -247,7 +253,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDisassemblyTaskStarted}: {Properties.Resources.Tray}{SubIdx + 1}{Properties.Resources.NotFound}"));
                 return false;
             }
-            Context.Logger.LogInformation("托盘{idx} 上报拆组盘接口", SubIdx);
+            Context.Logger.LogInformation("托盘：{idx} 上报拆组盘接口", SubIdx + 1);
             var res = await Context.Mediator.Send(new GrabActionCommand(Context.Name, pallet.InsideNum, false, false));
             return res;//&& await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
 

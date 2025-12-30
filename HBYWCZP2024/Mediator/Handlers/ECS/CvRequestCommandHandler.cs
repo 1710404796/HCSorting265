@@ -1,5 +1,6 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using LanguageExt.Common;
@@ -35,6 +36,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (request.isSpecial)
             {
+                //特殊工位筛选
                 if (MainStorage.Saves.ApiEnableTable.FilterSpecialEnable)
                 {
                     var Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum;
@@ -69,7 +71,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
                     {
                         TrayCode = pallet.PalletCode,
-                        TrayType = ((int)pallet.OKNGType).ToString(),
+                        //TrayType = ((int)pallet.OKNGType).ToString(),
+                        TrayType = pallet.OKNGType.GetTrayTypeStr(),
                         Location = pallet.OutsideStationNum.ToString(),
                         Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
                     });
@@ -88,7 +91,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
             {
                 TrayCode = pallet.PalletCode,
-                TrayType = ((int)pallet.OKNGType).ToString(),
+                //TrayType = ((int)pallet.OKNGType).ToString(),
+                TrayType = pallet.OKNGType.GetTrayTypeStr(),
                 Location = pallet.OutsideStationNum.ToString()
             });
             return rrn1

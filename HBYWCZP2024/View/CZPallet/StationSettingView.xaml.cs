@@ -1,10 +1,12 @@
 ﻿using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
+using HBYWCZP2024.Utils;
 using HBYWCZP2024.ViewModel;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +44,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "工程托盘", "NG", "复测类型", "空筛选" , "拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘","拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘", "补盘位托盘" };
 
         public StationSettingView()
         {
@@ -209,11 +211,11 @@ namespace HBYWCZP2024.View.CZPallet
                 station.Column = int.Parse(columnNum[i].Text);
                 station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
-             
+
 
                 if (station is Pallet pallet)
                 {
-                    if (OKNGBoxes[i].SelectedIndex >= 0 && OKNGBoxes[i].SelectedIndex < OKNGBoxes[i].Items.Count)
+                    if (OKNGBoxes[i].SelectedIndex >= 0 && OKNGBoxes[i].SelectedIndex <= OKNGBoxes[i].Items.Count)
                     {
                         pallet.OKNGType = (TrayType)OKNGBoxes[i].SelectedIndex;
                         //switch
@@ -225,11 +227,11 @@ namespace HBYWCZP2024.View.CZPallet
                         //    4 => TrayType.组盘托盘,
                         //};
                     }
-                    //_logger.LogDebug($"{station.OutsideStationNum}TrayType类型为: {pallet.OKNGType}");
+                    _logger.LogDebug($"工位号：{station.OutsideStationNum}，下拉框索引：{(TrayType)OKNGBoxes[i].SelectedIndex}，托盘类型：{pallet.OKNGType.GetTrayTypeStr()}");
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 
-               
+
 
             }
 

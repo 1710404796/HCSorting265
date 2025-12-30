@@ -211,7 +211,12 @@ namespace HBYWCZP2024
             var dd = MainStorage.Saves.BatteryLevelList.Any(s => s.Contains("Xn1y"));
             var data = CZPUtils.GetLevelFromMes("WGNG");
 
-            var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(), BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.Engineering };
+            //var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(),
+            //    BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.Engineering };
+
+             var a = new S105B() { BatteryBarcodes = Enumerable.Range(0, 24).Select(s => ($"Test{s}", "AA")).ToList(),
+                BatteryCount = 24, TrayNumber = "213123", TrayPosition = 1, TrayType = TrayType.空托盘 };
+
             var b = MessageHelper.GetSocketMessage(a.Type, "413", a.GetContent());
             //Host.UseSwagger();
             //Host.UseSwaggerUI(options => {

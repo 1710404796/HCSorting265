@@ -171,7 +171,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else
             {
-                throw new Exception($"{request.Key},{request.StationNum}未设置托盘类型或托盘类型不符合当前工位，请在“程序参数设定界面”条码规则表“配置”进行检查");
+                throw new Exception("托盘类型错误");
+
             }
 
 
