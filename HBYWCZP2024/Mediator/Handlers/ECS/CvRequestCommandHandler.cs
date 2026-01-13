@@ -72,7 +72,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     {
                         TrayCode = pallet.PalletCode,
                         //TrayType = ((int)pallet.OKNGType).ToString(),
-                        TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                        //TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                        TrayType = pallet.ECSCZTrayType.GetOUTTrayTypeStr(),
                         Location = pallet.OutsideStationNum.ToString(),
                         Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
                     });

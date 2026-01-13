@@ -28,6 +28,7 @@ namespace HBYWCZP2024.View.CZPallet
         TextBox[] StationNum;// = new TextBox[lent];
         TextBox[] channelNum;// = new TextBox[lent];
         TextBox[] columnNum;// = new TextBox[lent];
+        ComboBox[] ECSTypeBoxs;// = new ComboBox[lent];
         ComboBox[] comboBoxes;// = new ComboBox[lent];
         ComboBox[] OKNGBoxes;// = new ComboBox[lent];
         CheckBox[] isStationEnable;// = new ComboBox[lent];
@@ -44,7 +45,8 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘","拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘", "补盘位托盘" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘" };
+        public List<string> ECSPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘" ,"拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘", "补盘位托盘"};
 
         public StationSettingView()
         {
@@ -62,6 +64,7 @@ namespace HBYWCZP2024.View.CZPallet
             StationNum = new TextBox[stations.Length];
             channelNum = new TextBox[stations.Length];
             columnNum = new TextBox[stations.Length];
+            ECSTypeBoxs = new ComboBox[stations.Length];
             comboBoxes = new ComboBox[stations.Length];
             OKNGBoxes = new ComboBox[stations.Length];
             isStationEnable = new CheckBox[stations.Length];
@@ -134,6 +137,17 @@ namespace HBYWCZP2024.View.CZPallet
                     OKNGBoxes[idx].SelectedIndex = (int)b.OKNGType;
                 }
 
+                ECSTypeBoxs[idx] = new()
+                {
+                    Width = 150,
+                    ItemsSource = ECSPalletTypeStr,
+
+                    IsEnabled = station is Pallet,
+                };
+                if (station is Pallet c)
+                {
+                    ECSTypeBoxs[idx].SelectedIndex = (int)c.ECSCZTrayType;
+                }
 
                 isStationEnable[idx] = new()
                 {
@@ -181,6 +195,7 @@ namespace HBYWCZP2024.View.CZPallet
                 stackPanel.Children.Add(StationNum[i]);
                 stackPanel.Children.Add(comboBoxes[i]);
                 stackPanel.Children.Add(OKNGBoxes[i]);
+                stackPanel.Children.Add(ECSTypeBoxs[i]);
                 stackPanel.Children.Add(channelNum[i]);
                 stackPanel.Children.Add(columnNum[i]);
                 stackPanel.Children.Add(isStationEnable[i]);
@@ -227,7 +242,18 @@ namespace HBYWCZP2024.View.CZPallet
                         //    4 => TrayType.组盘托盘,
                         //};
                     }
-                    _logger.LogDebug($"工位号：{station.OutsideStationNum}，下拉框索引：{(TrayType)OKNGBoxes[i].SelectedIndex}，托盘类型：{pallet.OKNGType.GetTrayTypeStr()}");
+
+                    if (ECSTypeBoxs[i].SelectedIndex >= 0 && ECSTypeBoxs[i].SelectedIndex <= ECSTypeBoxs[i].Items.Count)
+                    {
+
+                        pallet.ECSCZTrayType = (ECSTrayType)(ECSTypeBoxs[i].SelectedIndex);
+
+                    }
+                    _logger.LogDebug($"工位号：{station.OutsideStationNum}，" +
+                        $"FMS下拉框索引：{(TrayType)OKNGBoxes[i].SelectedIndex}，" +
+                        $"FMS托盘类型：{pallet.OKNGType.GetTrayTypeStr()}，" +
+                        $"ECS下拉框索引：{(ECSTrayType)(ECSTypeBoxs[i].SelectedIndex )}，" +
+                        $"ECS托盘类型：{pallet.ECSCZTrayType.GetOUTTrayTypeStr()}");
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 

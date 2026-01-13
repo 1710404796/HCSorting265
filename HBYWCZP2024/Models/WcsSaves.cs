@@ -248,6 +248,9 @@ namespace HBYWCZP2024.Models
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }
+        /// <summary>
+        /// 特殊筛选工位使能(筛选)
+        /// </summary>
         public bool FilterSpecialEnable { get; set; }
 
         /// <summary>

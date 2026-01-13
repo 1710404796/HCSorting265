@@ -32,27 +32,31 @@ namespace HBYWCZP2024.Utils
                 TrayType.复测托盘=>"5",
                 //TrayType.Other => "6",
                 //TrayType.空筛选类型 => "7",
-                //TrayType.拆盘托盘 => "11",
-                //TrayType.组盘托盘 => "12",
-                //TrayType.挑选位托盘 => "13",
-                //TrayType.组盘位托盘 => "14",
-                //TrayType.补盘位托盘 => "15",
-                _ => ((int)trayType).ToString(),
-            }; 
-        }
-
-        public static string GetOUTTrayTypeStr(this TrayType trayType)
-        {
-            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
-
-            return trayType switch
-            {
-               
                 TrayType.拆盘托盘 => "11",
                 TrayType.组盘托盘 => "12",
                 TrayType.挑选位托盘 => "13",
                 TrayType.组盘位托盘 => "14",
                 TrayType.补盘位托盘 => "15",
+                _ => ((int)trayType).ToString(),
+            }; 
+        }
+
+        public static string GetOUTTrayTypeStr(this ECSTrayType trayType)
+        {
+            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
+
+            return trayType switch
+            {
+                ECSTrayType.空托盘 => "1",
+                ECSTrayType.实托盘 => "2",
+                ECSTrayType.满盘OK => "3",
+                ECSTrayType.NG托盘 => "4",
+                ECSTrayType.复测托盘 => "5",
+                ECSTrayType.拆盘托盘 => "11",
+                ECSTrayType.组盘托盘 => "12",
+                ECSTrayType.挑选位托盘 => "13",
+                ECSTrayType.组盘位托盘 => "14",
+                ECSTrayType.补盘位托盘 => "15",
                 _ => ((int)trayType).ToString(),
             };
         }

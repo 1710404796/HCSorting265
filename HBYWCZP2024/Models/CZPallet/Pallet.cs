@@ -19,6 +19,7 @@ namespace HBYWCZP2024.Models.CZPallet
         public PalletType Type { get; set; }
         public TrayType OKNGType { get; set; }
 
+        public ECSTrayType ECSCZTrayType { get; set; }
 
         public bool CheckCodeRegular(string? code = null)
         {

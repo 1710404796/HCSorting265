@@ -9,7 +9,7 @@
                 xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         WindowStartupLocation="CenterScreen"
-        Title="DiaosuStage" Height="760" Width="1250"
+        Title="DiaosuStage" Height="760" Width="1450"
         
         >
     <Grid>
@@ -67,6 +67,14 @@
   Text="OK或NG托盘"
   
   ></TextBlock>
+
+            <TextBlock 
+            Width="150"
+            Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+            TextAlignment="Center"
+            Text="ECS托盘">
+            </TextBlock>
+
             <TextBlock 
              Width="150"
              Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
