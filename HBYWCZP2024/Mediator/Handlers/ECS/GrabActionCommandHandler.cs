@@ -311,7 +311,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 {
                                     trayCode = pallet.PalletCode,
                                     //trayType = ((int)Get(pallet)).ToString(),
-                                    trayType = pallet.OKNGType.GetTrayTypeStr(),
+                                    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
                                     CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
                                     {
                                         CellCode = s.Code,
@@ -351,10 +351,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
                                     (
                                         codeMapTemp.Find(s.Code).Match(
-                                            Some: lv => CZPUtils.GetLevelFromMes(lv),
-                                            None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                            Some: lv => lv,
+                                            None: () => !isCodeRuleNG1(s.Code) ? BatteryLevel.Fake.ToString() : s.BatteryLevel.ToString()
                                         )
-                                    ).ToString() :
+                                    ) :
                                     (
                                         tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
                                         isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
