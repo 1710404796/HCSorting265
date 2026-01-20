@@ -45,7 +45,7 @@ namespace HBYWCZP2024.View.CZPallet
 }
             ;
 
-        public List<string> OKNGPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘" };
+        public List<string> OKNGPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘" ,"拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘", "补盘位托盘" };
         public List<string> ECSPalletTypeStr { get; } = new() { "空托盘", "实托盘", "满盘OK", "NG托盘", "复测托盘" ,"拆盘托盘", "组盘托盘", "挑选位托盘", "组盘位托盘", "补盘位托盘"};
 
         public StationSettingView()

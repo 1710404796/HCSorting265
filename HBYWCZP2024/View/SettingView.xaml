@@ -345,6 +345,9 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FilterSpecialEnable}"
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionCvRequestEnable}"
 >G区预分选智能工位使能(筛选)</CheckBox>
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.NGStationUpload}"
+>NG站台上报FMS</CheckBox>
 
                 </StackPanel>
 

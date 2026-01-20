@@ -245,6 +245,9 @@ namespace HBYWCZP2024.Models
         public bool GRegionFXQueryEnable { get; set; }
         public bool AllLevelUploadEnable { get; set; }
         public bool HHFilterQueryEnable { get; set; }
+        /// <summary>
+        /// 分选档位上传(分选)
+        /// </summary>
         public bool TrayLevelUpdate { get; set; }
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }
@@ -257,6 +260,11 @@ namespace HBYWCZP2024.Models
         /// G区预分选特殊档位接口
         /// </summary>
         public bool GRegionCvRequestEnable { get; set; }
+
+        /// <summary>
+        /// NG站台上报FMS
+        /// </summary>
+        public bool NGStationUpload { get; set; }
     }
     public class LevelName
     {

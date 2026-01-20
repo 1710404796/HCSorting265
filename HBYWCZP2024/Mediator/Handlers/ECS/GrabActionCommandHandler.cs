@@ -341,34 +341,88 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         else if (pallet.Type == PalletType.组盘)
                         {
                             // 一注组盘可能要传
-                            var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
+                            //var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
+                            //{
+                            //    trayCode = pallet.PalletCode,
+                            //    cellCodes = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
+                            //    {
+                            //        cellCode = s.Code,
+                            //        channel = i + 1,
+                            //        gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                            //        (
+                            //            codeMapTemp.Find(s.Code).Match(
+                            //                Some: lv => lv,
+                            //                None: () => !isCodeRuleNG1(s.Code) ? BatteryLevel.Fake.ToString() : s.BatteryLevel.ToString()
+                            //            )
+                            //        ) :
+                            //        (
+                            //            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                            //            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                            //        ).ToString(),
+                            //        cellType = s.GetCellType()
+                            //    })
+                            //     .Filter(s => !string.IsNullOrWhiteSpace(s.cellCode))
+
+                            //    .ToArray()
+                            //    //cellCodes =  s
+                            //}
+                            //);
+                            //return res.IsSuccess;
+
+
+
+
+                            var cells = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
                             {
-                                trayCode = pallet.PalletCode,
-                                cellCodes = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
-                                {
-                                    cellCode = s.Code,
-                                    channel = i + 1,
-                                    gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
-                                    (
-                                        codeMapTemp.Find(s.Code).Match(
-                                            Some: lv => lv,
-                                            None: () => !isCodeRuleNG1(s.Code) ? BatteryLevel.Fake.ToString() : s.BatteryLevel.ToString()
-                                        )
-                                    ) :
-                                    (
+                                cellCode = s.Code,
+                                channel = i + 1,
+                                gradingType = MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                (
+                                codeMapTemp.Find(s.Code).Match(
+                                    Some: lv => lv,
+                                    None: () => !isCodeRuleNG1(s.Code) ? BatteryLevel.Fake.ToString() : s.BatteryLevel.ToString()
+                                    )
+                                ) :
+                                (
                                         tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
                                         isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
                                     ).ToString(),
-                                    cellType = s.GetCellType()
-                                })
-                                .Filter(s => !string.IsNullOrWhiteSpace(s.cellCode))
+                                cellType = s.GetCellType()
+                            }).Filter(s => !string.IsNullOrWhiteSpace(s.cellCode)).ToArray();
 
-                               .ToArray()
-                                //cellCodes =  s
+                            // 检查是否整盘都是NG
+                            //bool allNG = cells.Length > 0 && cells.All(cell => cell.gradingType?.ToUpper() == BatteryLevel.NG.ToString().ToUpper() || cell.gradingType?.ToUpper() == "NOREAD");
+                            //bool allNG = cells.Length > 0 && cells.All(cell => cell.gradingType?.ToUpper() == BatteryLevel.NG.ToString().ToUpper());
+                            //bool allNG = cells.Length > 0 && cells.All(cell => cell.cellCode?.ToUpper() == "NOREAD");
+
+
+                            // 启用则上报FMS  否则不上报  默认不启用
+                            if (pallet.OKNGType == TrayType.NG托盘)
+                            {
+                                if (MainStorage.Saves.ApiEnableTable.NGStationUpload)
+                                {
+                                    var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
+                                    {
+                                        trayCode = pallet.PalletCode,
+                                        cellCodes = cells
+                                    });
+                                    return res.IsSuccess;
+                                }
+                                else
+                                {
+                                    return true;
+                                }
                             }
-                           );
-                            return res.IsSuccess;
-
+                            else
+                            {
+                                // 组盘工位NG托盘不上传
+                                var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
+                                {
+                                    trayCode = pallet.PalletCode,
+                                    cellCodes = cells
+                                });
+                                return res.IsSuccess;
+                            }
 
 
                             //var cellCodes = pallet.Channels.Take(pallet.ChannelNum)
