@@ -250,10 +250,10 @@ namespace HBYWCZP2024.View.CZPallet
 
                     }
                     _logger.LogDebug($"工位号：{station.OutsideStationNum}，" +
-                        $"FMS下拉框索引：{(TrayType)OKNGBoxes[i].SelectedIndex}，" +
-                        $"FMS托盘类型：{pallet.OKNGType.GetTrayTypeStr()}，" +
-                        $"ECS下拉框索引：{(ECSTrayType)(ECSTypeBoxs[i].SelectedIndex )}，" +
-                        $"ECS托盘类型：{pallet.ECSCZTrayType.GetOUTTrayTypeStr()}");
+                        $"FMS下拉框索引：{pallet.OKNGType.GetTrayTypeStr()}，" +
+                        $"FMS托盘类型：{(TrayType)OKNGBoxes[i].SelectedIndex}，" +
+                        $"ECS下拉框索引：{pallet.ECSCZTrayType.GetOUTTrayTypeStr()}，" +
+                        $"ECS托盘类型：{(ECSTrayType)(ECSTypeBoxs[i].SelectedIndex)}");
                     pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 

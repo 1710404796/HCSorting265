@@ -415,7 +415,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
                             else
                             {
-                                // 组盘工位NG托盘不上传
+                                
                                 var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                                 {
                                     trayCode = pallet.PalletCode,

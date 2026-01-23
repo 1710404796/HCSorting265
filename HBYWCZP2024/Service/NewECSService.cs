@@ -89,6 +89,11 @@ namespace HBYWCZP2024.Service
             return SendEcsRequest<FireAlarmResponse>("/ecs/api/fire/alarm", request);
         }
 
+        /// <summary>
+        /// 物流线请求路径
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<Result<CvResponse>> CvRequestAsync(CvRequest request)
         {
             return SendEcsRequest<CvResponse>("/ecs/api/equip/cvrequest", request);
@@ -154,6 +159,14 @@ namespace HBYWCZP2024.Service
             else
             {
                 var err = result.Match(Succ: s => "", Fail: f => f.Message);
+                if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable)
+                {
+                    if ("/ecs/api/equip/cvrequest" == api)
+                    {
+                        return result;
+                    }
+                }
+
                 var wres = await mediator.Send(new WarningBoxCommand(
                     Name + "工作站\n" + $"ECS返回错误信息，发生问题 Error:" + err + "\n点击ok重新发送此请求，点击cancel终止此任务！",
                     Button: System.Windows.MessageBoxButton.OKCancel));
