@@ -8,6 +8,7 @@ using HBYWCZP2024.ViewModel;
 using LanguageExt;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -88,98 +89,90 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}进入{Dest1}")).Wait();
                     }
 
-                    //var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
-                    //{
-                    //    TrayCode = pallet.PalletCode,
-                    //    //TrayType = ((int)pallet.OKNGType).ToString(),
-                    //    TrayType = pallet.OKNGType.GetTrayTypeStr(),
-                    //    //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
-                    //    Location = pallet.OutsideStationNum.ToString(),                     //当前位置
-                    //    Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum     //目标位置
-                    //});
-                    //return rrn
-                    //    .Match(
-                    //    Succ: r => true,
-                    //    Fail: ex =>
-                    //    {
-                    //        mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
-                    //        return false;
-                    //    }
-                    //    );
-
-                   
-
-                    int maxRetries = 6;
-                    int retryIntervalMinutes = 3;
-                    Exception lastException = null;
-
-                    for (int retryCount = 1; retryCount <= maxRetries; retryCount++)
+                    var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
                     {
-                        try
+                        TrayCode = pallet.PalletCode,
+                        //TrayType = ((int)pallet.OKNGType).ToString(),
+                        TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                        //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
+                        Location = pallet.OutsideStationNum.ToString(),                     //当前位置
+                        Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum     //目标位置
+                    });
+                    return rrn
+                        .Match(
+                        Succ: r => true,
+                        Fail: ex =>
                         {
-                            var rrn = await newECSService.CvRequestAsync(new CvRequest(request.Key)
-                            {
-                                TrayCode = pallet.PalletCode,
-                                TrayType = pallet.OKNGType.GetTrayTypeStr(),
-                                Location = pallet.OutsideStationNum.ToString(),
-                                Dest = MainStorage.Saves.KeysSave[request.Key].FilterSpecialNum
-                            });
-
-                            var success = rrn.Match(
-                                Succ: r =>true,
-                                Fail: ex =>
-                                {
-                                    _logger.LogError(ex, $"托盘{pallet.PalletCode} 请求失败，第{retryCount}次尝试");
-                                    lastException = ex;
-                                    return false;
-                                }
-                            );
-
-                            if (success)
-                            {
-                                _logger.LogInformation($"托盘{pallet.PalletCode} 请求完成，共尝试{retryCount}次");
-                                return true;
-                            }
+                            mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
+                            return false;
                         }
-                        catch (Exception ex)
-                        {
-                            // 记录未预期的异常
-                            _logger.LogError(ex, $"托盘{pallet.PalletCode} 请求发生异常，第{retryCount}次尝试");
-                            lastException = ex;
-                        }
+                        );
 
-                        if (retryCount < maxRetries)
-                        {
-                            // 提供更详细的错误信息
-                            _logger.LogWarning($"托盘{pallet.PalletCode}上报失败，等待重试");
-
-                            await mediator.Send(new WcsDataWarningBoxCommand(
-                                $"托盘{pallet.PalletCode}上报失败，{retryCount}/{maxRetries}次重试，{retryIntervalMinutes}分钟后重试"));
-
-                            await Task.Delay(TimeSpan.FromMinutes(retryIntervalMinutes));
-                        }
-                    }
                 }
             }
 
+            int maxRetries = 10;
+            int retryIntervalMinutes = 3;
+            Exception lastException = null;
 
-
-            var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            for (int retryCount = 1; retryCount <= maxRetries; retryCount++)
             {
-                TrayCode = pallet.PalletCode,
-                //TrayType = ((int)pallet.OKNGType).ToString(),
-                TrayType = pallet.OKNGType.GetTrayTypeStr(),
-                //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
-                Location = pallet.OutsideStationNum.ToString()
-            });
-            return rrn1
-                .Match(
-                Succ: r => true,
-                Fail: ex =>
+                try
                 {
-                    mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
-                    return false;
-               });
+                    var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+                    {
+                        TrayCode = pallet.PalletCode,
+                        TrayType = pallet.OKNGType.GetTrayTypeStr(),
+                        Location = pallet.OutsideStationNum.ToString(),
+                    });
+
+                    var success = rrn1.Match(
+                    Succ: r => true,
+                        Fail: ex =>
+                        {
+                            _logger.LogError(ex, $"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 请求失败，第“{retryCount}”次尝试");
+                            lastException = ex;
+                            return false;
+                        }
+                    );
+                    if (success)
+                    {
+                        _logger.LogInformation($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 请求完成，共尝试“{retryCount}”次");
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 请求发生异常，第“{retryCount}”次尝试");
+                    lastException = ex;
+                }
+
+                if (retryCount < maxRetries)
+                {
+                    _logger.LogError($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode}，{retryIntervalMinutes}分钟后重试尝试申请");
+                    await Task.Delay(TimeSpan.FromMinutes(retryIntervalMinutes));
+                }
+            }
+            _logger.LogError($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode}，{maxRetries}次重试均失败");
+            return false;
+
+
+            //var rrn1 = await newECSService.CvRequestAsync(new CvRequest(request.Key)
+            //{
+            //    TrayCode = pallet.PalletCode,
+            //    //TrayType = ((int)pallet.OKNGType).ToString(),
+            //    TrayType = pallet.OKNGType.GetTrayTypeStr(),
+            //    //TrayType = pallet.OKNGType.GetOUTTrayTypeStr(),
+            //    Location = pallet.OutsideStationNum.ToString()
+            //});
+            //return rrn1
+            //    .Match(
+            //    Succ: r => true,
+            //    Fail: ex =>
+            //    {
+            //        mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}，{request.InsideStationNum}离开上报ECS失败: {ex.Message}")).Wait();
+            //        return false;
+            //    });
 
 
 

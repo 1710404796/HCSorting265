@@ -160,12 +160,16 @@ namespace HBYWCZP2024.PLC.Tasks
                 return false;
             }
 
-            if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum,true)))
+            if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum, true)))
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}：{SubIdx + 1}，{pallet.InsideNum}上传失败"));
 
             }
-            pallet.ClearStage();
+            else 
+            {
+                pallet.ClearStage();
+            }
+            
             return true;
         }
     }
@@ -194,9 +198,12 @@ namespace HBYWCZP2024.PLC.Tasks
             if (!await Context.Mediator.Send(new PalletOutCommand(Context.Name, pallet.InsideNum)))
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}： {SubIdx + 1}，{pallet.InsideNum}上传失败"));
-
             }
-            pallet.ClearStage();
+            else 
+            {
+                pallet.ClearStage();
+            }
+            
             return true;
         }
     }
@@ -225,7 +232,7 @@ namespace HBYWCZP2024.PLC.Tasks
             if (!await Context.Mediator.Send(new CvRequestCommand(Context.Name, pallet.InsideNum)))
             {
                 await Context.Mediator.Send(new PlcDataWarningBoxCommand($"{Properties.Resources.TrayDepartureTask}: {Properties.Resources.Tray}： {SubIdx + 1}，{pallet.InsideNum}上传失败"));
-
+                
             }
             pallet.ClearStage();
             return true;
