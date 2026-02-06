@@ -40,10 +40,10 @@ namespace HBYWCZP2024.View.CZPallet
             // id需不需要处理一下
             Border res = new Border
             {
-                Margin = col >= 0 ? new Thickness(35, 2, 2, 2) : new Thickness(2),
+                Margin = col >= 0 ? new Thickness(55, 35, 2, 2) : new Thickness(2),
                 Width = 400,
-                Height = 60,
-                BorderThickness = new Thickness(2.5),
+                Height = 200,
+                BorderThickness = new Thickness(10),
                 CornerRadius = new CornerRadius(2),
             };
             res.SetBinding(Border.BorderBrushProperty, new Binding($"Channels[{id}].BorderBrush")
@@ -58,9 +58,9 @@ namespace HBYWCZP2024.View.CZPallet
             {
                 Text = (id + 1).ToString(),
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(-30, 0, 0, 0),
-
-                FontSize = 18
+                Margin = new Thickness(-65, 0, 0, 0),
+                FontSize=46,
+                FontWeight = FontWeights.Bold
             };
             textBlock1.SetResourceReference(TextBlock.ForegroundProperty, "SystemControlPageTextBaseHighBrush");
 
@@ -70,8 +70,9 @@ namespace HBYWCZP2024.View.CZPallet
                 Margin = new Thickness(0, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.Black,
-                FontSize = 24,
-                TextAlignment = TextAlignment.Center
+                FontSize = 46,
+                TextAlignment = TextAlignment.Center,
+                TextWrapping=TextWrapping.Wrap,
             };
             //ViewModel.Pallet.BindBattery(2, "sadasadasdasdasddasdassd");
             textBlock2.SetResourceReference(TextBlock.ForegroundProperty, "SystemControlPageTextBaseHighBrush");
@@ -137,8 +138,8 @@ namespace HBYWCZP2024.View.CZPallet
                     }
 
                 }
-                PalletBorder.Height = _borders.Length * 64 / Station.Column + 40;
-                PalletBorder.Width = Station.Column * 430 + 60;
+                PalletBorder.Height = _borders.Length * 200 / Station.Column + 600;
+                PalletBorder.Width = Station.Column * 460 + 60;
 
 
 

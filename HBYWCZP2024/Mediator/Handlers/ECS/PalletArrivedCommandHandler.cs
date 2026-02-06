@@ -3,6 +3,7 @@ using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
+using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using LanguageExt.Common;
 using MediatR;
@@ -55,6 +56,26 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 return false;
             }
 
+            var service = hBECSServiceFactory.Create(request.Key);
+            if (pallet.Type == Models.CZPallet.PalletType.组盘)
+            {
+                var result = await service.MesService.CheckNullTrayAsync(new CheckNullTrayRequest(request.Key)
+                {
+                    containerCode = pallet.PalletCode,
+                });
+                return await result.Match(async response =>
+                {
+                    if (response.Success) return true;
+                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证失败: {response.Message}"));
+                    return false;
+                },
+                async ex =>
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证异常: {ex.Message}"));
+                    return false;
+                });
+            }
+
             Result<EquipEnterResponse> response = await newEcsService.EquipEnterAsync(
                 new EquipEnterRequest(request.Key)
                 {
@@ -95,7 +116,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 },
                 Fail: async ex =>
                 {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"托盘{pallet.PalletCode}上报MES失败: {ex.Message}"));
+                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key},站台：{request.InsideStationNum}，托盘：{pallet.PalletCode}上报MES失败: {ex.Message}"));
                     return false;
                 }
              );
