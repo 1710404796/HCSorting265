@@ -51,11 +51,17 @@ namespace HBYWCZP2024.Models
         [ObservableProperty]
         XYLStation _okPairingPlatform2 = new(800, "OK配对平台2");
 
+        /// <summary>
+        /// 托杯工位
+        /// </summary>
+        [ObservableProperty]
+        TrayCupStation _trayCupStation = new(900, "托杯工位");
+
         [ObservableProperty]
         ObservableCollection<Pallet> _pallets = new();
 
         [JsonIgnore]
-        public XYLStation[] Stations => [IncomingBelt, StrippingBelt, RobotGripper, OkPairingPlatform, ReworkPairingPlatform, NgBelt, AbnormalStation, OkPairingPlatform2, .. Pallets];
+        public XYLStation[] Stations => [IncomingBelt, StrippingBelt, RobotGripper, OkPairingPlatform, ReworkPairingPlatform, NgBelt, AbnormalStation, OkPairingPlatform2, TrayCupStation, .. Pallets];
 
         public XYLStage()
         {

@@ -39,7 +39,7 @@ public record CvRequestCommand(string Key, int InsideStationNum,bool isSpecial =
 public record GrabCommand(string Key, GrabInfo GrabInfo) : IRequest<bool>;
 
 public record GrabInfo(XYLStation From, XYLStation To, Arr<BatteryMoveInfo> Infos);
-public record BatteryMoveInfo(string Code, int FromChannel, int ToChannel);
+public record BatteryMoveInfo(string Code, int FromChannel, int ToChannel, string TrayCupCode = "");
 
 /// <summary>
 /// 4.3 请求电芯信息

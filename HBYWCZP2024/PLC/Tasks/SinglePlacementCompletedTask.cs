@@ -94,6 +94,8 @@ namespace HBYWCZP2024.PLC.Tasks
             //};
             //var fincodes = 
 
+            bool isTrayCupTarget = put is TrayCupStation;
+
             for (int i = 0; i < grabChannel.Length; i++)
             {
                 int zeroBaseGrabChannel = grabChannel[i] - 1;
@@ -116,7 +118,9 @@ namespace HBYWCZP2024.PLC.Tasks
                         return false;
                     }
 
-                    string finCode = string.IsNullOrWhiteSpace(batteryCodes[i]) ? grab!.Channels[zeroBaseGrabChannel].Code : batteryCodes[i];
+                    string finCode = isTrayCupTarget
+                        ? grab!.Channels[zeroBaseGrabChannel].Code
+                        : (string.IsNullOrWhiteSpace(batteryCodes[i]) ? grab!.Channels[zeroBaseGrabChannel].Code : batteryCodes[i]);
 
                     if (string.IsNullOrWhiteSpace(finCode))
                     {
@@ -178,14 +182,20 @@ namespace HBYWCZP2024.PLC.Tasks
                     code.All(c => c == 'J');
             }
             var codes = Enumerable.Range(0, grabChannel.Length)
-                .Map(i => (grabChannel[i], putChannel[i], claw[i],
-                    string.IsNullOrWhiteSpace(batteryCodes[i]) && claw[i] ? grab.Channels[grabChannel[i] - 1].Code : batteryCodes[i]
-                
-                ))
+                .Map(i =>
+                {
+                    var batteryCode = isTrayCupTarget
+                        ? grab.Channels[grabChannel[i] - 1].Code
+                        : (string.IsNullOrWhiteSpace(batteryCodes[i]) && claw[i]
+                            ? grab.Channels[grabChannel[i] - 1].Code
+                            : batteryCodes[i]);
+                    var trayCupCode = isTrayCupTarget ? batteryCodes[i] : string.Empty;
+                    return (grabChannel[i], putChannel[i], claw[i], batteryCode, trayCupCode);
+                })
                 .Filter(s => s.Item3)
                 .Filter(s => !isNG(s.Item4))
                 .Filter(s => !isFake(s.Item4))
-                .Map(s => new BatteryMoveInfo(s.Item4, s.Item1, s.Item2))
+                .Map(s => new BatteryMoveInfo(s.Item4, s.Item1, s.Item2, s.Item5))
                 .ToArr();
             if (!await Context.Mediator.Send(new GrabCommand(Context.Name, new GrabInfo(grab, put, codes))))
             {

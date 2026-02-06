@@ -180,6 +180,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             }
 
+            if (request.GrabInfo.To is TrayCupStation toTrayCup)
+            {
+                var trayCupInfos = request.GrabInfo.Infos
+                    .Filter(s => !string.IsNullOrWhiteSpace(s.TrayCupCode))
+                    .Filter(s => !string.IsNullOrWhiteSpace(s.Code))
+                    .ToArray();
+
+                foreach (var info in trayCupInfos)
+                {
+                    await mediator.Send(new SaveToSqlCommand(
+                        "",
+                        MainStorage.Saves.KeysSave[request.Key].EquipNum,
+                        info.TrayCupCode,
+                        info.Code,
+                        "OK"
+                    ));
+                }
+            }
+
 
 
             return true;
