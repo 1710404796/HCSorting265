@@ -40,6 +40,8 @@ namespace HBYWCZP2024.Models
         //public PLCCpuType PLCCpuType { get; set; } = PLCCpuType.小端;
 
         public List<string[]> BatteryLevelList { get; set; } = Enumerable.Range(0,7).Select(s => new string[0]).ToList();
+        public  string ExDbConnectionString { get; set; } = string.Empty;
+        public  string ExDbTableName { get; set; } = string.Empty;
 
         public int LogDeleteDay { get; set; } =30;
         public bool TestMode => KeysSave[SelectStageName].TestMode;

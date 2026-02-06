@@ -391,6 +391,23 @@ Margin="0,10,0,0" FontSize="15"
 Width="200"
 HorizontalAlignment="Left"
         Text="{Binding ViewModel.Saves.HeartbeartDuring}"></TextBox>
+
+                <TextBlock
+        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+        Margin="0,10,0,0" FontSize="15" 
+        >外部数据库连接串</TextBlock>
+                <TextBox  Margin="0,10,0,0" 
+        Width="200"
+        HorizontalAlignment="Left"
+            Text="{Binding ViewModel.Saves.ExDbConnectionString}"></TextBox>
+                <TextBlock
+        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+        Margin="0,10,0,0" FontSize="15" 
+        >外部数据库表名</TextBlock>
+                <TextBox  Margin="0,10,0,0" 
+        Width="200"
+        HorizontalAlignment="Left"
+            Text="{Binding ViewModel.Saves.ExDbTableName}"></TextBox>
                 <Button Margin="0,10,0,0" Width="150" Click="StationLevelConfig_Click">工位等级配置</Button>
 
                 <Button Width="100" Margin="0,10,0,0"  Click="SetPlc_Click">配置工位</Button>
