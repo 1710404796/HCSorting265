@@ -178,9 +178,8 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
 
 
-                    se.RegisterTask<CheckLadaiTask>();
-                    se.RegisterTask<CheckLadaiTask2>();
-                    se.RegisterTask<CheckLadaiTask3>();
+                    //se.RegisterTask<CheckLadaiTask2>();
+                    //se.RegisterTask<CheckLadaiTask3>();
                     se.RegisterTask<ApplyBatteryInfoTask>();
                     se.RegisterTask<ChaiPanCompletedTask>();
                     se.RegisterTask<InstallationCompletedTask>();
@@ -188,6 +187,11 @@ namespace HBYWCZP2024.Mediator.Handlers
                     se.RegisterTask<ChaiPanCompleted2Task>();
                     se.RegisterTask<AbnormalDischargeTask>();
 
+                    for (int i = 0; i < 8; i++)
+                    {
+                        se.RegisterTask(new CheckLadaiTask(i));
+
+                    }
 
                     for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
                     {

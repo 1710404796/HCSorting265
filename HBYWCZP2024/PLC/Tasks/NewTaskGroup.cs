@@ -103,12 +103,12 @@ namespace HBYWCZP2024.PLC.Tasks
 
 
 
-    [OPCDelectInfo(610,611)]
-    public class CheckLadaiTaskB: CheckLadaiTask;
-    [OPCDelectInfo(610,611)]
-    public class CheckLadaiTask2B: CheckLadaiTask2;
-    [OPCDelectInfo(610,611)]
-    public class CheckLadaiTask3B: CheckLadaiTask3;
+    //[OPCDelectInfo(610,611)]
+    //public class CheckLadaiTaskB: CheckLadaiTask;
+    //[OPCDelectInfo(610,611)]
+    //public class CheckLadaiTask2B: CheckLadaiTask2;
+    //[OPCDelectInfo(610,611)]
+    //public class CheckLadaiTask3B: CheckLadaiTask3;
 
 
 }

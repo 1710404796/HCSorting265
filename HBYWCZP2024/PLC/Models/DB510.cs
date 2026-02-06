@@ -14,8 +14,11 @@ namespace HBYWCZP2024.PLC.Models
         public DB510() { }
 
 
-        [OPCMember("action")]
         public byte Action { get; set; }
+
+        [OPCMember("action")]
+
+        public byte[] LaidaiAction { get; set; } = new byte[8];
         //public byte Actions(int idx) => Action;
 
         [OPCMember("channelState")]
@@ -25,5 +28,7 @@ namespace HBYWCZP2024.PLC.Models
         [OPCMember("batteryCode")]
         //public string[] BatteryCodes { get; set; } = new string[16];
         public string[] BatteryCodes { get; set; } = new string[20];
+
+        public byte Actions(int idx) => LaidaiAction[idx];
     }
 }
