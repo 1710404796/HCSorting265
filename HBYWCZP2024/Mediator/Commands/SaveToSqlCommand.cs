@@ -1,13 +1,14 @@
-﻿using MediatR;
+﻿using HBYWCZP2024.Models;
+using MediatR;
 using System;
+using System.Collections.Generic;
 
 namespace HBYWCZP2024.Mediator.Commands
 {
     public record SaveToSqlCommand(
         string TableName,
         string EquipNum,
-        string ContainerCode,
-        string Identification,
+        IReadOnlyCollection<CupBatteryModel> CupBatteryModels,
         string Message,
         DateTime? Time = null
     ) : IRequest<bool>;

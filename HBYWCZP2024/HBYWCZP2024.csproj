@@ -54,12 +54,13 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\lxuv\Cognex.NET\Cognex.NET.fsproj" />
+	  <ProjectReference Include="..\lxuv\Kenency.BCR.FS.NET\Kenency.BCR.FS.NET.fsproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Auth\LinxUniverse.Auth.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Mediator\LinxUniverse.Mediator.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.OPCUA\LinxUniverse.OPCUA.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.SciSocket\LinxUniverse.SciSocket.csproj" />
 	  <ProjectReference Include="..\lxuv\LinxUniverse.Utils\LinxUniverse.Utils.csproj" />
-	  <ProjectReference Include="..\lxuv\LinxUniverser.FP\LinxUniverser.FP.csproj" />
+	  <ProjectReference Include="..\lxuv\LinxUniverse.FP\LinxUniverse.FP.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

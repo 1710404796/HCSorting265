@@ -1,6 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.Queries;
+using HBYWCZP2024.Models;
+using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.Service;
+using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.View.CZPallet;
 using HBYWCZP2024.View.User;
 using HBYWCZP2024.ViewModel;
@@ -155,6 +160,43 @@ namespace HBYWCZP2024.View
         {
             var win = new View.CZPallet.StationLevelConfigWindow();
             win.ShowDialog();
+        }
+
+        private async void TestChaiButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mediator = App.GetService<IMediator>();
+            var factory = App.GetService<IHBECSServiceFactory>();
+            var hBECSService = factory.Create(MainStorage.Saves.SelectStageName);
+
+
+            var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(MainStorage.Saves.SelectStageName)
+            {
+                cellDataVOList = [..
+                            SomeData.TestCupTray.CupBatteryModels
+                            .Map(s => new Celldatavolist{ identification = s.BatteryCode, locationBat = s.Channel.ToString()})
+                            .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
+                containerCode = SomeData.TestCupTray.TrayCode,
+                actionType = "OUT"
+
+            }
+                    );
+            var mesdata = mesRes.Match(
+                Succ: s => s,
+                Fail: f =>
+                {
+                    mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                    throw f;
+                }
+                );
+        }
+
+        private async void TestBindCupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mediator = App.GetService<IMediator>();
+            var factory = App.GetService<IHBECSServiceFactory>();
+            var hBECSService = factory.Create(MainStorage.Saves.SelectStageName);
+            
+            await mediator.Send(new SaveToSqlCommand(MainStorage.Saves.ExDbTableName, MainStorage.Saves.EquipNum, SomeData.CupBatteries, "Test" ));
         }
     }
 }

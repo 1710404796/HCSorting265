@@ -6,6 +6,7 @@ using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.PLC;
 using HBYWCZP2024.PLC.Tasks;
 using HBYWCZP2024.Service;
+using Keyence.NET;
 using LanguageExt;
 using LinxUniverse.Auth;
 using LinxUniverse.DI;
@@ -87,7 +88,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                 {
                     if (pallet.IsEnable)
                     {
-                        pallet.Reader = fs(CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                        pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
                             Right: reader => Some(reader),
                             Left: s =>
                             {

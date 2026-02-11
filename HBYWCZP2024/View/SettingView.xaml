@@ -132,6 +132,20 @@
                     Width="100"
                     Margin="0,20,0,0"
                     Click="SaveButton_Click">保存设定</Button>
+                <Button 
+ 
+ x:Name="TestChaiButton" 
+     Width="100"
+     Margin="0,20,0,0"
+     Click="TestChaiButton_Click">测试数据拆盘</Button>
+
+                <Button 
+
+x:Name="TestBindCupButton" 
+    Width="100"
+    Margin="0,20,0,0"
+    Click="TestBindCupButton_Click">测试托杯绑定</Button>
+
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <TextBlock FontSize="15"

@@ -1,6 +1,5 @@
 ﻿
-using static Cognex.NET.CognexBCR;
-using Cognex.NET;
+using static Keyence.NET.KeyenceBCR;
 using BCR.Common.Fs;
 using System.Text.Json.Serialization;
 using HBYWCZP2024.Models.ECS;

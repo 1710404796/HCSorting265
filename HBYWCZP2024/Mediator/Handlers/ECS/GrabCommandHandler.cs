@@ -187,13 +187,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     .Filter(s => !string.IsNullOrWhiteSpace(s.Code))
                     .ToArray();
 
-                foreach (var info in trayCupInfos)
+                var bindings = trayCupInfos
+                    .Select(info => new CupBatteryModel(info.TrayCupCode, info.Code, info.ToChannel))
+                    .ToArray();
+
+                if (bindings.Length > 0)
                 {
                     await mediator.Send(new SaveToSqlCommand(
                         "",
                         MainStorage.Saves.KeysSave[request.Key].EquipNum,
-                        info.TrayCupCode,
-                        info.Code,
+                        bindings,
                         "OK"
                     ));
                 }

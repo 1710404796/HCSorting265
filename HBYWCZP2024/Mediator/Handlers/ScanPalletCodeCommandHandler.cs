@@ -1,13 +1,14 @@
 ﻿using BCR.Common.Fs;
-using Cognex.NET;
 using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Utils;
+using Keyence.NET;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Keyence.NET.KeyenceBCR;
 
 
 namespace HBYWCZP2024.Mediator.Handlers
@@ -30,9 +31,9 @@ namespace HBYWCZP2024.Mediator.Handlers
                 {
                     throw new Exception($"托盘{request.PalletIdx} 不存在");
                 }
-                var f = async (CognexBCR.Reader reader) =>
+                var f = async (KeyenceBCR.Reader reader) =>
                 {
-                    var ff = await CognexBCR.asTask(CognexBCR.getOneResultAndClearCacheRepeatAsync(TimeSpan.FromSeconds(3), 5, reader));
+                    var ff = await KeyenceBCR.asTask(KeyenceBCR.getOneResultAndClearCacheRepeatAsync(TimeSpan.FromSeconds(3), 5, reader));
                     var cc = fs(ff);
                     return cc;
                 };
@@ -40,8 +41,8 @@ namespace HBYWCZP2024.Mediator.Handlers
                     );
                 if (code.IsLeft)
                 {
-                    pallet.Reader.IfSome(f => CognexBCR.close(f));
-                    pallet.Reader = fs(CognexBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                    pallet.Reader.IfSome(f => KeyenceBCR.close(f));
+                    pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
                             Right: reader => Some(reader),
                             Left: e => pallet.Reader
                         );
@@ -50,7 +51,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                     Right: c => c,
                     Left: e => throw new Exception(e)
                     );
-                return data.First().Code;
+                return data.CodeDatas.First().Code;
 
                 // todo: 待测试实现
 
