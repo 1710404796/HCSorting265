@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 namespace HBYWCZP2024.PLC.Tasks
 {
 
+    #region
     //[TaskName("拉带入线校验2")]
 
     //[OPCDelectInfo(510, 511)]
@@ -214,6 +215,8 @@ namespace HBYWCZP2024.PLC.Tasks
     //        return base.CleanData();
     //    }
     //}
+    #endregion
+
     [TaskName("拉带入线校验")]
 
     [OPCDelectInfo(510, 511)]

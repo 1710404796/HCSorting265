@@ -146,6 +146,17 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     {
         return SendRequest<FxCheckResponse>("eve/pm/eqm/auto/grading", request);
     }
+
+    /// <summary>
+    /// 空托盘校验
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public Task<Result<CheckNullTrayResponse>> CheckNullTrayAsync(CheckNullTrayRequest request)
+    {
+        return SendRequest<CheckNullTrayResponse>("mt/container/verify/load/empty", request);
+    }
+
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
         LinxContext linxContext = App.GetService<LinxContext>();

@@ -200,7 +200,12 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ExDb;
             set => KeysSave[SelectStageName].ExDb = value;
         }
-
+        [JsonIgnore]
+        public string ContainerTypeCode
+        {
+            get => KeysSave[SelectStageName].ContainerTypeCode;
+            set => KeysSave[SelectStageName].ContainerTypeCode = value;
+        }
         public int HeartbeartDuring { get; set; } =5000;
         public byte MarkCode { get; set; } =1;
         public byte NgCode { get; set; } =2;
@@ -305,6 +310,9 @@ namespace HBYWCZP2024.Models
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
 
         public string DeviceCode { get; set; } = string.Empty;
+
+        public string ContainerTypeCode { get; set; } = string.Empty;
+
         public ApiEnable ApiEnableTable { get; set; } = new();
         public bool TestMode
         {
