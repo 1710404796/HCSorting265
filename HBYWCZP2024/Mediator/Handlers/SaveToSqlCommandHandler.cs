@@ -17,6 +17,19 @@ namespace HBYWCZP2024.Mediator.Handlers
         {
             try
             {
+                var key = string.IsNullOrWhiteSpace(request.Key)
+                    ? MainStorage.Saves.SelectStageName
+                    : request.Key;
+
+                if (!string.IsNullOrWhiteSpace(key)
+                    && MainStorage.Saves.KeysSave.TryGetValue(key, out var mono)
+                    && mono.ApiEnableTable is not null
+                    && !mono.ApiEnableTable.UploadCupBindingToDbEnable)
+                {
+                    logger.LogInformation("外部数据库写入已禁用, Key={Key}", key);
+                    return true;
+                }
+
                 if (string.IsNullOrWhiteSpace(MainStorage.Saves.ExDbConnectionString))
                 {
                     logger.LogWarning("外部数据库连接信息缺失");

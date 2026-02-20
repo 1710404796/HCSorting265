@@ -10,6 +10,7 @@ namespace HBYWCZP2024.Mediator.Commands
         string EquipNum,
         IReadOnlyCollection<CupBatteryModel> CupBatteryModels,
         string Message,
-        DateTime? Time = null
+        DateTime? Time = null,
+        string? Key = null
     ) : IRequest<bool>;
 }

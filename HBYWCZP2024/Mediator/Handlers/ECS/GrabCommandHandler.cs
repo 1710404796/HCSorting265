@@ -194,10 +194,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 if (bindings.Length > 0)
                 {
                     await mediator.Send(new SaveToSqlCommand(
-                        "",
+                        MainStorage.Saves.ExDbTableName,
                         MainStorage.Saves.KeysSave[request.Key].EquipNum,
                         bindings,
-                        "OK"
+                        "OK",
+                        Key: request.Key
                     ));
                 }
             }

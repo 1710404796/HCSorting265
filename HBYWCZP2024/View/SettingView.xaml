@@ -372,6 +372,10 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionCvRequestEnable}"
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.NGStationUpload}"
 >NG站台上报FMS</CheckBox>
 
+                    <CheckBox
+    IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadCupBindingToDbEnable}"
+    >托杯绑定上报数据库使能</CheckBox>
+
                 </StackPanel>
 
             </StackPanel>

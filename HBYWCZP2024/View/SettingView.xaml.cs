@@ -196,7 +196,13 @@ namespace HBYWCZP2024.View
             var factory = App.GetService<IHBECSServiceFactory>();
             var hBECSService = factory.Create(MainStorage.Saves.SelectStageName);
             
-            await mediator.Send(new SaveToSqlCommand(MainStorage.Saves.ExDbTableName, MainStorage.Saves.EquipNum, SomeData.CupBatteries, "Test" ));
+            await mediator.Send(new SaveToSqlCommand(
+                MainStorage.Saves.ExDbTableName,
+                MainStorage.Saves.EquipNum,
+                SomeData.CupBatteries,
+                "Test",
+                Key: MainStorage.Saves.SelectStageName
+            ));
         }
     }
 }

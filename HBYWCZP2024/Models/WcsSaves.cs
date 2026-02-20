@@ -224,6 +224,11 @@ namespace HBYWCZP2024.Models
         {
             get; set;
         } = true;
+
+        /// <summary>
+        /// 托杯绑定关系上报外部数据库使能
+        /// </summary>
+        public bool UploadCupBindingToDbEnable { get; set; } = true;
         public bool GrabActionInsertEnable
         {
             get; set;
