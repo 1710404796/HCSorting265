@@ -83,7 +83,7 @@ namespace HBYWCZP2024.PLC.Tasks
             //LinxUniverse.PLC.Common.Utils.SetStringCharArray(data, 0, pallet.PalletCode);
             //Encoding.UTF8.GetBytes(pallet.PalletCode).CopyTo(data, 0);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 11, 16 + 34 * SubIdx, data);
-            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", pallet!.PalletCode, Context.Name);
+            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray_Code.[{SubIdx}]", pallet!.PalletCode, Context.Name);
 
             //Context.Plc.WriteNode()
             return base.WriteDataToPlc();

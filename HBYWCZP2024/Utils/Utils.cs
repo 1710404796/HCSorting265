@@ -75,7 +75,17 @@ namespace HBYWCZP2024.Utils
                 _logger.LogWarning("没有此地址, {add}", address);
                 return true;
             }
-            return client.WriteNode(add, data);
+            try
+            {
+                return client.WriteNode(add, data);
+
+            }
+            catch (Exception ex) {
+                Console.WriteLine(address);
+                throw;
+            
+            }
+    
             // return add;
             // return MainStorage.Saves.OpcTable[address];
         }

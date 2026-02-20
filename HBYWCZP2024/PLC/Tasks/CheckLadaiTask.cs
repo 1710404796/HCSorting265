@@ -229,7 +229,7 @@ namespace HBYWCZP2024.PLC.Tasks
         public CheckLadaiTask(int subIdx) : base(1)
         {
             //TaskName = "拉带入线校验";
-            TaskName = Properties.Resources.PullBeltInLineVerification;
+            TaskName = Properties.Resources.PullBeltInLineVerification + subIdx;
             SubIdx = subIdx;
         }
 
@@ -308,7 +308,7 @@ namespace HBYWCZP2024.PLC.Tasks
             batteryCode = string.Empty;
             batteryStatus = 0;
 
-            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus.[{SubIdx}]", new byte[16], Context.Name);
+            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus.[{SubIdx}]", (byte)0, Context.Name);
 
             return base.CleanData();
         }

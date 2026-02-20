@@ -132,7 +132,7 @@ namespace HBYWCZP2024.Utils
             //"V4" => BatteryLevel.Asub,
             //"V5" => BatteryLevel.B,
 
-            _ => BatteryLevel.EMPTY,
+            _ => BatteryLevel.NG,
         };
         public static string GetMESLevel(BatteryLevel level) => level switch
         {

@@ -118,7 +118,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
                     else
                     {
-                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx03040304", stage.Value.PLCPSetting.IP), cancellationToken);
                         plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
                     }
 
@@ -174,7 +174,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
                     else
                     {
-                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx03040304", stage.Value.PLCPSetting.IP), cancellationToken);
                         plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
                     }
 
