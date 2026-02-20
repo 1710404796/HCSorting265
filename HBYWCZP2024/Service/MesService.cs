@@ -128,6 +128,11 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
     }
 
+    public Task<Result<ContainerManualResponse>> ContainerManualAsync(string containerCode)
+    {
+        return SendRequest<ContainerManualResponse>("equipment/assembly/container/manual", containerCode);
+    }
+
     public Task<Result<UploadPalletResultResponse>> UploadPalletResultAsync(UploadPalletResultRequest request)
     {
         return SendRequest<UploadPalletResultResponse>("assemble/dismantle/info/group/disk/iface", request);
