@@ -375,7 +375,9 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.NGStationUpload}"
                     <CheckBox
     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadCupBindingToDbEnable}"
     >托杯绑定上报数据库使能</CheckBox>
-
+                    <CheckBox
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ContainerManualEnable}"
+>MES托盘信息获取使能</CheckBox>
                 </StackPanel>
 
             </StackPanel>

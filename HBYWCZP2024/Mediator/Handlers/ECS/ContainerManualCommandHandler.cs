@@ -37,7 +37,11 @@ internal class ContainerManualCommandHandler(IHBECSServiceFactory factory, IMedi
         var channels = response.Rows
             .Where(r => r?.CellDataList != null)
             .SelectMany(r => r.CellDataList)
-            .Where(c => c != null && !string.IsNullOrWhiteSpace(c.Identification) && !string.IsNullOrWhiteSpace(c.LocationBat))
+            .Where(c =>
+                c != null
+                && !string.IsNullOrWhiteSpace(c.Identification)
+                && int.TryParse(c.LocationBat, out var channelId)
+                && channelId > 0)
             .Select(c =>
             {
                 _ = int.TryParse(c.LocationBat, out var channelId);

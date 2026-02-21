@@ -33,18 +33,18 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletArrivedEnable)
             {
-                if (pallet.Type == Models.CZPallet.PalletType.拆盘)
-                {
-                    if (MainStorage.Saves.ApiEnableTable.GRegionFXQueryEnable)
-                    {
-                        BatteryLevel[] batteryLevel = [BatteryLevel.A, BatteryLevel.B];
-                        for (int i = 0; i < 2; ++i)
-                        {
-                            await pallet.BindBattery(i, $"test{i:00}", true, batteryLevel[i]);
+                // if (pallet.Type == Models.CZPallet.PalletType.拆盘)
+                // {
+                //     if (MainStorage.Saves.ApiEnableTable.GRegionFXQueryEnable)
+                //     {
+                //         BatteryLevel[] batteryLevel = [BatteryLevel.A, BatteryLevel.B];
+                //         for (int i = 0; i < 2; ++i)
+                //         {
+                //             await pallet.BindBattery(i, $"test{i:00}", true, batteryLevel[i]);
 
-                        }
-                    }
-                }
+                //         }
+                //     }
+                // }
 
 
                     return true;

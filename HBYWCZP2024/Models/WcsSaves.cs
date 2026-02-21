@@ -243,6 +243,11 @@ namespace HBYWCZP2024.Models
         {
             get; set;
         } = true;
+
+        /// <summary>
+        /// 托盘手动查询接口(equipment/assembly/container/manual)使能(筛选)
+        /// </summary>
+        public bool ContainerManualEnable { get; set; }
         public bool PalletArrivedEnable { get; set; }
         public bool PalletOutEnable { get; set; }
         public bool CheckMaterialEnable { get; set; }

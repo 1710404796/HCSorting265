@@ -65,6 +65,38 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 //})
                     ;
                 // 存日志
+
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ContainerManualEnable)
+                {
+                    if (string.IsNullOrWhiteSpace(pallet.PalletCode))
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘条码为空"), cancellationToken);
+                        return null;
+                    }
+                    try
+                    {
+                        var mesChannels = await mediator.Send(new ContainerManualCommand(request.Key, pallet.PalletCode), cancellationToken);
+                        foreach (var channel in mesChannels)
+                        {
+                            if (channel.ChannelId <= 0 || channel.ChannelId > pallet.ChannelNum) continue;
+                            var (code, lv) = channel.BattleWithLevel.Match(
+                                Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
+                                None: (string.Empty, BatteryLevel.EMPTY)
+                            );
+                            if (string.IsNullOrWhiteSpace(code)) continue;
+                            var finalLevel = isFake(code) ? BatteryLevel.Fake : lv;
+                            await pallet.BindBattery(channel.ChannelId - 1, code, true, finalLevel);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, $"{request.Key},{request.StationNum}托盘手动查询MES发生错误");
+                        await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘手动查询MES异常: {ex.Message}"), cancellationToken);
+                        return null;
+                    }
+                }
+
+                
                 try
                 {
                     // 存一下托盘日志
