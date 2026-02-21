@@ -204,5 +204,37 @@ namespace HBYWCZP2024.View
                 Key: MainStorage.Saves.SelectStageName
             ));
         }
+
+        private async void TestMesContainerManualButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mediator = App.GetService<IMediator>();
+            var key = MainStorage.Saves.SelectStageName;
+            var containerCode = "43S100001";
+
+            try
+            {
+                var channels = await mediator.Send(new ContainerManualCommand(key, containerCode));
+                if (channels.Count == 0)
+                {
+                    MessageBox.Show($"MES返回空数据\n工位: {key}\n托盘: {containerCode}");
+                    return;
+                }
+
+                var lines = channels.Map(ch =>
+                {
+                    var (code, lv) = ch.BattleWithLevel.Match(
+                        Some: b => (b.Code, b.Level.Match(Some: l => l.ToString(), None: () => "")),
+                        None: () => ("", "")
+                    );
+                    return $"{ch.ChannelId:00}: {code} {lv}";
+                });
+
+                MessageBox.Show(string.Join("\n", lines), $"MES托盘信息获取 - {containerCode}");
+            }
+            catch (Exception ex)
+            {
+                await mediator.Send(new WcsDataWarningBoxCommand($"MES托盘信息获取失败: {ex.Message}"));
+            }
+        }
     }
 }

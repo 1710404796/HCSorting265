@@ -481,6 +481,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 }
 
+              
+
+
                 // 作业结束
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
                 {

@@ -148,6 +148,12 @@
      Margin="0,20,0,0"
      Click="TestChaiButton_Click">测试数据拆盘</Button>
 
+                <Button
+                    x:Name="TestMesContainerManualButton"
+                    Width="150"
+                    Margin="0,20,0,0"
+                    Click="TestMesContainerManualButton_Click">测试MES托盘信息获取</Button>
+
                 <Button 
 
 x:Name="TestBindCupButton" 
