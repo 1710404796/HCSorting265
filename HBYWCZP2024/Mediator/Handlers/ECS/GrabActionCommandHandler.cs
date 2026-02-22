@@ -37,7 +37,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
 
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable)
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable&& request.Start)
             {
                 if (pallet.Type == Models.CZPallet.PalletType.组盘)
                 {
@@ -481,7 +481,46 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 }
 
-              
+
+                if (pallet.Type == PalletType.组盘
+                  && MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesMpEndEnable)
+                {
+                    if (string.IsNullOrWhiteSpace(pallet.PalletCode))
+                    {
+                        await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘条码不能为空"));
+                        return false;
+                    }
+
+                    var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
+                    {
+                        cellDataVOList = [..
+                            pallet.Channels
+                                .Take(pallet.ChannelNum)
+                                .Select((s, i) => new Celldatavolist
+                                {
+                                    identification = s.Code,
+                                    locationBat = (i + 1).ToString()
+                                })
+                                .Filter(s => !string.IsNullOrWhiteSpace(s.identification))
+                        ],
+                        containerCode = pallet.PalletCode,
+                        actionType = "IN"
+                    });
+
+                    var mesOk = mesRes.Match(
+                        Succ: _ => true,
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            return false;
+                        });
+
+                    if (!mesOk)
+                    {
+                        return false;
+                    }
+                }
+
 
 
                 // 作业结束

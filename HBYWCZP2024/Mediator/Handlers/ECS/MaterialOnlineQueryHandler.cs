@@ -22,7 +22,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             // 先调用MES获取拆组盘信息
             // 再调用MES高温静置入站
 
-            bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s); 
+            bool isNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || s.StartsWith("error", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s); 
 
 
 

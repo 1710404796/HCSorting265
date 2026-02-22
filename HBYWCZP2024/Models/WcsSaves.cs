@@ -253,6 +253,11 @@ namespace HBYWCZP2024.Models
         public bool CheckMaterialEnable { get; set; }
         public bool UploadFmsDataEnable { get; set; }
         public bool UploadMesDataEnable { get; set; }
+
+        /// <summary>
+        /// 组盘结束时，上报整盘电芯信息到MES(equipment/assembly/uploadPalletResult)
+        /// </summary>
+        public bool UploadMesMpEndEnable { get; set; }
         public bool HighTempEnable { get; set; }
         public bool HCInStationEnable { get; set; }
         /// <summary>

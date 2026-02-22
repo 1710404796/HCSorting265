@@ -357,6 +357,10 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletOutEnable}"
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesDataEnable}"
 >抓取结果上报MES接口使能(MES)</CheckBox>
+
+                    <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesMpEndEnable}"
+>组盘结束上报MES(整盘电芯)接口使能(MES)</CheckBox>
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFmsDataEnable}"
 >上报FMS数据使能</CheckBox>
