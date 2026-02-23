@@ -40,7 +40,7 @@ namespace HBYWCZP2024.PLC.Models
         public ushort ToQuantity { get; set; }
 
         [OPCMember("to_channelStatus")]
-        public byte[] ToChannelStatus { get; set; } = new byte[48];
+        public byte[] ToChannelStatus { get; set; } = new byte[256];
 
 
         /// <summary>

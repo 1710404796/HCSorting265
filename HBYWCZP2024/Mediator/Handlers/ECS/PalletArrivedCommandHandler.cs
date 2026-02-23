@@ -31,6 +31,37 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
 
+       
+
+            if (string.IsNullOrWhiteSpace(pallet.PalletCode))
+            {
+                await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.InsideStationNum}进站托盘条码为空"));
+                return false;
+            }
+
+            var service = hBECSServiceFactory.Create(request.Key);
+            if (pallet.Type == Models.CZPallet.PalletType.组盘)
+            {
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckNullTrayEnable)
+                {
+                    var result = await service.MesService.CheckNullTrayAsync(new CheckNullTrayRequest(request.Key)
+                {
+                    containerCode = pallet.PalletCode,
+                });
+                return await result.Match(async response =>
+                {
+                    if (response.Success) return true;
+                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证失败: {response.Message}"));
+                    return false;
+                },
+                async ex =>
+                {
+                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证异常: {ex.Message}"));
+                    return false;
+                });
+                }
+                
+            }
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletArrivedEnable)
             {
                 // if (pallet.Type == Models.CZPallet.PalletType.拆盘)
@@ -49,33 +80,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                     return true;
             }
-
-            if (string.IsNullOrWhiteSpace(pallet.PalletCode))
-            {
-                await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.InsideStationNum}进站托盘条码为空"));
-                return false;
-            }
-
-            var service = hBECSServiceFactory.Create(request.Key);
-            if (pallet.Type == Models.CZPallet.PalletType.组盘)
-            {
-                var result = await service.MesService.CheckNullTrayAsync(new CheckNullTrayRequest(request.Key)
-                {
-                    containerCode = pallet.PalletCode,
-                });
-                return await result.Match(async response =>
-                {
-                    if (response.Success) return true;
-                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证失败: {response.Message}"));
-                    return false;
-                },
-                async ex =>
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand($"工位：{request.Key}，站台：{request.InsideStationNum}，组盘托盘：{pallet.PalletCode}验证异常: {ex.Message}"));
-                    return false;
-                });
-            }
-
             Result<EquipEnterResponse> response = await newEcsService.EquipEnterAsync(
                 new EquipEnterRequest(request.Key)
                 {

@@ -407,7 +407,13 @@ namespace HBYWCZP2024.View
         {
             var mediator = App.GetService<IMediator>();
             var key = MainStorage.Saves.SelectStageName;
-            var containerCode = "43S100001";
+            var containerCode = (ViewModel.Saves.TestMesContainerCode ?? string.Empty).Trim();
+
+            if (string.IsNullOrWhiteSpace(containerCode))
+            {
+                MessageBox.Show("请先在界面上配置托盘号(containerCode)");
+                return;
+            }
 
             try
             {

@@ -23,6 +23,7 @@ namespace HBYWCZP2024.Models
         [NotifyPropertyChangedFor(nameof(Stage))]
         [NotifyPropertyChangedFor(nameof(PLCPSetting))]
         [NotifyPropertyChangedFor(nameof(PalletTypeRules))]
+        [NotifyPropertyChangedFor(nameof(TestMesContainerCode))]
         string _selectStageName = string.Empty;
 
         public string Port
@@ -206,6 +207,13 @@ namespace HBYWCZP2024.Models
             get => KeysSave[SelectStageName].ContainerTypeCode;
             set => KeysSave[SelectStageName].ContainerTypeCode = value;
         }
+
+        [JsonIgnore]
+        public string TestMesContainerCode
+        {
+            get => KeysSave[SelectStageName].TestMesContainerCode;
+            set => KeysSave[SelectStageName].TestMesContainerCode = value;
+        }
         public int HeartbeartDuring { get; set; } =5000;
         public byte MarkCode { get; set; } =1;
         public byte NgCode { get; set; } =2;
@@ -229,6 +237,11 @@ namespace HBYWCZP2024.Models
         /// 托杯绑定关系上报外部数据库使能
         /// </summary>
         public bool UploadCupBindingToDbEnable { get; set; } = true;
+
+        /// <summary>
+        /// 空托盘校验使能(MES: CheckNullTray)。用于组盘托盘到位时的空托盘验证。
+        /// </summary>
+        public bool CheckNullTrayEnable { get; set; } = true;
         public bool GrabActionInsertEnable
         {
             get; set;
@@ -327,6 +340,11 @@ namespace HBYWCZP2024.Models
         public string DeviceCode { get; set; } = string.Empty;
 
         public string ContainerTypeCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// SettingView里“测试MES托盘信息获取”使用的托盘号(测试用)。
+        /// </summary>
+        public string TestMesContainerCode { get; set; } = "43S100001";
 
         public ApiEnable ApiEnableTable { get; set; } = new();
         public bool TestMode

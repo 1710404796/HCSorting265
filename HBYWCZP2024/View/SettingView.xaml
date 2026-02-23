@@ -148,6 +148,16 @@
      Margin="0,20,0,0"
      Click="TestChaiButton_Click">测试数据拆盘</Button>
 
+                <TextBlock
+                    FontSize="15"
+                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                    Margin="0,15,0,0">测试MES托盘号</TextBlock>
+                <TextBox
+                    Width="200"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    Text="{Binding ViewModel.Saves.TestMesContainerCode, Mode=TwoWay}" />
+
                 <Button
                     x:Name="TestMesContainerManualButton"
                     Width="150"
@@ -350,6 +360,10 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ApplyMaterialEnable}"
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletArrivedEnable}"
 >托盘到位接口使能</CheckBox>
+
+                <CheckBox 
+IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckNullTrayEnable}"
+>空托盘校验使能(MES,组盘)</CheckBox>
 
                 <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletOutEnable}"

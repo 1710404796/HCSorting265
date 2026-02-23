@@ -45,6 +45,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
             }
+
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable && request.Start)
+            {
+                if (pallet.Type == Models.CZPallet.PalletType.拆盘)
+                {
+                    return true;
+                }
+
+            }
             if (request.Start)
             {
                 var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.R));

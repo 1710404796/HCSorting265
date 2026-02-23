@@ -39,7 +39,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
             {
-                return Enumerable.Repeat(0, 24).Select(s => BatteryLevel.EMPTY).ToArray();
+                return Enumerable.Repeat(0, 196).Select(s => BatteryLevel.OK).ToArray();
             }
 
             if (pallet.Type == Models.CZPallet.PalletType.拆盘)
