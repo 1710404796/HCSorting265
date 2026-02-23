@@ -103,8 +103,26 @@ namespace HBYWCZP2024.PLC.Tasks
 
 
 
-    //[OPCDelectInfo(610,611)]
-    //public class CheckLadaiTaskB: CheckLadaiTask;
+    [OPCDelectInfo(610, 611)]
+    public class CheckLadaiTaskB(int idx) : CheckLadaiTask(idx)
+    {
+         protected override async Task WriteDataToPlc()
+        {
+            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", batteryStatus, Context.Name);
+            await base.WriteDataToPlc();
+        }
+
+        protected override Task<bool> CleanData()
+        {
+            channelState = false;
+            batteryCode = string.Empty;
+            batteryStatus = 0;
+
+            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", (byte)0, Context.Name);
+            return base.CleanData();
+        }
+    }
+    
     //[OPCDelectInfo(610,611)]
     //public class CheckLadaiTask2B: CheckLadaiTask2;
     //[OPCDelectInfo(610,611)]

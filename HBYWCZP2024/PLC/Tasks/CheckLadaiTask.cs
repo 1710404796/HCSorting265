@@ -222,9 +222,9 @@ namespace HBYWCZP2024.PLC.Tasks
     [OPCDelectInfo(510, 511)]
     public class CheckLadaiTask : HBBaseTask
     {
-        private bool channelState = false;
-        private string batteryCode = string.Empty;
-        private byte batteryStatus = 0;
+        protected bool channelState = false;
+        protected string batteryCode = string.Empty;
+        protected byte batteryStatus = 0;
 
         public CheckLadaiTask(int subIdx) : base(1)
         {

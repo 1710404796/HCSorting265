@@ -131,7 +131,11 @@ namespace HBYWCZP2024.Mediator.Handlers
                     se.RegisterTask<SinglePlacementCompletedTaskB>();
                     se.RegisterTask<ChaiPanCompleted2Task>();
 
+                    for (int i = 0; i < 8; i++)
+                    {
+                        se.RegisterTask(new CheckLadaiTaskB(i));
 
+                    }
                     for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
                     {
                         se.RegisterTask(new PalletArrivedTaskB(i));
