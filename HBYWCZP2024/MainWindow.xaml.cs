@@ -164,6 +164,11 @@ namespace HBYWCZP2024
 
         }
 
+        private void NgBeltCellLog_Click(object sender, RoutedEventArgs e)
+        {
+            NageTo<NgBeltCellLogView>();
+        }
+
         private void ZPLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<PalletLogView>();

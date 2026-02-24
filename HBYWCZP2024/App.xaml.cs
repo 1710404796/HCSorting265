@@ -153,6 +153,9 @@ namespace HBYWCZP2024
                          services.AddTransient<PalletLogViewModel>();
                          services.AddSingleton<CacheService>();
 
+                         services.AddTransient<NgBeltCellLogView>();
+                         services.AddTransient<NgBeltCellLogViewModel>();
+
                          services.AddTransient<PowerSettingWindows>();
 
                          services.AddTransient<StationSettingView>();

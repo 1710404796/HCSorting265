@@ -65,14 +65,47 @@ namespace HBYWCZP2024.Mediator.Handlers
                 var insertSql = $"INSERT INTO `{tableName}` (`equipNum`, `containerCode`, `identification`, `message`, `Time`) " +
                                 $"VALUES {string.Join(", ", values)};";
 
+                var equipNum = request.EquipNum ?? string.Empty;
+                var containerCodes = items
+                    .Select(s => (s.CupCode ?? string.Empty).Trim())
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Distinct(StringComparer.Ordinal)
+                    .ToArray();
+
+                string? deleteSql = null;
+                if (containerCodes.Length > 0)
+                {
+                    var deleteValues = new string[containerCodes.Length];
+                    for (var i = 0; i < containerCodes.Length; i++)
+                    {
+                        deleteValues[i] = $"@delContainerCode{i}";
+                    }
+
+                    deleteSql = $"DELETE FROM `{tableName}` WHERE `containerCode` IN ({string.Join(", ", deleteValues)});";
+                }
+
                 await using var connection = new MySqlConnection(MainStorage.Saves.ExDbConnectionString);
                 await connection.OpenAsync(cancellationToken);
-                await using var command = new MySqlCommand(insertSql, connection);
+
+                await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+
+                if (!string.IsNullOrWhiteSpace(deleteSql))
+                {
+                    await using var deleteCommand = new MySqlCommand(deleteSql, connection, transaction);
+                    for (var i = 0; i < containerCodes.Length; i++)
+                    {
+                        deleteCommand.Parameters.AddWithValue($"@delContainerCode{i}", containerCodes[i]);
+                    }
+
+                    await deleteCommand.ExecuteNonQueryAsync(cancellationToken);
+                }
+
+                await using var command = new MySqlCommand(insertSql, connection, transaction);
 
                 for (var i = 0; i < items.Length; i++)
                 {
                     var item = items[i];
-                    command.Parameters.AddWithValue($"@equipNum{i}", request.EquipNum ?? string.Empty);
+                    command.Parameters.AddWithValue($"@equipNum{i}", equipNum);
                     command.Parameters.AddWithValue($"@containerCode{i}", item.CupCode ?? string.Empty);
                     command.Parameters.AddWithValue($"@identification{i}", item.BatteryCode ?? string.Empty);
                     command.Parameters.AddWithValue($"@message{i}", request.Message ?? string.Empty);
@@ -84,6 +117,8 @@ namespace HBYWCZP2024.Mediator.Handlers
                 {
                     logger.LogWarning("外部数据库写入失败");
                 }
+
+                await transaction.CommitAsync(cancellationToken);
                 return rows > 0;
             }
             catch (Exception ex)

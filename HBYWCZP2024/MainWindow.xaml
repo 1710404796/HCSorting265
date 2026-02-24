@@ -147,6 +147,15 @@ Cursor="Hand"
                 
 >
             </RadioButton>
+
+            <RadioButton 
+        Style="{StaticResource MenuRadioButtonStyle}" 
+        Cursor="Hand"
+                x:Name="NgBeltCellLog"
+                Click="NgBeltCellLog_Click"
+        >
+                NG拉带电芯数据
+            </RadioButton>
             <RadioButton 
         Style="{StaticResource MenuRadioButtonStyle}" 
         Cursor="Hand"

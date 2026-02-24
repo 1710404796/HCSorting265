@@ -22,6 +22,50 @@ namespace HBYWCZP2024.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HBYWCZP2024.Data.Models.NgBeltCellLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CellCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("FromChannel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromInsideNum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FromStationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("RecordTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ToChannel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToInsideNum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ToStationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NgBeltCellLogs");
+                });
+
             modelBuilder.Entity("HBYWCZP2024.Data.Models.OKNGCnt", b =>
                 {
                     b.Property<int>("Id")

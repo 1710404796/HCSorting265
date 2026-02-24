@@ -1,5 +1,7 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Data;
+using HBYWCZP2024.Data.Models;
 
 //using HBYWCZP2024.Mediator.Queries;
 using HBYWCZP2024.Models;
@@ -13,6 +15,7 @@ using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class GrabCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<GrabCommand, bool>
+    internal class GrabCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<GrabCommandHandler> logger) : IRequestHandler<GrabCommand, bool>
     {
         public async Task<bool> Handle(GrabCommand request, CancellationToken cancellationToken)
         {
@@ -195,11 +198,44 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     await mediator.Send(new SaveToSqlCommand(
                         MainStorage.Saves.ExDbTableName,
-                        MainStorage.Saves.KeysSave[request.Key].EquipNum,
+                        MainStorage.Saves.KeysSave[request.Key].DeviceCodes,
                         bindings,
                         "OK",
                         Key: request.Key
                     ));
+                }
+            }
+
+            if (request.GrabInfo.To.InsideNum == MainStorage.Saves.Stage.NgBelt.InsideNum)
+            {
+                var now = DateTime.Now;
+                var logs = request.GrabInfo.Infos
+                    .Filter(s => !string.IsNullOrWhiteSpace(s.Code))
+                    .Map(s => new NgBeltCellLog
+                    {
+                        RecordTime = now,
+                        Key = request.Key,
+                        FromInsideNum = request.GrabInfo.From.InsideNum,
+                        FromStationName = request.GrabInfo.From.Name,
+                        ToInsideNum = request.GrabInfo.To.InsideNum,
+                        ToStationName = request.GrabInfo.To.Name,
+                        CellCode = s.Code,
+                        FromChannel = s.FromChannel,
+                        ToChannel = s.ToChannel,
+                    })
+                    .ToArray();
+
+                if (logs.Length > 0)
+                {
+                    try
+                    {
+                        context.NgBeltCellLogs.AddRange(logs);
+                        await context.SaveChangesAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "写入NG拉带电芯记录失败");
+                    }
                 }
             }
 
