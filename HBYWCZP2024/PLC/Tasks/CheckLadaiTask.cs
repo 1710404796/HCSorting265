@@ -244,6 +244,7 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             //Context.Logger.LogInformation();
             int ng1 = 0, ng = 0, ok = 0;
+            Console.WriteLine("batteryCode; {0}", batteryCode);
             //if (!channelState) continue;
             if (batteryCode.ToLower() == "noread" || string.IsNullOrWhiteSpace(batteryCode))
             {
@@ -251,6 +252,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 ng1++;
                 // 尝试剪一下
             }
+            Console.WriteLine("batteryCode1; {0}", batteryCode);
 
             if (channelState)
             {

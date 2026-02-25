@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HBYWCZP2024.PLC.Tasks
@@ -106,10 +107,18 @@ namespace HBYWCZP2024.PLC.Tasks
     [OPCDelectInfo(610, 611)]
     public class CheckLadaiTaskB(int idx) : CheckLadaiTask(idx)
     {
-         protected override async Task WriteDataToPlc()
+        public override bool GetPLCData()
+        {
+            Console.WriteLine("CheckLadaiTaskBs");
+            channelState = Context.DB510B.ChannelStates[SubIdx];
+            batteryCode = Context.DB510B.BatteryCodes[SubIdx];//.Select(s => Encoding.UTF8.GetString(s.Code).Trim()).ToArray();
+            //return base.GetPLCData();
+            return true;
+
+        }
+        protected override async Task WriteDataToPlc()
         {
             Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", batteryStatus, Context.Name);
-            await base.WriteDataToPlc();
         }
 
         protected override Task<bool> CleanData()
@@ -119,7 +128,8 @@ namespace HBYWCZP2024.PLC.Tasks
             batteryStatus = 0;
 
             Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", (byte)0, Context.Name);
-            return base.CleanData();
+
+            return Task.FromResult(true);
         }
     }
     

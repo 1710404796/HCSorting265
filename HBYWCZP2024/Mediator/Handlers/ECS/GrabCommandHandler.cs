@@ -198,7 +198,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     await mediator.Send(new SaveToSqlCommand(
                         MainStorage.Saves.ExDbTableName,
-                        MainStorage.Saves.KeysSave[request.Key].DeviceCodes,
+                        MainStorage.Saves.KeysSave[request.Key].DeviceCode,
                         bindings,
                         "OK",
                         Key: request.Key
@@ -229,7 +229,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     try
                     {
-                        context.NgBeltCellLogs.AddRange(logs);
+                        //context.NgBeltCellLogs.AddRange(logs);
                         await context.SaveChangesAsync(cancellationToken);
                     }
                     catch (Exception ex)
