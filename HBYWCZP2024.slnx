@@ -4,6 +4,7 @@
   <Project Path="lxuv/Cognex.NET/Cognex.NET.fsproj" />
   <Project Path="lxuv/Kenency.BCR.FS.NET/Kenency.BCR.FS.NET.fsproj" />
   <Project Path="lxuv/LinxUniverse.Auth/LinxUniverse.Auth.csproj" />
+  <Project Path="lxuv/LinxUniverse.Common/LinxUniverse.Common.fsproj" />
   <Project Path="lxuv/LinxUniverse.DB/LinxUniverse.DB.csproj" />
   <Project Path="lxuv/LinxUniverse.DI/LinxUniverse.DI.csproj" />
   <Project Path="lxuv/LinxUniverse.FP/LinxUniverse.FP.csproj" />
