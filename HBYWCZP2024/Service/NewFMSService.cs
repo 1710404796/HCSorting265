@@ -35,12 +35,40 @@ namespace HBYWCZP2024.Service
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-
-        public Task<Result<ScreenRecipeResponse>> ScreenRecipeAsync(ScreenRecipeRequest request) //暂时不用
+        public Task<Result<YZScreenUploadResponse>> YZScreenRecipeAsync(YZScreenRecipeRequest request)
         {
-            return SendFmsRequest<ScreenRecipeResponse>("/api/fms/screen/recipe", request);
+            return SendFmsRequest<YZScreenUploadResponse>("/api/fms/screen/recipe", request);
         }
 
+        /// <summary>
+        /// 筛选夹住交互
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<Result<YZScreenStepResponse>> YZScreenStepAsync(YZScreenStepRequest request)
+        {
+            return SendFmsRequest<YZScreenStepResponse>("/api/fms/screen/step",request);
+        }
+
+        /// <summary>
+        /// 圆柱筛选后组盘结果上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<Result<YZScreenUploadResponse>> YZScreenUploadAsync(YZScreenUploadRequest request)
+        {
+            return SendFmsRequest<YZScreenUploadResponse>("/api/fms/screen/upload", request);
+        }
+
+        /// <summary>
+        /// 圆柱筛选NG叫盘
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<Result<YZCallMaterialResponse>> YZCallMaterialAsync(YZCallMaterialRequest request)
+        {
+            return SendFmsRequest<YZCallMaterialResponse>("/api/fms/screen/call/material",request);
+        }
 
         /// <summary>
         /// 筛选后组盘结果上传

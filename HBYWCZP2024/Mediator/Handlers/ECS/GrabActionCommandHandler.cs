@@ -316,31 +316,36 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                             if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable == false)
                             {
-                                var res = await fmsService.ScreenUploadAsync(new ScreenRecipeRequest(request.Key)
-                                {
-                                    trayCode = pallet.PalletCode,
-                                    //trayType = ((int)Get(pallet)).ToString(),
-                                    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
-                                    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
-                                    {
-                                        CellCode = s.Code,
-                                        Channel = i + 1,
-                                        GradingType =
-                                        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
-                                        (
-                                            codeMapTemp.Find(s.Code).Match(
-                                                Some: lv => CZPUtils.GetLevelFromMes(lv),
-                                                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                            )
-                                        ).ToString() :
-                                        (
-                                            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
-                                            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                        ).ToString(),
-                                        CellType = s.GetCellType()
-                                    })
-                                    .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
-                                    .ToArray()
+                                #region 圆柱电池筛选工位
+                                //var res = await fmsService.ScreenUploadAsync(new YZScreenRecipeRequest(request.Key)
+                                //{
+                                //    trayCode = pallet.PalletCode,
+                                //    //trayType = ((int)Get(pallet)).ToString(),
+                                //    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
+                                //    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                                //    {
+                                //        CellCode = s.Code,
+                                //        Channel = i + 1,
+                                //        GradingType =
+                                //        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                //        (
+                                //            codeMapTemp.Find(s.Code).Match(
+                                //                Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                //                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                //            )
+                                //        ).ToString() :
+                                //        (
+                                //            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                //            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                //        ).ToString(),
+                                //        CellType = s.GetCellType()
+                                //    }).Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
+                                //    .ToArray()
+                                //});
+                                #endregion
+                                var res = await fmsService.YZScreenRecipeAsync(new YZScreenRecipeRequest(request.Key)
+                                { 
+                                    trayCode = pallet.PalletCode 
                                 });
                                 return res.IsSuccess;
                             }

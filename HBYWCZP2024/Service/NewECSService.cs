@@ -2,6 +2,7 @@
 using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
+using HBYWCZP2024.Models;
 using HBYWCZP2024.Service.Models;
 using LanguageExt.Common;
 using MediatR;
@@ -320,6 +321,10 @@ namespace HBYWCZP2024.Service
 
     #region 请求模型
 
+    /// <summary>
+    /// 物流线路径
+    /// </summary>
+    /// <param name="name"></param>
     public class CvRequest(string name)
 
     {
@@ -489,6 +494,79 @@ namespace HBYWCZP2024.Service
         public string LocationType { get; set; } = string.Empty;
     }
 
+    /// <summary>
+    /// 圆柱筛选获取电芯信息
+    /// </summary>
+    /// <param name="name"></param>
+    public class YZScreenRecipeRequest(string name)
+    {
+        public string trayCode { get; set; } = string.Empty;
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+    }
+
+    /// <summary>
+    /// 圆柱筛选夹爪交互
+    /// </summary>
+    /// <param name="name"></param>
+    public class YZScreenStepRequest(string name)
+    { 
+        public string trayCode { get; set; } = string.Empty;
+
+        public string equipmentNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+
+        /// <summary>
+        /// 筛选盘
+        /// </summary>
+        public SelTrays[] SelTray { get; set; } = new SelTrays[0];
+
+        /// <summary>
+        /// NG盘
+        /// </summary>
+        public NgTrays[] NgTray { get; set; }=new NgTrays[0];
+    }
+
+    /// <summary>
+    /// 筛选盘
+    /// </summary>
+    public class SelTrays
+    {
+        public string TrayCode { get; set; } = string.Empty;
+
+        public string[] CellChannel { get; set; }
+    }
+
+    /// <summary>
+    /// NG盘
+    /// </summary>
+    public class NgTrays
+    { 
+        public string TrayCode { get; set; }= string.Empty;
+        public string[] CellChannel { get; set; }
+    }
+
+
+    /// <summary>
+    /// 圆柱筛选结果上传
+    /// </summary>
+    /// <param name="name"></param>
+    public class YZScreenUploadRequest(string name)
+    {
+        public string trayCode { get; set; } = string.Empty;
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+        /// <summary>
+        /// 物流线站台
+        /// </summary>
+        public string oriConveyorCode { get; set; }
+    }
+
+    /// <summary>
+    /// 圆柱筛选NG叫盘
+    /// </summary>
+    /// <param name="name"></param>
+    public class YZCallMaterialRequest(string name)
+    {
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+    }
 
     public class ScreenRecipeRequest(string name)
     {
@@ -626,6 +704,25 @@ namespace HBYWCZP2024.Service
     {
 
 
+    }
+
+    public class YZScreenRecipeRespone : FmsResponseBase
+    { 
+    
+    }
+    public class YZScreenUploadResponse : FmsResponseBase
+    {
+
+    }
+
+    public class YZCallMaterialResponse : FmsResponseBase
+    { 
+    
+    }
+
+    public class YZScreenStepResponse : FmsResponseBase
+    { 
+    
     }
 
     public class ScreenUploadResponse : FmsResponseBase

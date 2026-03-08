@@ -292,7 +292,7 @@ namespace HBYWCZP2024.Models
         public bool FilterSpecialEnable { get; set; }
 
         /// <summary>
-        /// G区预分选特殊档位接口
+        /// 筛选获取电芯信息
         /// </summary>
         public bool GRegionCvRequestEnable { get; set; }
 
