@@ -92,6 +92,12 @@ namespace HBYWCZP2024.Models
         /// </summary>
         [ObservableProperty]
         string _palletCode = "";
+
+        /// <summary>
+        /// 临时数据
+        /// </summary>
+        [JsonIgnore]
+        public Dictionary<string, object> TempData { get; set; } = new();
         [JsonIgnore]
         Lazy<IMediator> _lazyMediator = new Lazy<IMediator>(App.GetService<IMediator>);
         [JsonIgnore]
