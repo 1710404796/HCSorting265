@@ -35,6 +35,12 @@ public record PalletOutCommand(string Key, int InsideStationNum, bool isSpecial 
 /// <param name="isSpecial"></param>
 public record CvRequestCommand(string Key, int InsideStationNum,bool isSpecial = false) : IRequest<bool>;
 
+/// <summary>
+/// NG托盘退盘叫盘
+/// </summary>
+/// <param name="Key"></param>
+public record YZCallMaterialCommand(string Key) : IRequest<bool>;
+
 
 public record GrabCommand(string Key, GrabInfo GrabInfo) : IRequest<bool>;
 
