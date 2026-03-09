@@ -557,6 +557,15 @@ namespace HBYWCZP2024.Service
         /// 物流线站台
         /// </summary>
         public string oriConveyorCode { get; set; }
+
+        public string startTime { get; set; } = string.Empty;
+
+        public string endTime { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 被挑选通道号
+        /// </summary>
+        public int[] channel { get; set; } = Array.Empty<int>();
     }
 
     /// <summary>
