@@ -35,9 +35,9 @@ namespace HBYWCZP2024.Service
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<Result<YZScreenUploadResponse>> YZScreenRecipeAsync(YZScreenRecipeRequest request)
+        public Task<Result<YZScreenRecipeRespone>> YZScreenRecipeAsync(YZScreenRecipeRequest request)
         {
-            return SendFmsRequest<YZScreenUploadResponse>("/api/fms/screen/recipe", request);
+            return SendFmsRequest<YZScreenRecipeRespone>("/api/fms/screen/recipe", request);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace HBYWCZP2024.Service
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<Result<ScreenUploadResponse>> ScreenUploadAsync(ScreenRecipeRequest request)
+        public Task<Result<ScreenUploadResponse>> ScreenUploadAsync(ScreenUploadRequest request)
         {
             return SendFmsRequest<ScreenUploadResponse>("/api/fms/screen/upload", request);
         }

@@ -315,7 +315,7 @@ x:Name="TestBindCupButton"
 
 
                 <StackPanel Orientation="Vertical" x:Name="ApiEnableStack">
-                <CheckBox 
+                    <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckMaterialEnable}"
                     >入料校验接口使能(MES)</CheckBox>
                     <CheckBox 
@@ -343,29 +343,29 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.Mark2Enable}"
                     <CheckBox 
                     IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckPalletMaterialEnable}"
                     >托盘电芯等级获取接口使能(MES,筛选)</CheckBox>
-    
-    
-                <CheckBox 
+
+
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionInsertEnable}"
 >组盘开始接口使能</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GrabActionRemoveEnable}"
 >组盘结束接口使能</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ApplyMaterialEnable}"
 >申请物料接口使能</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletArrivedEnable}"
 >托盘到位接口使能</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.CheckNullTrayEnable}"
 >空托盘校验使能(MES,组盘)</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.PalletOutEnable}"
 >托盘离开接口是能</CheckBox>
                     <CheckBox 
@@ -375,14 +375,14 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesDataEnable}"
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadMesMpEndEnable}"
 >组盘结束上报MES(整盘电芯)接口使能(MES)</CheckBox>
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFmsDataEnable}"
 >上报FMS数据使能</CheckBox>
 
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HCInStationEnable}"
 >化成首工序进站接口(暂时)使能(MES)</CheckBox>
-                <CheckBox 
+                    <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HighTempEnable}"
 >接口高温入库使能(MES)</CheckBox>
 
@@ -391,7 +391,7 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.FilterSpecialEnable}"
 >特殊筛选工位使能(筛选)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.GRegionCvRequestEnable}"
->筛选获取电芯信息</CheckBox>
+>G区预分选智能工位使能(筛选)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.NGStationUpload}"
 >NG站台上报FMS</CheckBox>

@@ -568,7 +568,7 @@ namespace HBYWCZP2024.Service
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
     }
 
-    public class ScreenRecipeRequest(string name)
+    public class ScreenUploadRequest(string name)
     {
         public string trayCode { get; set; } = string.Empty;
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
@@ -707,8 +707,15 @@ namespace HBYWCZP2024.Service
     }
 
     public class YZScreenRecipeRespone : FmsResponseBase
-    { 
-    
+    {
+        [JsonPropertyName("data")]
+        public YZScreenRecipeData? Data { get; set; }
+    }
+
+    public class YZScreenRecipeData
+    {
+        [JsonPropertyName("cellStrs")]
+        public string? CellStrs { get; set; }
     }
     public class YZScreenUploadResponse : FmsResponseBase
     {

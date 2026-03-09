@@ -37,7 +37,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
 
-            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable&& request.Start)
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable && request.Start)
             {
                 if (pallet.Type == Models.CZPallet.PalletType.组盘)
                 {
@@ -82,7 +82,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFmsDataEnable)
                 {
                     string tempLv = "";
-                    Map<string,string> codeMapTemp = new ();
+                    Map<string, string> codeMapTemp = new();
                     if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate)
                     {
 
@@ -316,36 +316,31 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                             if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable == false)
                             {
-                                #region 圆柱电池筛选工位
-                                //var res = await fmsService.ScreenUploadAsync(new YZScreenRecipeRequest(request.Key)
-                                //{
-                                //    trayCode = pallet.PalletCode,
-                                //    //trayType = ((int)Get(pallet)).ToString(),
-                                //    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
-                                //    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
-                                //    {
-                                //        CellCode = s.Code,
-                                //        Channel = i + 1,
-                                //        GradingType =
-                                //        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
-                                //        (
-                                //            codeMapTemp.Find(s.Code).Match(
-                                //                Some: lv => CZPUtils.GetLevelFromMes(lv),
-                                //                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                //            )
-                                //        ).ToString() :
-                                //        (
-                                //            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
-                                //            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                //        ).ToString(),
-                                //        CellType = s.GetCellType()
-                                //    }).Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
-                                //    .ToArray()
-                                //});
-                                #endregion
-                                var res = await fmsService.YZScreenRecipeAsync(new YZScreenRecipeRequest(request.Key)
-                                { 
-                                    trayCode = pallet.PalletCode 
+                                var res = await fmsService.ScreenUploadAsync(new ScreenUploadRequest(request.Key)
+                                {
+                                    trayCode = pallet.PalletCode,
+                                    //trayType = ((int)Get(pallet)).ToString(),
+                                    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
+                                    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                                    {
+                                        CellCode = s.Code,
+                                        Channel = i + 1,
+                                        GradingType =
+                                        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                        (
+                                            codeMapTemp.Find(s.Code).Match(
+                                                Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                            )
+                                        ).ToString() :
+                                        (
+                                            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                        ).ToString(),
+                                        CellType = s.GetCellType()
+                                    })
+                                    .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
+                                    .ToArray()
                                 });
                                 return res.IsSuccess;
                             }
@@ -429,7 +424,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
                             else
                             {
-                                
+
                                 var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                                 {
                                     trayCode = pallet.PalletCode,

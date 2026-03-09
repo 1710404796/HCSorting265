@@ -27,6 +27,17 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 //code.Length == 24 && 
                 code.All(c => c == 'J');
         }
+
+        static BatteryLevel GetScreenBatteryLevel(char status)
+        {
+            return status switch
+            {
+                '0' => BatteryLevel.EMPTY,
+                '1' => BatteryLevel.OK,
+                '2' => BatteryLevel.NG,
+                _ => BatteryLevel.EMPTY,
+            };
+        }
         public async Task<BatteryLevel[]?> Handle(ApplyBatteryInfoCommand request, CancellationToken cancellationToken)
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
@@ -130,41 +141,32 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
-
-
-                var palletR = new Pallet(pallet.PalletCode,
-                    pallet.Channels.Take(pallet.ChannelNum).Select(s => s.Code)
-                    .Select((x, i) => new Channel(i + 1, new BatteryWithLevel(x, None)))
-                    .Filter(s => !string.IsNullOrWhiteSpace( s.BattleWithLevel.Map(s => s.Code).IfNone("")))
-                    //.Filter(s => !isFake(s.BattleWithLevel.Map(s => s.Code).IfNone("")))
-                    .ToImmutableArray()
-                    );
-                // 这里有条码 // bind一下去
-                var palletAfterQuery = await mediator.Send(new BattleLevelQuery(request.Key, palletR));
-
-                if (palletAfterQuery == null)
+                var fmsService = hBECSService.NewFMSService;
+                var screenRes = await fmsService.YZScreenRecipeAsync(new YZScreenRecipeRequest(request.Key)
                 {
-                    await mediator.Send(new WcsDataWarningBoxCommand("MES通讯异常"));
+                    trayCode = pallet.PalletCode
+                });
+
+                if (!screenRes.IsSuccess)
+                {
+                    var err = screenRes.Match(Succ: _ => string.Empty, Fail: f => f.Message);
+                    await mediator.Send(new WcsDataWarningBoxCommand($"FMS通讯异常: {err}"));
                     return null;
                 }
 
-                foreach (var channel in palletAfterQuery.Channels)
+                var cellStrs = screenRes.Match(Succ: s => s.Data?.CellStrs, Fail: _ => null);
+                if (string.IsNullOrWhiteSpace(cellStrs))
                 {
-                    var (code, lv) = channel.BattleWithLevel.Match(
-                        Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
-                        None: (string.Empty, BatteryLevel.EMPTY)
-                    );
-                    await pallet.BindBattery(channel.ChannelId - 1, code, true, lv);
+                    await mediator.Send(new WcsDataWarningBoxCommand("FMS返回电芯状态为空"));
+                    return null;
                 }
-                int codeidx = 0;
-                //foreach (var code in data.BatteryCodes)
-                //{
-                //    if (isFake(code))
-                //    {
-                //        await pallet.BindBattery(codeidx, code, true, BatteryLevel.Fake);
-                //    }
-                //    codeidx++;
-                //}
+
+                for (int i = 0; i < pallet.ChannelNum; i++)
+                {
+                    var status = i < cellStrs.Length ? cellStrs[i] : '0';
+                    var level = GetScreenBatteryLevel(status);
+                    await pallet.BindBattery(i, pallet.Channels[i].Code, true, level);
+                }
 
 
 
