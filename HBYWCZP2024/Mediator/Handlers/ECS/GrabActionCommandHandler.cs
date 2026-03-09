@@ -488,6 +488,29 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         return false;
                     }
 
+                    if (pallet.Type == PalletType.组盘)
+                    {
+                        var pickedChannels = pallet.Channels
+                            .Take(pallet.ChannelNum)
+                            .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
+                            .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
+                            .Select(s => s.Channel)
+                            .ToArray();
+
+                        var uploadOk = await mediator.Send(new YZScreenUploadCommand(
+                            request.Key,
+                            pallet.PalletCode,
+                            request.StationNum.ToString(),
+                            pickedChannels,
+                            string.Empty,
+                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")), cancellationToken);
+
+                        if (!uploadOk)
+                        {
+                            return false;
+                        }
+                    }
+
                 }
 
 

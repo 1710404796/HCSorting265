@@ -41,6 +41,17 @@ public record CvRequestCommand(string Key, int InsideStationNum,bool isSpecial =
 /// <param name="Key"></param>
 public record YZCallMaterialCommand(string Key) : IRequest<bool>;
 
+/// <summary>
+/// 圆柱筛选结果上传
+/// </summary>
+/// <param name="Key"></param>
+/// <param name="TrayCode"></param>
+/// <param name="OriConveyorCode"></param>
+/// <param name="Channels">被挑走电池的通道号</param>
+/// <param name="StartTime"></param>
+/// <param name="EndTime"></param>
+public record YZScreenUploadCommand(string Key, string TrayCode, string OriConveyorCode, int[] Channels, string StartTime = "", string EndTime = "") : IRequest<bool>;
+
 
 public record GrabCommand(string Key, GrabInfo GrabInfo) : IRequest<bool>;
 
