@@ -565,7 +565,7 @@ namespace HBYWCZP2024.Service
         /// <summary>
         /// 被挑选通道号
         /// </summary>
-        public int[] channel { get; set; } = Array.Empty<int>();
+        public int[] channel { get; set; } = System.Array.Empty<int>();
     }
 
     /// <summary>

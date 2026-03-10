@@ -1,5 +1,6 @@
 using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
+using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Service;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace HBYWCZP2024.Jobs
                     continue;
                 }
 
-                foreach (var station in stage.Stations)
+                foreach (var station in stage.Stations.Filter(s => s is Pallet))
                 {
                     try
                     {

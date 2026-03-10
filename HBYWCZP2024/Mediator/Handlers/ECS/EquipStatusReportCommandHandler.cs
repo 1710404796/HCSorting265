@@ -26,7 +26,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
-            station.TempData["EquipStatus"] = request.EquipStatus;
+            pallet.TempData["EquipStatus"] = request.EquipStatus;
             //if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {
                 var loc = pallet.OKNGType == TrayType.NG托盘 ? "ng托盘" : "筛选托盘";
