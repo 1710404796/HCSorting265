@@ -569,12 +569,18 @@ namespace HBYWCZP2024.Service
     }
 
     /// <summary>
-    /// 圆柱筛选NG叫盘
+    /// 设备叫料
     /// </summary>
     /// <param name="name"></param>
     public class YZCallMaterialRequest(string name)
     {
         public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+        public string desConveyorCode { get; set; } = string.Empty;
+        public string oriConveyorCode { get; set; } = string.Empty;
+        public int[] stackIds { get; set; } = [];
+        public string locCode { get; set; } = string.Empty;
+        public string isPack { get; set; } = "0";
+        public string trayType { get; set; } = "1";
     }
 
     public class ScreenUploadRequest(string name)

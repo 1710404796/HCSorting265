@@ -73,9 +73,17 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (!v) return false;
 
-            if (pallet.OKNGType == TrayType.NG托盘)
+            // if (pallet.OKNGType == TrayType.NG托盘)
+            // {
+            //     var callOk = await mediator.Send(new YZCallMaterialCommand(request.Key, request.InsideStationNum), cancellationToken);
+            //     if (!callOk)
+            //     {
+            //         return false;
+            //     }
+            // }
+            if (pallet.CallMaterialEnable)
             {
-                var callOk = await mediator.Send(new YZCallMaterialCommand(request.Key), cancellationToken);
+                var callOk = await mediator.Send(new YZCallMaterialCommand(request.Key, request.InsideStationNum), cancellationToken);
                 if (!callOk)
                 {
                     return false;

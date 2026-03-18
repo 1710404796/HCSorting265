@@ -9,7 +9,7 @@
                 xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         WindowStartupLocation="CenterScreen"
-        Title="DiaosuStage" Height="760" Width="1450"
+        Title="DiaosuStage" Height="760" Width="1600"
         
         >
     <Grid>
@@ -96,6 +96,13 @@
              Text="{x:Static lang:Resources.Enable}"
              
  ></TextBlock>
+                 <TextBlock 
+         Width="130"
+         Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+         TextAlignment="Center"
+                  Text="退盘叫空盘"
+             
+         ></TextBlock>
         </StackPanel>
 
         <ScrollViewer 
