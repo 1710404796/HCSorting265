@@ -29,7 +29,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var ecsService = hBECSService.NewECSService;
             var fmsService = hBECSService.NewFMSService;
 
-            var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
+            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.StationNum);
             bool isCodeRuleNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
             bool isCodeRuleNG1(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase);
             if (pallet == null)

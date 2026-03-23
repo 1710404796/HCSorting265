@@ -34,6 +34,19 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
             var newECSService = hBECSService.NewECSService;
+
+            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
+            _logger.LogInformation($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 准备申请叫料");
+
+            if (pallet.CallMaterialEnable)
+            {
+                var callOk = await mediator.Send(new YZCallMaterialCommand(request.Key, request.InsideStationNum), cancellationToken);
+                if (!callOk)
+                {
+                    return false;
+                }
+            }
+
             //托盘离开接口使能
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.PalletOutEnable)
             {
@@ -41,7 +54,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
 
             //按内部编号获取托盘
-            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.InsideStationNum);
             if (pallet == null)
             {
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
@@ -81,15 +93,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             //         return false;
             //     }
             // }
-            if (pallet.CallMaterialEnable)
-            {
-                var callOk = await mediator.Send(new YZCallMaterialCommand(request.Key, request.InsideStationNum), cancellationToken);
-                if (!callOk)
-                {
-                    return false;
-                }
-            }
 
+            _logger.LogInformation($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 离开上报ECS成功");
+            
             
 
             if (request.isSpecial)
