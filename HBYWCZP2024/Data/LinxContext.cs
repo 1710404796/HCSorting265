@@ -27,7 +27,7 @@ namespace HBYWCZP2024.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(connectString);
+            optionsBuilder.UseSqlServer(connectString);
             base.OnConfiguring(optionsBuilder);
 
         }
@@ -48,5 +48,6 @@ namespace HBYWCZP2024.Data
         public DbSet<WcsLog> WcsLogs { get; set; }
         public DbSet<OKNGCnt> OKNGCnts { get; set; }
         public DbSet<PalletLog> PalletLogs { get; set; }
+        public DbSet<NgBeltCellLog> NgBeltCellLogs { get; set; }
     }
 }

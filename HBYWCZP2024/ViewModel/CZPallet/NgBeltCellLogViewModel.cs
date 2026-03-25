@@ -26,16 +26,16 @@ public partial class NgBeltCellLogViewModel(LinxContext context) : ObservableRec
     [RelayCommand]
     public void Search()
     {
-        //IQueryable<NgBeltCellLog> query = context.NgBeltCellLogs
-        //    .AsNoTracking()
-        //    .OrderByDescending(s => s.Id)
-        //    .Where(s => s.RecordTime >= StartTime && s.RecordTime <= EndTime);
+        IQueryable<NgBeltCellLog> query = context.NgBeltCellLogs
+            .AsNoTracking()
+            .OrderByDescending(s => s.Id)
+            .Where(s => s.RecordTime >= StartTime && s.RecordTime <= EndTime);
 
-        //if (!string.IsNullOrWhiteSpace(Code))
-        //{
-        //    query = query.Where(s => s.CellCode.Contains(Code));
-        //}
+        if (!string.IsNullOrWhiteSpace(Code))
+        {
+            query = query.Where(s => s.CellCode.Contains(Code));
+        }
 
-        //Logs = new ObservableCollection<NgBeltCellLog>(query.Take(200));
+        Logs = new ObservableCollection<NgBeltCellLog>(query.Take(200));
     }
 }
