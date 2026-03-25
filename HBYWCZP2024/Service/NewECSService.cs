@@ -162,7 +162,7 @@ namespace HBYWCZP2024.Service
                 var err = result.Match(Succ: s => "", Fail: f => f.Message);
                 if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable)
                 {
-                    if ("/ecs/api/equip/cvrequest" == api)
+                    if ("/ecs/api/equip/cvrequest" == api || "/ecs/api/equip/status" == api)
                     {
                         return result;
                     }
