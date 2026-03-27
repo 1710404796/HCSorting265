@@ -186,6 +186,7 @@ namespace HBYWCZP2024.PLC
 
 
             }
+            Logger.LogInformation("action: {0}, batteycode, {1}", DB500.Action, DB500.BatteryCodes[0]);
 
 
             //a.AsParallel().Iter(s =>
