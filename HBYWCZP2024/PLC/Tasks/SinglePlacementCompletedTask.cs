@@ -184,6 +184,10 @@ namespace HBYWCZP2024.PLC.Tasks
             var codes = Enumerable.Range(0, grabChannel.Length)
                 .Map(i =>
                 {
+                    if (!claw[i])
+                    {
+                        return (0, 0, false, string.Empty, string.Empty);
+                    }
                     var batteryCode = isTrayCupTarget
                         ? grab.Channels[grabChannel[i] - 1].Code
                         : (string.IsNullOrWhiteSpace(batteryCodes[i]) && claw[i]

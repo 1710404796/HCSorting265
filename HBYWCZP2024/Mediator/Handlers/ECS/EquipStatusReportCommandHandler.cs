@@ -26,6 +26,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception($"{request.Key},{request.InsideStationNum}托盘不存在");
             }
+
+            // 如果设备号不存在，则不进行MES上报
+            if (string.IsNullOrEmpty(MainStorage.Saves.KeysSave[request.Key].EquipNum))
+            {
+                return true;
+            }
+
             pallet.TempData["EquipStatus"] = request.EquipStatus;
             //if (pallet.Type == Models.CZPallet.PalletType.筛选)
             {

@@ -29,7 +29,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var ecsService = hBECSService.NewECSService;
             var fmsService = hBECSService.NewFMSService;
 
-            var pallet = CZPUtils.GetPalletByOutsideNum(request.Key, request.StationNum);
+            var pallet = CZPUtils.GetPalletByInsideNum(request.Key, request.StationNum);
             bool isCodeRuleNG(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(s);
             bool isCodeRuleNG1(string s) => s.StartsWith("noread", StringComparison.CurrentCultureIgnoreCase);
             if (pallet == null)
@@ -584,11 +584,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.E));
                     //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
 
-                    if (!data)
-                    {
-                        await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
-                        return false;
-                    }
+                    //if (!data)
+                    //{
+                    //    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+                    //    return false;
+                    //}
 
                 }
 

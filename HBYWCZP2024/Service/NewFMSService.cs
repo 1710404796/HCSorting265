@@ -157,6 +157,11 @@ namespace HBYWCZP2024.Service
             }
             else
             {
+                if ("/api/fms/screen/call/material" == api)
+                {
+                    return result;
+                }
+
                 var err = result.Match(Succ: s => "", Fail: f => f.Message);
                 var wres = await mediator.Send(new WarningBoxCommand(
                     Name + "工作站\n" + $"FMS返回错误信息，发生问题 Error:" + err + "\n点击ok重新发送此请求，点击cancel终止此任务！",

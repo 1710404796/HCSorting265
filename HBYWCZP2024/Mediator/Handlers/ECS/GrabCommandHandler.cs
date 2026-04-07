@@ -229,7 +229,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     try
                     {
-                        //context.NgBeltCellLogs.AddRange(logs);
+                        context.NgBeltCellLogs.AddRange(logs);
                         await context.SaveChangesAsync(cancellationToken);
                     }
                     catch (Exception ex)

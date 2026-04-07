@@ -32,7 +32,7 @@
         <DataGrid Grid.Row="1"
                   CanUserAddRows="False"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding ViewModel.Logs}">
+                  ItemsSource="{Binding ViewModel.}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="记录时间" Binding="{Binding RecordTime}" />
                 <DataGridTextColumn Header="电芯码" Binding="{Binding CellCode}" Width="*" />

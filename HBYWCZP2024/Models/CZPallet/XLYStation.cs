@@ -94,6 +94,11 @@ namespace HBYWCZP2024.Models
         string _palletCode = "";
 
         /// <summary>
+        /// 退盘时是否调用FMS设备叫料接口
+        /// </summary>
+        public bool CallMaterialEnable { get; set; }
+
+        /// <summary>
         /// 临时数据
         /// </summary>
         [JsonIgnore]

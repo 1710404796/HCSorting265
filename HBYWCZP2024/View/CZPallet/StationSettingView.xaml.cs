@@ -32,6 +32,7 @@ namespace HBYWCZP2024.View.CZPallet
         ComboBox[] comboBoxes;// = new ComboBox[lent];
         ComboBox[] OKNGBoxes;// = new ComboBox[lent];
         CheckBox[] isStationEnable;// = new ComboBox[lent];
+        CheckBox[] callMaterialEnable;// = new CheckBox[lent];
 
         //public List<PalletType> PalletTypes { get; }
 
@@ -68,6 +69,7 @@ namespace HBYWCZP2024.View.CZPallet
             comboBoxes = new ComboBox[stations.Length];
             OKNGBoxes = new ComboBox[stations.Length];
             isStationEnable = new CheckBox[stations.Length];
+            callMaterialEnable = new CheckBox[stations.Length];
 
             int idx = 0;
             foreach (var station in stations)
@@ -160,6 +162,16 @@ namespace HBYWCZP2024.View.CZPallet
                     //IsEnabled = station is Pallet
                 };
 
+                callMaterialEnable[idx] = new()
+                {
+                    IsChecked = station.CallMaterialEnable,
+                    Width = 130,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    Margin = new(10, 0, 0, 0),
+                    IsEnabled = station is Pallet
+                };
+
 
                 idx++;
             }
@@ -199,6 +211,7 @@ namespace HBYWCZP2024.View.CZPallet
                 stackPanel.Children.Add(channelNum[i]);
                 stackPanel.Children.Add(columnNum[i]);
                 stackPanel.Children.Add(isStationEnable[i]);
+                stackPanel.Children.Add(callMaterialEnable[i]);
                 DiaoPanel.Children.Add(stackPanel);
 
             }
@@ -226,6 +239,7 @@ namespace HBYWCZP2024.View.CZPallet
                 station.Column = int.Parse(columnNum[i].Text);
                 station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
+                station.CallMaterialEnable = callMaterialEnable[i].IsChecked ?? false;
 
 
                 if (station is Pallet pallet)

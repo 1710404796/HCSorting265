@@ -39,7 +39,8 @@ public record CvRequestCommand(string Key, int InsideStationNum,bool isSpecial =
 /// NG托盘退盘叫盘
 /// </summary>
 /// <param name="Key"></param>
-public record YZCallMaterialCommand(string Key) : IRequest<bool>;
+/// <param name="InsideStationNum">出站工位号</param>
+public record YZCallMaterialCommand(string Key, int InsideStationNum) : IRequest<bool>;
 
 /// <summary>
 /// 圆柱筛选结果上传
