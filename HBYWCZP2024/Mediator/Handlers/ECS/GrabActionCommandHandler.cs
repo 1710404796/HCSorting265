@@ -316,39 +316,62 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                             if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable == false)
                             {
-                                var res = await fmsService.ScreenUploadAsync(new ScreenUploadRequest(request.Key)
+                                #region
+                                //var res = await fmsService.ScreenUploadAsync(new ScreenUploadRequest(request.Key)
+                                //{
+                                //    trayCode = pallet.PalletCode,
+                                //    //trayType = ((int)Get(pallet)).ToString(),
+                                //    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
+                                //    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
+                                //    {
+                                //        CellCode = s.Code,
+                                //        Channel = i + 1,
+                                //        GradingType =
+                                //        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
+                                //        (
+                                //            codeMapTemp.Find(s.Code).Match(
+                                //                Some: lv => CZPUtils.GetLevelFromMes(lv),
+                                //                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                //            )
+                                //        ).ToString() :
+                                //        (
+                                //            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
+                                //            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
+                                //        ).ToString(),
+                                //        CellType = s.GetCellType()
+                                //    })
+                                //    .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
+                                //    .ToArray()
+                                //});
+                                //return res.IsSuccess;
+                                #endregion
+
+                                var pickedChannels = pallet.Channels
+                            .Take(pallet.ChannelNum)
+                            .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
+                            .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
+                            .Select(s => s.Channel)
+                            .ToArray();
+
+                                var uploadOk = await mediator.Send(new YZScreenUploadCommand(
+                                    request.Key,
+                                    pallet.PalletCode,
+                                    request.StationNum.ToString(),
+                                    pickedChannels,
+                                    string.Empty,
+                                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")), cancellationToken);
+
+                                if (!uploadOk)
                                 {
-                                    trayCode = pallet.PalletCode,
-                                    //trayType = ((int)Get(pallet)).ToString(),
-                                    trayType = pallet.OKNGType.GetTrayTypeStr(), // TODO: 特殊任务特殊传
-                                    CellList = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new CellInfo
-                                    {
-                                        CellCode = s.Code,
-                                        Channel = i + 1,
-                                        GradingType =
-                                        MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.TrayLevelUpdate ?
-                                        (
-                                            codeMapTemp.Find(s.Code).Match(
-                                                Some: lv => CZPUtils.GetLevelFromMes(lv),
-                                                None: () => isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                            )
-                                        ).ToString() :
-                                        (
-                                            tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
-                                            isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
-                                        ).ToString(),
-                                        CellType = s.GetCellType()
-                                    })
-                                    .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))
-                                    .ToArray()
-                                });
-                                return res.IsSuccess;
+                                    return false;
+                                }
                             }
 
                             return true;
                         }
                         else if (pallet.Type == PalletType.组盘)
                         {
+                            #region
                             // 一注组盘可能要传
                             //var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                             //{
@@ -377,8 +400,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //}
                             //);
                             //return res.IsSuccess;
-
-
+                            #endregion
 
 
                             var cells = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
@@ -433,7 +455,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 return res.IsSuccess;
                             }
 
-
+                            #region
                             //var cellCodes = pallet.Channels.Take(pallet.ChannelNum)
                             //        .Select((s, i) => new Cellcode
                             //        {
@@ -467,6 +489,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //        cellCodes = cellCodes
                             //    });
                             //    return res.IsSuccess;
+                            #endregion
                         }
 
 
