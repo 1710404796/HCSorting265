@@ -443,6 +443,20 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     return true;
                                 }
                             }
+                            else if (pallet.OKNGType == TrayType.复测托盘)
+                            {
+                                var res = await fmsService.RetestUploadAsync(new RetestUploadRequest(request.Key)
+                                {
+                                    endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                                    trayCode = pallet.PalletCode,
+                                    cellList = cells.Select(s => new RetestCellInfo
+                                    {
+                                        cellCode = s.cellCode,
+                                        channel = s.channel
+                                    }).ToArray()
+                                });
+                                return res.IsSuccess;
+                            }
                             else
                             {
 

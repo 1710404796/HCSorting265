@@ -623,6 +623,21 @@ namespace HBYWCZP2024.Service
         public Cellcode[] cellCodes { get; set; } = [];
     }
 
+    public class RetestUploadRequest(string name)
+    {
+        public long endTime { get; set; }
+        public string equipNum { get; set; } = MainStorage.Saves.KeysSave[name].EquipNum;
+        public string trayCode { get; set; } = string.Empty;
+        public RetestCellInfo[] cellList { get; set; } = [];
+        public string stepCode { get; set; } = MainStorage.Saves.KeysSave[name].StepCode;
+    }
+
+    public class RetestCellInfo
+    {
+        public string cellCode { get; set; } = string.Empty;
+        public int channel { get; set; }
+    }
+
     public class Cellcode
     {
         public string cellCode { get; set; } = string.Empty;
@@ -762,6 +777,11 @@ namespace HBYWCZP2024.Service
     }
 
     public class MpUploadResponse : FmsResponseBase
+    {
+
+    }
+
+    public class RetestUploadResponse : FmsResponseBase
     {
 
     }

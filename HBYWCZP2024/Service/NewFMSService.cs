@@ -110,6 +110,16 @@ namespace HBYWCZP2024.Service
             return SendFmsRequest<MpUploadResponse>("/api/fms/mp/upload", request);
         }
 
+        /// <summary>
+        /// 复测组盘结果上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<Result<RetestUploadResponse>> RetestUploadAsync(RetestUploadRequest request)
+        {
+            return SendFmsRequest<RetestUploadResponse>("/api/fms/retest/upload", request);
+        }
+
         public async Task<Result<T>> SendFmsRequest<T>(string api, object data) where T : IFmsResponse
         {
             LinxContext linxContext = App.GetService<LinxContext>();
