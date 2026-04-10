@@ -30,6 +30,7 @@ namespace HBYWCZP2024.Models
         待复测 = 18,
         Unknown = 999,
         V1 = 1000,
+        NG2 = 1001,
     }
     public partial class StationChannel : ObservableObject
     {

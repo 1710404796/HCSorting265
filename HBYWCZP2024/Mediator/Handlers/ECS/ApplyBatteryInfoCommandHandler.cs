@@ -35,6 +35,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 '0' => BatteryLevel.EMPTY,
                 '1' => BatteryLevel.OK,
                 '2' => BatteryLevel.NG,
+                '3' => BatteryLevel.NG2,
                 _ => BatteryLevel.EMPTY,
             };
         }

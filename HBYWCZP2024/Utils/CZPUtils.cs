@@ -161,6 +161,7 @@ namespace HBYWCZP2024.Utils
         {
             BatteryLevel.OK => 1,
             BatteryLevel.NG => MainStorage.Saves.NgCode,
+            BatteryLevel.NG2 => 4,
             //BatteryLevel.NG => 16,
             BatteryLevel.Fake => 11,
             BatteryLevel.None => 5,
