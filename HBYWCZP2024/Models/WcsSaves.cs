@@ -156,6 +156,13 @@ namespace HBYWCZP2024.Models
         }
 
         [JsonIgnore]
+        public string StepCode2
+        {
+            get => KeysSave[SelectStageName].StepCode2;
+            set => KeysSave[SelectStageName].StepCode2 = value;
+        }
+
+        [JsonIgnore]
         public string UserName
         {
             get => KeysSave[SelectStageName].UserName;
@@ -389,6 +396,11 @@ namespace HBYWCZP2024.Models
             set;
         } = EquipmentType.AEB;
         public string StepCode
+        {
+            get;
+            set;
+        } = string.Empty;
+        public string StepCode2
         {
             get;
             set;

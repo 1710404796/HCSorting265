@@ -746,6 +746,9 @@ namespace HBYWCZP2024.Service
     {
         [JsonPropertyName("cellStrs")]
         public string? CellStrs { get; set; }
+
+        [JsonPropertyName("stepCode")]
+        public string? StepCode { get; set; }
     }
     public class YZScreenUploadResponse : FmsResponseBase
     {

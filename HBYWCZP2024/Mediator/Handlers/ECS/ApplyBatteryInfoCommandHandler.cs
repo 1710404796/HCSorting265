@@ -28,13 +28,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 code.All(c => c == 'J');
         }
 
-        static BatteryLevel GetScreenBatteryLevel(char status)
+        static BatteryLevel GetScreenBatteryLevel(char status, string? responseStepCode, string firstStepCode, string secondStepCode)
         {
             return status switch
             {
                 '0' => BatteryLevel.EMPTY,
                 '1' => BatteryLevel.OK,
                 '2' => BatteryLevel.NG,
+                '3' when string.Equals(responseStepCode?.Trim(), firstStepCode.Trim(), StringComparison.OrdinalIgnoreCase) => BatteryLevel.复测1,
+                '3' when string.Equals(responseStepCode?.Trim(), secondStepCode.Trim(), StringComparison.OrdinalIgnoreCase) => BatteryLevel.复测2,
                 '3' => BatteryLevel.NG2,
                 _ => BatteryLevel.EMPTY,
             };
@@ -155,17 +157,22 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     return null;
                 }
 
-                var cellStrs = screenRes.Match(Succ: s => s.Data?.CellStrs, Fail: _ => null);
+                var screenData = screenRes.Match(Succ: s => s.Data, Fail: _ => null);
+                var cellStrs = screenData?.CellStrs;
                 if (string.IsNullOrWhiteSpace(cellStrs))
                 {
                     await mediator.Send(new WcsDataWarningBoxCommand("FMS返回电芯状态为空"));
                     return null;
                 }
 
+                var responseStepCode = screenData?.StepCode;
+                var firstStepCode = MainStorage.Saves.KeysSave[request.Key].StepCode ?? string.Empty;
+                var secondStepCode = MainStorage.Saves.KeysSave[request.Key].StepCode2 ?? string.Empty;
+
                 for (int i = 0; i < pallet.ChannelNum; i++)
                 {
                     var status = i < cellStrs.Length ? cellStrs[i] : '0';
-                    var level = GetScreenBatteryLevel(status);
+                    var level = GetScreenBatteryLevel(status, responseStepCode, firstStepCode, secondStepCode);
                     await pallet.BindBattery(i, pallet.Channels[i].Code, true, level);
                 }
 
