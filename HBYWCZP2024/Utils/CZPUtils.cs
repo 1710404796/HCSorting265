@@ -177,6 +177,8 @@ namespace HBYWCZP2024.Utils
             BatteryLevel.D => 10,
             BatteryLevel.E => 11,
             BatteryLevel.F => 12,
+            BatteryLevel.复测1=> 3,
+            BatteryLevel.复测2 => 4,
             //BatteryLevel.Mark => 3, // 筛选4
             BatteryLevel.Mark => MainStorage.Saves.MarkCode, // 其余筛选
 
