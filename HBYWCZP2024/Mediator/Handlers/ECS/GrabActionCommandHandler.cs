@@ -370,6 +370,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         }
                         else if (pallet.Type == PalletType.组盘)
                         {
+                            #region
                             // 一注组盘可能要传
                             //var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                             //{
@@ -398,8 +399,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //}
                             //);
                             //return res.IsSuccess;
-
-
+                            #endregion
 
 
                             var cells = pallet.Channels.Take(pallet.ChannelNum).Select((s, i) => new Cellcode
@@ -468,7 +468,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 return res.IsSuccess;
                             }
 
-
+                            #region
                             //var cellCodes = pallet.Channels.Take(pallet.ChannelNum)
                             //        .Select((s, i) => new Cellcode
                             //        {
@@ -502,6 +502,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //        cellCodes = cellCodes
                             //    });
                             //    return res.IsSuccess;
+                            #endregion
                         }
 
 
