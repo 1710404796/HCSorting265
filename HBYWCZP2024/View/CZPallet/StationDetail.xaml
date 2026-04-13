@@ -48,7 +48,7 @@
                 Margin="10,0,0,0"
                 IsChecked="{Binding ViewModel.PalletViewModel.Pallet.BanSaoma}"
                 >屏蔽扫码器</CheckBox>
-            <!--<Button x:Name="CvRequest" Click="CvRequest_Click">CvRequest</Button>-->
+            <Button x:Name="CvRequest" Click="CvRequest_Click">CvRequest</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock

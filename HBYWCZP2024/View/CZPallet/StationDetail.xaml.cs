@@ -2,6 +2,7 @@
 using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Windows;
@@ -162,7 +163,7 @@ namespace HBYWCZP2024.View.CZPallet
             var pall = Station as Pallet;
             if (pall != null)
             {
-                await meditor.Send(new CvRequestCommand(Station.Name, Station.InsideNum, false));
+                await meditor.Send(new CvRequestCommand(Station.Name, Station.OutsideStationNum, false));
             }
 
         }
