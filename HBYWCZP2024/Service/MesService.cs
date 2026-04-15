@@ -33,10 +33,16 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
         
     }
+    /// <summary>
+    /// 检查托盘物料等级
+    /// </summary>
+    /// <param name="request">检查托盘物料请求</param>
+    /// <returns>检查托盘物料响应</returns>
     public Task<Result<CheckPalletResponse>> CheckPalletMaterialLevel(CheckPalletMaterialRequest request)
     {
         return SendRequest<CheckPalletResponse>("pre/sorting/query", request);
 
+        #region
         //string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/pre/sorting/query";
         //logger.LogInformation("请求MES地址: {url}", _url);
         //string data = JsonSerializer.Serialize(checkMaterialRequest);
@@ -78,12 +84,13 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
 
         // 实现接口
-
+        #endregion
     }
 
     public Task<Result<MaterialOnlineResponse>> MaterialOnline(MaterialOnlineRequest request)
     {
         return SendRequest<MaterialOnlineResponse>("equipment/assembly/logistics/line", request);
+        #region
         //string _url = $"http://{MainStorage.Saves.KeysSave[Name].MESIP}/core/api/public/equipment/assembly/logistics/line";
         //logger.LogInformation("请求MES地址: {url}", _url);
         //string data = JsonSerializer.Serialize(request);
@@ -125,7 +132,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         //    return new(new Exception($"请求MES异常, {ex.Message}"));
 
         //}
-
+        #endregion
     }
 
     public Task<Result<ContainerManualResponse>> ContainerManualAsync(string containerCode)
@@ -137,6 +144,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
     {
         return SendRequest<UploadPalletResultResponse>("assemble/dismantle/info/group/disk/iface", request);
     }
+
     public Task<Result<HighTempOnlineResponse>> HighTempOnlineAsync(HighTempOnlineRequest request)
     {
         return SendRequest<HighTempOnlineResponse>("formation/section/arrival", request);
@@ -147,6 +155,11 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         return SendRequest<HCInStationResponse>("in/station/process/currency", request);
     }
 
+    /// <summary>
+    /// 分选校验
+    /// </summary>
+    /// <param name="request">分选检查请求</param>
+    /// <returns>分选检查响应</returns>
     public Task<Result<FxCheckResponse>> FxCheckAsync(FxCheckRequest request)
     {
         return SendRequest<FxCheckResponse>("eve/pm/eqm/auto/grading", request);

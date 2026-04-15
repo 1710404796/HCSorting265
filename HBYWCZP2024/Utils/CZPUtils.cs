@@ -188,26 +188,47 @@ namespace HBYWCZP2024.Utils
             _ => (byte)level,
         };
 
-
+        /// <summary>
+        /// 按索引获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="idx">站台号</param>
+        /// <returns></returns>
         public static Pallet? GetPalletByIndex(string name, int idx)
         {
             if (idx < 0) return null;
             return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.PalletId == idx && p.IsEnable);
         }
 
+        /// <summary>
+        /// 按内部编号获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
         public static Pallet? GetPalletByInsideNum(string name, int insideNum)
         {
             if (insideNum <= 0) return null;
             return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
         }
 
+        /// <summary>
+        /// 通过外部编号获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="outsideNum">站台外部编号</param>
+        /// <returns></returns>
         public static Pallet? GetPalletByOutsideNum(string name, int outsideNum)
         {
             if (outsideNum <= 0) return null;
             return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
         }
 
-
+        /// <summary>
+        /// 读取所有XYL站点按内部编号排序
+        /// </summary>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
         public static XYLStation? GetAllXYLStationByInsideNum( int insideNum)
         {
 
@@ -215,7 +236,12 @@ namespace HBYWCZP2024.Utils
             return MainStorage.Saves.KeysSave.Values.SelectMany(s => s.Stage.Stations).FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
         }
 
-
+        /// <summary>
+        /// 通过内部编号获取XYL站点
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
         public static XYLStation? GetXYLStationByInsideNum(string name, int insideNum)
         {
 
@@ -223,6 +249,12 @@ namespace HBYWCZP2024.Utils
             return MainStorage.Saves.KeysSave[name].Stage.Stations.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
         }
 
+        /// <summary>
+        /// 通过外部编号获取XYL站点
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="outsideNum">站台外部编号</param>
+        /// <returns></returns>
         public static XYLStation? GetXYLStationByOutsideNum(string name, int outsideNum)
         {
             if (outsideNum <= 0) return null;

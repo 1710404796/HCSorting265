@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 namespace HBYWCZP2024.Service.Models
 {
 
+    /// <summary>
+    /// 分选检查请求，参数从KeysSave里取
+    /// </summary>
+    /// <param name="name"></param>
     public class FxCheckRequest(string name)
     {
         [JsonPropertyName("siteCode")]

@@ -249,11 +249,16 @@ namespace HBYWCZP2024.Models
         /// 空托盘校验使能(MES: CheckNullTray)。用于组盘托盘到位时的空托盘验证。
         /// </summary>
         public bool CheckNullTrayEnable { get; set; } = true;
+        /// <summary>
+        /// 抓取动作插入启用
+        /// </summary>
         public bool GrabActionInsertEnable
         {
             get; set;
         } = true;
-
+        /// <summary>
+        /// 抓取操作移除启用
+        /// </summary>
         public bool GrabActionRemoveEnable
         {
             get; set;
@@ -268,29 +273,62 @@ namespace HBYWCZP2024.Models
         /// 托盘手动查询接口(equipment/assembly/container/manual)使能(筛选)
         /// </summary>
         public bool ContainerManualEnable { get; set; }
+        /// <summary>
+        /// 托盘到位启用
+        /// </summary>
         public bool PalletArrivedEnable { get; set; }
+        /// <summary>
+        /// 托盘输出启用
+        /// </summary>
         public bool PalletOutEnable { get; set; }
+        /// <summary>
+        /// 检查材料启用状态
+        /// </summary>
         public bool CheckMaterialEnable { get; set; }
+        /// <summary>
+        /// 上传FMS数据启用
+        /// </summary>
         public bool UploadFmsDataEnable { get; set; }
+        /// <summary>
+        /// 上传Mes数据启用
+        /// </summary>
         public bool UploadMesDataEnable { get; set; }
 
         /// <summary>
         /// 组盘结束时，上报整盘电芯信息到MES(equipment/assembly/uploadPalletResult)
         /// </summary>
         public bool UploadMesMpEndEnable { get; set; }
+        /// <summary>
+        /// 高温启用
+        /// </summary>
         public bool HighTempEnable { get; set; }
+        /// <summary>
+        /// HC进站启用
+        /// </summary>
         public bool HCInStationEnable { get; set; }
         /// <summary>
         /// 分选挡位查询接口
         /// </summary>
         public bool FXQueryEnable { get; set; }
+        /// <summary>
+        /// G区域分选查询启用
+        /// </summary>
         public bool GRegionFXQueryEnable { get; set; }
+        /// <summary>
+        /// 全部级别上传启用
+        /// </summary>
         public bool AllLevelUploadEnable { get; set; }
+        /// <summary>
+        /// HH过滤器查询启用
+        /// </summary>
         public bool HHFilterQueryEnable { get; set; }
         /// <summary>
         /// 分选档位上传(分选)
         /// </summary>
         public bool TrayLevelUpdate { get; set; }
+        /// <summary>
+        /// 上传FMS拆换盘启用
+        /// </summary>
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }
         /// <summary>

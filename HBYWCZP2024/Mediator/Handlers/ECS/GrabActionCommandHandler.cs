@@ -5,12 +5,14 @@ using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Models.ECS;
+using HBYWCZP2024.PLC.Models;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using LanguageExt.UnitsOfMeasure;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Quartz.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,13 @@ using System.Windows;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
+    /// <summary>
+    /// 拆组完成
+    /// </summary>
+    /// <param name="hBECSServiceFactory">ECS服务</param>
+    /// <param name="mediator"></param>
+    /// <param name="context"></param>
+    /// <param name="logger"></param>
     public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory,
         IMediator mediator, LinxContext context, ILogger<GrabActionCommandHandler> logger) : IRequestHandler<GrabActionCommand, bool>
     {
@@ -37,15 +46,16 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
 
+            //抓取启用
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionInsertEnable && request.Start)
             {
                 if (pallet.Type == Models.CZPallet.PalletType.组盘)
                 {
                     return true;
                 }
-
             }
 
+            //抓取结束
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable && request.Start)
             {
                 if (pallet.Type == Models.CZPallet.PalletType.拆盘)
@@ -64,7 +74,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
                     return false;
                 }
-
             }
             else
             {
@@ -101,9 +110,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     {
                                         Location = x.Location.ToString(),
                                         Identification = x.Code
-
-                                    })
-                                    .ToArray()
+                                    }).ToArray()
                                 };
                                 async Task<Map<string, string>> getCodeMap(CheckPalletMaterialRequest request)
                                 {
@@ -119,19 +126,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                             var channels = r.Rows.Select(x =>
 
                                                   (x.Identification, x.Grade)
-
                                             );
                                             return channels;
                                         },
                                         Fail: x =>
                                         {
-
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        }
-
-
-                                        ).DistinctBy(s => s.Identification)
+                                        }).DistinctBy(s => s.Identification)
                                         .ToMap();
                                     return cmap;
                                 }
@@ -141,7 +143,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
                             else
                             {
-
                                 CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
                                 {
                                     ContainerCode = "",
@@ -152,7 +153,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 {
                                     Location = x.Location.ToString(),
                                     Identification = x.Code
-
                                 })
                                 .ToArray()
                                 };
@@ -163,29 +163,19 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                         return "";
                                     }
                                     var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
-
                                     var cmap = checkMaterialResponse.Match(
                                         Succ: r =>
                                         {
-                                            var channels = r.Rows.Select(x =>
-
-                                                   x.Grade
-
-                                            );
+                                            var channels = r.Rows.Select(x => x.Grade);
                                             return channels;
                                         },
                                         Fail: x =>
                                         {
-
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        }
-
-
-                                        ).FirstOrDefault();
+                                        }).FirstOrDefault();
                                     return cmap ?? "";
                                 }
-
                                 var codeMap = await getCodeMap(checkMaterialRequest);
                                 tempLv = codeMap;
                             }
@@ -197,12 +187,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             {
                                 FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
                                 {
-                                    MateriallotCodeList =
-                                    pallet.Channels
+                                    MateriallotCodeList = pallet.Channels
                                     .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
                                     //.Take(1)
                                     .Filter(s => !isCodeRuleNG(s.Code))
-
                                     .Select(x => x.Code)
                                     .ToArray()
                                 };
@@ -218,36 +206,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     var cmap = checkMaterialResponse.Match(
                                         Succ: r =>
                                         {
-                                            var channels = r.Rows.Select(x =>
-
-                                                    (x.identification,
-                                                    x.rank)
-
-                                            )
+                                            var channels = r.Rows.Select(x => (x.identification, x.rank))
                                             //.Map(s => s.rank.ToUpper() == "C" ? "NG" : s)
                                             ;
                                             return channels;
                                         },
                                         Fail: x =>
                                         {
-
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        }
-
-
-                                        ).DistinctBy(s => s.identification).ToMap();
+                                        }).DistinctBy(s => s.identification).ToMap();
                                     return cmap;// ?? "";
                                 }
                                 codeMapTemp = await getCodeMap(fxCheckRequest);
                             }
                             else
                             {
-
                                 FxCheckRequest fxCheckRequest = new FxCheckRequest(request.Key)
                                 {
-                                    MateriallotCodeList =
-                                    pallet.Channels
+                                    MateriallotCodeList = pallet.Channels
                                     .Filter(s => s.BatteryLevel != BatteryLevel.EMPTY)
                                     .Take(1)
                                     .Select(x => x.Code)
@@ -265,24 +242,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                     var cmap = checkMaterialResponse.Match(
                                         Succ: r =>
                                         {
-                                            var channels = r.Rows.Select(x =>
-
-                                                    x.rank
-
-                                            )
-                                            .Map(s => s.ToUpper() == "C" ? "NG" : s)
-                                            ;
+                                            var channels = r.Rows.Select(x => x.rank)
+                                            .Map(s => s.ToUpper() == "C" ? "NG" : s);
                                             return channels;
                                         },
                                         Fail: x =>
                                         {
-
                                             mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
                                             throw x;
-                                        }
-
-
-                                        ).FirstOrDefault();
+                                        }).FirstOrDefault();
                                     return cmap ?? "";
                                 }
 
@@ -290,7 +258,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                             }
                         }
-
                     }
                     TrayType Get(Pallet pallet)
                     {
@@ -314,11 +281,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 return false;
                             }
                             var pickedChannels = pallet.Channels
-    .Take(pallet.ChannelNum)
-    .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
-    .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
-    .Select(s => s.Channel)
-    .ToArray();
+                                .Take(pallet.ChannelNum)
+                                .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
+                                .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
+                                .Select(s => s.Channel)
+                                .ToArray();
 
                             var uploadOk = await mediator.Send(new YZScreenUploadCommand(
                                 request.Key,
@@ -333,10 +300,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 return false;
                             }
 
+                            #region
                             //if (MainStorage.Saves.ApiEnableTable.GRegionCvRequestEnable == false)
                             //{
-
-
                             //    var res = await fmsService.ScreenUploadAsync(new ScreenUploadRequest(request.Key)
                             //    {
                             //        trayCode = pallet.PalletCode,
@@ -365,6 +331,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //    });
                             //    return res.IsSuccess;
                             //}
+                            #endregion
 
                             return true;
                         }
@@ -411,9 +378,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 codeMapTemp.Find(s.Code).Match(
                                     Some: lv => lv,
                                     None: () => !isCodeRuleNG1(s.Code) ? BatteryLevel.Fake.ToString() : s.BatteryLevel.ToString()
-                                    )
-                                ) :
-                                (
+                                    )) :
+                                    (
                                         tempLv.ToUpper() == "NG" ? BatteryLevel.NG :
                                         isCodeRuleNG1(s.Code) ? BatteryLevel.Fake : s.BatteryLevel
                                     ).ToString(),
@@ -431,6 +397,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             {
                                 if (MainStorage.Saves.ApiEnableTable.NGStationUpload)
                                 {
+                                    logger.LogInformation("托盘{PalletCode}为NG托盘，上传组盘结果", pallet.PalletCode);
                                     var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                                     {
                                         trayCode = pallet.PalletCode,
@@ -445,6 +412,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
                             else if (pallet.OKNGType == TrayType.复测托盘)
                             {
+                                logger.LogInformation("托盘{PalletCode}为复测托盘，上传复测结果", pallet.PalletCode);
                                 var res = await fmsService.RetestUploadAsync(new RetestUploadRequest(request.Key)
                                 {
                                     endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
@@ -459,7 +427,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             }
                             else
                             {
-
+                                logger.LogInformation("托盘{PalletCode}为普通托盘，上传组盘结果", pallet.PalletCode);
                                 var res = await fmsService.MpUploadAsync(new MpUploadRequest(request.Key)
                                 {
                                     trayCode = pallet.PalletCode,
@@ -504,15 +472,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             //    return res.IsSuccess;
                             #endregion
                         }
-
-
                         else if (pallet.Type == PalletType.拆盘)
                         {
                             var res = await fmsService.MpunbindWholeTrayAsync(new MpUnbindWholeTrayRequest(request.Key)
-                            { trayCode = pallet.PalletCode }
-                           );
+                            { 
+                            trayCode = pallet.PalletCode
+                            });
                             return res.IsSuccess;
-
                         }
                         return false;
                     }
@@ -524,8 +490,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         return false;
                     }
 
-                    if (pallet.Type == PalletType.组盘)
+                    if (pallet.Type == PalletType.组盘 && pallet.OKNGType != TrayType.NG托盘 && pallet.OKNGType != TrayType.复测托盘)
                     {
+                        if (string.IsNullOrWhiteSpace(pallet.PalletCode))
+                        {
+                            await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘条码不能为空"));
+                            return false;
+                        }
+
                         var pickedChannels = pallet.Channels
                             .Take(pallet.ChannelNum)
                             .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
@@ -550,8 +522,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
 
-                if (pallet.Type == PalletType.组盘
-                  && MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesMpEndEnable)
+                if (pallet.Type == PalletType.组盘 && MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesMpEndEnable)
                 {
                     if (string.IsNullOrWhiteSpace(pallet.PalletCode))
                     {
@@ -561,15 +532,13 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                     var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                     {
-                        cellDataVOList = [..
-                            pallet.Channels
+                        cellDataVOList = [..pallet.Channels
                                 .Take(pallet.ChannelNum)
                                 .Select((s, i) => new Celldatavolist
                                 {
                                     identification = s.Code,
                                     locationBat = (i + 1).ToString()
-                                })
-                                .Filter(s => !string.IsNullOrWhiteSpace(s.identification))
+                                }).Filter(s => !string.IsNullOrWhiteSpace(s.identification))
                         ],
                         containerCode = pallet.PalletCode,
                         actionType = "IN"

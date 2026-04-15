@@ -2,6 +2,10 @@
 
 namespace HBYWCZP2024.Service.Models;
 
+/// <summary>
+/// 检查托盘物料申请单
+/// </summary>
+/// <param name="name"></param>
 public class CheckPalletMaterialRequest(string name)
 {
     [JsonPropertyName("siteCode")]
