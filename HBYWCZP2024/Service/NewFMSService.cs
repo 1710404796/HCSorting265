@@ -51,7 +51,7 @@ namespace HBYWCZP2024.Service
         }
 
         /// <summary>
-        /// 圆柱筛选后组盘结果上传
+        /// 圆柱筛选结果上传
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -71,7 +71,7 @@ namespace HBYWCZP2024.Service
         }
 
         /// <summary>
-        /// 筛选后组盘结果上传
+        /// 方形筛选后组盘结果上传
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

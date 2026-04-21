@@ -327,7 +327,7 @@ namespace HBYWCZP2024.Models
         /// </summary>
         public bool TrayLevelUpdate { get; set; }
         /// <summary>
-        /// 上传FMS拆换盘启用
+        /// 换盘单拆上报FMS(筛选)
         /// </summary>
         public bool UploadFMSChaiHuanpanEnable { get; set; }
         public bool Mark2Enable { get; set; }

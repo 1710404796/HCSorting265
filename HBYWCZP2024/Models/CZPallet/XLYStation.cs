@@ -18,9 +18,14 @@ namespace HBYWCZP2024.Models
     /// </summary>
     public partial class XYLStation : ObservableObject
     {
+        /// <summary>
+        /// 读取IP地址
+        /// </summary>
         public string ReaderIpAddr { get; set; } = string.Empty;
 
-
+        /// <summary>
+        /// 从服务器获取
+        /// </summary>
         public bool GetFromServer { get; set; } = false;
         public string ServerIp { get; set; } = "127.0.0.1:50005";
 
@@ -51,8 +56,8 @@ namespace HBYWCZP2024.Models
         /// 屏蔽扫码器
         /// </summary>
         [JsonIgnore]
-
         public bool BanBarcodeReader { get; set; } = false;
+
         /// <summary> 
         /// 内部调度号
         /// </summary>
@@ -62,6 +67,7 @@ namespace HBYWCZP2024.Models
         /// 托盘通道数
         /// </summary>
         public int ChannelNum { get; set; } = 2;
+
         /// <summary>
         /// 托盘数量
         /// </summary>
@@ -71,8 +77,7 @@ namespace HBYWCZP2024.Models
         public bool IsFake => OutsideStationNum >= 10000 && OutsideStationNum < 11000;
 
         public ObservableCollection<StationChannel> Channels { get; set; } = new ObservableCollection<StationChannel>(
-            Enumerable.Range(0, 256).Select(s => new StationChannel() { Location = s })
-            );
+            Enumerable.Range(0, 256).Select(s => new StationChannel() { Location = s }));
 
         [ObservableProperty]
         bool _isEnable;
@@ -80,7 +85,6 @@ namespace HBYWCZP2024.Models
         /// <summary>
         /// 工位号
         /// </summary>
-
         [ObservableProperty]
         int _outsideStationNum;
 
@@ -108,6 +112,12 @@ namespace HBYWCZP2024.Models
         [JsonIgnore]
 
         IMediator _mediator => _lazyMediator.Value;
+
+        /// <summary>
+        /// 检查条码长度
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private bool CheckCodeLength(string code)
         {
             if (code.Length != 24)
@@ -118,6 +128,15 @@ namespace HBYWCZP2024.Models
             }
             return true;
         }
+
+        /// <summary>
+        /// 绑定电池 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="code"></param>
+        /// <param name="force"></param>
+        /// <param name="batteryLevel"></param>
+        /// <returns></returns>
         public async ValueTask<bool> BindBattery(int id, string code, bool force = false, BatteryLevel batteryLevel = BatteryLevel.OK)
         {
             // Todo: 确认这一步需不需要请求fts， 或是在其他位置请求
@@ -135,6 +154,14 @@ namespace HBYWCZP2024.Models
             }
         }
 
+        /// <summary>
+        /// 设置通道条码
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="code"></param>
+        /// <param name="force"></param>
+        /// <param name="batteryLevel"></param>
+        /// <returns></returns>
         private async ValueTask<bool> SetChannelCode(int id, string code, bool force = false, BatteryLevel batteryLevel = BatteryLevel.OK)
         {
             if (CheckBatteryUnique(code) || force)
@@ -142,7 +169,7 @@ namespace HBYWCZP2024.Models
                 // 目前只需校验当前的重复性 无需管理其他托盘
                 if (CheckBatterySerial(code) || force)
                 {
-                    await SetChanelStage(id, code, batteryLevel);
+                    await SetChannelStage(id, code, batteryLevel);
                     //OnSuccess?.Invoke(this, "绑定成功!");
                     return true;
                 }
@@ -161,7 +188,15 @@ namespace HBYWCZP2024.Models
                 return false;
             }
         }
-        private async ValueTask SetChanelStage(int id, string code, BatteryLevel batteryLevel)
+
+        /// <summary>
+        /// 设置通道状态 包括条码和电池状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="code"></param>
+        /// <param name="batteryLevel"></param>
+        /// <returns></returns>
+        private async ValueTask SetChannelStage(int id, string code, BatteryLevel batteryLevel)
         {
             if (!string.IsNullOrWhiteSpace(ServerIp) && GetFromServer)
             {
@@ -208,6 +243,11 @@ namespace HBYWCZP2024.Models
             //}
         }
 
+        /// <summary>
+        /// 解除电池绑定
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool UnbindBattery(int id)
         {
             if (Channels[id].Code != StationChannel.DefaultCode)
@@ -230,6 +270,7 @@ namespace HBYWCZP2024.Models
                 return false;
             }
         }
+
         /// <summary>
         /// 检查是否电池是否是一个系列的 (前13位)
         /// </summary>
@@ -246,6 +287,7 @@ namespace HBYWCZP2024.Models
             return code.Length >= 13 && activeChannel.Code.Length >= 13 && activeChannel.Code[..13] == code[..13];
 
         }
+
         /// <summary>
         /// 检查是否电池不唯一 
         /// </summary>
@@ -258,6 +300,7 @@ namespace HBYWCZP2024.Models
             return !Channels.Any(s => s.Code == checkcode);
 
         }
+
         /// <summary>
         /// 返回有条码的电芯数
         /// </summary>

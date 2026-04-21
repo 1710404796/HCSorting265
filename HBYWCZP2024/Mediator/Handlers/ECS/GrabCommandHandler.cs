@@ -30,7 +30,6 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
         {
             var hBECSService = hBECSServiceFactory.Create(request.Key);
             var newEcsService = hBECSService.NewECSService;
-            var newFMSService = hBECSService.NewFMSService;
             if (request.GrabInfo.Infos.Length <= 0) return true;
 
             if (!string.IsNullOrWhiteSpace(request.GrabInfo.From.ServerIp) && request.GrabInfo.From.GetFromServer)
@@ -44,46 +43,34 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
             if (request.GrabInfo.From is Pallet from)
             {
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFMSChaiHuanpanEnable
-                    )
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadFMSChaiHuanpanEnable)
                 {
-                    var codes = request.GrabInfo.Infos
-                        .Map(s => (s.FromChannel, s.Code))
+                    var pickedInfos = request.GrabInfo.Infos
+                        .Filter(s => !string.IsNullOrWhiteSpace(s.Code))
                         .ToArray();
-                    //var data = await hBECSService.SendAsync<S104, E104>(
-                    //    new S104() { 
-                    //        TrayNumber = from.PalletCode, 
-                    //        TrayPosition = from.PalletId + 1, 
-                    //        TrayType = from.OKNGType,
-                    //        BatteryCount = codes.Length,
-                    //        Battery = codes
-                    //    }
-                    //    , from.OutsideStationNum
-                    //    );
 
-                    var data = await newFMSService.MpSplitAsync(new MpSplitRequest(request.Key)
+                    foreach (var pickedInfo in pickedInfos)
                     {
-                        trayCode = from.PalletCode,
-                        Cells = [..
-                            request.GrabInfo.Infos
-                            .Map(s => new CellInfo1{ CellCode = s.Code, Channel = s.FromChannel})
-                            .Filter(s => !string.IsNullOrWhiteSpace(s.CellCode))]
-                    });
+                        var uploadRes = await mediator.Send(new YZScreenUploadCommand(
+                            request.Key,
+                            from.PalletCode,
+                            request.GrabInfo.From.OutsideStationNum.ToString(),
+                            [pickedInfo.FromChannel]),
+                            cancellationToken);
 
-                    if (data == null)
-                    {
-                        //await mediator.Send(new WcsDataWarningBoxCommand("ECS通讯异常"));
-                        return false;
+                        if (!uploadRes)
+                        {
+                            logger.LogWarning(
+                                "筛选结果按单电芯上传失败，托盘：{PalletCode}，电芯：{CellCode}，通道：{Channel}",
+                                from.PalletCode,
+                                pickedInfo.Code,
+                                pickedInfo.FromChannel);
+                            return false;
+                        }
                     }
-                    //if (data.DeviceStatus != DeviceStatus2.OK)
-                    //{
-                    //    await mediator.Send(new WcsDataWarningBoxCommand($"错误码: {data.ErrorCode}"));
-                    //    return false;
-                    //}
                 }
                 // 拆上报
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable
-                    )
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable)
                 {
                     var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                     {
@@ -100,9 +87,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 PalletType.筛选 => "OUT",
                                 _ => "OUT"
                             }
-
-                    }
-                    );
+                    });
                     var mesdata = mesRes.Match(
                         Succ: s => s,
                         Fail: f =>
@@ -115,8 +100,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             }
             if (request.GrabInfo.To is Pallet to)
             {
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable
-                   )
+                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.UploadMesDataEnable)
                 {
                     var mesRes = await hBECSService.MesService.UploadPalletResultAsync(new UploadPalletResultRequest(request.Key)
                     {
@@ -126,24 +110,21 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             .Filter(s => !string.IsNullOrWhiteSpace(s.identification))],
                         containerCode = to.PalletCode,
                         actionType =
-                   to.Type switch
-                   {
-                       PalletType.组盘 => "IN",
-                       PalletType.拆盘 => "IN",
-                       PalletType.筛选 => "IN",
-                       _ => "IN"
-                   }
-
-                    }
-           );
+                           to.Type switch
+                           {
+                               PalletType.组盘 => "IN",
+                               PalletType.拆盘 => "IN",
+                               PalletType.筛选 => "IN",
+                               _ => "IN"
+                           }
+                    });
                     var mesdata = mesRes.Match(
                         Succ: s => s,
                         Fail: f =>
                         {
                             mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
                             throw f;
-                        }
-                        );
+                        });
                 }
                 if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.HighTempEnable)
                 {
@@ -156,16 +137,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         // 高温静置入站
                         // 可能非ng盘上报 现在不管他
                         var rss = request.GrabInfo.Infos
-                            .Map(c => c.Code)
-
-                                    .AsParallel()
-                                    .Map(s =>
-                                    {
-                                        return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
-                                        {
-                                            identification = s
-                                        }).Result;
-                                    });
+                        .Map(c => c.Code)
+                        .AsParallel()
+                        .Map(s =>
+                        {
+                            return service.MesService.HighTempOnlineAsync(new HighTempOnlineRequest(request.Key)
+                            {
+                                identification = s
+                            }).Result;
+                        });
 
                         //bool CheckAll()
 

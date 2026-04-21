@@ -169,6 +169,14 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 var firstStepCode = MainStorage.Saves.KeysSave[request.Key].StepCode ?? string.Empty;
                 var secondStepCode = MainStorage.Saves.KeysSave[request.Key].StepCode2 ?? string.Empty;
 
+                if (!string.IsNullOrWhiteSpace(responseStepCode) && (responseStepCode != firstStepCode && responseStepCode != secondStepCode))
+                {
+                    // await mediator.Send(new WcsDataWarningBoxCommand($"FMS返回的工序码：{responseStepCode}与配置的工序码不匹配请检查，配置值：{firstStepCode}，{secondStepCode}"));
+                    throw new InvalidOperationException($"FMS返回的工序码：{responseStepCode}与配置的工序码不匹配请检查，配置值：{firstStepCode}，{secondStepCode}");
+                    // return null;
+                }
+
+
                 for (int i = 0; i < pallet.ChannelNum; i++)
                 {
                     var status = i < cellStrs.Length ? cellStrs[i] : '0';

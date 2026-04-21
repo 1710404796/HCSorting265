@@ -346,7 +346,7 @@ IsChecked="{Binding ViewModel.Saves.ApiEnableTable.AllLevelUploadEnable}"
 >组盘上报所有电池档位(预分选,需启用分选档位上传)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.UploadFMSChaiHuanpanEnable}"
->换盘单拆上报FMS(换盘)</CheckBox>
+>换盘单拆上报FMS(筛选)</CheckBox>
                     <CheckBox 
 IsChecked="{Binding ViewModel.Saves.ApiEnableTable.HHFilterQueryEnable}"
 >后氦Mark校验(MES,后氦)</CheckBox>
