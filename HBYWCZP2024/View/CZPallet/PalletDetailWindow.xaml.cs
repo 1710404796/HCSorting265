@@ -16,7 +16,7 @@ using HBYWCZP2024.Data.Models;
 namespace HBYWCZP2024.View.CZPallet
 {
     /// <summary>
-    /// PalletDetailWindow.xaml 的交互逻辑
+    /// 托盘详细信息窗口 的交互逻辑
     /// </summary>
     public partial class PalletDetailWindow : Window
     {
@@ -27,8 +27,7 @@ namespace HBYWCZP2024.View.CZPallet
             System.Collections.ObjectModel.ObservableCollection<Models.StationChannel> stationChannels = new(palletLog.BatteryInfo.Select(s => new Models.StationChannel() { Code = s.BatteryCode, BatteryLevel = s.BatteryLevel }).ToList());
             palletv.Station = new Models.XYLStation
             {
-                Channels = stationChannels
-                ,
+                Channels = stationChannels,
                 Column = palletLog.Column,
                 ChannelNum = stationChannels.Count
             };

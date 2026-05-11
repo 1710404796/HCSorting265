@@ -34,7 +34,7 @@ namespace HBYWCZP2024.View.CZPallet
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void PalletContents_Click(object sender, RoutedEventArgs e)
         {
             var palletLog = (sender as FrameworkElement)!.Tag as PalletLog;
             

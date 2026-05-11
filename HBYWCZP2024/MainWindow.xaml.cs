@@ -104,12 +104,13 @@ namespace HBYWCZP2024
         {
             NageTo<SettingView>();
         }
+
         /// <summary>
-        /// 权限管理
+        /// 用户管理界面
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PowerManager_Click(object sender, RoutedEventArgs e)
+        private void UserManager_Click(object sender, RoutedEventArgs e)
         {
             NageTo<UserManagerView>();
         }
@@ -139,36 +140,65 @@ namespace HBYWCZP2024
         }
 
 
-
+        /// <summary>
+        /// 工位状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GongWeiBtn_Click(object sender, RoutedEventArgs e)
         {
             NageTo<YWStageView>();
 
         }
 
+        /// <summary>
+        /// WCS交互日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WCSLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<WCSLogView>();
 
         }
 
+        /// <summary>
+        /// 报警日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WarningLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<WarningLogView>();
 
         }
 
+        /// <summary>
+        /// 拆盘日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CPLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<PalletChaiLogView>();
 
         }
 
+        /// <summary>
+        /// NG拉带电芯日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NgBeltCellLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<NgBeltCellLogView>();
         }
 
+        /// <summary>
+        /// 组盘日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ZPLog_Click(object sender, RoutedEventArgs e)
         {
             NageTo<PalletLogView>();
@@ -177,9 +207,6 @@ namespace HBYWCZP2024
 
         private async void testzupan_Click(object sender, RoutedEventArgs e)
         {
-
-
-
             var mediator1 = App.GetService<IMediator>();
             var key = "Default";
 
@@ -208,6 +235,8 @@ namespace HBYWCZP2024
             await mediator1.Send(new InformationBoxCommand("托盘离开: " + res));
             if (!res) return;
         }
+
+     
 
         //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         //{

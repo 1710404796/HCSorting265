@@ -5,13 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HBYWCZP2024.View.CZPallet"
         mc:Ignorable="d"
-          xmlns:ui="http://schemas.modernwpf.com/2019"
-ui:WindowHelper.UseModernWindowStyle="True"
-        Title="PalletDetailWindow" Height="850" Width="800">
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="托盘详细信息窗口" Height="900" Width="1400"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        <ScrollViewer>
-            <local:PalletView x:Name="palletv"></local:PalletView>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Orientation="Horizontal" Margin="10,8,10,6">
+            <TextBlock VerticalAlignment="Center" FontSize="14" Text="缩放"/>
+            <Slider x:Name="ZoomSlider"
+                    Width="220"
+                    Margin="8,0,0,0"
+                    Minimum="0.5"
+                    Maximum="2.2"
+                    SmallChange="0.1"
+                    LargeChange="0.2"
+                    TickFrequency="0.1"
+                    IsSnapToTickEnabled="True"
+                    Value="0.5"/>
+            <TextBlock Margin="10,0,0,0"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Text="{Binding ElementName=ZoomSlider, Path=Value, StringFormat={}{0:0.0}x}"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="False">
+            <Border>
+                <Border.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding ElementName=ZoomSlider, Path=Value}"
+                                    ScaleY="{Binding ElementName=ZoomSlider, Path=Value}"/>
+                </Border.LayoutTransform>
+                <local:PalletView x:Name="palletv"/>
+            </Border>
         </ScrollViewer>
     </Grid>
 </Window>

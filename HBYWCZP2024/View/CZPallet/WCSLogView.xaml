@@ -9,23 +9,33 @@
       Loaded="MesLogView_OnLoaded"
       Title="MesLog">
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <Button Content="查询" Command="{Binding ViewModel.SearchCommand}"/>
-            <DatePicker SelectedDate="{Binding ViewModel.StartTime}" Margin="10,0,0,0"></DatePicker>
-            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0"
-                       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
 
-                       >至</TextBlock>
-            <DatePicker SelectedDate="{Binding ViewModel.EndTime}" Margin="10,0,0,0"></DatePicker>
+        <StackPanel Orientation="Horizontal" Margin="5">
+
+            <Button Content="查询" Command="{Binding ViewModel.SearchCommand}"/>
+
+            <DatePicker SelectedDate="{Binding ViewModel.StartTime}" Margin="10,0,0,0"/>
+
+            <TextBlock 
+                VerticalAlignment="Center" 
+                Margin="10,0,0,0"
+                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                Text="至"/>
+
+            <DatePicker SelectedDate="{Binding ViewModel.EndTime}" Margin="10,0,0,0"/>
+
             <ComboBox 
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 Width="200"
-                ItemsSource="{Binding ViewModel.Apinames}" SelectedItem="{Binding ViewModel.SelectName}"></ComboBox>
+                ItemsSource="{Binding ViewModel.Apinames}" 
+                SelectedItem="{Binding ViewModel.SelectName}"/>
+
         </StackPanel>
         
         <DataGrid Grid.Row="1" 
@@ -33,27 +43,40 @@
                   CanUserAddRows="False"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding ViewModel.WcsLogs}"
-                  SelectedItem="{Binding ViewModel.SelectLog}"
-        >
+                  SelectedItem="{Binding ViewModel.SelectLog}">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="请求接口" Binding="{Binding ApiName}" ></DataGridTextColumn>
-                <DataGridTextColumn Header="请求时间" Binding="{Binding RequestTime}"></DataGridTextColumn>
-                <DataGridTextColumn Header="响应时间" Binding="{Binding ResponseTime}" ></DataGridTextColumn>
-                <DataGridTextColumn Header="请求数据"  Binding="{Binding Request}" Width="300" > 
+
+                <DataGridTextColumn Header="请求接口" Binding="{Binding ApiName}"/>
+
+                <DataGridTextColumn Header="请求时间" Binding="{Binding RequestTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+
+                <DataGridTextColumn Header="响应时间" Binding="{Binding ResponseTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                
+                <DataGridTextColumn Header="请求数据"  Binding="{Binding Request}" Width="300"> 
+
                     <DataGridTextColumn.ElementStyle>
+
                     <Style TargetType="TextBlock">
                         <Setter Property="TextWrapping" Value="Wrap"/>
                         <Setter Property="Height" Value="auto"/>
                     </Style>
+
                     </DataGridTextColumn.ElementStyle>
+
                 </DataGridTextColumn>
+
                 <DataGridTextColumn Header="回复数据" Binding="{Binding Response}" Width="300" >
+
                     <DataGridTextColumn.ElementStyle>
+
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="Height" Value="auto"/>
                         </Style>
+
                     </DataGridTextColumn.ElementStyle>
+
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>

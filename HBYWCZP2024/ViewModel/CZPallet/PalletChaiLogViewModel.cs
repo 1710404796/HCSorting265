@@ -60,7 +60,12 @@ namespace HBYWCZP2024.ViewModel
 
             foreach (var log in PalletLogs.Where(s => s.IsSelect))
             {
-                sb.AppendLine($"{log.PalletCode},{log.ZuPanTime},{log.ChannelCount},[{string.Join("|", log.BatteryInfo.Select(s => s.BatteryCode))}]");
+                var batteryCodes = PalletCsvExportHelper.FormatCodes(log.BatteryInfo.Select(s => s.BatteryCode));
+                sb.AppendLine(
+                    $"{PalletCsvExportHelper.Escape(log.PalletCode)}," +
+                    $"{log.ZuPanTime:yyyy-MM-dd HH:mm:ss}," +
+                    $"{log.ChannelCount}," +
+                    $"{PalletCsvExportHelper.Escape(batteryCodes)}");
 
             }
 

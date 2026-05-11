@@ -5,61 +5,73 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HBYWCZP2024.View.CZPallet"
       mc:Ignorable="d" 
-            xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
+      xmlns:lang="clr-namespace:HBYWCZP2024.Properties"
       Loaded="Page_Loaded"
       d:DataContext="{d:DesignInstance Type=local:PalletLogView}"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PalletChaiLogView">
+      Title="拆盘日志">
 
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+
         <StackPanel Orientation="Horizontal" Margin="5">
-            <Button Content="{x:Static lang:Resources.Query}"
- Command="{Binding ViewModel.SearchCommand}"/>
-            <DatePicker SelectedDate="{Binding ViewModel.StartTime}" Margin="10,0,0,0"></DatePicker>
-            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0"
-               Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                Text="{x:Static lang:Resources.To}"
-                       
-    ></TextBlock>
-            <DatePicker SelectedDate="{Binding ViewModel.EndTime}" Margin="10,0,0,0"></DatePicker>
 
-            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0"
-           Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                       
-                Text="{x:Static lang:Resources.TrayBarcode}"
-                       
-></TextBlock>
-            <TextBox Width="150" Margin="10,0,0,0"
-                     VerticalContentAlignment="Center"
-                     Text="{Binding ViewModel.Code}"></TextBox>
+            <Button Content="查询" Command="{Binding ViewModel.SearchCommand}"/>
 
-            <Button Content="{x:Static lang:Resources.DeriveCVS}"  Margin="10,0,0,0"
-Command="{Binding ViewModel.ExportCommand}"/>
+            <DatePicker SelectedDate="{Binding ViewModel.StartTime}" Margin="10,0,0,0"/>
+
+            <TextBlock 
+                    VerticalAlignment="Center" 
+                    Margin="10,0,0,0" 
+                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                    Text="至"/>
+
+            <DatePicker SelectedDate="{Binding ViewModel.EndTime}" Margin="10,0,0,0"/>
+
+            <TextBlock 
+                    VerticalAlignment="Center" 
+                    Margin="10,0,0,0"
+                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                    Text="托盘条码"/>
+
+            <TextBox 
+                    Width="150" 
+                    Margin="10,0,0,0" 
+                    Text="{Binding ViewModel.Code}"
+                    VerticalContentAlignment="Center"/>
+
+            <Button Content="导出为CVS" Margin="10,0,0,0" Command="{Binding ViewModel.ExportCommand}"/>
+
         </StackPanel>
 
         <DataGrid Grid.Row="1" 
-          CanUserAddRows="False"
-          AutoGenerateColumns="False"
-          ItemsSource="{Binding ViewModel.PalletLogs}"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding ViewModel.PalletLogs}"
 >
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="{x:Static lang:Resources.Check}" Binding="{Binding IsSelect}" ></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="{x:Static lang:Resources.TrayBarcode}" Binding="{Binding PalletCode}" ></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static lang:Resources.AssemblyTime}" Binding="{Binding ZuPanTime}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static lang:Resources.ChannelCount}" Binding="{Binding ChannelCount}"></DataGridTextColumn>
+
+                <DataGridCheckBoxColumn Header="勾选" Binding="{Binding IsSelect}" IsReadOnly="False"/>
+
+                <DataGridTextColumn Header="托盘条码" Binding="{Binding PalletCode}"/>
+
+                <DataGridTextColumn Header="组盘时间" Binding="{Binding ZuPanTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+
+                <DataGridTextColumn Header="通道数" Binding="{Binding ChannelCount}"/>
+
                 <!--<DataGridTextColumn Header="托盘信息" Binding="{Binding }" ></DataGridTextColumn>-->
-                <DataGridTemplateColumn Header="{x:Static lang:Resources.TrayInformation}">
+                <DataGridTemplateColumn Header="托盘信息">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{x:Static lang:Resources.TrayContents}"
-         Tag="{Binding }"  
-         HorizontalAlignment="Stretch"
-         Width="Auto"
-         Click="Button_Click" />
+                            <Button Content="托盘内容"
+                                    Tag="{Binding }"  
+                                    HorizontalAlignment="Stretch"
+                                    Width="Auto"
+                                    Click="PalletContents_Click" />        
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

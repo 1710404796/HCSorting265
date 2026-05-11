@@ -1,6 +1,7 @@
+using HBYWCZP2024.Attritubes;
+using HBYWCZP2024.ViewModel.CZPallet;
 using System.Windows;
 using System.Windows.Controls;
-using HBYWCZP2024.ViewModel.CZPallet;
 
 namespace HBYWCZP2024.View.CZPallet;
 
