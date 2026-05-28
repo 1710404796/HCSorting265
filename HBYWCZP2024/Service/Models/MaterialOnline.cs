@@ -15,6 +15,7 @@ namespace HBYWCZP2024.Service.Models
         public string siteCode => MainStorage.Saves.KeysSave[name].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[name].LineCode;
         public string equipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
+        public string logisticsOperationCode { get; set; } = MainStorage.Saves.KeysSave[name].LogisticsOperationCode;
         public string containerCode { get; set; } = "";
         public string actionType { get; set; } = "IN";
     }
@@ -47,6 +48,7 @@ namespace HBYWCZP2024.Service.Models
     {
         public string? identification { get; set; }
         public string? qualityStatus { get; set; } // ok/ng
+        public string? pickOutFlag { get; set; }
         public string? materialId { get; set; } // ok/ng
 
     }

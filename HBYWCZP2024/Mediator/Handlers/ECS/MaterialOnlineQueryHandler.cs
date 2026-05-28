@@ -268,9 +268,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     )
                  .Map(c =>
                  new Batterytraybindvolist
-                 { identification = c.BattleWithLevel
+                 {
+                     identification = c.BattleWithLevel
                                     .Map(b => b.Code)
-                                    .IfNone("")
+                                    .IfNone(""),
+                     locationBat = c.ChannelId.ToString()
                                     //.Match(Some: s => s, None: () => "")
                  })]
                 };
@@ -281,8 +283,17 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                         return (new Map<string, BatteryLevel>(), "");
                     }
                     var res = await service.MesService.MaterialOnline(mRequest);
+                    var validRows = res.Match(
+                        Succ: s => s.rows
+                            .Filter(r => !string.Equals(r.qualityStatus, "NG", StringComparison.OrdinalIgnoreCase))
+                            .Filter(r => !string.Equals(r.pickOutFlag, "Y", StringComparison.OrdinalIgnoreCase)),
+                        Fail: f =>
+                        {
+                            mediator.Send(new WcsDataWarningBoxCommand(f.Message)).Wait();
+                            throw f;
+                        });
                     var cmap = res.Match(
-                        Succ: s => s.rows.Map(r =>
+                        Succ: s => validRows.Map(r =>
                         (r.identification ?? "", CZPUtils.GetLevelFromMes(r.qualityStatus ?? "")
                         //r.qualityStatus?.ToLower() switch
                         //{

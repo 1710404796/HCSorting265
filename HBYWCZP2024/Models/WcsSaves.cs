@@ -81,6 +81,12 @@ namespace HBYWCZP2024.Models
             set => KeysSave[SelectStageName].DeviceCode = value;
         }
 
+        [JsonIgnore]
+        public string LogisticsOperationCode
+        {
+            get => KeysSave[SelectStageName].LogisticsOperationCode;
+            set => KeysSave[SelectStageName].LogisticsOperationCode = value;
+        }
 
         [JsonIgnore]
         public OpcPLCSetting PLCPSetting => KeysSave[SelectStageName].PLCPSetting;
@@ -385,6 +391,8 @@ namespace HBYWCZP2024.Models
         public string DeviceCode { get; set; } = string.Empty;
 
         public string ContainerTypeCode { get; set; } = string.Empty;
+
+        public string LogisticsOperationCode { get; set; } = string.Empty;
 
         /// <summary>
         /// SettingView里“测试MES托盘信息获取”使用的托盘号(测试用)。
