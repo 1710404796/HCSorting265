@@ -31,16 +31,14 @@ namespace HBYWCZP2024.ViewModel
     {
         //public ObservableCollection<PalletLogViewModel> Log { get; set; } = [];
         [ObservableProperty] private ObservableCollection<PalletLogExt> _palletLogs = [];
-        private IEnumerable<PalletLog> _logs = [];
         public DateTime StartTime { get; set; } = DateTime.Today.AddDays(-30);
-        public DateTime EndTime { get; set; } = DateTime.Today.AddDays(1);
+        public DateTime EndTime { get; set; } = DateTime.Today;
 
         public string Code { get; set; } = string.Empty;
 
 
         public void RefreshContext()
         {
-            _logs = context.PalletLogs.AsNoTracking().OrderByDescending(s => s.Id).Where(s => s.PalletType == PalletType.拆盘 || s.PalletType == PalletType.筛选).Take(100);
             Search();
         }
 
@@ -77,21 +75,28 @@ namespace HBYWCZP2024.ViewModel
         [RelayCommand]
         public void Search()
         {
+            var start = StartTime.Date;
+            var endExclusive = EndTime.Date.AddDays(1);
+
             lock (context)
             {
-                _logs = context.PalletLogs.AsNoTracking().Where(s => s.PalletType == PalletType.拆盘 || s.PalletType == PalletType.筛选).OrderByDescending(s => s.Id);
+                IQueryable<PalletLog> query = context.PalletLogs
+                    .AsNoTracking()
+                    .Where(s => s.PalletType == PalletType.拆盘 || s.PalletType == PalletType.筛选);
 
+                query = query.Where(s => s.ZuPanTime >= start && s.ZuPanTime < endExclusive);
+
+                if (!string.IsNullOrWhiteSpace(Code))
+                {
+                    query = query.Where(s => s.PalletCode.Contains(Code));
+                }
+
+                PalletLogs = new(query
+                    .OrderByDescending(s => s.Id)
+                    // .Take(3000)   暂时屏蔽显示条数
+                    .AsEnumerable()
+                    .Select(s => new PalletLogExt(s)));
             }
-            var afterFilter = _logs.Where(s => s.ZuPanTime >= StartTime && s.ZuPanTime <= EndTime);
-
-            if (!string.IsNullOrEmpty(Code))
-            {
-                afterFilter = afterFilter.Where(s => s.PalletCode.Contains(Code, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            PalletLogs = new(
-                afterFilter.Take(100).Select(s => new PalletLogExt(s))
-            );
         }
     }
 }

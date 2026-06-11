@@ -261,7 +261,7 @@ namespace HBYWCZP2024.PLC.Tasks
             string[] batteryCodes = [batteryCode];
             //var battery = batteryCode.Select((s, i) => new MaterialInfo(s, i)).Where(s=> channelState[s.Channel]).ToArray();
             var battery = batteryCodes
-                .Select((s, i) => new Channel(i, Some(new BatteryWithLevel(s, None))))
+                .Select((s, i) => new Channel(i + 1, Some(new BatteryWithLevel(s, None))))
                 .ToImmutableArray();
             var res = await Context.Mediator.Send(new MaterialOnlineQuery(Context.Name, battery));
             if (res == null) { 
