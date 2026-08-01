@@ -36,11 +36,11 @@
                   ItemsSource="{Binding ViewModel.MesLogs}">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="警报类型" Binding="{Binding WarningType}"/>
+                <DataGridTextColumn Header="警报类型" Binding="{Binding WarningType}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="警报时间" Binding="{Binding WarningTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <DataGridTextColumn Header="警报时间" Binding="{Binding WarningTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="警报信息" Binding="{Binding Message}"/>
+                <DataGridTextColumn Header="警报信息" Binding="{Binding Message}" IsReadOnly="True"/>
 
             </DataGrid.Columns>
         </DataGrid>

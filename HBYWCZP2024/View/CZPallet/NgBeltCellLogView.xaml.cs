@@ -14,6 +14,7 @@ public partial class NgBeltCellLogView : Page
         DataContext = this;
         ViewModel = App.GetService<NgBeltCellLogViewModel>();
         InitializeComponent();
+            Unloaded += (s, e) => ViewModel?.Dispose(); // 页面切走时释放DbContext，避免每次切换累积一个孤立实例
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)

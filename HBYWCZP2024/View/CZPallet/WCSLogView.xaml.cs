@@ -16,6 +16,7 @@ public partial class WCSLogView : Page
         DataContext = this;
         ViewModel = App.GetService<WCSLogViewModel>();
         InitializeComponent();
+            Unloaded += (s, e) => ViewModel?.Dispose(); // 页面切走时释放DbContext，避免每次切换累积一个孤立实例
     } // log页面格式化？
 
 

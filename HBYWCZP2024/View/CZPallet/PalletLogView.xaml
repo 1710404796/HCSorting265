@@ -57,11 +57,11 @@
 
                 <DataGridCheckBoxColumn Header="勾选" Binding="{Binding IsSelect}" IsReadOnly="False"/>
 
-                <DataGridTextColumn Header="托盘条码" Binding="{Binding PalletCode}"/>
+                <DataGridTextColumn Header="托盘条码" Binding="{Binding PalletCode}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="组盘时间" Binding="{Binding ZuPanTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <DataGridTextColumn Header="组盘时间" Binding="{Binding ZuPanTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="通道数" Binding="{Binding ChannelCount}"/>
+                <DataGridTextColumn Header="通道数" Binding="{Binding ChannelCount}" IsReadOnly="True"/>
 
                 <!--<DataGridTextColumn Header="托盘信息" Binding="{Binding }" ></DataGridTextColumn>-->
                 <DataGridTemplateColumn Header="托盘信息">

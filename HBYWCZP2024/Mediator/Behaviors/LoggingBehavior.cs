@@ -1,4 +1,4 @@
-﻿using LinxUniverse.Mediator;
+using LinxUniverse.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
@@ -54,9 +54,8 @@ namespace HBYWCZP2024.Mediator.Behaviors
                 _logger.LogError("处理请求发生错误: {request}", typeof(TRequest).Name);
                 _logger.LogError(ex.Message);
                 _logger.LogError(ex.StackTrace);
-
+                throw;
             }
-            return default;
 
         }
     }

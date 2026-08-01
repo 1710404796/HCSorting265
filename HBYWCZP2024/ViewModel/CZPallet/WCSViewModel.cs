@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
@@ -15,8 +15,21 @@ using System.Windows.Threading;
 namespace HBYWCZP2024.ViewModel.CZPallet
 
 {
-    public partial class WCSLogViewModel(LinxContext context): ObservableRecipient
+    public partial class WCSLogViewModel : ObservableRecipient, IDisposable
     {
+        private readonly LinxContext _context; // DI注入，由Dispose释放
+
+    public WCSLogViewModel(LinxContext context)
+    {
+        _context = context;
+    }
+
+        // 页面切走时释放DbContext，防止内存泄漏
+    public void Dispose()
+    {
+        _context?.Dispose();
+    }
+
         [ObservableProperty] private ObservableCollection<WcsLog> _wcsLogs = [];
         private IEnumerable<WcsLog> _logs = [];
 
@@ -54,7 +67,7 @@ namespace HBYWCZP2024.ViewModel.CZPallet
 
         public async Task RefreshContext()
         {
-            _logs = await context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100).ToListAsync();
+            _logs = await _context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100).ToListAsync();
             Search();
 
 
@@ -74,7 +87,7 @@ namespace HBYWCZP2024.ViewModel.CZPallet
         [RelayCommand]
         public void Search()
         {
-            var afterFilter = context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id)
+            var afterFilter = _context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id)
                 .Where(s => s.RequestTime >= StartTime && s.RequestTime <= EndTime);
             if (SelectName != "(全部)")
             {

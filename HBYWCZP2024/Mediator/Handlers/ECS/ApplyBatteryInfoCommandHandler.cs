@@ -16,11 +16,20 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
     public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<ApplyBatteryInfoCommandHandler> logger) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
     {
+        static readonly ConcurrentDictionary<string, (DateTime Time, BatteryLevel[] Levels)> _batteryInfoCache = new();
+        static readonly TimeSpan _cacheWindow = TimeSpan.FromSeconds(5);
+
+        public static void ClearCache(string palletCode)
+        {
+            _batteryInfoCache.TryRemove(palletCode, out _);
+        }
+
         bool isFake(string code)
         {
             return 
@@ -51,6 +60,15 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             {
                 throw new Exception($"{request.Key},{request.StationNum}托盘不存在");
             }
+
+            if (_batteryInfoCache.TryGetValue(pallet.PalletCode, out var cached)
+                && DateTime.UtcNow - cached.Time < _cacheWindow)
+            {
+                var cachedSummary = string.Join(",", cached.Levels.Select((lv, i) => $"{i + 1}={lv}"));
+                logger.LogInformation($"二次下发给PLC电芯信息, 托盘: {pallet.PalletCode}, 通道状态: {cachedSummary}");
+                return cached.Levels;
+            }
+
             if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.ApplyMaterialEnable)
             {
                 return Enumerable.Repeat(0, 196).Select(s => BatteryLevel.OK).ToArray();
@@ -89,18 +107,22 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     }
                     try
                     {
-                        var mesChannels = await mediator.Send(new ContainerManualCommand(request.Key, pallet.PalletCode), cancellationToken);
-                        foreach (var channel in mesChannels)
-                        {
-                            if (channel.ChannelId <= 0 || channel.ChannelId > pallet.ChannelNum) continue;
-                            var (code, lv) = channel.BattleWithLevel.Match(
-                                Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
-                                None: (string.Empty, BatteryLevel.EMPTY)
-                            );
-                            if (string.IsNullOrWhiteSpace(code)) continue;
-                            var finalLevel = isFake(code) ? BatteryLevel.Fake : lv;
-                            await pallet.BindBattery(channel.ChannelId - 1, code, true, finalLevel);
-                        }
+                       var mesChannels = await mediator.Send(new ContainerManualCommand(request.Key, pallet.PalletCode), cancellationToken);
+                        var statusSummary = new StringBuilder();
+                       foreach (var channel in mesChannels)
+                       {
+                           if (channel.ChannelId <= 0 || channel.ChannelId > pallet.ChannelNum) continue;
+                           var (code, lv) = channel.BattleWithLevel.Match(
+                               Some: battleWithLevel => (battleWithLevel.Code, battleWithLevel.Level.Match(Some: l => l, None: BatteryLevel.EMPTY)),
+                               None: (string.Empty, BatteryLevel.EMPTY)
+                           );
+                           if (string.IsNullOrWhiteSpace(code)) continue;
+                           var finalLevel = isFake(code) ? BatteryLevel.Fake : lv;
+                           await pallet.BindBattery(channel.ChannelId - 1, code, true, finalLevel);
+                            statusSummary.Append($"{channel.ChannelId}={finalLevel},");
+                       }
+                        logger.LogInformation("给PLC下发电芯状态, 托盘条码: {PalletCode}, 通道状态: {Status}",
+                            pallet.PalletCode, statusSummary.ToString().TrimEnd(','));
                     }
                     catch (Exception ex)
                     {
@@ -139,7 +161,9 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
                 //return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
-                return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                var result = pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                _batteryInfoCache[pallet.PalletCode] = (DateTime.UtcNow, result);
+                return result;
 
             }
             else if (pallet.Type == Models.CZPallet.PalletType.筛选)
@@ -176,13 +200,17 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     // return null;
                 }
 
-
-                for (int i = 0; i < pallet.ChannelNum; i++)
-                {
-                    var status = i < cellStrs.Length ? cellStrs[i] : '0';
-                    var level = GetScreenBatteryLevel(status, responseStepCode, firstStepCode, secondStepCode);
-                    await pallet.BindBattery(i, pallet.Channels[i].Code, true, level);
-                }
+               //筛选电芯
+                var screenStatusSummary = new StringBuilder();
+               for (int i = 0; i < pallet.ChannelNum; i++)
+               {
+                   var status = i < cellStrs.Length ? cellStrs[i] : '0';
+                   var level = GetScreenBatteryLevel(status, responseStepCode, firstStepCode, secondStepCode);
+                   await pallet.BindBattery(i, pallet.Channels[i].Code, true, level);
+                    screenStatusSummary.Append($"{i + 1}={level},");
+               }
+                logger.LogInformation("给PLC下发电芯状态, 托盘条码: {PalletCode}, 通道状态: {Status}",
+                    pallet.PalletCode, screenStatusSummary.ToString().TrimEnd(','));
 
 
 
@@ -214,9 +242,11 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                     logger.LogError(ex, $"{request.Key},{request.StationNum}组盘日志发生错误");
                 }
 
-                return pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                var result = pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                _batteryInfoCache[pallet.PalletCode] = (DateTime.UtcNow, result);
+                return result;
 
-
+         
          
             }
             else

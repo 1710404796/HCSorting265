@@ -9,8 +9,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HBYWCZP2024.ViewModel.CZPallet;
 
-public partial class NgBeltCellLogViewModel(LinxContext context) : ObservableRecipient
+public partial class NgBeltCellLogViewModel : ObservableRecipient, IDisposable
 {
+        private readonly LinxContext _context; // DI注入，由Dispose释放
+
+    public NgBeltCellLogViewModel(LinxContext context)
+    {
+        _context = context;
+    }
+
+        // 页面切走时释放DbContext，防止内存泄漏
+    public void Dispose()
+    {
+        _context?.Dispose();
+    }
+
     [ObservableProperty] private ObservableCollection<NgBeltCellLog> _logs = [];
 
     public DateTime StartTime { get; set; } = DateTime.Today.AddDays(-30);
@@ -26,7 +39,7 @@ public partial class NgBeltCellLogViewModel(LinxContext context) : ObservableRec
     [RelayCommand]
     public void Search()
     {
-        IQueryable<NgBeltCellLog> query = context.NgBeltCellLogs
+        IQueryable<NgBeltCellLog> query = _context.NgBeltCellLogs
             .AsNoTracking()
             .OrderByDescending(s => s.Id)
             .Where(s => s.RecordTime >= StartTime && s.RecordTime <= EndTime);

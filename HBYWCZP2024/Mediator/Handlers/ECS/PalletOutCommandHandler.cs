@@ -95,7 +95,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             // }
 
             _logger.LogInformation($"工位：{request.Key}，站台：{request.InsideStationNum}，托盘：{pallet.PalletCode} 离开上报ECS成功");
-            
+            ApplyBatteryInfoCommandHandler.ClearCache(pallet.PalletCode);
             
 
             if (request.isSpecial)

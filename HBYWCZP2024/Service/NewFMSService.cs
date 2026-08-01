@@ -1,4 +1,4 @@
-﻿using HBYWCZP2024.Data;
+using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
 using LanguageExt.Common;
@@ -31,7 +31,7 @@ namespace HBYWCZP2024.Service
         }
 
         /// <summary>
-        /// 圆柱产品获取配方，我不管
+        /// 圆柱产品获取配方
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace HBYWCZP2024.Service
 
         public async Task<Result<T>> SendFmsRequest<T>(string api, object data) where T : IFmsResponse
         {
-            LinxContext linxContext = App.GetService<LinxContext>();
+            using LinxContext linxContext = App.GetService<LinxContext>(); // 用using确保DbContext用完即释放，避免内存堆积
             DateTime reqTime = DateTime.Now;
             string req = JsonSerializer.Serialize(data);
             _logger.LogInformation("请求FMS数据: {data}", req);

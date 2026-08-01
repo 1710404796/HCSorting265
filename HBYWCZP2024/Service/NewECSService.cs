@@ -1,4 +1,4 @@
-﻿using Azure;
+using Azure;
 using HBYWCZP2024.Data;
 using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
@@ -114,7 +114,7 @@ namespace HBYWCZP2024.Service
         /// <returns>响应结果</returns>
         public async Task<Result<T>> SendEcsRequest<T>(string api, object data) where T : IEcsResponse
         {
-            LinxContext linxContext = App.GetService<LinxContext>();
+            using LinxContext linxContext = App.GetService<LinxContext>(); // 用using确保DbContext用完即释放，避免内存堆积
             DateTime reqTime = DateTime.Now;
             string req = JsonSerializer.Serialize(data);
             _logger.LogInformation("请求ECS数据: {data}", req);

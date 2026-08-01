@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HBYWCZP2024.ViewModel.CZPallet;
 
-public partial class WarningLogViewModel(LinxContext context): ObservableRecipient
+public partial class WarningLogViewModel : ObservableRecipient
 {
     [ObservableProperty] private ObservableCollection<WarningLog> _mesLogs = [];
     private IEnumerable<WarningLog> _logs = [];
@@ -16,10 +16,16 @@ public partial class WarningLogViewModel(LinxContext context): ObservableRecipie
     public DateTime StartTime { get; set; } = DateTime.Today.AddDays(-30);
     public DateTime EndTime { get; set; } = DateTime.Today.AddDays(1);
     
-    
+    // 方法内创建短生命周期DbContext，用完即释放，避免Singleton持有常驻DbContext
+    private static IEnumerable<WarningLog> GetWarnLogs()
+    {
+        using var ctx = App.GetService<LinxContext>(); // 局部using，函数返回前自动Dispose
+        return ctx.WarningLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100).ToList();
+    }
+
     public void RefreshContext()
     {
-        _logs = context.WarningLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100);
+        _logs = GetWarnLogs();
         Search();
     }
 

@@ -280,12 +280,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                                 await mediator.Send(new WcsDataWarningBoxCommand($"{request.Key},{request.StationNum}托盘条码不能为空"));
                                 return false;
                             }
-                            var pickedChannels = pallet.Channels
-                                .Take(pallet.ChannelNum)
-                                .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
-                                .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
-                                .Select(s => s.Channel)
-                                .ToArray();
+                           var pickedChannels = pallet.Channels
+                               .Take(pallet.ChannelNum)
+                               .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
+                                .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY || s.Level == BatteryLevel.复测1)
+                               .Select(s => s.Channel)
+                               .ToArray();
 
                             var uploadOk = await mediator.Send(new YZScreenUploadCommand(
                                 request.Key,
@@ -498,12 +498,12 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                             return false;
                         }
 
-                        var pickedChannels = pallet.Channels
-                            .Take(pallet.ChannelNum)
-                            .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
+                       var pickedChannels = pallet.Channels
+                           .Take(pallet.ChannelNum)
+                           .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
                             .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY)
-                            .Select(s => s.Channel)
-                            .ToArray();
+                           .Select(s => s.Channel)
+                           .ToArray();
 
                         var uploadOk = await mediator.Send(new YZScreenUploadCommand(
                             request.Key,

@@ -47,13 +47,13 @@
 
             <DataGrid.Columns>
 
-                <DataGridTextColumn Header="请求接口" Binding="{Binding ApiName}"/>
+                <DataGridTextColumn Header="请求接口" Binding="{Binding ApiName}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="请求时间" Binding="{Binding RequestTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <DataGridTextColumn Header="请求时间" Binding="{Binding RequestTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="响应时间" Binding="{Binding ResponseTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <DataGridTextColumn Header="响应时间" Binding="{Binding ResponseTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsReadOnly="True"/>
                 
-                <DataGridTextColumn Header="请求数据"  Binding="{Binding Request}" Width="300"> 
+                <DataGridTextColumn Header="请求数据"  Binding="{Binding Request}" Width="300" IsReadOnly="True"> 
 
                     <DataGridTextColumn.ElementStyle>
 
@@ -66,7 +66,7 @@
 
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="回复数据" Binding="{Binding Response}" Width="300" >
+                <DataGridTextColumn Header="回复数据" Binding="{Binding Response}" Width="300" IsReadOnly="True">
 
                     <DataGridTextColumn.ElementStyle>
 

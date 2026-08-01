@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +32,7 @@ namespace HBYWCZP2024.View.CZPallet
             ViewModel = App.GetService<PalletLogViewModel>();
 
             InitializeComponent();
+            Unloaded += (s, e) => ViewModel?.Dispose(); // 页面切走时释放DbContext，避免每次切换累积一个孤立实例
         }
 
         private void PalletContents_Click(object sender, RoutedEventArgs e)

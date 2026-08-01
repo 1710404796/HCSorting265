@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LinxUniverse.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +15,21 @@ using HBYWCZP2024.Models.CZPallet;
 
 namespace HBYWCZP2024.ViewModel
 {
-    public partial class PalletLogViewModel(LinxContext context): ObservableRecipient
+    public partial class PalletLogViewModel : ObservableRecipient, IDisposable
     {
+        private readonly LinxContext _context; // DI注入，由Dispose释放
+
+    public PalletLogViewModel(LinxContext context)
+    {
+        _context = context;
+    }
+
+        // 页面切走时释放DbContext，防止内存泄漏
+    public void Dispose()
+    {
+                _context?.Dispose();
+    }
+
         //public ObservableCollection<PalletLogViewModel> Log { get; set; } = [];
         [ObservableProperty] private ObservableCollection<PalletLogExt> _palletLogs = [];
         public DateTime StartTime { get; set; } = DateTime.Today.AddDays(-30);
@@ -66,9 +79,9 @@ namespace HBYWCZP2024.ViewModel
             var start = StartTime.Date;
             var endExclusive = EndTime.Date.AddDays(1);
 
-            lock (context)
+            lock (_context)
             {
-                IQueryable<PalletLog> query = context.PalletLogs
+                IQueryable<PalletLog> query = _context.PalletLogs
                     .AsNoTracking()
                     .Where(s => s.PalletType == PalletType.组盘);
 
