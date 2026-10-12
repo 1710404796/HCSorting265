@@ -77,17 +77,20 @@ namespace HBYWCZP2024.Mediator.Handlers
 
 
 
-            if (!MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
+            if (string.IsNullOrWhiteSpace(MainStorage.Saves.SelectStageName) ||
+                !MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
             {
                 MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
             }
             Dictionary<string, string> plcIpGuidMap = new();
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
+                var hasBarcodeReader = false;
                 foreach (var pallet in stage.Value.Stage.Pallets)
                 {
                     if (pallet.IsEnable)
                     {
+                        hasBarcodeReader = true;
                         pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
                             Right: reader => Some(reader),
                             Left: s =>
@@ -100,6 +103,12 @@ namespace HBYWCZP2024.Mediator.Handlers
                     }
 
                 }
+                if (hasBarcodeReader)
+                {
+                    // Keyence 客户端的底层 TCP 连接是异步建立的，给连接线程留出启动时间。
+                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                }
+
                 if ( stage.Value.ResetTable)
                 {
                     MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
@@ -153,6 +162,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                         logger.LogWarning("OpcTable未设定");
                         if (se.Context.Plc.Connected)
                         {
+                            se.Context.Plc.ClearBrowseCache();
                             stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
                             stage.Value.ResetTable = false;
                         }
@@ -216,6 +226,7 @@ namespace HBYWCZP2024.Mediator.Handlers
                         logger.LogWarning("OpcTable未设定");
                         if (se.Context.Plc.Connected)
                         {
+                            se.Context.Plc.ClearBrowseCache();
                             stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
                             stage.Value.ResetTable = false;
                         }

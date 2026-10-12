@@ -31,6 +31,12 @@ namespace HBYWCZP2024.View.CZPallet
                 Column = palletLog.Column,
                 ChannelNum = stationChannels.Count
             };
-        } 
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            HBYWCZP2024.Utils.ViewDisposer.Release(palletv);
+            base.OnClosed(e);
+        }
     }
 }

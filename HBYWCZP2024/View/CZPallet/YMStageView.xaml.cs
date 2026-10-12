@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using HBYWCZP2024.Mediator.Commands;
 using MediatR;
+using System;
+using System.Collections.Generic;
 
 namespace HBYWCZP2024.View.CZPallet
 {
@@ -14,9 +16,11 @@ namespace HBYWCZP2024.View.CZPallet
     /// YMStageView.xaml 的交互逻辑
     /// </summary>
     [PowerView(PowerEnum.工位状态)]
-    public partial class YWStageView : UserControl
+    public partial class YWStageView : UserControl, IDisposable
     {
         public readonly IMediator mediator;
+        private readonly List<GongWeiView> _createdViews = [];
+        private bool _disposed;
         public YWStageView()
         {
             mediator = App.GetService<IMediator>();
@@ -85,6 +89,7 @@ namespace HBYWCZP2024.View.CZPallet
             view.Margin = new Thickness(5, 10, 5, 10);
             view.Background = Brushes.Transparent;
             view.MouseDown += View_MouseDown;
+            _createdViews.Add(view);
             //view.ViewModel
         }
 
@@ -116,6 +121,28 @@ namespace HBYWCZP2024.View.CZPallet
                 }
             }
             await mediator.Send(new OperatorLogCommand("清除了当前工位的所有数据"));
+        }
+
+        /// <summary>
+        /// 释放动态创建的 GongWeiView、事件订阅、绑定和 DataContext。
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            foreach (var view in _createdViews)
+            {
+                view.MouseDown -= View_MouseDown;
+                view.Dispose();
+            }
+            _createdViews.Clear();
+
+            GongWeiSim.Children.Clear();
+            GC.SuppressFinalize(this);
         }
     }
 }

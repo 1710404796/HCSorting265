@@ -1,5 +1,6 @@
 ﻿using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Mediator.ECS;
+using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Utils;
 using LinxUniverse.OPCUA;
 using LinxUniverse.OPCUA.Attributes;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HBYWCZP2024.PLC.Tasks
 {
@@ -18,6 +20,8 @@ namespace HBYWCZP2024.PLC.Tasks
     [OPCDelectInfo(10, 11)]
     public class PalletArrivedTask : HBBaseTask
     {
+        public const string ManualForcePalletCodeKey = "PalletArrivedTask.ManualForcePalletCode";
+
         public PalletArrivedTask(int subIdx) : base(1)
         {
             TaskName = $"托盘：{subIdx + 1} 托盘到位";
@@ -34,44 +38,115 @@ namespace HBYWCZP2024.PLC.Tasks
                 //Context.Logger.LogError("");
                 return false;
             }
-            pallet.ClearStage();
-
             Context.Logger.LogInformation("准备获取托盘：{idx}条码", SubIdx);
-            pallet.PalletCode = string.Empty;
-            pallet.PalletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(Context.Name, SubIdx)))?.Trim() ?? string.Empty;
-            // 条码校验
-            while (true)
+            var palletCode = await GetPalletCodeAsync(pallet);
+            if (string.IsNullOrWhiteSpace(palletCode))
             {
-                if (string.IsNullOrEmpty(pallet.PalletCode))
-                {
-                    var res = await Context.Mediator.Send(new WarningBoxCommand($"{Properties.Resources.Tray}{SubIdx + 1} {Properties.Resources.Workstation}{pallet.OutsideStationNum} {Properties.Resources.TrayBarcodeNotScanned}\n{Properties.Resources.RescanOrManualEntry}", Button: System.Windows.MessageBoxButton.OKCancel));
-                    if (res == System.Windows.MessageBoxResult.Cancel)
-                    {
-                        return false;
-                    }
-                }
-                else if (!pallet.CheckCodeRegular())
-                {
-
-                    var res = await Context.Mediator.Send(new WarningBoxCommand($"{Properties.Resources.Tray}{SubIdx + 1} {Properties.Resources.Workstation}{pallet.OutsideStationNum} {Properties.Resources.UpperMachineErrorOrInvalidTrayType}\n{Properties.Resources.RescanOrManualEntry}", Button: System.Windows.MessageBoxButton.OKCancel));
-                    if (res == System.Windows.MessageBoxResult.Cancel)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    break;
-                }
-
+                return false;
             }
 
-            return  await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
+            pallet.ClearStage();
+            pallet.PalletCode = palletCode;
+            RuntimeStateStore.Save();
+
+            var arrived = await Context.Mediator.Send(new PalletArrivedCommand(Context.Name, pallet.InsideNum));
+            if (arrived)
+            {
+                RuntimeStateStore.Save();
+            }
+
+            return arrived;
 
             //return await base.DoSth();
 
 
         }
+
+        private async Task<string?> GetPalletCodeAsync(Pallet pallet)
+        {
+            while (true)
+            {
+                string palletCode;
+                try
+                {
+                    palletCode = (await Context.Mediator.Send(new ScanPalletCodeCommand(Context.Name, SubIdx)))?.Trim() ?? string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    pallet.PalletCode = "ERROR";
+                    Context.Logger.LogError(ex, "托盘{idx}扫码失败", SubIdx + 1);
+                    var retry = await ShowScanFailureBoxAsync(pallet, $"错误信息：{ex.Message}");
+                    if (retry)
+                    {
+                        continue;
+                    }
+
+                    return await WaitForManualForceCodeAsync(pallet);
+                }
+
+                if (string.IsNullOrWhiteSpace(palletCode))
+                {
+                    pallet.PalletCode = "ERROR";
+                    var retry = await ShowScanFailureBoxAsync(pallet, Properties.Resources.TrayBarcodeNotScanned);
+                    if (retry)
+                    {
+                        continue;
+                    }
+
+                    return await WaitForManualForceCodeAsync(pallet);
+                }
+
+                if (!pallet.CheckCodeRegular(palletCode))
+                {
+                    pallet.PalletCode = "ERROR";
+                    var retry = await ShowScanFailureBoxAsync(pallet, Properties.Resources.UpperMachineErrorOrInvalidTrayType);
+                    if (retry)
+                    {
+                        continue;
+                    }
+
+                    return await WaitForManualForceCodeAsync(pallet);
+                }
+
+                return palletCode;
+            }
+        }
+
+        private async Task<bool> ShowScanFailureBoxAsync(Pallet pallet, string reason)
+        {
+            var res = await Context.Mediator.Send(new WarningBoxCommand(
+                $"{Properties.Resources.Tray}{SubIdx + 1} {Properties.Resources.Workstation}{pallet.OutsideStationNum} 3秒内未识别到托盘码。\n{reason}\n\n确定：重新扫码\n取消：关闭提示，改为在界面输入托盘码后点击“强制写入条码”。",
+                Button: MessageBoxButton.OKCancel));
+
+            return res == MessageBoxResult.OK;
+        }
+
+        private async Task<string?> WaitForManualForceCodeAsync(Pallet pallet)
+        {
+            Context.Logger.LogWarning("托盘{idx}扫码失败，等待人工强制写入条码", SubIdx + 1);
+            pallet.TempData.Remove(ManualForcePalletCodeKey);
+
+            while (true)
+            {
+                if (pallet.TempData.TryGetValue(ManualForcePalletCodeKey, out var value)
+                    && value is string manualCode
+                    && !string.IsNullOrWhiteSpace(manualCode))
+                {
+                    pallet.TempData.Remove(ManualForcePalletCodeKey);
+                    return manualCode.Trim();
+                }
+
+                if (TaskCodeDelectDB.Actions(SubIdx) != TaskCode)
+                {
+                    Context.Logger.LogWarning("托盘{idx}等待人工强制写入时 PLC 任务码已变化，结束等待", SubIdx + 1);
+                    return null;
+                }
+
+                await Task.Delay(200);
+            }
+        }
+
+        private string TrayWritePrefix => Context.ExDb ? "WCS_TO_PLC_Tray2" : "WCS_TO_PLC_Tray";
 
 
         protected override Task WriteDataToPlc()
@@ -83,7 +158,7 @@ namespace HBYWCZP2024.PLC.Tasks
             //LinxUniverse.PLC.Common.Utils.SetStringCharArray(data, 0, pallet.PalletCode);
             //Encoding.UTF8.GetBytes(pallet.PalletCode).CopyTo(data, 0);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 11, 16 + 34 * SubIdx, data);
-            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", pallet!.PalletCode, Context.Name);
+            Context.Plc.WriteTagNode($"{TrayWritePrefix}.Tray.[{SubIdx}]", pallet!.PalletCode, Context.Name);
 
             //Context.Plc.WriteNode()
             return base.WriteDataToPlc();
@@ -93,7 +168,7 @@ namespace HBYWCZP2024.PLC.Tasks
         {
             byte[] data = new byte[34];
 
-            Context.Plc.WriteTagNode($"WCS_TO_PLC_Tray.Tray.[{SubIdx}]", string.Empty, Context.Name);
+            Context.Plc.WriteTagNode($"{TrayWritePrefix}.Tray.[{SubIdx}]", string.Empty, Context.Name);
             //Context.Plc.WriteBytes(S7.Net.DataType.DataBlock, 11, 16 + 34 * SubIdx, data);
             return Task.FromResult(true);
 
@@ -168,6 +243,7 @@ namespace HBYWCZP2024.PLC.Tasks
             else 
             {
                 pallet.ClearStage();
+                RuntimeStateStore.Save();
             }
             
             return true;
@@ -202,6 +278,7 @@ namespace HBYWCZP2024.PLC.Tasks
             else 
             {
                 pallet.ClearStage();
+                RuntimeStateStore.Save();
             }
             
             return true;
@@ -235,6 +312,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 
             }
             pallet.ClearStage();
+            RuntimeStateStore.Save();
             return true;
         }
     }

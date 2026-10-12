@@ -21,21 +21,38 @@ namespace HBYWCZP2024.View.CZPallet;
 /// PalletChaiLogView.xaml 的交互逻辑
 /// </summary>
 [PowerView(PowerEnum.拆盘日志)]
-public partial class PalletChaiLogView : Page
+public partial class PalletChaiLogView : Page, IDisposable
 {
+    private bool _disposed;
+
     public PalletChaiLogViewModel ViewModel
     {
         get;
     }
-    public PalletChaiLogView()
+    public PalletChaiLogView(PalletChaiLogViewModel viewModel)
     {
         DataContext = this;
-        ViewModel = App.GetService<PalletChaiLogViewModel>();
+        ViewModel = viewModel;
 
         InitializeComponent();
-            Unloaded += (s, e) => ViewModel?.Dispose(); // 页面切走时释放DbContext，避免每次切换累积一个孤立实例
     }
 
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        ViewModel.Dispose();
+    }
+
+    /// <summary>
+    /// 托盘内容按钮点击事件，打开托盘详情窗口
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void PalletContents_Click(object sender, RoutedEventArgs e)
     {
         var palletLog = (sender as FrameworkElement)!.Tag as PalletLog;

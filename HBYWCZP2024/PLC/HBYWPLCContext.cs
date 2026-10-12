@@ -93,10 +93,14 @@ namespace HBYWCZP2024.PLC
             if (!Plc.Connected) return;
 
             //throw new NotImplementedException();
-            await CheckError(DB500.ErrorCode);
+            await CheckError(ExDb ? DB500B.ErrorCode : DB500.ErrorCode);
             if (heartTag % 5 == 0)
             {
-                var test = Plc.WriteTagNode("WCS_to_JXS.Data.to_heartbeat", heartFlag ? (byte)1 : (byte)0, Name);
+                var heartbeatAddress = ExDb
+                    ? "WCS_to_JXS2.Data.to_heartbeat"
+                    : "WCS_to_JXS.Data.to_heartbeat";
+
+                var test = Plc.WriteTagNode(heartbeatAddress, heartFlag ? (byte)1 : (byte)0, Name);
 
                 heartFlag = !heartFlag;
 
@@ -154,38 +158,24 @@ namespace HBYWCZP2024.PLC
 
             if (ExDb)
             {
-                var task1 = Task.Run(() => Plc.ReadClass(DB500B, "WCS_JXS2.Data".GetOPCAddress(Name)));
-                var task2 = Task.Run(() => Plc.ReadClass(DB501B, "WCS_to_JXS2.Data".GetOPCAddress(Name)));
-                var task3 = Task.Run(() => Plc.ReadClass(DB510B, "PLC_TO_WCS_ScanTheCode2.PLC".GetOPCAddress(Name)));
-                var task4 = Task.Run(() => Plc.ReadClass(DB511B, "WCS_TO_PLC_ScanTheCode2.WCS".GetOPCAddress(Name)));
-                var task5 = Task.Run(() => Plc.ReadClass(DB10B, "PLC_TO_WCS_Tray2".GetOPCAddress(Name)));
-                var task6 = Task.Run(() => Plc.ReadClass(DB11B, "WCS_TO_PLC_Tray2".GetOPCAddress(Name)));
-
-
-
-                Task[] tasks = [task1, task2, task3, task4, task5, task6];
-
-                await Task.WhenAll(tasks);
+                Plc.ReadClass(DB500B, "WCS_JXS2.Data".GetOPCAddress(Name));
+                Plc.ReadClass(DB501B, "WCS_to_JXS2.Data".GetOPCAddress(Name));
+                Plc.ReadClass(DB510B, "PLC_TO_WCS_ScanTheCode2.PLC".GetOPCAddress(Name));
+                Plc.ReadClass(DB511B, "WCS_TO_PLC_ScanTheCode2.WCS".GetOPCAddress(Name));
+                Plc.ReadClass(DB10B, "PLC_TO_WCS_Tray2".GetOPCAddress(Name));
+                Plc.ReadClass(DB11B, "WCS_TO_PLC_Tray2".GetOPCAddress(Name));
                 //Logger.LogInformation("正在读取扩展db数据... {data}", string.Join(",", DB10B.PalletArrvied.ToArray().Select(s => s.ToString())));
             }
             else
             {
-                var task1 = Task.Run(() => Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name)));
-                var task2 = Task.Run(() => Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name)));
-                var task3 = Task.Run(() => Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name)));
-                var task4 = Task.Run(() => Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name)));
-                var task5 = Task.Run(() => Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name)));
-                var task6 = Task.Run(() => Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name)));
-
-
-
-
-                Task[] tasks = [task1, task2, task3, task4, task5, task6];
-
-                await Task.WhenAll(tasks);
-
-
+                Plc.ReadClass(DB500, "WCS_JXS.Data".GetOPCAddress(Name));
+                Plc.ReadClass(DB501, "WCS_to_JXS.Data".GetOPCAddress(Name));
+                Plc.ReadClass(DB510, "PLC_TO_WCS_ScanTheCode.PLC".GetOPCAddress(Name));
+                Plc.ReadClass(DB511, "WCS_TO_PLC_ScanTheCode.WCS".GetOPCAddress(Name));
+                Plc.ReadClass(DB10, "PLC_TO_WCS_Tray".GetOPCAddress(Name));
+                Plc.ReadClass(DB11, "WCS_TO_PLC_Tray".GetOPCAddress(Name));
             }
+            await Task.CompletedTask;
             // Logger.LogInformation("action: {0}, batteycode, {1}", DB500.Action, DB500.BatteryCodes[0]);
 
 

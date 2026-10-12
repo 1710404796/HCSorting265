@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HBYWCZP2024.Data.Models;
 
 namespace HBYWCZP2024.Data
 {
@@ -27,7 +26,11 @@ namespace HBYWCZP2024.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectString);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(connectString);
+            }
+
             base.OnConfiguring(optionsBuilder);
 
         }

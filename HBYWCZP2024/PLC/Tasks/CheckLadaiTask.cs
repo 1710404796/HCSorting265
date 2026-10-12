@@ -225,6 +225,9 @@ namespace HBYWCZP2024.PLC.Tasks
         protected bool channelState = false;
         protected string batteryCode = string.Empty;
         protected byte batteryStatus = 0;
+        protected bool _feedbackWritten = false;
+
+        protected virtual string BatteryStatusNodePath => $"WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus.[{SubIdx}]";
 
         public CheckLadaiTask(int subIdx) : base(1)
         {
@@ -292,12 +295,58 @@ namespace HBYWCZP2024.PLC.Tasks
             return await base.DoSth();
         }
 
+        protected bool WriteBatteryStatusAndFeedbackToPlc(byte status, byte feedback)
+        {
+            _feedbackWritten = false;
+            Exception? lastException = null;
+            var statusNode = BatteryStatusNodePath.GetOPCAddress(Context.Name);
+            var feedbackNode = TaskCodeFeedbackDB.GetFeedbacksOffset(SubIdx).GetOPCAddress(Context.Name);
+            if (statusNode == default || feedbackNode == default)
+            {
+                Context.Logger?.LogWarning("没有此地址, {add}", BatteryStatusNodePath);
+                return false;
+            }
+
+            for (var attempt = 1; attempt <= 2; attempt++)
+            {
+                try
+                {
+                    _feedbackWritten = Context.Plc.WriteNodesBatchedAsync(
+                    [
+                        new KeyValuePair<string, object>(statusNode, status),
+                        new KeyValuePair<string, object>(feedbackNode, feedback)
+                    ]).GetAwaiter().GetResult();
+                    if (_feedbackWritten)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                }
+               
+            }
+
+            // 第二次失败输出错误日志
+            Context.Logger?.LogError(lastException, "下发PLC电芯信息失败, 任务: {TaskName}, 通道: {Channel}", TaskName, SubIdx + 1);
+            return false;
+        }
+
         protected override async Task WriteDataToPlc()
         {
-
-            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus.[{SubIdx}]", batteryStatus, Context.Name);
+            WriteBatteryStatusAndFeedbackToPlc(batteryStatus, TaskCode);
 
             await base.WriteDataToPlc();
+        }
+
+        protected override void FeedBackAction()
+        {
+            if (_feedbackWritten)
+            {
+                return;
+            }
+            base.FeedBackAction();
         }
 
         protected override Task<bool> CleanData()
@@ -310,9 +359,18 @@ namespace HBYWCZP2024.PLC.Tasks
             batteryCode = string.Empty;
             batteryStatus = 0;
 
-            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode.WCS.to_batteryStatus.[{SubIdx}]", (byte)0, Context.Name);
+            WriteBatteryStatusAndFeedbackToPlc(0, 0);
 
             return base.CleanData();
+        }
+
+        protected override void ClearFeedBack()
+        {
+            if (_feedbackWritten)
+            {
+                return;
+            }
+            base.ClearFeedBack();
         }
     }
 }

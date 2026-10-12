@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.Models.CZPallet;
 using HBYWCZP2024.Service;
@@ -40,11 +40,14 @@ namespace HBYWCZP2024.Models
         public bool TwoOk { get; set; } = false;
         //public PLCCpuType PLCCpuType { get; set; } = PLCCpuType.小端;
 
+        public string TrayScanStandardName { get; set; } = "电芯拆组盘工具";
+
         public List<string[]> BatteryLevelList { get; set; } = Enumerable.Range(0,7).Select(s => new string[0]).ToList();
         public  string ExDbConnectionString { get; set; } = string.Empty;
         public  string ExDbTableName { get; set; } = string.Empty;
 
         public int LogDeleteDay { get; set; } =30;
+        public int DatabaseLogDeleteDay { get; set; } = 180;
         public bool TestMode => KeysSave[SelectStageName].TestMode;
 
 

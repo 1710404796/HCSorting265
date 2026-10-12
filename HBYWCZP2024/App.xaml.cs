@@ -29,6 +29,7 @@ using Quartz;
 using Serilog;
 using System.Configuration;
 using System.Data;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -78,6 +79,8 @@ namespace HBYWCZP2024
             //var cc = dB10B.GetType().GetProperties();
             //var cc1 = dB10.GetType().GetProperties();
             MainStorage.Init();
+            var logTextBox = CreateLogTextBox();
+            Log.Logger = CreateLogger(logTextBox);
             //DB.Database.Migrate();
             Host = Microsoft.Extensions.Hosting.Host.
                      CreateDefaultBuilder().
@@ -95,11 +98,21 @@ namespace HBYWCZP2024
                              {
                                  trigger.ForJob(jobKey).WithCronSchedule("10 0 0 * * ?");
                              });
+
+                             JobKey databaseCleanupJobKey = JobKey.Create(nameof(DatabaseCleanupJobs));
+                             config.AddJob<DatabaseCleanupJobs>(databaseCleanupJobKey).AddTrigger(trigger =>
+                             {
+                                 trigger.ForJob(databaseCleanupJobKey)
+                                     .StartNow()
+                                     .WithSimpleSchedule(schedule =>
+                                         schedule.WithIntervalInMinutes(10).RepeatForever());
+                             });
+
                              JobKey jobKey1 = JobKey.Create(nameof(SaveJobs));
 
                              config.AddJob<SaveJobs>(jobKey1).AddTrigger(trigger =>
                              {
-                                 trigger.ForJob(jobKey1).WithCronSchedule("0 */5 * * * ?");
+                                 trigger.ForJob(jobKey1).WithCronSchedule("0 */2 * * * ?");
                              });
 
                              JobKey jobKey2 = JobKey.Create(nameof(EquipStatusReportJobs));
@@ -119,6 +132,7 @@ namespace HBYWCZP2024
                          {
                              config.WaitForJobsToComplete = true;
                          });
+                         services.AddHostedService<ProcessMemoryMonitorService>();
 
                          services.AddSingleton<LinxAuthenticationStateProvider, StandLinxAuthenticationStateProvider<LinxUser>>();
 
@@ -139,17 +153,13 @@ namespace HBYWCZP2024
 
                          services.AddTransient<YWStageView>();
 
-
                          services.AddTransient<WarningLogView>();
                          services.AddSingleton<WarningLogViewModel>();
-
-                         services.AddSingleton<UserManagerViewModel>();
-                         services.AddTransient<UserManagerView>();
 
                          services.AddTransient<LogDashBoardView>();
 
 
-                         services.AddSingleton<RichTextBox>();
+                         services.AddSingleton(logTextBox);
                          services.AddSingleton<CacheService>();
 
                          services.AddTransient<PalletChaiLogView>();
@@ -157,7 +167,6 @@ namespace HBYWCZP2024
 
                          services.AddTransient<PalletLogView>();
                          services.AddTransient<PalletLogViewModel>();
-                         services.AddSingleton<CacheService>();
 
                          services.AddTransient<NgBeltCellLogView>();
                          services.AddTransient<NgBeltCellLogViewModel>();
@@ -178,10 +187,14 @@ namespace HBYWCZP2024
                          //    option.UseSqlServer(context.Configuration.GetConnectionString("LinxContextConnection"));
                          //}, ServiceLifetime.Singleton, ServiceLifetime.Singleton);
 
-                         services.AddDbContext<LinxUserDBContext<LinxUser>, LinxContext>(option =>
+                         services.AddDbContextFactory<LinxContext>(option =>
                          {
                              option.UseSqlServer(context.Configuration.GetConnectionString("LinxContextConnection"));
-                         }, ServiceLifetime.Transient, ServiceLifetime.Transient);
+                         });
+                         services.AddTransient<LinxContext>(provider =>
+                             provider.GetRequiredService<IDbContextFactory<LinxContext>>().CreateDbContext());
+                         services.AddTransient<LinxUserDBContext<LinxUser>>(provider =>
+                             provider.GetRequiredService<IDbContextFactory<LinxContext>>().CreateDbContext());
 
                          services.AddMediatR(cfg =>
                          {
@@ -197,7 +210,7 @@ namespace HBYWCZP2024
                      }).ConfigureLogging(logging =>
                      {
                          logging.ClearProviders();
-                         logging.AddSerilog(dispose: true);
+                         logging.AddSerilog(Log.Logger, dispose: false);
                          //logging.AddConsole();
                          //logging.AddDebug();
                      })
@@ -239,31 +252,77 @@ namespace HBYWCZP2024
             //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             //    options.RoutePrefix = string.Empty;
             //});
-            RichTextBox aa = GetService<RichTextBox>();
-            aa.IsReadOnly = true;
-            aa.Background = System.Windows.Media.Brushes.Black;
-            aa.TextChanged += Aa_TextChanged;
-            Log.Logger = new LoggerConfiguration()
-              .MinimumLevel.Debug()
-              .MinimumLevel.Override("System.Net.Http.HttpClient", Serilog.Events.LogEventLevel.Warning)
-                            .MinimumLevel.Override("Quartz", Serilog.Events.LogEventLevel.Information)
-                            .MinimumLevel.Override("Microsoft.Extensions.Http", Serilog.Events.LogEventLevel.Information)
-              // 软件名字
-              // 软件名字
-              .WriteTo.File("logs/HBYWCZP2024.NET.log", rollingInterval: RollingInterval.Day,
-              outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level}] |{SourceContext}.{Method}| - {Message}{NewLine}{Exception}")
-              .WriteTo.RichTextBox(GetService<RichTextBox>()).Enrich.FromLogContext()
-              .CreateLogger();
-
-
             var logger = Host.Services.GetRequiredService<ILogger<App>>();
             logger.LogInformation("Host created.");
 
             Host.Start();
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            if (Host is null)
+            {
+                base.OnExit(e);
+                return;
+            }
+
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            try
+            {
+                Host.StopAsync(timeout.Token).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            finally
+            {
+                Host.Dispose();
+                Log.CloseAndFlush();
+            }
+
+            base.OnExit(e);
+        }
+
+        private static RichTextBox CreateLogTextBox()
+        {
+            return new RichTextBox
+            {
+                IsReadOnly = true,
+                IsUndoEnabled = false,
+                UndoLimit = 0,
+                Background = System.Windows.Media.Brushes.Black,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                Document = new FlowDocument
+                {
+                    PagePadding = new Thickness(4),
+                    LineHeight = 16
+                }
+            };
+        }
+
+        private static Serilog.ILogger CreateLogger(RichTextBox logTextBox)
+        {
+            return new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Error)
+                .MinimumLevel.Override("Microsoft.Extensions.Hosting", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("System.Net.Http.HttpClient", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("Quartz", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.Extensions.Http", Serilog.Events.LogEventLevel.Information)
+                .WriteTo.File("logs/HBYWCZP2024.NET.log", rollingInterval: RollingInterval.Day,
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level}] |{SourceContext}.{Method}| - {Message}{NewLine}{Exception}")
+                .WriteTo.BoundedRichTextBox(logTextBox, maxLines: 1000)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+        }
+
         private static void InitContext()
         {
-            LinxContext DB = GetService<LinxContext>();
+            using LinxContext DB = GetService<IDbContextFactory<LinxContext>>().CreateDbContext();
             // DB.Database.EnsureCreated();
             DB.Database.Migrate();
             //
@@ -273,37 +332,6 @@ namespace HBYWCZP2024
             //}
 
             //DB.SaveChanges();
-        }
-        private void Aa_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var rb = (sender as RichTextBox);
-            if (e.Changes.First().AddedLength < 5) return;
-            var MaxLines = 100;
-            //rb.Document.Blocks.LastBlock.
-            // 获得rb的行数
-            EndBlock(rb);
-            var lines = rb.Document.Blocks.Count;
-            if (lines > MaxLines)
-            {
-                // 获得第一行的TextPointer
-                // var start = rb.Document.Blocks.FirstBlock.ContentStart;
-                // 删除第一行到第MaxLines行
-                rb.Document.Blocks.Remove(rb.Document.Blocks.FirstBlock);
-            }
-            //if (rb.)
-        }
-        private void EndBlock(RichTextBox richTextBox)
-        {
-            var paragraph = new Paragraph();
-            richTextBox.Document.Blocks.Add(paragraph);
-            richTextBox.CaretPosition = paragraph.ContentEnd;
-            richTextBox.ScrollToEnd();
-            //  richTextBox.Document.Blocks.Remove(paragraph);
-            //var position = richTextBox.CaretPosition.GetLineStartPosition(-1);
-            //if (position != null)
-            //{
-            //    richTextBox.CaretPosition = position;
-            //}
         }
     }
 

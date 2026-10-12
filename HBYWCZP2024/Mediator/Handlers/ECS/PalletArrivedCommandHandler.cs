@@ -101,20 +101,25 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
             var a = await response.Match(
                 Succ: async r =>
                 {
-                    r.Result?.CellList?.ToList().ForEach(async cell =>
+                    if (r.Result?.CellList != null)
                     {
-                        var channelId = cell.Channel;
-                        var type = cell.CellType switch
+                        foreach (var cell in r.Result.CellList)
                         {
-                            0 => Models.BatteryLevel.EMPTY,
-                            1 => Models.BatteryLevel.OK,
-                            2 => Models.BatteryLevel.NG,
-                            3 => Models.BatteryLevel.Fake,
-                            _ => Models.BatteryLevel.EMPTY // 这里需要 那个映射一下
+                            var channelId = cell.Channel;
+                            var type = cell.CellType switch
+                            {
+                                0 => Models.BatteryLevel.EMPTY,
+                                1 => Models.BatteryLevel.OK,
+                                2 => Models.BatteryLevel.NG,
+                                3 => Models.BatteryLevel.Fake,
+                                _ => Models.BatteryLevel.EMPTY // 这里需要 那个映射一下
 
-                        };
-                        await pallet.BindBattery(channelId - 1, cell.CellCode, true, type);
-                    });
+                            };
+                            await pallet.BindBattery(channelId - 1, cell.CellCode, true, type);
+                        }
+                    }
+
+                    RuntimeStateStore.Save();
 
                     return true;    
                 },

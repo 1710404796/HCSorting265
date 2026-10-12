@@ -1,5 +1,6 @@
 ﻿using HBYWCZP2024.Attritubes;
 using HBYWCZP2024.ViewModel;
+using LinxUniverse.OPCUA;
 using Microsoft.Extensions.Logging;
 using OpcUaHelper;
 using System;
@@ -77,7 +78,10 @@ namespace HBYWCZP2024.Utils
             }
             try
             {
-                return client.WriteNode(add, data);
+                return client is SciOpcUaClient sci
+                    ? sci.WriteNodesBatchedAsync([new KeyValuePair<string, object>(add, data!)])
+                        .GetAwaiter().GetResult()
+                    : client.WriteNode(add, data);
 
             }
             catch (Exception ex) {

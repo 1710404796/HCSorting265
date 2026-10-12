@@ -3,6 +3,7 @@ using HBYWCZP2024.Data.Models;
 using HBYWCZP2024.Mediator.Commands;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -122,7 +123,7 @@ namespace HBYWCZP2024.Service
 
         public async Task<Result<T>> SendFmsRequest<T>(string api, object data) where T : IFmsResponse
         {
-            using LinxContext linxContext = App.GetService<LinxContext>(); // 用using确保DbContext用完即释放，避免内存堆积
+            await using LinxContext linxContext = await App.GetService<IDbContextFactory<LinxContext>>().CreateDbContextAsync();
             DateTime reqTime = DateTime.Now;
             string req = JsonSerializer.Serialize(data);
             _logger.LogInformation("请求FMS数据: {data}", req);
@@ -153,7 +154,7 @@ namespace HBYWCZP2024.Service
             try
             {
                 linxContext.WcsLogs.Add(log);
-                linxContext.SaveChanges();
+                await linxContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {

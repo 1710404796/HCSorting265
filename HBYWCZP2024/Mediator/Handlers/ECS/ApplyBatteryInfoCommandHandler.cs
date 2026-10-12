@@ -8,6 +8,7 @@ using HBYWCZP2024.Models.ECS;
 using HBYWCZP2024.Service;
 using HBYWCZP2024.Utils;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 //using Org.BouncyCastle.Ocsp;
 using System;
@@ -20,7 +21,7 @@ using System.Collections.Concurrent;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<ApplyBatteryInfoCommandHandler> logger) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
+    public class ApplyBatteryInfoCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, IDbContextFactory<LinxContext> dbContextFactory, ILogger<ApplyBatteryInfoCommandHandler> logger) : IRequestHandler<ApplyBatteryInfoCommand, BatteryLevel[]?>
     {
         static readonly ConcurrentDictionary<string, (DateTime Time, BatteryLevel[] Levels)> _batteryInfoCache = new();
         static readonly TimeSpan _cacheWindow = TimeSpan.FromSeconds(5);
@@ -149,7 +150,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                     };
 
-                    context.Add(palletlog);
+                    await using var context = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+                    context.PalletLogs.Add(palletlog);
 
                     await context.SaveChangesAsync(cancellationToken);
 
@@ -162,6 +164,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                 //return data.BatteryCodes.Select(s => !string.IsNullOrWhiteSpace(s) ? BatteryLevel.OK : BatteryLevel.EMPTY).ToArray();
                 var result = pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                RuntimeStateStore.Save();
                 _batteryInfoCache[pallet.PalletCode] = (DateTime.UtcNow, result);
                 return result;
 
@@ -207,9 +210,10 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                    var status = i < cellStrs.Length ? cellStrs[i] : '0';
                    var level = GetScreenBatteryLevel(status, responseStepCode, firstStepCode, secondStepCode);
                    await pallet.BindBattery(i, pallet.Channels[i].Code, true, level);
-                    screenStatusSummary.Append($"{i + 1}={level},");
+                   var plcCode = CZPUtils.GetPlcBatteryLevelCode(level);
+                    screenStatusSummary.Append($"{i + 1}={level}->{plcCode},");
                }
-                logger.LogInformation("给PLC下发电芯状态, 托盘条码: {PalletCode}, 通道状态: {Status}",
+                logger.LogInformation("给PLC下发电芯状态及PLC映射, 托盘条码: {PalletCode}, 通道状态: {Status}",
                     pallet.PalletCode, screenStatusSummary.ToString().TrimEnd(','));
 
 
@@ -231,7 +235,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                     };
 
-                    context.Add(palletlog);
+                    await using var context = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+                    context.PalletLogs.Add(palletlog);
 
                     await context.SaveChangesAsync(cancellationToken);
 
@@ -243,6 +248,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 }
 
                 var result = pallet.Channels.Take(pallet.ChannelNum).Select(channel => channel.BatteryLevel).ToArray();
+                RuntimeStateStore.Save();
                 _batteryInfoCache[pallet.PalletCode] = (DateTime.UtcNow, result);
                 return result;
 

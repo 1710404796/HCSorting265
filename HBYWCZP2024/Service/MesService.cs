@@ -4,6 +4,7 @@ using HBYWCZP2024.Mediator.Commands;
 using HBYWCZP2024.Service.Models;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -177,7 +178,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
 
     public async Task<Result<T>> SendRequest<T>(string api, object data) where T : IMESResponse
     {
-        using LinxContext linxContext = App.GetService<LinxContext>(); // 用using确保DbContext用完即释放，避免内存堆积
+        await using LinxContext linxContext = await App.GetService<IDbContextFactory<LinxContext>>().CreateDbContextAsync();
         DateTime reqTime = DateTime.Now;
         string req = JsonSerializer.Serialize(data);
         logger.LogInformation("请求MES数据: {data}", req);
@@ -211,7 +212,7 @@ public class MesService(HttpClient httpClient, string name, ILogger<MesService> 
         try
         {
             linxContext.WcsLogs.Add(log);
-            linxContext.SaveChanges();
+            await linxContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {

@@ -51,13 +51,16 @@ namespace HBYWCZP2024.View.CZPallet
         {
             var aa = new BatteryRuleControl(item);
             aa.OnDelete += DeleteOne;
+            BatteryRuleControls.Add(aa);
             return aa;
         }
         private void DeleteOne(BatteryRuleControl arg2)
         {
+            arg2.OnDelete -= DeleteOne;
             BatteryList.Children.Remove(arg2);
             BatteryRuleControls.Remove(arg2);
             PalletTypeRule.Rules.Remove(arg2.Item);
+            HBYWCZP2024.Utils.ViewDisposer.Release(arg2);
 
         }
 
@@ -81,8 +84,10 @@ namespace HBYWCZP2024.View.CZPallet
             foreach (var item in BatteryRuleControls)
             {
                 item.OnDelete -= DeleteOne;
+                HBYWCZP2024.Utils.ViewDisposer.Release(item);
             }
-
+            BatteryRuleControls.Clear();
+            BatteryList.Children.Clear();
         }
     }
 }

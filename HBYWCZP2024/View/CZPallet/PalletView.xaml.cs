@@ -2,6 +2,7 @@
 using HBYWCZP2024.Models;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,7 +15,7 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// PalletView.xaml 的交互逻辑
     /// </summary>
-public partial class PalletView : UserControl
+public partial class PalletView : UserControl, IDisposable
     {
         private sealed class FullCodeWrapConverter : IValueConverter
         {
@@ -59,6 +60,8 @@ public partial class PalletView : UserControl
         /// 电池通道
         /// </summary>
         private Border[] _borders;
+        private readonly List<(Border Border, MouseButtonEventHandler Handler)> _borderHandlers = [];
+        private bool _disposed;
 
         private readonly ILogger<PalletView> _logger;
 
@@ -171,7 +174,11 @@ public partial class PalletView : UserControl
 
             // 还需要有点击修改事件
             if (ClickAvaliable)
-                res.MouseLeftButtonDown += (sender, e) => Res_MouseDown(sender, e, id);
+            {
+                MouseButtonEventHandler handler = (sender, e) => Res_MouseDown(sender, e, id);
+                res.MouseLeftButtonDown += handler;
+                _borderHandlers.Add((res, handler));
+            }
 
             grid.Children.Add(textBlock1);
             grid.Children.Add(textBlock2);
@@ -241,7 +248,12 @@ public partial class PalletView : UserControl
 
         public void Refesh()
         {
-            // 如何销毁（？ 清除后再初始化
+            foreach (var (border, handler) in _borderHandlers)
+            {
+                border.MouseLeftButtonDown -= handler;
+            }
+            _borderHandlers.Clear();
+
             PalletStack.Children.Clear();
             InitBorder();
         }
@@ -261,6 +273,28 @@ public partial class PalletView : UserControl
         {
             return;
             //MainWindow.NageTo(new DiaoSuDetail ( new DiaoSuDetailViewModel { PalletViewModel = ViewModel });
+        }
+
+        /// <summary>
+        /// 释放动态生成的通道 Border、事件订阅、绑定和 DataContext。
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            foreach (var (border, handler) in _borderHandlers)
+            {
+                border.MouseLeftButtonDown -= handler;
+            }
+            _borderHandlers.Clear();
+
+            PalletStack.Children.Clear();
+            _borders = [];
+            GC.SuppressFinalize(this);
         }
     }
 }

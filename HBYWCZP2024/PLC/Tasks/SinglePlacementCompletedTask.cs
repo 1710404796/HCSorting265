@@ -217,6 +217,7 @@ namespace HBYWCZP2024.PLC.Tasks
                 }
             }
 
+            RuntimeStateStore.Save();
 
             return await base.DoSth();
         }

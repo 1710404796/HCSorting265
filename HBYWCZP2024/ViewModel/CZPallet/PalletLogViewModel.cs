@@ -17,30 +17,65 @@ namespace HBYWCZP2024.ViewModel
 {
     public partial class PalletLogViewModel : ObservableRecipient, IDisposable
     {
+        private const int PageSize = 200;
         private readonly LinxContext _context; // DI注入，由Dispose释放
+        private bool _disposed;
 
-    public PalletLogViewModel(LinxContext context)
-    {
-        _context = context;
-    }
+        public PalletLogViewModel(LinxContext context)
+        {
+            _context = context;
+        }
 
         // 页面切走时释放DbContext，防止内存泄漏
-    public void Dispose()
-    {
-                _context?.Dispose();
-    }
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
+            PalletLogs = [];
+            PageIndex = 1;
+            TotalCount = 0;
+            _context?.Dispose();
+        }
 
         //public ObservableCollection<PalletLogViewModel> Log { get; set; } = [];
         [ObservableProperty] private ObservableCollection<PalletLogExt> _palletLogs = [];
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasPreviousPage))]
+        [NotifyPropertyChangedFor(nameof(HasNextPage))]
+        [NotifyPropertyChangedFor(nameof(PageSummary))]
+        private int _pageIndex = 1;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasNextPage))]
+        [NotifyPropertyChangedFor(nameof(PageSummary))]
+        private int _totalCount;
+        [ObservableProperty] private string _pageInput = "1";
         public DateTime StartTime { get; set; } = DateTime.Today.AddDays(-30);
         public DateTime EndTime { get; set; } = DateTime.Today;
 
         public string Code { get; set; } = string.Empty;
 
+        public bool HasLoaded { get; private set; }
+
+        public bool HasPreviousPage => PageIndex > 1;
+
+        public bool HasNextPage => PageIndex * PageSize < TotalCount;
+
+        public string PageSummary =>
+            $"第 {PageIndex}/{Math.Max(1, (TotalCount + PageSize - 1) / PageSize)} 页，共 {TotalCount} 条";
 
         public void RefreshContext()
         {
-            Search();
+            if (HasLoaded)
+            {
+                return;
+            }
+
+            HasLoaded = true;
+            SearchPage(PageIndex);
         }
 
         public bool IsNowLog(WarningLog log)
@@ -74,8 +109,30 @@ namespace HBYWCZP2024.ViewModel
 
         }
         [RelayCommand]
-        public void Search()
+        public void NextPage() => SearchPage(PageIndex + 1);
+
+        [RelayCommand]
+        public void PreviousPage() => SearchPage(PageIndex - 1);
+
+        [RelayCommand]
+        public void Jump()
         {
+            if (int.TryParse(PageInput, out var page) && page > 0)
+            {
+                SearchPage(page);
+            }
+        }
+
+        [RelayCommand]
+        public void Search() => SearchPage(1);
+
+        private void SearchPage(int page)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
             var start = StartTime.Date;
             var endExclusive = EndTime.Date.AddDays(1);
 
@@ -92,11 +149,27 @@ namespace HBYWCZP2024.ViewModel
                     query = query.Where(s => s.PalletCode.Contains(Code));
                 }
 
+                TotalCount = query.Count();
+                var totalPages = Math.Max(1, (TotalCount + PageSize - 1) / PageSize);
+                if (page < 1)
+                {
+                    page = 1;
+                }
+
+                if (page > totalPages)
+                {
+                    page = totalPages;
+                }
+
                 PalletLogs = new(query
                     .OrderByDescending(s => s.Id)
-                    // .Take(3000)   暂时屏蔽显示条数
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize)
                     .AsEnumerable()
                     .Select(s => new PalletLogExt(s)));
+
+                PageIndex = page;
+                PageInput = page.ToString();
             }
         }
     }

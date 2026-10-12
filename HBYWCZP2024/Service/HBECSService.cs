@@ -80,19 +80,24 @@ namespace HBYWCZP2024.Service
         async void DoHeartBeat()
         {
             var cache = App.GetService<CacheService>();
+            // 固定令牌：CacheService.Cancel() 后会替换内部 CTS，这里持有旧令牌才能真实停止心跳
+            var token = cache.Token;
 
-            while (!cache.Token.IsCancellationRequested)
+            while (!token.IsCancellationRequested)
             {
                 try
                 {
                     //await SendAsync<S000, E000>(new S000());
-                    await Task.Delay(MainStorage.Saves.HeartbeartDuring);
+                    await Task.Delay(MainStorage.Saves.HeartbeartDuring, token);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
                 }
                 catch (Exception ex)
                 {
                     logger.LogError( ex, "心跳");
                 }
-           
             }
         }
 

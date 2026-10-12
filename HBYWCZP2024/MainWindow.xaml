@@ -38,7 +38,11 @@
 
         </Border>
 
-        <TextBlock VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" Text="电芯拆组盘工具"/>
+        <TextBox VerticalAlignment="Center"
+                FontSize="20" 
+                Text="{Binding ViewModel.Saves.TrayScanStandardName, Mode=TwoWay}"
+                HorizontalAlignment="Center">   
+        </TextBox>
 
         <!--<TextBlock Grid.Column="1"
                        VerticalAlignment="Center"

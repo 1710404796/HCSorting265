@@ -107,6 +107,8 @@ namespace HBYWCZP2024.PLC.Tasks
     [OPCDelectInfo(610, 611)]
     public class CheckLadaiTaskB(int idx) : CheckLadaiTask(idx)
     {
+        protected override string BatteryStatusNodePath => $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]";
+
         public override bool GetPLCData()
         {
             Console.WriteLine("CheckLadaiTaskBs");
@@ -115,21 +117,6 @@ namespace HBYWCZP2024.PLC.Tasks
             //return base.GetPLCData();
             return true;
 
-        }
-        protected override async Task WriteDataToPlc()
-        {
-            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", batteryStatus, Context.Name);
-        }
-
-        protected override Task<bool> CleanData()
-        {
-            channelState = false;
-            batteryCode = string.Empty;
-            batteryStatus = 0;
-
-            Utils.Utils.WriteTagNode(Context.Plc, $"WCS_TO_PLC_ScanTheCode2.WCS.to_batteryStatus.[{SubIdx}]", (byte)0, Context.Name);
-
-            return Task.FromResult(true);
         }
     }
     

@@ -55,6 +55,7 @@ namespace HBYWCZP2024.View.CZPallet
             // 强制修改条码限制取消
             if (await DiaoDuStage.UpdateBattery(id, CodeBox.Text, true))
             {
+                RuntimeStateStore.Save();
                 MessageBox.Show("修改成功!");
                 await mediator.Send(new OperatorLogCommand($"原电芯条码{OldBarCode}被修改为{CodeBox.Text}")); 
                 Close();

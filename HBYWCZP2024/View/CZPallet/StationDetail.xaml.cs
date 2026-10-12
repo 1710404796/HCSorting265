@@ -2,9 +2,11 @@
 using HBYWCZP2024.Mediator.ECS;
 using HBYWCZP2024.Models;
 using HBYWCZP2024.Models.CZPallet;
+using HBYWCZP2024.PLC.Tasks;
 using HBYWCZP2024.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,10 +16,11 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// DiaoSuDetail.xaml 的交互逻辑
     /// </summary>
-    public partial class StationDetail : UserControl
+    public partial class StationDetail : UserControl, IDisposable
     {
         private readonly IMediator meditor;
-        //private readonly ILogger<StationDetail> logger;
+        private readonly ILogger<StationDetail> logger;
+        private bool _disposed;
 
         public XYLStation Station { get; set; }
 
@@ -28,7 +31,22 @@ namespace HBYWCZP2024.View.CZPallet
             InitializeComponent();
             PalletD.Station = station;
             meditor = App.GetService<IMediator>();
-            //logger = App.GetService<ILogger<StationDetail>>();
+            logger = App.GetService<ILogger<StationDetail>>();
+        }
+
+        /// <summary>
+        /// 释放内部 PalletView、绑定和 DataContext，避免页面切换后残留。
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            PalletD.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -85,45 +103,52 @@ namespace HBYWCZP2024.View.CZPallet
             // 
         }
 
+        /// <summary>
+        /// 重新扫码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ScanAgain_Click(object sender, RoutedEventArgs e)
         {
             await Task.Yield();
             Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
-            if (Station is Pallet aa)
+            if (Station is not Pallet aa)
             {
-                // Todo: 提取方法
-                ScanAgain.IsEnabled = false;
-
-                //_ = meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId)).ContinueWith(async t =>
-                //{
-                //    var code = await t;
-                //    Dispatcher.Invoke(() =>
-                //    {
-                //        aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId));
-                //ScanAgain.IsEnabled = true;
-                //    });
-                //});
-
-
-                // Todo： 思考
-                aa.PalletCode = await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId));
-                ScanAgain.IsEnabled = true;
-
-                //aa.Palletcode = await YWUtils.GetPalletCode(aa.PalletId);
-                //if (aa.Palletcode == string.Empty)
-                //{
-                //    MessageBox.Show($"{aa.Name} 扫码失败，请重试...");
-
-                //}
-                //else
-                //{
-                //    (ViewModel.PalletViewModel.Pallet as Pallet)?.ReCheckCode();
-                //    // 这里通知一下pallet重扫了
-                //}
-                //ScanAgain.IsEnabled = true;
-
+                return;
             }
-            await meditor.Send(new OperatorLogCommand("进行了重新扫码"));
+
+            ScanAgain.IsEnabled = false;
+            try
+            {
+                aa.PalletCode = (await meditor.Send(new ScanPalletCodeCommand(MainStorage.Saves.SelectStageName, aa.PalletId)))?.Trim() ?? string.Empty;
+                RuntimeStateStore.Save();
+                await meditor.Send(new OperatorLogCommand("进行了重新扫码"));
+            }
+            catch (Exception ex)
+            {
+                aa.PalletCode = "ERROR";
+                logger.LogError(ex, "重新扫码失败: {StationName}, PalletId={PalletId}", Station.Name, aa.PalletId);
+                ShowNonBlockingWarning($"{aa.Name} 扫码失败: {ex.Message}\n请检查托盘码、扫码器连接后重试。");
+            }
+            finally
+            {
+                ScanAgain.IsEnabled = true;
+            }
+        }
+
+        private void ShowNonBlockingWarning(string message)
+        {
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await meditor.Send(new WarningBoxCommand(message));
+                }
+                catch (Exception warningEx)
+                {
+                    logger.LogError(warningEx, "显示重新扫码失败报警失败");
+                }
+            });
         }
 
         private async void Clear_Click(object sender, RoutedEventArgs e)
@@ -134,6 +159,7 @@ namespace HBYWCZP2024.View.CZPallet
             //App.GetService<ILogger<MainViewModel>>().LogInformation($"清除了{ViewModel.PalletViewModel.Pallet.Name}记忆");
             await meditor.Send(new OperatorLogCommand($"清除{Station.Name},{Station.InsideNum}所有数据"));
             Station.ClearStage();
+            RuntimeStateStore.Save();
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
@@ -144,16 +170,54 @@ namespace HBYWCZP2024.View.CZPallet
 
         }
 
+        /// <summary>
+        /// 强制写入托盘条码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Force_Click(object sender, RoutedEventArgs e)
         {
-            var res = MessageBox.Show("确认要强制写入条码吗？", " 写入确认", MessageBoxButton.OKCancel);
-            if (res != MessageBoxResult.OK) return;
-            var pall = Station as Pallet;
-            if (pall != null)
+            await Task.Yield();
+            if (Station is not Pallet pall)
             {
-                //YWUtils.plcVM.FMSPLC.WritePalletCheckForce(pall.PalletId, pall.Palletcode);
+                return;
             }
-            await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{pall.PalletCode}成功"));
+
+            Pikachu.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            var palletCode = pall.PalletCode?.Trim() ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(palletCode))
+            {
+                ShowNonBlockingWarning("请先输入托盘条码后再强制写入。");
+                return;
+            }
+
+            if (string.Equals(palletCode, "ERROR", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowNonBlockingWarning(
+                    "当前托盘扫码失败，请先输入正确的托盘条码后再强制写入。");
+                return;
+            }
+
+            var res = MessageBox.Show($"确认要强制写入 {pall.Name} 条码吗？\n\n{palletCode}", "写入确认", MessageBoxButton.OKCancel);
+            if (res != MessageBoxResult.OK) return;
+
+            Force.IsEnabled = false;
+            try
+            {
+                pall.PalletCode = palletCode;
+                pall.TempData[PalletArrivedTask.ManualForcePalletCodeKey] = palletCode;
+                RuntimeStateStore.Save();
+                await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{palletCode}成功"));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "强制写入托盘条码失败: {StationName}, PalletId={PalletId}", pall.Name, pall.PalletId);
+                ShowNonBlockingWarning($"{pall.Name} 强制写入失败: {ex.Message}");
+            }
+            finally
+            {
+                Force.IsEnabled = true;
+            }
         }
 
         private async void CvRequest_Click(object sender, RoutedEventArgs e)

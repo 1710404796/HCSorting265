@@ -1,4 +1,5 @@
 ﻿using HBYWCZP2024.Models;
+using System;
 using System.Windows.Controls;
 
 namespace HBYWCZP2024.View.CZPallet
@@ -6,11 +7,12 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// GongWeiView.xaml 的交互逻辑
     /// </summary>
-    public partial class GongWeiView : UserControl
+    public partial class GongWeiView : UserControl, IDisposable
     {
         //public GongWeiViewModel ViewModel { get; init; }
 
         public XYLStation Station { get; set; }
+        private bool _disposed;
 
 
         public string Title { get; set; }
@@ -24,6 +26,21 @@ namespace HBYWCZP2024.View.CZPallet
             InitializeComponent();
             Pallet1.Station = Station;
 
+        }
+
+        /// <summary>
+        /// 释放内部 PalletView 以及整棵控件树的绑定和 DataContext。
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            Pallet1.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

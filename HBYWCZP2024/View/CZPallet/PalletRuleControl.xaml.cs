@@ -19,10 +19,11 @@ namespace HBYWCZP2024.View.CZPallet
     /// <summary>
     /// PalletRuleControl.xaml 的交互逻辑
     /// </summary>
-    public partial class PalletRuleControl : UserControl
+    public partial class PalletRuleControl : UserControl, IDisposable
     {
         //public PalletRuleControlViewModel ViewModel { get; set; }
-        public Action<PalletRuleControl> OnDelete { get; set; }
+        public Action<PalletRuleControl>? OnDelete { get; set; }
+        private bool _disposed;
         public PalletTypeRule PalletTypeRule { get; }
 
         public PalletRuleControl(PalletTypeRule palletTypeRule)
@@ -49,6 +50,21 @@ namespace HBYWCZP2024.View.CZPallet
         {
             var aa = new BatteryRuleEdit(PalletTypeRule);
             var res = aa.ShowDialog();
+        }
+
+        /// <summary>
+        /// 释放事件委托、绑定和 DataContext。
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            OnDelete = null;
+            GC.SuppressFinalize(this);
         }
     }
 }

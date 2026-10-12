@@ -11,6 +11,7 @@ using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using LanguageExt.UnitsOfMeasure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Quartz.Logging;
 using System;
@@ -30,7 +31,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
     /// <param name="context"></param>
     /// <param name="logger"></param>
     public class GrabActionCommandHandler(IHBECSServiceFactory hBECSServiceFactory,
-        IMediator mediator, LinxContext context, ILogger<GrabActionCommandHandler> logger) : IRequestHandler<GrabActionCommand, bool>
+        IMediator mediator, IDbContextFactory<LinxContext> dbContextFactory, ILogger<GrabActionCommandHandler> logger) : IRequestHandler<GrabActionCommand, bool>
     {
         public async Task<bool> Handle(GrabActionCommand request, CancellationToken cancellationToken)
         {
@@ -283,7 +284,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                            var pickedChannels = pallet.Channels
                                .Take(pallet.ChannelNum)
                                .Select((s, i) => (Channel: i + 1, Code: s.Code, Level: s.BatteryLevel))
-                                .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY || s.Level == BatteryLevel.复测1)
+                               .Where(s => string.IsNullOrWhiteSpace(s.Code) || s.Level == BatteryLevel.EMPTY || s.Level == BatteryLevel.复测1)
                                .Select(s => s.Channel)
                                .ToArray();
 
@@ -606,7 +607,8 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
 
                     };
 
-                    context.Add(palletlog);
+                    await using var context = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+                    context.PalletLogs.Add(palletlog);
 
                     await context.SaveChangesAsync(cancellationToken);
                 }

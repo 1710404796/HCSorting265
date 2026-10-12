@@ -52,6 +52,11 @@ namespace HBYWCZP2024.View
             ApiEnableStack.Visibility = App.GetService<IMediator>().Send(new CheckPowerQuery(Attritubes.PowerEnum.接口使能配置)).Result ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 保存设定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             MainStorage.SaveManager.Save();
@@ -64,11 +69,21 @@ namespace HBYWCZP2024.View
 
         }
 
+        /// <summary>
+        /// 配置工位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SetPlc_Click(object sender, RoutedEventArgs e)
         {
                 new PLCListWindow().ShowDialog();
         }
 
+        /// <summary>
+        /// 权限配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SetPower_Click(object sender, RoutedEventArgs e)
         {
             var mediator=App.GetService<IMediator>();
@@ -84,44 +99,66 @@ namespace HBYWCZP2024.View
             }
         }
 
+        /// <summary>
+        /// 调度号工位号表配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StationSetting_Click(object sender, RoutedEventArgs e)
         {
             App.GetService<StationSettingView>().ShowDialog();
 
         }
 
+        /// <summary>
+        /// 条码规则表配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RuleSetting_Click(object sender, RoutedEventArgs e)
         {
             App.GetService<PalletRuleEditView>().ShowDialog();
 
         }
 
-        private void StationNameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var text = (sender as TextBox).Text;
-            if (text == MainStorage.Saves.SelectStageName) return;
-            if (string.IsNullOrWhiteSpace(text)) return;
-            if (MainStorage.Saves.KeysSave.ContainsKey(text))
-            {
-                MessageBox.Show("已经有相同名称的工位，不可修改");
-                (sender as TextBox).Text = MainStorage.Saves.SelectStageName;
-                return;
-            }
-            MainStorage.Saves.KeysSave[text] = MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName];
-            MainStorage.Saves.KeysSave.Remove(MainStorage.Saves.SelectStageName);
+        //private void StationNameBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    var text = (sender as TextBox).Text;
+        //    var oldName = MainStorage.Saves.SelectStageName;
+        //    if (string.IsNullOrWhiteSpace(oldName)) return;
+        //    if (text == oldName) return;
+        //    if (string.IsNullOrWhiteSpace(text)) return;
+        //    if (MainStorage.Saves.KeysSave.ContainsKey(text))
+        //    {
+        //        MessageBox.Show("已经有相同名称的工位，不可修改");
+        //        (sender as TextBox).Text = oldName;
+        //        return;
+        //    }
+        //    MainStorage.Saves.KeysSave[text] = MainStorage.Saves.KeysSave[oldName];
+        //    MainStorage.Saves.KeysSave.Remove(oldName);
+        //    MainStorage.Saves.SelectStageName = text;
+        //}
 
-
-            MainStorage.Saves.SelectStageName = text;
-
-        }
-
+        /// <summary>
+        /// 工位选择下拉框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((string)SelectBox.SelectedValue == MainStorage.Saves.SelectStageName) return;
-            MainStorage.Saves.SelectStageName = (string)SelectBox.SelectedValue;
+            // 页面释放时 BindingCleaner 会清空 ItemsSource/SelectedValue，
+            // 此时 SelectionChanged 也会触发，必须忽略空值，避免 SelectStageName 被写成 null。
+            if (SelectBox.SelectedValue is not string name || string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            if (name == MainStorage.Saves.SelectStageName) return;
+            MainStorage.Saves.SelectStageName = name;
             MainStorage.SaveManager.Save();
             MainWindow.NageTo<SettingView>();
         }
+
         /// <summary>
         /// 重置OPCUA缓存表
         /// </summary>
@@ -144,6 +181,11 @@ namespace HBYWCZP2024.View
             
         }
 
+        /// <summary>
+        /// 分选档位配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FXLevelConfig_Click(object sender, RoutedEventArgs e)
         {
             var fxLevelWindows = new FXLevelWindows(MainStorage.Saves.BatteryLevelList);
@@ -156,12 +198,22 @@ namespace HBYWCZP2024.View
 
         }
 
+        /// <summary>
+        /// 工位等级配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StationLevelConfig_Click(object sender, RoutedEventArgs e)
         {
             var win = new View.CZPallet.StationLevelConfigWindow();
             win.ShowDialog();
         }
 
+        /// <summary>
+        /// 测试数据拆盘
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TestChaiButton_Click(object sender, RoutedEventArgs e)
         {
             var mediator = App.GetService<IMediator>();
@@ -388,6 +440,11 @@ namespace HBYWCZP2024.View
             //    );
         }
 
+        /// <summary>
+        /// 测试托杯绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TestBindCupButton_Click(object sender, RoutedEventArgs e)
         {
             var mediator = App.GetService<IMediator>();
@@ -403,6 +460,11 @@ namespace HBYWCZP2024.View
             ));
         }
 
+        /// <summary>
+        /// 测试MES托盘信息获取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TestMesContainerManualButton_Click(object sender, RoutedEventArgs e)
         {
             var mediator = App.GetService<IMediator>();

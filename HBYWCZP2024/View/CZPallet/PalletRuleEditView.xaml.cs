@@ -61,9 +61,11 @@ namespace HBYWCZP2024.View.CZPallet
 
         private void DeleteOne(PalletRuleControl arg2)
         {
+            arg2.OnDelete -= DeleteOne;
             PalletList.Children.Remove(arg2);
             PalletRuleControls.Remove(arg2);
             MainStorage.Saves.PalletTypeRules.Remove(arg2.PalletTypeRule);
+            HBYWCZP2024.Utils.ViewDisposer.Release(arg2);
 
         }
 
@@ -87,7 +89,10 @@ namespace HBYWCZP2024.View.CZPallet
             foreach (var item in PalletRuleControls)
             {
                 item.OnDelete -= DeleteOne;
+                HBYWCZP2024.Utils.ViewDisposer.Release(item);
             }
+            PalletRuleControls.Clear();
+            PalletList.Children.Clear();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

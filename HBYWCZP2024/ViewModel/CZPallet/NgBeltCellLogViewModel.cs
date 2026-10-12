@@ -11,16 +11,23 @@ namespace HBYWCZP2024.ViewModel.CZPallet;
 
 public partial class NgBeltCellLogViewModel : ObservableRecipient, IDisposable
 {
-        private readonly LinxContext _context; // DI注入，由Dispose释放
+    private readonly LinxContext _context; // DI注入，由Dispose释放
+    private bool _disposed;
 
     public NgBeltCellLogViewModel(LinxContext context)
     {
         _context = context;
     }
 
-        // 页面切走时释放DbContext，防止内存泄漏
+    // 页面切走时释放DbContext，防止内存泄漏
     public void Dispose()
     {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
         _context?.Dispose();
     }
 

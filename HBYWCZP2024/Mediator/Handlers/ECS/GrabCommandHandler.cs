@@ -15,6 +15,7 @@ using HBYWCZP2024.Service.Models;
 using HBYWCZP2024.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace HBYWCZP2024.Mediator.Handlers.ECS
 {
-    internal class GrabCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, LinxContext context, ILogger<GrabCommandHandler> logger) : IRequestHandler<GrabCommand, bool>
+    internal class GrabCommandHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator, IDbContextFactory<LinxContext> dbContextFactory, ILogger<GrabCommandHandler> logger) : IRequestHandler<GrabCommand, bool>
     {
         public async Task<bool> Handle(GrabCommand request, CancellationToken cancellationToken)
         {
@@ -209,6 +210,7 @@ namespace HBYWCZP2024.Mediator.Handlers.ECS
                 {
                     try
                     {
+                        await using var context = await dbContextFactory.CreateDbContextAsync(cancellationToken);
                         context.NgBeltCellLogs.AddRange(logs);
                         await context.SaveChangesAsync(cancellationToken);
                     }

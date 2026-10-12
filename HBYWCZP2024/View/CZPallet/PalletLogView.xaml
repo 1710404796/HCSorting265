@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="5">
@@ -51,6 +52,10 @@
         <DataGrid Grid.Row="1" 
                   CanUserAddRows="False"
                   AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.CanContentScroll="True"
                   ItemsSource="{Binding ViewModel.PalletLogs}">
 
             <DataGrid.Columns>
@@ -77,5 +82,17 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
+            <Button Content="上一页" Command="{Binding ViewModel.PreviousPageCommand}"
+                    IsEnabled="{Binding ViewModel.HasPreviousPage}" Padding="12,4"/>
+            <TextBlock Text="{Binding ViewModel.PageSummary}" VerticalAlignment="Center" Margin="12,0"/>
+            <Button Content="下一页" Command="{Binding ViewModel.NextPageCommand}"
+                    IsEnabled="{Binding ViewModel.HasNextPage}" Padding="12,4"/>
+            <TextBlock Text="页码" VerticalAlignment="Center" Margin="16,0,0,0"/>
+            <TextBox Width="64" Margin="6,0,0,0" VerticalContentAlignment="Center"
+                     Text="{Binding ViewModel.PageInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="确定" Command="{Binding ViewModel.JumpCommand}" Margin="6,0,0,0" Padding="12,4"/>
+        </StackPanel>
     </Grid>
 </Page>

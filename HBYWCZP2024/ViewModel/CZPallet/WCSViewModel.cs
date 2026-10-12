@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -18,17 +19,24 @@ namespace HBYWCZP2024.ViewModel.CZPallet
     public partial class WCSLogViewModel : ObservableRecipient, IDisposable
     {
         private readonly LinxContext _context; // DI注入，由Dispose释放
+        private bool _disposed;
 
-    public WCSLogViewModel(LinxContext context)
-    {
-        _context = context;
-    }
+        public WCSLogViewModel(LinxContext context)
+        {
+            _context = context;
+        }
 
         // 页面切走时释放DbContext，防止内存泄漏
-    public void Dispose()
-    {
-        _context?.Dispose();
-    }
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
+            _context?.Dispose();
+        }
 
         [ObservableProperty] private ObservableCollection<WcsLog> _wcsLogs = [];
         private IEnumerable<WcsLog> _logs = [];
@@ -65,10 +73,10 @@ namespace HBYWCZP2024.ViewModel.CZPallet
 
         }
 
-        public async Task RefreshContext()
+        public async Task RefreshContext(CancellationToken cancellationToken = default)
         {
-            _logs = await _context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100).ToListAsync();
-            Search();
+            _logs = await _context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id).Take(100).ToListAsync(cancellationToken);
+            Search(cancellationToken);
 
 
 
@@ -85,8 +93,15 @@ namespace HBYWCZP2024.ViewModel.CZPallet
         }
 
         [RelayCommand]
-        public void Search()
+        public void Search() => Search(CancellationToken.None);
+
+        private void Search(CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
             var afterFilter = _context.WcsLogs.AsNoTracking().OrderByDescending(s => s.Id)
                 .Where(s => s.RequestTime >= StartTime && s.RequestTime <= EndTime);
             if (SelectName != "(全部)")
@@ -94,7 +109,7 @@ namespace HBYWCZP2024.ViewModel.CZPallet
                 afterFilter = afterFilter.Where(s => s.ApiName == SelectName);
             }
             WcsLogs = new(
-                afterFilter.Take(100)
+                afterFilter.Take(100).ToList()
             );
         }
     }

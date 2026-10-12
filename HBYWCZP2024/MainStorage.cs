@@ -18,7 +18,15 @@ namespace HBYWCZP2024
         public static void Init()
         {
             SaveManager.Load();
-            
+
+            // 兼容旧的/异常写入的配置：SelectStageName 不允许为 null 或指向不存在的工位
+            if (string.IsNullOrWhiteSpace(Saves.SelectStageName) || !Saves.KeysSave.ContainsKey(Saves.SelectStageName))
+            {
+                Saves.SelectStageName = Saves.KeysSave.Count > 0 ? Saves.KeysSave.Keys.First() : "Default";
+            }
+
+            RuntimeStateStore.Restore();
+
             try
             {
                 if (File.Exists("ErrorTable.csv"))
