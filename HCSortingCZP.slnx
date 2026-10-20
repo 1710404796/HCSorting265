@@ -1,0 +1,19 @@
+<Solution>
+  <Project Path="HCSortingCZP/HCSortingCZP.csproj" />
+  <Project Path="lxuv/BCR.Common.Fs/BCR.Common.Fs.fsproj" />
+  <Project Path="lxuv/Cognex.NET/Cognex.NET.fsproj" />
+  <Project Path="lxuv/Kenency.BCR.FS.NET/Kenency.BCR.FS.NET.fsproj" />
+  <Project Path="lxuv/LinxUniverse.Auth/LinxUniverse.Auth.csproj" />
+  <Project Path="lxuv/LinxUniverse.Common/LinxUniverse.Common.fsproj" />
+  <Project Path="lxuv/LinxUniverse.DB/LinxUniverse.DB.csproj" />
+  <Project Path="lxuv/LinxUniverse.DI/LinxUniverse.DI.csproj" />
+  <Project Path="lxuv/LinxUniverse.FP/LinxUniverse.FP.csproj" />
+  <Project Path="lxuv/LinxUniverse.Logger/LinxUniverse.Logger.csproj" />
+  <Project Path="lxuv/LinxUniverse.Mediator/LinxUniverse.Mediator.csproj" />
+  <Project Path="lxuv/LinxUniverse.OPCUA/LinxUniverse.OPCUA.csproj" />
+  <Project Path="lxuv/LinxUniverse.PLC.Models/LinxUniverse.PLC.Common.csproj" />
+  <Project Path="lxuv/LinxUniverse.PLC/LinxUniverse.PLC.csproj" />
+  <Project Path="lxuv/LinxUniverse.PLCProtos/LinxUniverse.PLCProtos.csproj" />
+  <Project Path="lxuv/LinxUniverse.SciSocket/LinxUniverse.SciSocket.csproj" />
+  <Project Path="lxuv/LinxUniverse.Utils/LinxUniverse.Utils.csproj" />
+</Solution>

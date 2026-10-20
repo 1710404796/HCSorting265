@@ -1,0 +1,48 @@
+<Page x:Class="HCSortingCZP.View.CZPallet.WarningLogView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:HCSortingCZP.View.CZPallet"
+      Loaded="WarningLogView_OnLoaded"
+      d:DataContext="{d:DesignInstance Type=local:WarningLogView}"
+      mc:Ignorable="d"
+      Title="报警日志" >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="5">
+
+            <Button Content="查询" Command="{Binding ViewModel.SearchCommand}"/>
+
+            <DatePicker SelectedDate="{Binding ViewModel.StartTime}" Margin="10,0,0,0"/>
+
+            <TextBlock VerticalAlignment="Center" 
+                       Margin="10,0,0,0" 
+                       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                       Text="至"/>
+
+            <DatePicker SelectedDate="{Binding ViewModel.EndTime}" Margin="10,0,0,0"/>
+
+        </StackPanel>
+        
+        <DataGrid Grid.Row="1" 
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding ViewModel.MesLogs}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="警报类型" Binding="{Binding WarningType}" IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="警报时间" Binding="{Binding WarningTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="警报信息" Binding="{Binding Message}" IsReadOnly="True"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

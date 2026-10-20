@@ -1,0 +1,265 @@
+
+using BCR.Common.Fs;
+using Cognex.NET;
+using HCSortingCZP.Attritubes;
+using HCSortingCZP.Mediator.Commands;
+using HCSortingCZP.PLC;
+using HCSortingCZP.PLC.Tasks;
+using HCSortingCZP.Service;
+using Keyence.NET;
+using LanguageExt;
+using LinxUniverse.Auth;
+using LinxUniverse.DI;
+using LinxUniverse.OPCUA;
+using LinxUniverse.Utils;
+using MediatR;
+using Microsoft.Extensions.Logging;
+
+
+
+namespace HCSortingCZP.Mediator.Handlers
+{
+    public class InitMeCommandHandler(IMediator mediator, RoleManager<LinxRole, LinxUser> role, ILogger<InitMeCommandHandler> logger
+        , IHBECSServiceFactory hBECSService, IPLCTaskServiceFactory<HBYWPLCContext> pLCTaskServiceFactory, CacheService cacheService
+        //,PLCTaskService<HBYWPLCContext> pLCTaskService
+        )
+        : IRequestHandler<InitMeCommand>
+    {
+        public async Task Handle(InitMeCommand request, CancellationToken cancellationToken)
+        {
+            FilenameHelper.CreateDir("Data2D");
+            FilenameHelper.CreateDir("RemoveLog");
+            FilenameHelper.CreateDir("InsertLog");
+
+
+
+            foreach (var item in Enum.GetValues<PowerEnum>())
+            {
+                if (!MainStorage.Saves.PowerTable.ContainsKey(item))
+                {
+                    MainStorage.Saves.PowerTable[item] = [];
+                }
+
+                foreach (var item1 in Enum.GetValues<RoleEnum>() )
+                {
+                    if (!MainStorage.Saves.PowerTable[item].ContainsKey(item1))
+                    {
+                        MainStorage.Saves.PowerTable[item][item1] = false;
+                    }
+
+                }
+            }
+            //try
+            //{
+            foreach (var item in Enum.GetNames<RoleEnum>())
+            {
+
+                await role.CreateAsync(new LinxRole { RoleName = item });
+            }
+            //}
+            //catch (Exception)
+            //{
+
+            //}
+
+
+            if (MainStorage.Saves.KeysSave.Count == 0)
+            {
+                MainStorage.Saves.KeysSave.Add("Default", new());
+
+            }
+            var ss = MainStorage.Saves.KeysSave.Values.ToList();
+            MainStorage.Saves.KeysSave.Clear();
+            foreach (var item in ss)
+            {
+                MainStorage.Saves.KeysSave[item.Name] = item;
+            }
+
+
+
+            if (string.IsNullOrWhiteSpace(MainStorage.Saves.SelectStageName) ||
+                !MainStorage.Saves.KeysSave.ContainsKey(MainStorage.Saves.SelectStageName))
+            {
+                MainStorage.Saves.SelectStageName = MainStorage.Saves.KeysSave.Keys.First();
+            }
+            Dictionary<string, string> plcIpGuidMap = new();
+            foreach (var stage in MainStorage.Saves.KeysSave)
+            {
+                var hasBarcodeReader = false;
+                foreach (var pallet in stage.Value.Stage.Pallets)
+                {
+                    if (pallet.IsEnable)
+                    {
+                        hasBarcodeReader = true;
+                        pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                            Right: reader => Some(reader),
+                            Left: s =>
+                            {
+                                mediator.Send(new WarningBoxCommand(s));
+                                return None;
+                            }
+                        );
+                        Console.WriteLine(pallet.Reader);
+                    }
+
+                }
+                if (hasBarcodeReader)
+                {
+                    // Keyence 客户端的底层 TCP 连接是异步建立的，给连接线程留出启动时间。
+                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                }
+
+                if ( stage.Value.ResetTable)
+                {
+                    MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+                }
+
+                Console.WriteLine($"IP: {stage.Value.PLCPSetting.IP}");
+                var ecs = hBECSService.Create(stage.Key);
+                if (stage.Value.ExDb)
+                {
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key, ExDb = stage.Value.ExDb });
+
+
+                    if (plcIpGuidMap.ContainsKey(stage.Value.PLCPSetting.IP))
+                    {
+                        await se.Init(plcIpGuidMap[stage.Value.PLCPSetting.IP], cancellationToken);
+                    }
+                    else
+                    {
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx03040304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
+                    }
+
+
+                    //se.RegisterTask<CheckLadaiTaskB>();
+                    //se.RegisterTask<CheckLadaiTask2B>();
+                    //se.RegisterTask<CheckLadaiTask3B>();
+                    se.RegisterTask<ApplyBatteryInfoTaskB>();
+ 
+                    se.RegisterTask<SinglePlacementCompletedTaskB>();
+                    se.RegisterTask<ChaiPanCompleted2Task>();
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        se.RegisterTask(new CheckLadaiTaskB(i));
+
+                    }
+                    for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
+                    {
+                        se.RegisterTask(new PalletArrivedTaskB(i));
+                        se.RegisterTask(new GrabActionTaskB(i));
+                        se.RegisterTask(new PalletOutTaskB(i));
+                        se.RegisterTask(new GrabActionExitTaskB(i));
+
+                    }
+                    if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
+                    {
+                        //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+
+                        Console.WriteLine("尝试获取table");
+
+                        logger.LogWarning("OpcTable未设定");
+                        if (se.Context.Plc.Connected)
+                        {
+                            se.Context.Plc.ClearBrowseCache();
+                            stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
+                            stage.Value.ResetTable = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("pLCTaskService未连接");
+                            logger.LogWarning("pLCTaskService未连接");
+
+                        }
+                        //MainStorage.Saves.OpcTable = [];
+
+                    }
+                }
+                else
+                {
+                    var se = pLCTaskServiceFactory.CreateService(stage.Key, new HBYWPLCContext() { Name = stage.Key , ExDb = stage.Value.ExDb});
+
+
+                    //await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx0304", stage.Value.PLCPSetting.IP), cancellationToken);
+                    if (plcIpGuidMap.ContainsKey(stage.Value.PLCPSetting.IP))
+                    {
+                        await se.Init(plcIpGuidMap[stage.Value.PLCPSetting.IP], cancellationToken);
+                    }
+                    else
+                    {
+                        await se.Init(new LinxUniverse.OPCUA.Meditor.Command.CreateOpcuaClientCommand("LINX", "Linx03040304", stage.Value.PLCPSetting.IP), cancellationToken);
+                        plcIpGuidMap[stage.Value.PLCPSetting.IP] = se.Context.PlcGuid;
+                    }
+
+
+                    //se.RegisterTask<CheckLadaiTask2>();
+                    //se.RegisterTask<CheckLadaiTask3>();
+                    se.RegisterTask<ApplyBatteryInfoTask>();
+                    se.RegisterTask<ChaiPanCompletedTask>();
+                    se.RegisterTask<InstallationCompletedTask>();
+                    se.RegisterTask<SinglePlacementCompletedTask>();
+                    se.RegisterTask<ChaiPanCompleted2Task>();
+                    se.RegisterTask<AbnormalDischargeTask>();
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        se.RegisterTask(new CheckLadaiTask(i));
+
+                    }
+
+                    for (int i = 0; i < stage.Value.Stage.Pallets.Count(s => s.IsEnable); i++)
+                    {
+                        se.RegisterTask(new PalletArrivedTask(i));
+                        se.RegisterTask(new GrabActionTask(i));
+                        se.RegisterTask(new PalletOutTask(i));
+                        se.RegisterTask(new PalletOutTask2(i));
+                        se.RegisterTask(new GrabActionExitTask(i));
+                        se.RegisterTask(new CvRequestTask(i));
+                    }
+                    if (stage.Value.OpcTable == null || stage.Value.OpcTable.Count == 0 || stage.Value.ResetTable)
+                    {
+                        //MainStorage.Saves.KeysSave[MainStorage.Saves.SelectStageName].OpcTable = [];
+
+                        Console.WriteLine("尝试获取table");
+
+                        logger.LogWarning("OpcTable未设定");
+                        if (se.Context.Plc.Connected)
+                        {
+                            se.Context.Plc.ClearBrowseCache();
+                            stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
+                            stage.Value.ResetTable = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("pLCTaskService未连接");
+                            logger.LogWarning("pLCTaskService未连接");
+
+                        }
+                        //MainStorage.Saves.OpcTable = [];
+
+                    }
+                }
+
+
+                    MainStorage.SaveManager.Save();
+
+
+               
+
+                // todo: 注册所有任务
+                //pLCTaskService.RegisterTask<ApplyBatteryInfoTask>();
+                //se.RegisterTask(new ApplyBatteryInfoTask() { HBECSServiceKey = stage.Key });
+                //se.RegisterTask<ApplyBatteryInfoTask>();
+            }
+
+
+
+            //hBECSService.On("E110", data =>
+            //{
+
+            //});
+
+        }
+    }
+}

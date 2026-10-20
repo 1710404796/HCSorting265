@@ -1,0 +1,312 @@
+﻿using HCSortingCZP.Models;
+using HCSortingCZP.Models.CZPallet;
+using HCSortingCZP.Models.ECS;
+using HCSortingCZP.ViewModel;
+using LanguageExt;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Channels;
+using System.Threading.Tasks;
+
+
+namespace HCSortingCZP.Utils
+{
+    public static class CZPUtils
+    {
+        public static string GetTrayTypeStr(this TrayType trayType)
+        {
+            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
+
+            return trayType switch
+            {
+               // TrayType.Engineering => "0",
+                TrayType.空托盘 => "1",
+                TrayType.实托盘=>"2",
+                TrayType.满盘OK => "3",
+                TrayType.NG托盘 => "4",
+                TrayType.复测托盘=>"5",
+                //TrayType.Other => "6",
+                //TrayType.空筛选类型 => "7",
+                TrayType.拆盘托盘 => "11",
+                TrayType.组盘托盘 => "12",
+                //TrayType.挑选位托盘 => "13",
+                //TrayType.组盘位托盘 => "14",
+                //TrayType.补盘位托盘 => "15",
+                _ => ((int)trayType).ToString(),
+            }; 
+        }
+
+        public static string GetOUTTrayTypeStr(this ECSTrayType trayType, bool isSpecial = false)
+        {
+            //_logger.LogInformation($"托盘类型: {trayType},托盘类型枚举值: {(int)trayType}");
+
+            if (isSpecial)
+            {
+                return trayType switch
+                {
+                    ECSTrayType.空托盘 => "1",
+                    ECSTrayType.实托盘 => "2",
+                    ECSTrayType.满盘OK => "3",
+                    ECSTrayType.NG托盘 => "4",
+                    ECSTrayType.复测托盘 => "5",
+                    ECSTrayType.拆盘托盘 => "11",
+                    ECSTrayType.组盘托盘 => "12",
+                    //ECSTrayType.挑选位托盘 => "13",
+                    //ECSTrayType.组盘位托盘 => "14",
+                    //ECSTrayType.补盘位托盘 => "15",
+                    _ => ((int)trayType).ToString(),
+                };
+            }
+            else
+            {
+
+                return trayType switch
+                {
+                    ECSTrayType.空托盘 => "1",
+                    ECSTrayType.实托盘 => "2",
+                    ECSTrayType.满盘OK => "3",
+                    ECSTrayType.NG托盘 => "4",
+                    ECSTrayType.复测托盘 => "5",
+                    ECSTrayType.拆盘托盘 => "11",
+                    ECSTrayType.组盘托盘 => "12",
+                    //ECSTrayType.挑选位托盘 => "13",
+                    //ECSTrayType.组盘位托盘 => "14",
+                    //ECSTrayType.补盘位托盘 => "3",
+                    _ => ((int)trayType).ToString(),
+                };
+            }
+
+        }
+
+
+        public static BatteryLevel GetLevelFromDigit(this int i)
+        {
+            return i switch
+            {
+                //0 => BatteryLevel.V,
+                //1 => BatteryLevel.A,
+                //2 => BatteryLevel.Asub,
+                //3 => BatteryLevel.B,
+                //4 => BatteryLevel.Bsub,
+                //5 => BatteryLevel.V1,
+                //6 => BatteryLevel.NG,
+                //_ => BatteryLevel.NG
+
+                0 => BatteryLevel.V1,
+                1 => BatteryLevel.A,
+                2 => BatteryLevel.Asub,
+                3 => BatteryLevel.B,
+                4 => BatteryLevel.待复测,
+                5 => BatteryLevel.待判定,
+                _ => BatteryLevel.NG
+            }
+            ;
+        }
+        public static BatteryLevel GetLevelFromMes(string level) => level.ToUpper() switch
+        {
+            var x when MainStorage.Saves.BatteryLevelList.Any(s => s.Contains(level))
+              => MainStorage.Saves.BatteryLevelList.FindIndex(s => s.Contains(level)).GetLevelFromDigit(),
+            "OK" => BatteryLevel.OK,
+            "NG" => BatteryLevel.NG,
+            //"A" => BatteryLevel.A,
+            "A-" => BatteryLevel.Asub,
+            //"B" => BatteryLevel.B,
+            //"B-" => BatteryLevel.Bsub,
+            "C" => BatteryLevel.C,
+            "D" => BatteryLevel.D,
+            "E" => BatteryLevel.E,
+            "F" => BatteryLevel.F,
+            "FC" => BatteryLevel.REWORK,
+            "Fake" => BatteryLevel.Fake,
+            "MARK" => BatteryLevel.Mark,
+            //"V0" => BatteryLevel.V,
+            //"V1" => BatteryLevel.V1,
+
+            //"V2" => BatteryLevel.NG,
+            //"V3" => BatteryLevel.A,
+            //"V4" => BatteryLevel.Asub,
+            //"V5" => BatteryLevel.B,
+
+            _ => BatteryLevel.NG,
+        };
+        public static string GetMESLevel(BatteryLevel level) => level switch
+        {
+            BatteryLevel.OK =>  "OK",
+              BatteryLevel.NG     => "NG"   ,
+            //BatteryLevel.A      => "V2"    ,
+              BatteryLevel.A      => "A"    ,
+            //BatteryLevel.Asub   => "V3"   ,
+              BatteryLevel.Asub   => "A-"   ,
+            //BatteryLevel.B      => "V4"    ,
+              BatteryLevel.B      => "B"    ,
+            //BatteryLevel.Bsub   => "V5"   ,
+              BatteryLevel.Bsub   => "B-"   ,
+              BatteryLevel.C      => "C"    ,
+              BatteryLevel.D      => "D"    ,
+              BatteryLevel.E      => "E"    ,
+              BatteryLevel.F      => "F"    ,
+              BatteryLevel.REWORK => "FC"   ,
+              BatteryLevel.Fake   => "Fake" ,
+              BatteryLevel.Mark => "MARK" ,
+              BatteryLevel.V =>  "V0",
+              BatteryLevel.V1 =>  "V1",
+            _ => "",
+        };
+        public static byte GetPlcBatteryLevelCode(BatteryLevel level) => level switch
+        {
+            BatteryLevel.OK => 1,
+            BatteryLevel.NG => MainStorage.Saves.NgCode,
+            BatteryLevel.NG2 => 4,
+            //BatteryLevel.NG => 16,
+            BatteryLevel.Fake => 11,
+            BatteryLevel.None => 5,
+            BatteryLevel.REWORK => 4,
+            BatteryLevel.EMPTY => 5,
+            BatteryLevel.V1 => 11,
+            BatteryLevel.A => 12,
+            BatteryLevel.Asub => 13,
+            BatteryLevel.B => 14,
+            BatteryLevel.待复测 => 15,
+            BatteryLevel.待判定 => 16,
+            BatteryLevel.C => MainStorage.Saves.NgCode,
+            BatteryLevel.D => 10,
+            BatteryLevel.E => 11,
+            BatteryLevel.F => 12,
+            BatteryLevel.复测1=> 3,
+            BatteryLevel.复测2 => 4,
+            //BatteryLevel.Mark => 3, // 筛选4
+            BatteryLevel.Mark => MainStorage.Saves.MarkCode, // 其余筛选
+
+
+
+
+            _ => (byte)level,
+        };
+
+        /// <summary>
+        /// 按索引获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="idx">站台号</param>
+        /// <returns></returns>
+        public static Pallet? GetPalletByIndex(string name, int idx)
+        {
+            if (idx < 0) return null;
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.PalletId == idx && p.IsEnable);
+        }
+
+        /// <summary>
+        /// 按内部编号获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
+        public static Pallet? GetPalletByInsideNum(string name, int insideNum)
+        {
+            if (insideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+        }
+
+        /// <summary>
+        /// 通过外部编号获取托盘
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="outsideNum">站台外部编号</param>
+        /// <returns></returns>
+        public static Pallet? GetPalletByOutsideNum(string name, int outsideNum)
+        {
+            if (outsideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave[name].Stage.Pallets.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
+        }
+
+        /// <summary>
+        /// 读取所有XYL站点按内部编号排序
+        /// </summary>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
+        public static XYLStation? GetAllXYLStationByInsideNum( int insideNum)
+        {
+
+            if (insideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave.Values.SelectMany(s => s.Stage.Stations).FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+        }
+
+        /// <summary>
+        /// 通过内部编号获取XYL站点
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="insideNum">站台内部编号</param>
+        /// <returns></returns>
+        public static XYLStation? GetXYLStationByInsideNum(string name, int insideNum)
+        {
+
+            if (insideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave[name].Stage.Stations.FirstOrDefault(p => p.InsideNum == insideNum && p.IsEnable);
+        }
+
+        /// <summary>
+        /// 通过外部编号获取XYL站点
+        /// </summary>
+        /// <param name="name">工位号</param>
+        /// <param name="outsideNum">站台外部编号</param>
+        /// <returns></returns>
+        public static XYLStation? GetXYLStationByOutsideNum(string name, int outsideNum)
+        {
+            if (outsideNum <= 0) return null;
+            return MainStorage.Saves.KeysSave[name].Stage.Stations.FirstOrDefault(p => p.OutsideStationNum == outsideNum && p.IsEnable);
+        }
+
+        [JsonIgnore]
+        static Lazy<ILogger> _lazyLogger= new Lazy<ILogger>(App.GetService<ILogger<MainViewModel>>);
+        [JsonIgnore]
+
+        static ILogger _logger => _lazyLogger.Value;
+
+        public static bool MoveTo(XYLStation stationFrom, XYLStation stationTo, int channelFrom, int channelTo, string? checkCode = null)
+        {
+            if (stationFrom is null)
+            {
+                throw new ArgumentNullException(nameof(stationFrom));
+            }
+
+            if (stationTo is null)
+            {
+                throw new ArgumentNullException(nameof(stationTo));
+            }
+            //if (stationFrom == null)
+            if (checkCode != null && checkCode != stationFrom.Channels[channelFrom].Code)
+            {
+                _logger.LogDebug($"电芯条码与本地对比！本地: {stationFrom.Channels[channelFrom].Code}; 传入: {checkCode}");
+            }
+
+            // 如果plc不上报条码 则以缓存为准
+            if (string.IsNullOrWhiteSpace(checkCode)) { checkCode = stationFrom.Channels[channelFrom].Code; }
+
+            // Todo: move这里 可能还需要检查规则
+            //stationTo.Channels[channelTo].Code = stationFrom.Channels[channelTo].Code;
+            stationTo.Channels[channelTo].Code = checkCode;
+            stationTo.Channels[channelTo].BatteryLevel = stationFrom.Channels[channelFrom].BatteryLevel;
+            if (stationTo.Name == "机器人夹爪")
+            {
+                stationTo.Channels[channelTo].ContainerFrom = stationFrom.PalletCode;
+                stationTo.Channels[channelTo].StationFrom = stationFrom.OutsideStationNum;
+                stationTo.Channels[channelTo].ChannelFrom = channelTo + 1;
+
+            }
+            if (checkCode != string.Empty && checkCode != null &&
+                (stationTo.Channels[channelTo].BatteryLevel == BatteryLevel.None || stationTo.Channels[channelTo].BatteryLevel == BatteryLevel.EMPTY))
+            {
+                stationTo.Channels[channelTo].BatteryLevel = BatteryLevel.OK;
+            }
+            stationFrom.Channels[channelFrom].Reset(stationFrom.IsFake);
+
+            return true;
+        }
+    }
+
+}

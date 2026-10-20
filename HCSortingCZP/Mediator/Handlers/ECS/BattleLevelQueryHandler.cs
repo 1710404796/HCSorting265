@@ -1,0 +1,76 @@
+﻿using HCSortingCZP.Mediator.Commands;
+using HCSortingCZP.Mediator.Queries;
+using HCSortingCZP.Service;
+using HCSortingCZP.Service.Models;
+using HCSortingCZP.Utils;
+using LanguageExt.UnitsOfMeasure;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HCSortingCZP.Mediator.Handlers.ECS
+{
+    internal class BattleLevelQueryHandler(IHBECSServiceFactory hBECSServiceFactory, IMediator mediator) : IRequestHandler<BattleLevelQuery, Pallet>
+    {
+        public async Task< Pallet> Handle(BattleLevelQuery request, CancellationToken cancellationToken)
+        {
+            HBECSService hBECSService = hBECSServiceFactory.Create(request.Key);
+            if (!MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.CheckPalletMaterialEnable)
+            {
+                return request.Pallet with { 
+                    Channels = [.. request.Pallet.Channels
+                    .Select(x => 
+                        x with { 
+                            BattleWithLevel = x.BattleWithLevel
+                            .Map(s => new BatteryWithLevel(s.Code, Models.BatteryLevel.OK)) 
+                        }
+                        )]
+                };
+            }
+            CheckPalletMaterialRequest checkMaterialRequest = new CheckPalletMaterialRequest(request.Key)
+            {
+                ContainerCode = request.Pallet.PalletCode,
+                ContainerCellInfos = request.Pallet.Channels.Select(x => new ContainerCellInfo()
+                {
+                    Location = x.ChannelId.ToString(),
+                    Identification = x.BattleWithLevel.Match(
+                        Some: battleWithLevel => battleWithLevel.Code,
+                        None: string.Empty
+                    ),
+                    
+                }).ToArray()
+            };
+
+
+
+            var checkMaterialResponse = await hBECSService.MesService.CheckPalletMaterialLevel(checkMaterialRequest);
+
+            var channels = checkMaterialResponse.Match(
+                Succ: r => {
+                    var channels = r.Rows.Select(x =>
+                    new Channel(int.Parse(x.Location),
+                        Some(
+                            new BatteryWithLevel
+                            (x.Identification, Some(CZPUtils.GetLevelFromMes(x.Grade)))
+                        )
+                        ));
+                    return channels;
+                },
+                Fail: x => {
+
+                    mediator.Send(new WcsDataWarningBoxCommand(x.Message)).Wait();
+                    throw x; }
+
+
+                );
+            
+
+
+            return request.Pallet with { Channels = [.. channels] };
+        }
+    }
+}
