@@ -221,7 +221,8 @@ namespace HBYWCZP2024.Jobs
             long UsedPages);
     }
 
-    class SaveJobs() : IJob
+    [DisallowConcurrentExecution]
+    class SaveJobs(ILogger<SaveJobs> logger) : IJob
     {
         /// <summary>
         /// 每日执行任务
@@ -230,7 +231,19 @@ namespace HBYWCZP2024.Jobs
         /// <returns></returns>
         public Task Execute(IJobExecutionContext context)
         {
-            MainStorage.SaveManager.Save();
+            try
+            {
+                MainStorage.SaveManager.Save();
+            }
+            catch (OutOfMemoryException ex)
+            {
+                logger.LogCritical(ex, "配置保存时内存不足，本次保存已跳过");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "配置保存失败");
+            }
+
             return Task.CompletedTask;
         }
     }

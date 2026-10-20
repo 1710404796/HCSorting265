@@ -112,7 +112,7 @@ namespace HBYWCZP2024
 
                              config.AddJob<SaveJobs>(jobKey1).AddTrigger(trigger =>
                              {
-                                 trigger.ForJob(jobKey1).WithCronSchedule("0 */2 * * * ?");
+                                  trigger.ForJob(jobKey1).WithCronSchedule("0 */5 * * * ?");
                              });
 
                              JobKey jobKey2 = JobKey.Create(nameof(EquipStatusReportJobs));
