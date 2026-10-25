@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,15 +33,15 @@ namespace HCSortingCZP.View
             Dani.Focus();
 
         }
-        private void Dani_TextChanged(object sender, TextChangedEventArgs e)
+        private void Dani_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Dani.Text.EndsWith('\n'))
+            if (e.Key == Key.Enter)
             {
+                e.Handled = true;
                 DialogResult = true;
-                RFID = Dani.Text.Trim();
+                RFID = Dani.Password.Trim();
                 Close();
             }
-
         }
 
         private void giveup_Click(object sender, RoutedEventArgs e)

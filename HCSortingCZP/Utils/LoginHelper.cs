@@ -24,7 +24,6 @@ namespace HCSortingCZP.Utils
         }
         public static async Task Login()
         {
-            var mediator = App.GetService<IMediator>();
             var rfid = new RFIDInput();
             rfid.ShowDialog();
             if (rfid.DialogResult != true)
@@ -32,12 +31,25 @@ namespace HCSortingCZP.Utils
                 return;
             }
 
-            var aa = await mediator.Send(new LoginCommand(rfid.RFID));
+            var aa = await Login(rfid.RFID);
+            Console.WriteLine(aa);
+        }
+
+        public static async Task<bool> Login(string rfid)
+        {
+            if (string.IsNullOrWhiteSpace(rfid))
+            {
+                return false;
+            }
+
+            var mediator = App.GetService<IMediator>();
+            var aa = await mediator.Send(new LoginCommand(rfid.Trim()));
             if (aa)
             {
                 MainWindow.NageTo<LogDashBoardView>();
             }
-            Console.WriteLine(aa);
+
+            return aa;
         }
     }
 }

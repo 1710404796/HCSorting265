@@ -1,4 +1,5 @@
 ﻿using HCSortingCZP.Attritubes;
+using HCSortingCZP.Infrastructure;
 using HCSortingCZP.Mediator.Commands;
 using HCSortingCZP.Mediator.ECS;
 using HCSortingCZP.Mediator.Queries;
@@ -22,6 +23,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -45,16 +47,44 @@ namespace HCSortingCZP
         private CancellationTokenSource? _navigationCts;
         private bool _shutdownApproved;
         private bool _shutdownInProgress;
+        private bool _isSidebarCollapsed;
+        private bool _isSidebarAnimating;
+
+        private const double ExpandedSidebarWidth = 208;
+        private const double CollapsedSidebarWidth = 64;
+        private const int SidebarAnimationDurationMs = 220;
 
         public MainWindow()
         {
             MainStorage.SaveManager.Load();
+            ThemeService.Apply(MainStorage.Saves.Theme);
+            MainStorage.Saves.Theme = ThemeService.CurrentTheme;
             DataContext = this;
             mediator=App.GetService<IMediator>();
             ViewModel = App.GetService<MainViewModel>();
             _logger = App.GetService<ILogger<MainWindow>>();
             _scopeFactory = App.GetService<IServiceScopeFactory>();
             InitializeComponent();
+            UpdateThemeButton();
+        }
+
+        private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeService.Apply(ThemeService.GetNextTheme());
+            MainStorage.Saves.Theme = ThemeService.CurrentTheme;
+            MainStorage.SaveManager.Save();
+            UpdateThemeButton();
+        }
+
+        private void UpdateThemeButton()
+        {
+            if (ThemeToggleButton == null)
+            {
+                return;
+            }
+
+            ThemeToggleButton.ToolTip =
+                $"切换主题（当前：{ThemeService.GetDisplayName(ThemeService.CurrentTheme)}）";
         }
 
         //public static void NageTo<T>() where T : FrameworkElement
@@ -236,6 +266,108 @@ namespace HCSortingCZP
             }
 
             _pageCache.Clear();
+        }
+
+        private void SidebarToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isSidebarAnimating)
+            {
+                return;
+            }
+
+            _isSidebarCollapsed = !_isSidebarCollapsed;
+            var isCollapsed = _isSidebarCollapsed;
+            var targetWidth = isCollapsed ? CollapsedSidebarWidth : ExpandedSidebarWidth;
+            var currentWidth = NavigationColumn.ActualWidth;
+
+            if (currentWidth <= 0)
+            {
+                currentWidth = NavigationColumn.Width.IsAbsolute
+                    ? NavigationColumn.Width.Value
+                    : targetWidth;
+            }
+
+            _isSidebarAnimating = true;
+            ApplicationTitle.Visibility = Visibility.Collapsed;
+
+            if (!isCollapsed)
+            {
+                ApplySidebarVisualState(false);
+                NavigationTitle.Opacity = 0;
+                NavigationStack.Opacity = 0;
+            }
+
+            var storyboard = new Storyboard();
+            var widthAnimation = new GridLengthAnimation
+            {
+                From = new GridLength(currentWidth, GridUnitType.Pixel),
+                To = new GridLength(targetWidth, GridUnitType.Pixel),
+                Duration = new System.Windows.Duration(TimeSpan.FromMilliseconds(SidebarAnimationDurationMs)),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            };
+            Storyboard.SetTarget(widthAnimation, NavigationColumn);
+            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(ColumnDefinition.WidthProperty));
+            storyboard.Children.Add(widthAnimation);
+
+            var fadeDuration = new System.Windows.Duration(TimeSpan.FromMilliseconds(isCollapsed ? 110 : 150));
+            var opacityAnimation = new DoubleAnimation
+            {
+                From = isCollapsed ? 1 : 0,
+                To = isCollapsed ? 0 : 1,
+                Duration = fadeDuration,
+                BeginTime = isCollapsed ? TimeSpan.Zero : TimeSpan.FromMilliseconds(70),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            };
+            Storyboard.SetTarget(opacityAnimation, NavigationStack);
+            Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(UIElement.OpacityProperty));
+            storyboard.Children.Add(opacityAnimation);
+
+            var titleOpacityAnimation = opacityAnimation.Clone();
+            Storyboard.SetTarget(titleOpacityAnimation, NavigationTitle);
+            Storyboard.SetTargetProperty(titleOpacityAnimation, new PropertyPath(UIElement.OpacityProperty));
+            storyboard.Children.Add(titleOpacityAnimation);
+
+            storyboard.Completed += (_, _) =>
+            {
+                storyboard.Remove(this);
+                ApplySidebarVisualState(isCollapsed);
+                ApplicationTitle.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
+                NavigationTitle.Opacity = 1;
+                NavigationStack.Opacity = 1;
+                _isSidebarAnimating = false;
+            };
+            storyboard.Begin(this, true);
+        }
+
+        private void ApplySidebarVisualState(bool collapsed)
+        {
+            NavigationColumn.Width = new GridLength(
+                collapsed ? CollapsedSidebarWidth : ExpandedSidebarWidth);
+            NavigationTitle.Visibility = collapsed ? Visibility.Collapsed : Visibility.Visible;
+            NavigationStack.Margin = collapsed
+                ? new Thickness(5, 42, 5, 58)
+                : new Thickness(10, 42, 10, 58);
+
+            foreach (var menuItem in new[]
+                     {
+                         GongWeiBtn,
+                         WCSLog,
+                         WarningLog,
+                         ZPLog,
+                         CPLog,
+                         NgBeltCellLog,
+                         LogDash,
+                         Setting
+                     })
+            {
+                menuItem.HorizontalContentAlignment = collapsed
+                    ? HorizontalAlignment.Center
+                    : HorizontalAlignment.Stretch;
+            }
+
+            SidebarToggleGlyph.Text = collapsed ? "›" : "‹";
+            SidebarToggleLabel.Visibility = collapsed ? Visibility.Collapsed : Visibility.Visible;
+            SidebarToggleButton.ToolTip = collapsed ? "展开导航" : "收起导航";
         }
 
 

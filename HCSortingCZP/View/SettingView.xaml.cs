@@ -52,6 +52,32 @@ namespace HCSortingCZP.View
             ApiEnableStack.Visibility = App.GetService<IMediator>().Send(new CheckPowerQuery(Attritubes.PowerEnum.接口使能配置)).Result ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private void CenterDialog(Window dialog)
+        {
+            var owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
+            if (owner != null)
+            {
+                dialog.Owner = owner;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+        }
+
+        private MessageBoxResult ShowSettingMessageBox(
+            string message,
+            string caption = "",
+            MessageBoxButton buttons = MessageBoxButton.OK,
+            MessageBoxImage icon = MessageBoxImage.None)
+        {
+            var owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
+            return owner == null
+                ? MessageBox.Show(message, caption, buttons, icon)
+                : MessageBox.Show(owner, message, caption, buttons, icon);
+        }
+
         /// <summary>
         /// 保存设定
         /// </summary>
@@ -76,7 +102,9 @@ namespace HCSortingCZP.View
         /// <param name="e"></param>
         private void SetPlc_Click(object sender, RoutedEventArgs e)
         {
-                new PLCListWindow().ShowDialog();
+            var dialog = new PLCListWindow();
+            CenterDialog(dialog);
+            dialog.ShowDialog();
         }
 
         /// <summary>
@@ -91,11 +119,13 @@ namespace HCSortingCZP.View
             bool result=await mediator.Send(checkPowerQuery);
             if (result)
             {
-                App.GetService<PowerSettingWindows>().ShowDialog();
+                var dialog = App.GetService<PowerSettingWindows>();
+                CenterDialog(dialog);
+                dialog.ShowDialog();
             }
             else
             {
-                MessageBox.Show("当前没有此权限");   
+                ShowSettingMessageBox("当前没有此权限");
             }
         }
 
@@ -106,7 +136,9 @@ namespace HCSortingCZP.View
         /// <param name="e"></param>
         private void StationSetting_Click(object sender, RoutedEventArgs e)
         {
-            App.GetService<StationSettingView>().ShowDialog();
+            var dialog = App.GetService<StationSettingView>();
+            CenterDialog(dialog);
+            dialog.ShowDialog();
 
         }
 
@@ -117,7 +149,9 @@ namespace HCSortingCZP.View
         /// <param name="e"></param>
         private void RuleSetting_Click(object sender, RoutedEventArgs e)
         {
-            App.GetService<PalletRuleEditView>().ShowDialog();
+            var dialog = App.GetService<PalletRuleEditView>();
+            CenterDialog(dialog);
+            dialog.ShowDialog();
 
         }
 
@@ -172,11 +206,11 @@ namespace HCSortingCZP.View
             if (result)
             {
                 MainStorage.Saves.ResetTable = true;
-                MessageBox.Show("重新匹配成功");
+                ShowSettingMessageBox("重新匹配成功");
             }
             else
             {
-                MessageBox.Show("当前没有此权限");
+                ShowSettingMessageBox("当前没有此权限");
             }
             
         }
@@ -189,6 +223,7 @@ namespace HCSortingCZP.View
         private void FXLevelConfig_Click(object sender, RoutedEventArgs e)
         {
             var fxLevelWindows = new FXLevelWindows(MainStorage.Saves.BatteryLevelList);
+            CenterDialog(fxLevelWindows);
             fxLevelWindows.ShowDialog();
             if (fxLevelWindows.DialogResult == true)
             {
@@ -206,6 +241,7 @@ namespace HCSortingCZP.View
         private void StationLevelConfig_Click(object sender, RoutedEventArgs e)
         {
             var win = new View.CZPallet.StationLevelConfigWindow();
+            CenterDialog(win);
             win.ShowDialog();
         }
 
@@ -473,7 +509,7 @@ namespace HCSortingCZP.View
 
             if (string.IsNullOrWhiteSpace(containerCode))
             {
-                MessageBox.Show("请先在界面上配置托盘号(containerCode)");
+                ShowSettingMessageBox("请先在界面上配置托盘号(containerCode)");
                 return;
             }
 
@@ -482,7 +518,7 @@ namespace HCSortingCZP.View
                 var channels = await mediator.Send(new ContainerManualCommand(key, containerCode));
                 if (channels.Count == 0)
                 {
-                    MessageBox.Show($"MES返回空数据\n工位: {key}\n托盘: {containerCode}");
+                    ShowSettingMessageBox($"MES返回空数据\n工位: {key}\n托盘: {containerCode}");
                     return;
                 }
 
@@ -495,7 +531,9 @@ namespace HCSortingCZP.View
                     return $"{ch.ChannelId:00}: {code} {lv}";
                 });
 
-                MessageBox.Show(string.Join("\n", lines), $"MES托盘信息获取 - {containerCode}");
+                ShowSettingMessageBox(
+                    string.Join("\n", lines),
+                    $"MES托盘信息获取 - {containerCode}");
             }
             catch (Exception ex)
             {

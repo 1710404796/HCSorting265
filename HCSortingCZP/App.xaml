@@ -16,6 +16,8 @@
                 <ResourceDictionary Source="Theme/LightTheme.xaml"/>
 
                 <ResourceDictionary Source="Style/MainStyle.xaml"/>
+                <ResourceDictionary Source="Theme/TechDashboardTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ThemePalette.LightBlue.xaml"/>
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->

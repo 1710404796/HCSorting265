@@ -42,6 +42,8 @@ namespace HCSortingCZP.Models
 
         public string TrayScanStandardName { get; set; } = "电芯拆组盘工具";
 
+        public string Theme { get; set; } = "LightBlue";
+
         public List<string[]> BatteryLevelList { get; set; } = Enumerable.Range(0,7).Select(s => new string[0]).ToList();
         public  string ExDbConnectionString { get; set; } = string.Empty;
         public  string ExDbTableName { get; set; } = string.Empty;

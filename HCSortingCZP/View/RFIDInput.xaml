@@ -1,10 +1,11 @@
-﻿<Window x:Class="HCSortingCZP.View.RFIDInput"
+<Window x:Class="HCSortingCZP.View.RFIDInput"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HCSortingCZP.View"
         mc:Ignorable="d"
+      xmlns:lang="clr-namespace:HCSortingCZP.Properties"
         WindowStartupLocation="CenterScreen"
          xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -14,15 +15,19 @@
     <Grid>
         <StackPanel VerticalAlignment="Center">
             <TextBlock x:Name="tt" FontSize="20" HorizontalAlignment="Center"></TextBlock>
-            <TextBox Margin="0,10,0,0" 
-                     
-                     TextChanged="Dani_TextChanged"
-                     AcceptsReturn="True"
-                     x:Name="Dani"
-                      Foreground="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
-                    InputMethod.IsInputMethodEnabled="false"
-                     Width="300"></TextBox>
-            <Button x:Name="giveup" Click="giveup_Click" HorizontalAlignment="Center" Width="100" Margin="10">放弃</Button>
+            <PasswordBox Margin="0,10,0,0"
+                         PasswordChar="*"
+                         KeyDown="Dani_KeyDown"
+                         x:Name="Dani"
+                         Foreground="{DynamicResource TextBrush}"
+                         InputMethod.IsInputMethodEnabled="false"
+                         Width="300"/>
+            <Button x:Name="giveup"
+          Content="{x:Static lang:Resources.Abandon}"
+
+        Click="giveup_Click" HorizontalAlignment="Center"
+        Width="100"
+        Margin="10"></Button>
         </StackPanel>
     </Grid>
 </Window>

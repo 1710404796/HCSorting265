@@ -1,14 +1,11 @@
-﻿
-using HCSortingCZP.Utils;
-using LinxUniverse.Auth;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
+using HCSortingCZP.Utils;
 
 namespace HCSortingCZP.View
 {
@@ -17,63 +14,104 @@ namespace HCSortingCZP.View
     /// </summary>
     public partial class LockScreenView : UserControl
     {
-        private LinxAuthenticationStateProvider _authenticationStateProvider;
+        private bool _isLoggingIn;
 
         public LockScreenView()
         {
-            _authenticationStateProvider =
-                App.GetService<LinxAuthenticationStateProvider>();
             InitializeComponent();
         }
 
-        private async void aa_KeyDown(object sender, KeyEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            FocusInput();
+        }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is true)
             {
-                await LoginHelper.Login();
-                // await userManager.CheckLogin();
+                Dani.Clear();
+                ErrorText.Text = string.Empty;
+                FocusInput();
             }
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            aa.Focus();
-            await LoginHelper.Login();
-
-        }
-
-        private async void UserControl_KeyDown(object sender, KeyEventArgs e)
+        private async void Dani_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                // await userManager.CheckLogin();
-                await LoginHelper.Login();
-
+                e.Handled = true;
+                await LoginAsync();
             }
         }
 
-        private async void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // await userManager.CheckLogin();
-
-            await LoginHelper.Login();
-
+            await LoginAsync();
         }
 
-        private async void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void Dani_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    //if ((bool)e.NewValue)
-            //    //    await LoginHelper.Login();
-            //}
-            //catch (Exception)
-            //{
+            if (!string.IsNullOrEmpty(Dani.Password))
+            {
+                ErrorText.Text = string.Empty;
+            }
+        }
 
-            //    //throw;
-            //}
+        private async Task LoginAsync()
+        {
+            if (_isLoggingIn)
+            {
+                return;
+            }
 
+            var rfid = Dani.Password.Trim();
+            if (string.IsNullOrWhiteSpace(rfid))
+            {
+                ErrorText.Text = "RFID不能为空";
+                Dani.Focus();
+                return;
+            }
 
+            _isLoggingIn = true;
+            LoginButton.IsEnabled = false;
+            ErrorText.Text = string.Empty;
+
+            try
+            {
+                if (await LoginHelper.Login(rfid))
+                {
+                    Dani.Clear();
+                }
+                else
+                {
+                    ErrorText.Text = "没有找到指定ID的用户";
+                    Dani.Clear();
+                    Dani.Focus();
+                }
+            }
+            catch (Exception exception)
+            {
+                ErrorText.Text = $"处理请求时发生错误：{exception.Message}";
+                Dani.Clear();
+                Dani.Focus();
+            }
+            finally
+            {
+                _isLoggingIn = false;
+                LoginButton.IsEnabled = true;
+            }
+        }
+
+        private void FocusInput()
+        {
+            Dispatcher.BeginInvoke(
+                DispatcherPriority.Input,
+                new Action(() =>
+                {
+                    Dani.Focus();
+                    Keyboard.Focus(Dani);
+                }));
         }
     }
 }

@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	  <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-	  <ApplicationIcon>EVE.ico</ApplicationIcon>
+	  <ApplicationIcon>灵西机器人原色.ico</ApplicationIcon>
 
   </PropertyGroup>
 
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Content Include=".template.config\template.json" />
-    <Content Include="EVE.ico" />
+    <Content Include="灵西机器人原色.ico" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
