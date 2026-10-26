@@ -46,10 +46,10 @@ namespace HCSortingCZP.View
 
 
             InitializeComponent();
-            //StationNameBox.Text = MainStorage.Saves.SelectStageName;
-            SelectBox.SelectedValue = MainStorage.Saves.SelectStageName;
+            // StationNameBox.Text = MainStorage.Saves.SelectStageName;
+            // SelectBox.SelectedValue = MainStorage.Saves.SelectStageName;
 
-            ApiEnableStack.Visibility = App.GetService<IMediator>().Send(new CheckPowerQuery(Attritubes.PowerEnum.接口使能配置)).Result ? Visibility.Visible : Visibility.Collapsed;
+            // ApiEnableStack.Visibility = App.GetService<IMediator>().Send(new CheckPowerQuery(Attritubes.PowerEnum.接口使能配置)).Result ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void CenterDialog(Window dialog)
@@ -178,20 +178,20 @@ namespace HCSortingCZP.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // 页面释放时 BindingCleaner 会清空 ItemsSource/SelectedValue，
-            // 此时 SelectionChanged 也会触发，必须忽略空值，避免 SelectStageName 被写成 null。
-            if (SelectBox.SelectedValue is not string name || string.IsNullOrWhiteSpace(name))
-            {
-                return;
-            }
+        //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // 页面释放时 BindingCleaner 会清空 ItemsSource/SelectedValue，
+        //    // 此时 SelectionChanged 也会触发，必须忽略空值，避免 SelectStageName 被写成 null。
+        //    //if (SelectBox.SelectedValue is not string name || string.IsNullOrWhiteSpace(name))
+        //    //{
+        //    //    return;
+        //    //}
 
-            if (name == MainStorage.Saves.SelectStageName) return;
-            MainStorage.Saves.SelectStageName = name;
-            MainStorage.SaveManager.Save();
-            MainWindow.NageTo<SettingView>();
-        }
+        //    if (name == MainStorage.Saves.SelectStageName) return;
+        //    MainStorage.Saves.SelectStageName = name;
+        //    MainStorage.SaveManager.Save();
+        //    MainWindow.NageTo<SettingView>();
+        //}
 
         /// <summary>
         /// 重置OPCUA缓存表

@@ -14,7 +14,7 @@ namespace HCSortingCZP.Service.Models
         public Batterytraybindvolist[] batteryTrayBindVOList { get; set; } = [];
         public string siteCode => MainStorage.Saves.KeysSave[name].SiteCode;
         public string lineCode => MainStorage.Saves.KeysSave[name].LineCode;
-        public string equipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
+        public string equipNum => MainStorage.Saves.KeysSave[name].EquipmentCode;
         public string logisticsOperationCode { get; set; } = MainStorage.Saves.KeysSave[name].LogisticsOperationCode;
         public string containerCode { get; set; } = "";
         public string actionType { get; set; } = "IN";

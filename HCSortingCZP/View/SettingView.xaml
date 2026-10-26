@@ -32,8 +32,9 @@
                     Margin="0,10,0,0" 
                     HorizontalAlignment="Left"
                     x:Name="StationNameBox"
-                    TextChanged="StationNameBox_TextChanged"
-                ></TextBox>-->
+                    TextChanged="StationNameBox_TextChanged">
+                </TextBox>-->
+
 
                 <TextBlock 
                     FontSize="15"
@@ -51,6 +52,33 @@
                     FontSize="15"
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
+                    Text="设备编码(MES)"/>
+                <TextBox 
+                    Width="200" 
+                    Margin="0,10,0,0" 
+                    HorizontalAlignment="Left"
+                    x:Name="EquipNum"
+                    Text="{Binding ViewModel.Saves.EquipmentCode, Mode=TwoWay}"/>
+
+                <TextBlock 
+                    FontSize="15"
+                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                    Margin="0,15,0,0"
+                    Text="工序编码(MES)"/>
+                <TextBox 
+                    Width="200" 
+                    Margin="0,10,0,0" 
+                    HorizontalAlignment="Left"
+                    x:Name="Process"
+                    Text="{Binding ViewModel.Saves.ProcessCode, Mode=TwoWay}"/>  
+
+
+
+
+                <!--<TextBlock 
+                    FontSize="15"
+                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                    Margin="0,15,0,0"
                     Text="ECSIP"/>
                 <TextBox 
                     Width="200" 
@@ -58,8 +86,8 @@
                     HorizontalAlignment="Left"
                     x:Name="IPBox11"
                     Text="{Binding ViewModel.Saves.ECSUrl, Mode=TwoWay}"/>
-
-                <TextBlock 
+                    
+                 <TextBlock 
                     FontSize="15"
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
@@ -69,7 +97,7 @@
                     Margin="0,10,0,0" 
                     HorizontalAlignment="Left"
                     x:Name="ECSIPBox"
-                    Text="{Binding ViewModel.Saves.FMSUrl, Mode=TwoWay}"/>
+                    Text="{Binding ViewModel.Saves.FMSUrl, Mode=TwoWay}"/>-->
 
                 <TextBlock 
                     FontSize="15"
@@ -82,7 +110,9 @@
                     HorizontalAlignment="Left"
                     Text="{Binding ViewModel.Saves.PLCPSetting.IP, Mode=TwoWay}"/>
 
-                <TextBlock 
+                
+
+                <!--<TextBlock 
                     FontSize="15"
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
@@ -135,7 +165,7 @@
                     Width="200"
                     Margin="0,10,0,0"
                     HorizontalAlignment="Left"
-                    Text="{Binding ViewModel.Saves.LogisticsOperationCode,Mode=TwoWay}"/>        
+                    Text="{Binding ViewModel.Saves.LogisticsOperationCode,Mode=TwoWay}"/>-->        
                 <Button 
                     IsEnabled="{Binding ViewModel.CanEditing}"
                     x:Name="SaveButton" 
@@ -144,13 +174,13 @@
                     Click="SaveButton_Click"
                     Content="保存设定"/>
 
-                <Button 
+                <!--<Button 
                     x:Name="TestChaiButton" 
                     Width="110"
                     Margin="0,25,0,0"
                     Content="测试数据拆盘"
                     Click="TestChaiButton_Click"/>
-
+                
                 <TextBlock
                     FontSize="15"
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -174,12 +204,12 @@
                     Width="110"
                     Margin="0,20,0,0"
                     Content="测试托杯绑定"
-                    Click="TestBindCupButton_Click"/>       
+                    Click="TestBindCupButton_Click"/>-->       
 
             </StackPanel>
 
             <StackPanel Grid.Column="2">
-                <TextBlock 
+                <!--<TextBlock 
                     FontSize="15" 
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
@@ -213,21 +243,11 @@
                     Margin="0,10,0,0" 
                     HorizontalAlignment="Left"
                     x:Name="Line"
-                    Text="{Binding ViewModel.Saves.LineCode, Mode=TwoWay}"/>
+                    Text="{Binding ViewModel.Saves.LineCode, Mode=TwoWay}"/>-->
 
-                <TextBlock 
-                    FontSize="15"
-                    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-                    Margin="0,15,0,0"
-                    Text="EquipNum(MES)"/>
-                <TextBox 
-                    Width="200" 
-                    Margin="0,10,0,0" 
-                    HorizontalAlignment="Left"
-                    x:Name="EquipNum"
-                    Text="{Binding ViewModel.Saves.DeviceCode, Mode=TwoWay}"/>
+                
 
-                <TextBlock 
+                <!--<TextBlock 
                     FontSize="15"
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,15,0,0"
@@ -361,7 +381,7 @@
 
                     <CheckBox IsChecked="{Binding ViewModel.Saves.ApiEnableTable.ContainerManualEnable}">MES托盘信息获取使能</CheckBox>
 
-                </StackPanel>
+                </StackPanel>-->
 
             </StackPanel>
 
@@ -407,7 +427,7 @@
                     HorizontalAlignment="Left"
                     Text="{Binding ViewModel.Saves.LogDeleteDay}"/>
 
-                <TextBlock
+                <!--<TextBlock
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,10,0,0"
                     FontSize="15"
@@ -416,7 +436,7 @@
                     Margin="0,10,0,0" 
                     Width="200"
                     HorizontalAlignment="Left"
-                    Text="{Binding ViewModel.Saves.DatabaseLogDeleteDay}"/>
+                    Text="{Binding ViewModel.Saves.DatabaseLogDeleteDay}"/>-->
 
                 <TextBlock 
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -429,7 +449,7 @@
                     HorizontalAlignment="Left"
                     Text="{Binding ViewModel.Saves.HeartbeartDuring}"/>
 
-                <TextBlock
+                <!--<TextBlock
                     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
                     Margin="0,10,0,0" 
                     FontSize="15" 
@@ -467,11 +487,11 @@
                     x:Name="SelectBox"
                     Margin="0,10,0,0" 
                     ItemsSource="{Binding ViewModel.Stations}"
-                    SelectionChanged="ComboBox_SelectionChanged"/>
+                    SelectionChanged="ComboBox_SelectionChanged"/>-->
 
                 <Button Width="100" Margin="0,10,0,0" Click="SetPower_Click" Content="权限配置"/>
 
-                <CheckBox 
+                <!--<CheckBox 
                     Margin="0,10,0,0" 
                     IsChecked="{Binding ViewModel.Saves.ExDb}">
                     多工位额外db flag
@@ -481,7 +501,7 @@
                     Margin="0,10,0,0" 
                     IsChecked="{Binding ViewModel.IsBackGround}">
                     是否有背景
-                </CheckBox>
+                </CheckBox>-->
 
             </StackPanel>
         </Grid>

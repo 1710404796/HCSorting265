@@ -65,17 +65,17 @@ namespace HCSortingCZP.Mediator.Handlers.ECS
                 }
 
             }
-            if (request.Start)
-            {
-                var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.R));
-                //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
+            //if (request.Start)
+            //{
+            //    //var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.R));
+            //    //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
 
-                if (!data)
-                {
-                    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
-                    return false;
-                }
-            }
+            //    if (!data)
+            //    {
+            //        await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+            //        return false;
+            //    }
+            //}
             else
             {
                 // 上报数据
@@ -562,18 +562,18 @@ namespace HCSortingCZP.Mediator.Handlers.ECS
 
 
                 // 作业结束
-                if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
-                {
-                    var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.E));
-                    //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
+                //if (MainStorage.Saves.KeysSave[request.Key].ApiEnableTable.GrabActionRemoveEnable)
+                //{
+                //    var data = await mediator.Send(new EquipStatusReportCommand(request.Key, pallet.InsideNum, EquipStatus.E));
+                //    //PalletStatus = request.isSpecial ? PalletStatus.不满 : PalletStatus.满盘,
 
-                    //if (!data)
-                    //{
-                    //    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
-                    //    return false;
-                    //}
+                //    //if (!data)
+                //    //{
+                //    //    await mediator.Send(new WcsDataWarningBoxCommand("ECS上报状态失败"));
+                //    //    return false;
+                //    //}
 
-                }
+                //}
 
 
             }

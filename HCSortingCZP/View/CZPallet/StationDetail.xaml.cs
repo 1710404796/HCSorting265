@@ -2,7 +2,6 @@
 using HCSortingCZP.Mediator.ECS;
 using HCSortingCZP.Models;
 using HCSortingCZP.Models.CZPallet;
-using HCSortingCZP.PLC.Tasks;
 using HCSortingCZP.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -56,11 +55,8 @@ namespace HCSortingCZP.View.CZPallet
             {
                 Pikachu.Visibility = Visibility.Collapsed;
                 //BindWithHuman.Visibility = Visibility.Collapsed;
-                ScanAgain.Visibility = Visibility.Collapsed;
                 PalletCodeBlock.Visibility = Visibility.Collapsed;
                 //Confirm.Visibility = Visibility.Collapsed;
-                BanSaoma.Visibility = Visibility.Collapsed;
-                Force.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -103,11 +99,8 @@ namespace HCSortingCZP.View.CZPallet
             // 
         }
 
-        /// <summary>
-        /// 重新扫码
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // 当前项目不再使用托盘扫码及扫码失败后的人工强制写码流程。
+        /*
         private async void ScanAgain_Click(object sender, RoutedEventArgs e)
         {
             await Task.Yield();
@@ -150,6 +143,7 @@ namespace HCSortingCZP.View.CZPallet
                 }
             });
         }
+        */
 
         private async void Clear_Click(object sender, RoutedEventArgs e)
         {
@@ -170,11 +164,7 @@ namespace HCSortingCZP.View.CZPallet
 
         }
 
-        /// <summary>
-        /// 强制写入托盘条码
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /*
         private async void Force_Click(object sender, RoutedEventArgs e)
         {
             await Task.Yield();
@@ -205,7 +195,6 @@ namespace HCSortingCZP.View.CZPallet
             try
             {
                 pall.PalletCode = palletCode;
-                pall.TempData[PalletArrivedTask.ManualForcePalletCodeKey] = palletCode;
                 RuntimeStateStore.Save();
                 await meditor.Send(new OperatorLogCommand($"强制写入托盘条码{palletCode}成功"));
             }
@@ -219,6 +208,7 @@ namespace HCSortingCZP.View.CZPallet
                 Force.IsEnabled = true;
             }
         }
+        */
 
         private async void CvRequest_Click(object sender, RoutedEventArgs e)
         {

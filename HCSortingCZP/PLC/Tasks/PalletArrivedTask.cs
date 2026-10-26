@@ -29,8 +29,11 @@ namespace HCSortingCZP.PLC.Tasks
             SubIdx = subIdx;
         }
 
-        public override async Task<bool> DoSth()
+        public override Task<bool> DoSth()
         {
+            // 保留任务用于PLC握手，但不再读取托盘条码。
+            return Task.FromResult(true);
+            /*
             var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
             if (pallet == null || !pallet.IsEnable)
             {
@@ -58,10 +61,10 @@ namespace HCSortingCZP.PLC.Tasks
             return arrived;
 
             //return await base.DoSth();
-
-
+            */
         }
 
+        /*
         private async Task<string?> GetPalletCodeAsync(Pallet pallet)
         {
             while (true)
@@ -145,6 +148,7 @@ namespace HCSortingCZP.PLC.Tasks
                 await Task.Delay(200);
             }
         }
+        */
 
         private string TrayWritePrefix => Context.ExDb ? "WCS_TO_PLC_Tray2" : "WCS_TO_PLC_Tray";
 
@@ -153,7 +157,11 @@ namespace HCSortingCZP.PLC.Tasks
         {
             var pallet = CZPUtils.GetPalletByIndex(Context.Name, SubIdx);
 
-            byte[] data = new byte[32];
+            if (pallet is null)
+            {
+                return base.WriteDataToPlc();
+            }
+
             // 可能要把条码写回去
             //LinxUniverse.PLC.Common.Utils.SetStringCharArray(data, 0, pallet.PalletCode);
             //Encoding.UTF8.GetBytes(pallet.PalletCode).CopyTo(data, 0);

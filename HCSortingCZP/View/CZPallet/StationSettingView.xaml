@@ -38,13 +38,14 @@
              Text="{x:Static lang:Resources.Name}"
              
              ></TextBlock>
-            <TextBlock 
+
+            <!--<TextBlock 
              Width="150"
              Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
              TextAlignment="Center"
              Text="{x:Static lang:Resources.BarcodeScannerIP}"
-             
-             ></TextBlock>
+             ></TextBlock>-->
+
             <TextBlock 
              Width="150"
              Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
@@ -68,12 +69,12 @@
   
   ></TextBlock>
 
-            <TextBlock 
+            <!--<TextBlock 
             Width="150"
             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
             TextAlignment="Center"
             Text="ECS托盘">
-            </TextBlock>
+            </TextBlock>-->
 
             <TextBlock 
              Width="150"
@@ -96,13 +97,12 @@
              Text="{x:Static lang:Resources.Enable}"
              
  ></TextBlock>
-                 <TextBlock 
-         Width="130"
-         Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-         TextAlignment="Center"
-                  Text="退盘叫空盘"
-             
-         ></TextBlock>
+           <!--<TextBlock 
+                 Width="130"
+                 Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+                 TextAlignment="Center"
+                 Text="退盘叫空盘"
+           ></TextBlock>-->
         </StackPanel>
 
         <ScrollViewer 

@@ -1,4 +1,6 @@
 ﻿using BCR.Common.Fs;
+/*
+ * 当前项目不再使用托盘扫码命令处理器，保留原实现供后续恢复。
 using HCSortingCZP.Mediator.Commands;
 using HCSortingCZP.Utils;
 using Keyence.NET;
@@ -109,3 +111,4 @@ namespace HCSortingCZP.Mediator.Handlers
         }
     }
 }
+*/

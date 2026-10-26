@@ -15,7 +15,7 @@ public class CheckPalletMaterialRequest(string name)
     public string LineCode => MainStorage.Saves.KeysSave[name].LineCode;
 
     [JsonPropertyName("equipNum")]
-    public string EquipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
+    public string EquipNum => MainStorage.Saves.KeysSave[name].EquipmentCode;
 
     //[JsonPropertyName("materialCode")]
     //public string MaterialCode => MainStorage.Saves.KeysSave[name].MaterialCode;

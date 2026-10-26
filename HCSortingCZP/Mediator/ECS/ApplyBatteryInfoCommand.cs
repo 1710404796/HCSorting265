@@ -83,7 +83,7 @@ public record MoveFakeCellPalletCommand(int StationNum) : IRequest<bool>;
 /// <param name="Key"></param>
 /// <param name="InsideStationNum"></param>
 /// <param name="EquipStatus"></param>
-public record EquipStatusReportCommand(string Key, int InsideStationNum, EquipStatus EquipStatus) : IRequest<bool>;
+// public record EquipStatusReportCommand(string Key, int InsideStationNum, EquipStatus EquipStatus) : IRequest<bool>;
 
 
 

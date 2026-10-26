@@ -78,12 +78,25 @@ namespace HCSortingCZP.Models
         //    get => KeysSave[SelectStageName].ECSPort;
         //    set => KeysSave[SelectStageName].ECSPort = value;
         //}
-
+        
+        /// <summary>
+        ///  设备编码
+        /// </summary>
         [JsonIgnore]
-        public string DeviceCode
+        public string EquipmentCode
         {
-            get => KeysSave[SelectStageName].DeviceCode;
-            set => KeysSave[SelectStageName].DeviceCode = value;
+            get => KeysSave[SelectStageName].EquipmentCode;
+            set => KeysSave[SelectStageName].EquipmentCode = value;
+        }
+
+        /// <summary>
+        /// 工序编码
+        /// </summary>
+        [JsonIgnore]
+        public string ProcessCode
+        {
+            get => KeysSave[SelectStageName].ProcessCode;
+            set => KeysSave[SelectStageName].ProcessCode = value;
         }
 
         [JsonIgnore]
@@ -393,7 +406,9 @@ namespace HCSortingCZP.Models
 
         public List<PalletTypeRule> PalletTypeRules { get; set; } = [];
 
-        public string DeviceCode { get; set; } = string.Empty;
+        public string EquipmentCode { get; set; } = string.Empty;
+
+        public string ProcessCode { get; set; } = string.Empty;
 
         public string ContainerTypeCode { get; set; } = string.Empty;
 

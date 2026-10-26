@@ -179,7 +179,7 @@ namespace HCSortingCZP.Mediator.Handlers.ECS
                 {
                     await mediator.Send(new SaveToSqlCommand(
                         MainStorage.Saves.ExDbTableName,
-                        MainStorage.Saves.KeysSave[request.Key].DeviceCode,
+                        MainStorage.Saves.KeysSave[request.Key].EquipmentCode,
                         bindings,
                         "OK",
                         Key: request.Key

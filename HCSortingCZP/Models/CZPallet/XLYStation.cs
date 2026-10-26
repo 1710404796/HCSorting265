@@ -18,10 +18,12 @@ namespace HCSortingCZP.Models
     /// </summary>
     public partial class XYLStation : ObservableObject
     {
+        /*
         /// <summary>
         /// 读取IP地址
         /// </summary>
         public string ReaderIpAddr { get; set; } = string.Empty;
+        */
 
         /// <summary>
         /// 从服务器获取
@@ -52,11 +54,13 @@ namespace HCSortingCZP.Models
             }
         }
 
+        /*
         /// <summary>
         /// 屏蔽扫码器
         /// </summary>
         [JsonIgnore]
         public bool BanBarcodeReader { get; set; } = false;
+        */
 
         /// <summary> 
         /// 内部调度号

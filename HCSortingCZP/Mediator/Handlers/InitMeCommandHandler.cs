@@ -85,29 +85,29 @@ namespace HCSortingCZP.Mediator.Handlers
             Dictionary<string, string> plcIpGuidMap = new();
             foreach (var stage in MainStorage.Saves.KeysSave)
             {
-                var hasBarcodeReader = false;
-                foreach (var pallet in stage.Value.Stage.Pallets)
-                {
-                    if (pallet.IsEnable)
-                    {
-                        hasBarcodeReader = true;
-                        pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
-                            Right: reader => Some(reader),
-                            Left: s =>
-                            {
-                                mediator.Send(new WarningBoxCommand(s));
-                                return None;
-                            }
-                        );
-                        Console.WriteLine(pallet.Reader);
-                    }
-
-                }
-                if (hasBarcodeReader)
-                {
-                    // Keyence 客户端的底层 TCP 连接是异步建立的，给连接线程留出启动时间。
-                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-                }
+                // 当前项目不再使用托盘扫码器，屏蔽扫码器连接初始化。
+                //var hasBarcodeReader = false;
+                //foreach (var pallet in stage.Value.Stage.Pallets)
+                //{
+                //    if (pallet.IsEnable)
+                //    {
+                //        hasBarcodeReader = true;
+                //        pallet.Reader = fs(KeyenceBCR.create(ConnectAddress.NewIPAddress(pallet.ReaderIpAddr))).Match(
+                //            Right: reader => Some(reader),
+                //            Left: s =>
+                //            {
+                //                mediator.Send(new WarningBoxCommand(s));
+                //                return None;
+                //            }
+                //        );
+                //        Console.WriteLine(pallet.Reader);
+                //    }
+                //}
+                //if (hasBarcodeReader)
+                //{
+                //    // Keyence 客户端的底层 TCP 连接是异步建立的，给连接线程留出启动时间。
+                //    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                //}
 
                 if ( stage.Value.ResetTable)
                 {
@@ -160,7 +160,7 @@ namespace HCSortingCZP.Mediator.Handlers
                         Console.WriteLine("尝试获取table");
 
                         logger.LogWarning("OpcTable未设定");
-                        if (se.Context.Plc.Connected)
+                        if (se.Context.Plc?.Connected == true)
                         {
                             se.Context.Plc.ClearBrowseCache();
                             stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");
@@ -224,7 +224,7 @@ namespace HCSortingCZP.Mediator.Handlers
                         Console.WriteLine("尝试获取table");
 
                         logger.LogWarning("OpcTable未设定");
-                        if (se.Context.Plc.Connected)
+                        if (se.Context.Plc?.Connected == true)
                         {
                             se.Context.Plc.ClearBrowseCache();
                             stage.Value.OpcTable = se.Context.Plc.UaClient.GetOpcMap("ns=4;i=1");

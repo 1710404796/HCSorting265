@@ -24,15 +24,15 @@ namespace HCSortingCZP.View.CZPallet
 
         TextBox[] stationName;// = new TextBox[lent];
         TextBox[] stationInName;// = new TextBox[lent];
-        TextBox[] rfidReaderIP;// = new TextBox[lent];
+        // TextBox[] rfidReaderIP;// = new TextBox[lent];
         TextBox[] StationNum;// = new TextBox[lent];
         TextBox[] channelNum;// = new TextBox[lent];
         TextBox[] columnNum;// = new TextBox[lent];
-        ComboBox[] ECSTypeBoxs;// = new ComboBox[lent];
+        // ComboBox[] ECSTypeBoxs;// = new ComboBox[lent];
         ComboBox[] comboBoxes;// = new ComboBox[lent];
         ComboBox[] OKNGBoxes;// = new ComboBox[lent];
         CheckBox[] isStationEnable;// = new ComboBox[lent];
-        CheckBox[] callMaterialEnable;// = new CheckBox[lent];
+        // CheckBox[] callMaterialEnable;// = new CheckBox[lent];
 
         //public List<PalletType> PalletTypes { get; }
 
@@ -61,15 +61,15 @@ namespace HCSortingCZP.View.CZPallet
             var stations = MainStorage.Saves.Stage.Stations;
             stationInName = new TextBox[stations.Length];
             stationName = new TextBox[stations.Length];
-            rfidReaderIP = new TextBox[stations.Length];
+            // rfidReaderIP = new TextBox[stations.Length];
             StationNum = new TextBox[stations.Length];
             channelNum = new TextBox[stations.Length];
             columnNum = new TextBox[stations.Length];
-            ECSTypeBoxs = new ComboBox[stations.Length];
+            // ECSTypeBoxs = new ComboBox[stations.Length];
             comboBoxes = new ComboBox[stations.Length];
             OKNGBoxes = new ComboBox[stations.Length];
             isStationEnable = new CheckBox[stations.Length];
-            callMaterialEnable = new CheckBox[stations.Length];
+            // callMaterialEnable = new CheckBox[stations.Length];
 
             int idx = 0;
             foreach (var station in stations)
@@ -87,12 +87,12 @@ namespace HCSortingCZP.View.CZPallet
                     IsReadOnly = station is not Pallet
                 };
 
-                rfidReaderIP[idx] = new()
-                {
-                    Width = 150,
-                    Text = station.ReaderIpAddr,
-                    IsEnabled = station is Pallet,
-                };
+                //rfidReaderIP[idx] = new()
+                //{
+                //    Width = 150,
+                //    Text = station.ReaderIpAddr,
+                //    IsEnabled = station is Pallet,
+                //};
 
                 StationNum[idx] = new()
                 {
@@ -139,17 +139,17 @@ namespace HCSortingCZP.View.CZPallet
                     OKNGBoxes[idx].SelectedIndex = (int)b.OKNGType;
                 }
 
-                ECSTypeBoxs[idx] = new()
-                {
-                    Width = 150,
-                    ItemsSource = ECSPalletTypeStr,
+                //ECSTypeBoxs[idx] = new()
+                //{
+                //    Width = 150,
+                //    ItemsSource = ECSPalletTypeStr,
 
-                    IsEnabled = station is Pallet,
-                };
-                if (station is Pallet c)
-                {
-                    ECSTypeBoxs[idx].SelectedIndex = (int)c.ECSCZTrayType;
-                }
+                //    IsEnabled = station is Pallet,
+                //};
+                //if (station is Pallet c)
+                //{
+                //    ECSTypeBoxs[idx].SelectedIndex = (int)c.ECSCZTrayType;
+                //}
 
                 isStationEnable[idx] = new()
                 {
@@ -162,15 +162,15 @@ namespace HCSortingCZP.View.CZPallet
                     //IsEnabled = station is Pallet
                 };
 
-                callMaterialEnable[idx] = new()
-                {
-                    IsChecked = station.CallMaterialEnable,
-                    Width = 130,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
-                    Margin = new(10, 0, 0, 0),
-                    IsEnabled = station is Pallet
-                };
+                //callMaterialEnable[idx] = new()
+                //{
+                //    IsChecked = station.CallMaterialEnable,
+                //    Width = 130,
+                //    HorizontalAlignment = HorizontalAlignment.Center,
+                //    HorizontalContentAlignment = HorizontalAlignment.Center,
+                //    Margin = new(10, 0, 0, 0),
+                //    IsEnabled = station is Pallet
+                //};
 
 
                 idx++;
@@ -203,15 +203,15 @@ namespace HCSortingCZP.View.CZPallet
 
                 stackPanel.Children.Add(stationInName[i]);
                 stackPanel.Children.Add(stationName[i]);
-                stackPanel.Children.Add(rfidReaderIP[i]);
+                // stackPanel.Children.Add(rfidReaderIP[i]);
                 stackPanel.Children.Add(StationNum[i]);
                 stackPanel.Children.Add(comboBoxes[i]);
                 stackPanel.Children.Add(OKNGBoxes[i]);
-                stackPanel.Children.Add(ECSTypeBoxs[i]);
+                // stackPanel.Children.Add(ECSTypeBoxs[i]);
                 stackPanel.Children.Add(channelNum[i]);
                 stackPanel.Children.Add(columnNum[i]);
                 stackPanel.Children.Add(isStationEnable[i]);
-                stackPanel.Children.Add(callMaterialEnable[i]);
+                //stackPanel.Children.Add(callMaterialEnable[i]);
                 DiaoPanel.Children.Add(stackPanel);
 
             }
@@ -237,9 +237,9 @@ namespace HCSortingCZP.View.CZPallet
                 station.OutsideStationNum = int.Parse(StationNum[i].Text);
                 station.ChannelNum = int.Parse(channelNum[i].Text);
                 station.Column = int.Parse(columnNum[i].Text);
-                station.ReaderIpAddr = rfidReaderIP[i].Text;
+                // station.ReaderIpAddr = rfidReaderIP[i].Text;
                 station.IsEnable = isStationEnable[i].IsChecked ?? false;
-                station.CallMaterialEnable = callMaterialEnable[i].IsChecked ?? false;
+                // station.CallMaterialEnable = callMaterialEnable[i].IsChecked ?? false;
 
 
                 if (station is Pallet pallet)
@@ -257,18 +257,18 @@ namespace HCSortingCZP.View.CZPallet
                         //};
                     }
 
-                    if (ECSTypeBoxs[i].SelectedIndex >= 0 && ECSTypeBoxs[i].SelectedIndex <= ECSTypeBoxs[i].Items.Count)
-                    {
+                    //if (ECSTypeBoxs[i].SelectedIndex >= 0 && ECSTypeBoxs[i].SelectedIndex <= ECSTypeBoxs[i].Items.Count)
+                    //{
 
-                        pallet.ECSCZTrayType = (ECSTrayType)(ECSTypeBoxs[i].SelectedIndex);
+                    //    pallet.ECSCZTrayType = (ECSTrayType)(ECSTypeBoxs[i].SelectedIndex);
 
-                    }
-                    _logger.LogDebug($"工位号：{station.OutsideStationNum}，" +
-                        $"FMS下拉框索引：{pallet.OKNGType.GetTrayTypeStr()}，" +
-                        $"FMS托盘类型：{(TrayType)OKNGBoxes[i].SelectedIndex}，" +
-                        $"ECS下拉框索引：{pallet.ECSCZTrayType.GetOUTTrayTypeStr()}，" +
-                        $"ECS托盘类型：{(ECSTrayType)(ECSTypeBoxs[i].SelectedIndex)}");
-                    pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
+                    //}
+                    //_logger.LogDebug($"工位号：{station.OutsideStationNum}，" +
+                    //    $"FMS下拉框索引：{pallet.OKNGType.GetTrayTypeStr()}，" +
+                    //    $"FMS托盘类型：{(TrayType)OKNGBoxes[i].SelectedIndex}，" +
+                    //    $"ECS下拉框索引：{pallet.ECSCZTrayType.GetOUTTrayTypeStr()}，" +
+                    //    $"ECS托盘类型：{(ECSTrayType)(ECSTypeBoxs[i].SelectedIndex)}");
+                    //pallet.Type = PalletTypes[comboBoxes[i].SelectedIndex];
                 }
 
 

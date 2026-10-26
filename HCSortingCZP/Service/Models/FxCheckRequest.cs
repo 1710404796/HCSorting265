@@ -21,7 +21,7 @@ namespace HCSortingCZP.Service.Models
         public string LineCode => MainStorage.Saves.KeysSave[name].LineCode;
 
         [JsonPropertyName("equipCode")]
-        public string EquipNum => MainStorage.Saves.KeysSave[name].DeviceCode;
+        public string EquipNum => MainStorage.Saves.KeysSave[name].EquipmentCode;
         public int qty{ get; set; }
         //[JsonPropertyName("materialCode")]
         //public string MaterialCode => MainStorage.Saves.KeysSave[name].MaterialCode;

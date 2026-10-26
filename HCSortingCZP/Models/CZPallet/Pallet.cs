@@ -12,8 +12,10 @@ namespace HCSortingCZP.Models.CZPallet
         {
             ChannelNum = 24;
         }
+        /*
         [JsonIgnore]
         public Option<Reader> Reader { get; set; } = None;
+        */
         public int PalletId { get; set; }
         public PalletType Type { get; set; }
         public TrayType OKNGType { get; set; }
